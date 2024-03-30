@@ -2,34 +2,19 @@ import { useState, useEffect } from 'react';
 import { Editor, EditorState } from 'draft-js';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // import styles
-
 import Anthropic from '@anthropic-ai/sdk';
-const anthropic = new Anthropic({
-  apiKey:
-    `${import.meta.env.VITE_ANTHROPIC_API_KEY}`,
-});
-
 import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
-import { getDocs, addDoc, collection } from 'firebase/firestore';
-
+import { collection } from 'firebase/firestore';
 import Iconify from 'src/components/iconify';
-import { db, creator_avatars } from 'src/firebase-config/firebase';
-import { products } from 'src/_mock/products';
+import { db } from 'src/firebase-config/firebase';
 import Button from '@mui/material/Button';
 import { TextField } from '@mui/material';
-import ProductSearch from '../product-search';
 
-import CreatorCard from '../creator-card';
-import ProductSort from '../product-sort';
-import FollowerSort from '../follower-sort';
-import PlatformSort from '../platform-sort';
-import EngagementSort from '../engagement-sort';
-import StyleSort from '../style-sort';
-
-
+const anthropic = new Anthropic({
+  apiKey: `${import.meta.env.VITE_ANTHROPIC_API_KEY}`,
+});
 // ----------------------------------------------------------------------
 
 export default function ProductsView() {
@@ -126,7 +111,7 @@ export default function ProductsView() {
   // }
 
   const generateBlog = async () => {
-    !isGenMode && setIsGenMode(true);
+    if (!isGenMode) {setIsGenMode(true)};
     setText('<h1>✨ Generating... </h1> ');
     const gptResponse = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -269,7 +254,6 @@ export default function ProductsView() {
             // modules={{ toolbar: isGenMode ? true : false }}
             style={{ 
                 width: '100%', 
-                height: isGenMode ? '80%' : 'calc(80% - 55px)',
                 height: isReferenceGiven || isBrowseWeb ? 'calc(80% - 155px)' : 'calc(80% - 55px)', 
                 marginBottom: '58px', 
                 border: '0px solid #ccc',
@@ -298,7 +282,7 @@ export default function ProductsView() {
 
           <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => {setIsMimicBlogStyle(!isMimicBlogStyle)}}
         sx={{backgroundColor: isMimicBlogStyle ? 'green' : 'grey', '&:hover': { backgroundColor: 'green', },}}>
-        Mimic My Firm's Style </Button>
+        Mimic My Firm&apos;s Style </Button>
 
 
           <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => {setIsReferenceGiven(!isReferenceGiven); setIsBrowseWeb(false);}}

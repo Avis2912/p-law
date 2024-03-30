@@ -253,7 +253,6 @@ export default function PostCard({ campaign, index, }) {
           borderRadius: '15px', 
           backgroundColor: 'white',
           opacity: '0.75',
-          border: 'none',
         }}
       />
 

@@ -181,43 +181,36 @@ export default function UserPage() {
 
           {/* CHAT PANEL  */}
 
-            {texts.map((text, index) => {
-              return Object.entries(text).map(([role, message]) => {
-                return (
-                  <Stack key={index} mb={2} alignItems= {role === 'assistant' ? "flex-end" : "flex-start"}>
-                    <Stack
-                      sx={{
-                        width: 'auto',
-                        height: 'auto',
-                        backgroundColor: role === 'assistant' ? '#a1a1a1' : '#6fa133',
-                        p: 0.9,
-                        pl: 1.7,
-                        pr: 1.7,
-                        borderRadius: '8px',
-                        justifyContent: 'left',
-                        alignItems: 'start',
-                        borderBottomRightRadius: role === 'assistant' ? '0px' : '8px',
-                        borderBottomLeftRadius: role === 'user' ? '0px' : '8px',
-                        maxWidth: '70%',
-                      }}
-                    >
-                      <Typography variant="subtitle3" sx={{ color: 'white', justifyContent: 'left' }}>
-                        {message}
-                      </Typography>
-                    </Stack>
+            {texts.map((text, index) => 
+              Object.entries(text).map(([role, message]) => 
+                <Stack key={index} mb={2} alignItems= {role === 'assistant' ? "flex-end" : "flex-start"}>
+                  <Stack
+                    sx={{
+                      width: 'auto',
+                      height: 'auto',
+                      backgroundColor: role === 'assistant' ? '#a1a1a1' : '#6fa133',
+                      p: 0.9,
+                      pl: 1.7,
+                      pr: 1.7,
+                      borderRadius: '8px',
+                      justifyContent: 'left',
+                      alignItems: 'start',
+                      borderBottomRightRadius: role === 'assistant' ? '0px' : '8px',
+                      borderBottomLeftRadius: role === 'user' ? '0px' : '8px',
+                      maxWidth: '70%',
+                    }}
+                  >
+                    <Typography variant="subtitle3" sx={{ color: 'white', justifyContent: 'left' }}>
+                      {message}
+                    </Typography>
                   </Stack>
-                );
-              });
-            })}
+                </Stack>
+              )
+            )}
             
 
 
             </Card>
-
-          <Stack
-          >
-
-          </Stack>
 
           </Card>
           </Stack>

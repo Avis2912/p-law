@@ -84,7 +84,7 @@ export default function BlogView() {
        sx={{width: '30%'}} />
        </Stack>
        
-        <Button onClick={() => generateBlog()}
+        <Button onClick={() => {}}
         variant="contained" color="inherit" 
         sx={{height: '54px', width: '150px'}}>
           Generate ✨
