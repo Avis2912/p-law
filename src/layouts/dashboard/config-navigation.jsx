@@ -24,17 +24,17 @@ const navConfig = [
   },
   {
     title: 'My Site Leads',
-    path: '/conversations',
+    path: '/leads',
     icon: icon('ic_blog'),
   },
   {
     title: 'Competition',
-    path: '/lists',
+    path: '/competition',
     icon: icon('ic_blog'),
   },
   {
     title: 'Google Reviews',
-    path: '/user',
+    path: '/reviews',
     icon: icon('ic_user'),
   },
   {

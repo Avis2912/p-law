@@ -86,6 +86,30 @@ export default function AppView() {
 
 
   return (
+    <div style={{ position: 'relative',   height: '100%', }}>
+      <div style={{
+      borderRadius: '15px',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      background: 'rgba(255, 255, 255, 0.7)',
+      backdropFilter: 'blur(3px)',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      zIndex: 10,
+      marginTop: '70px'
+    }}>
+      <span style={{
+        fontFamily: "'Old Standard TT', serif",
+        fontSize: '2rem',
+        color: 'black'
+      }}>
+        Coming Soon
+      </span>
+    </div>
     <Container maxWidth="xl">
       <Typography variant="h3" sx={{ mb: 5 }}>
         Hey {brandName}, Welcome Back 👋
@@ -296,5 +320,6 @@ export default function AppView() {
         </Grid>
       </Grid>
     </Container>
+    </div>
   );
 }

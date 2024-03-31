@@ -126,7 +126,7 @@ export default function UserPage() {
 
       <Stack direction="row" spacing={3}>
 
-      <Card sx={{ width: isChatOpen ? '38.5%' : '100%', height: 575, transition: 'ease 0.3s' }}>
+      <Card sx={{ width: isChatOpen ? '420px' : '100%', height: 575, transition: 'ease 0.3s' }}>
         
 
         <Scrollbar>
@@ -175,7 +175,7 @@ export default function UserPage() {
         />
       </Card>
 
-      <Card sx={{ height: 575, width: isChatOpen ? '65%' : '0%', transition: 'ease 0.3s' }}>
+      <Card sx={{ height: 575, width: isChatOpen ? 'calc(100% - 385px)' : '0%', transition: 'ease 0.3s' }}>
  
           <Card sx = {{ width: '100%', height: 575, p: 2.5}}>
 

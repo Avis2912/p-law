@@ -113,6 +113,7 @@ export default function AccountPopover() {
           sx={{
             width: 36,
             height: 36,
+            marginBottom: '2.5px',
             border: (theme) => `solid 2px ${theme.palette.background.default}`,
           }}
         >

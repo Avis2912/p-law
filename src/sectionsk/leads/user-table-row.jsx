@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import Stack from '@mui/material/Stack';
@@ -11,8 +11,10 @@ import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
+import { format } from 'date-fns';
 import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
+import Button from '@mui/material/Button';
 
 // ----------------------------------------------------------------------
 
@@ -29,6 +31,15 @@ export default function UserTableRow({
   const [open, setOpen] = useState(null);
   const [read, setRead] = useState(false);
 
+  let backgroundColor = 'green';
+
+  const buttonText = '03/31/24 | 3PM';
+  const buttonDate = buttonText.split(' | ')[0];
+  const today = format(new Date(), 'MM/dd/yy');
+  const isToday = buttonDate === today;
+
+  backgroundColor = isToday ? 'green' : 'black';
+
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
   };
@@ -42,7 +53,9 @@ export default function UserTableRow({
     setRead(true);
   };
 
-  
+  useEffect(() => {
+    if (isToday) {setRead(true)};
+  }, [isToday]);
 
 
   return (
@@ -59,29 +72,46 @@ export default function UserTableRow({
       <Typography variant="subtitle2" noWrap>
         {name}
       </Typography>
-      <Typography variant="subtitle3" noWrap sx={{color: 'darkblue'}}>
+      {/* <Typography variant="subtitle3" noWrap sx={{color: 'darkblue'}}>
         11/10/2021
-      </Typography>
+      </Typography> */}
       </Stack>
+      
       <Typography 
-  variant={read ?"subtitle3" : "subtitle2"} 
-  noWrap 
-  sx={{ 
-    overflow: 'hidden',  // Ensures the overflow content will be hidden.
-    textOverflow: 'ellipsis',  // Renders '...' for overflowed content.
-    whiteSpace: 'nowrap',  // Text won't wrap to the next line.
-    display: 'block',  // Changes display from inline to block to allow width specification.
-    width: 'fit-content',  // Optional: You might specify a fixed width, or '100%' or any other value depending on your design requirements.
-    maxWidth: 260,  // The max-width property, you might need to adjust based on your requirements.
-  }}
->
-  657-642-7241
-</Typography>
+        variant={read ?"subtitle3" : "subtitle2"} 
+        noWrap 
+        sx={{ 
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+          display: 'block',
+          width: 'fit-content',
+          maxWidth: 260,
+        }}>
+        657-642-7241
+      </Typography>
 
       </Stack>
 
-      <Iconify icon="mdi:dot" color="red" sx={{ height: read ? 0 : 30, width: 30, }} />
+      {/* <Iconify icon="mdi:dot" color="red" sx={{ height: read ? 0 : 30, width: 30, }} /> */}
+      
+      <Button variant="contained" sx={{backgroundColor, '&:hover': { backgroundColor, },
+      boxShadow: 'none', position: 'absolute', left: '237.5px', borderRadius: '6px',
+      width: '115px', height: 'auto', paddingInline: '10px', fontSize: '12px', color: 'white',
+      opacity: 0.7, paddingTop: '6px', paddingBottom: '6px',}}  
+      >
+        {buttonText}
+      </Button>
 
+      <Typography 
+        variant={read ? "subtitle3" : "subtitle2"} noWrap 
+        sx={{ position: 'absolute', overflow: 'hidden', textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap', display: 'block', fontSize: '16px',
+          width: 'fit-content',  left: '410px',
+        }}>
+        Hurt in Idaho car accident; looking for a personal injury lawyer.
+      </Typography>
+      
 
     </Stack>
 

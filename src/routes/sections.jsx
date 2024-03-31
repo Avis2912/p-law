@@ -5,15 +5,15 @@ import DashboardLayout from 'src/layouts/dashboard';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const PostsPage = lazy(() => import('src/pages/posts'));
-export const ListsPage = lazy(() => import('src/pages/lists'));
-export const UserPage = lazy(() => import('src/pages/user'));
+export const CompetitionPage = lazy(() => import('src/pages/competition'));
+export const ReviewsPage = lazy(() => import('src/pages/reviews'));
 export const LoginPage = lazy(() => import('src/pages/login'));
 export const SignUpPage = lazy(() => import('src/pages/signup'));
 export const SeoPage = lazy(() => import('src/pages/seo'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 export const AccountPage = lazy(() => import('src/pages/account'));
 export const InfluencerPage = lazy(() => import('src/pages/influencer'));
-export const ConversationsPage = lazy(() => import('src/pages/conversations'));
+export const LeadsPage = lazy(() => import('src/pages/leads'));
 export const ListNamesPage = lazy(() => import('src/pages/listnames'));
 export const NewCampaignPage = lazy(() => import('src/pages/newcampaign'));
 export const UpdateCampaignPage = lazy(() => import('src/pages/updatecampaign'));
@@ -39,12 +39,12 @@ export default function Router() {
       ),
       children: [
         { element: <IndexPage />, index: true },
-        { path: 'user', element: <UserPage /> },
+        { path: 'reviews', element: <ReviewsPage /> },
         { path: 'seo', element: <SeoPage /> },
         { path: 'posts', element: <PostsPage /> },
-        { path: 'lists', element: <ListsPage /> },
+        { path: 'competition', element: <CompetitionPage /> },
         { path: 'listnames', element: <ListNamesPage /> },
-        { path: 'conversations', element: <ConversationsPage /> },
+        { path: 'leads', element: <LeadsPage /> },
         { path: 'account', element: <AccountPage /> },
         { path: 'influencer', element: <InfluencerPage /> },
         { path: 'newcampaign', element: <NewCampaignPage /> },

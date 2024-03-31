@@ -125,27 +125,27 @@ export default function UserPage() {
 
       <div style={{ position: 'relative' }}>
       <div style={{
-  borderRadius: '50px',
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  background: 'rgba(255, 255, 255, 0.7)',
-  backdropFilter: 'blur(1px)',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  zIndex: 10
-}}>
-  <span style={{
-    fontFamily: "'Old Standard TT', serif",
-    fontSize: '2rem',
-    color: 'black'
-  }}>
-    Coming Soon
-  </span>
-</div>
+      borderRadius: '50px',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      background: 'rgba(255, 255, 255, 0.7)',
+      backdropFilter: 'blur(3px)',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      zIndex: 10
+    }}>
+      <span style={{
+        fontFamily: "'Old Standard TT', serif",
+        fontSize: '2rem',
+        color: 'black'
+      }}>
+        Coming Soon
+      </span>
+    </div>
 
       <Card>
       

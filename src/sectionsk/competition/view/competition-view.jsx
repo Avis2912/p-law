@@ -62,9 +62,34 @@ export default function ListsView() {
   };
 
   return (
+    <div style={{ position: 'relative',   height: '100%',  }}>
+      <div style={{
+      borderRadius: '10px',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      background: 'rgba(255, 255, 255, 0.7)',
+      backdropFilter: 'blur(3px)',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      zIndex: 10,
+      marginTop: '70px'
+    }}>
+      <span style={{
+        fontFamily: "'Old Standard TT', serif",
+        fontSize: '2rem',
+        color: 'black'
+      }}>
+        Coming Soon
+      </span>
+    </div>
+
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={3}>
-        <Typography variant="h3">My Lists</Typography>
+        <Typography variant="h3">Competition & Analysis</Typography>
         <Stack spacing={2} mb={2} direction="row" alignItems="center" justifyContent="space-between">
           <Stack direction="row" spacing={2}>
             {isAddingList && (
@@ -102,5 +127,6 @@ export default function ListsView() {
         ))}
       </Grid>
     </Container>
+    </div>
   );
 }

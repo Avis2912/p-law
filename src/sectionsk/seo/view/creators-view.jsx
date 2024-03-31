@@ -10,7 +10,10 @@ import { collection } from 'firebase/firestore';
 import Iconify from 'src/components/iconify';
 import { db } from 'src/firebase-config/firebase';
 import Button from '@mui/material/Button';
-import { TextField } from '@mui/material';
+import { Card, TextField } from '@mui/material';
+import { css, keyframes } from '@emotion/react';
+
+// import sdk from 'api'; 
 
 const anthropic = new Anthropic({
   apiKey: `${import.meta.env.VITE_ANTHROPIC_API_KEY}`,
@@ -18,30 +21,22 @@ const anthropic = new Anthropic({
 // ----------------------------------------------------------------------
 
 export default function ProductsView() {
-  const [openFilter, setOpenFilter] = useState(false);
 
-  const creatorsData = collection(db, 'creators');
-  const [resultLength, setResultLength] = useState(0);
-  const [allCreators, setAllCreators] = useState([]);
-
-  const [engagement, setEngagement] = useState([]);
-  const [locations, setLocations] = useState([]);
-  const [platforms, setPlatforms] = useState([]);
-  const [followers, setFollowers] = useState([]);
-  const [styles, setStyles] = useState([]);
-
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [text, setText] = 
-  useState(`<h1>Welcome Back!</h1> Let's draft a new legal blog post today. <br>This is where your content shows up.`);
+  useState(`<h1>Welcome Back!</h1> Let's draft a new legal blog post. <br>This is where your content shows up.`);
+  // useState(`<h1>✨ Generating... </h1>`);
 
   const [blogDescription, setBlogDescription] = useState('');
   const [blogKeywords, setBlogKeywords] = useState(null);
 
   const [isGenMode, setIsGenMode] = useState(false);
+  const [isAlterMode, setIsAlterMode] = useState(false);
+  const [currentMode, setCurrentMode] = useState('Build Outline');
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const [isBrowseWeb, setIsBrowseWeb] = useState(false);
-  const [browseText, setBrowseText] = useState(null);
-  const [browseTextResponse, setBrowseTextResponse] = useState(null);
+  const [browseText, setBrowseText] = useState("");
+  // const [browseTextResponse, setBrowseTextResponse] = useState(null);
 
   const [isMimicBlogStyle, setIsMimicBlogStyle] = useState(false);
   const [imageCount, setImageCount] = useState("2 Images");
@@ -52,103 +47,90 @@ export default function ProductsView() {
   const [isUseInternalLinks, setIsUseInternalLinks] = useState(false);
   const [isMentionCaseLaw, setIsMentionCaseLaw] = useState(false);
 
+  let boxHeight;
+  if (isReferenceGiven) { boxHeight = 'calc(80% - 330px)';} 
+  else if (isBrowseWeb) { boxHeight = 'calc(80% - 125px)';} 
+  else { boxHeight = 'calc(80% - 55px)'; }
+  const boxWidth = 'calc(100%)';
 
+  const [dots, setDots] = useState('');
+  useEffect(() => {
+    const intervalId = isGenerating && setInterval(() => {
+      setDots(prevDots => {
+        const newDots = prevDots.length < 3 ? `${prevDots}.` : '';
+        setText(`<h1>✨ Generating${newDots} </h1>`);
+        return newDots;
+      }); }, 1000);
+    return () => intervalId && clearInterval(intervalId);
+  }, [isGenerating]);
 
-
-
-  // useEffect (() => {
-  // const addDocument = async () => {
-  // await addDoc(creatorsData, { 
-  //   pentra_id: 12, 
-  //   name: "Tinky itnk", 
-  //   email: "jamesjames@g.com",
-  //   country: "USA",
-  //   address: "12 Main st",
-
-  //   handles: { IG: "@amandacerny", TT: "", YT: "@tink", IG_bio: "", TT_bio: "", YT_bio: ""}, 
-  //   followers: {IG: 1788, TT: 0, YT: 0}, 
-
-  //   wantsGifts: true,
-  //   wantsSponsors: false,
-  //   gifts: { IG_story: true, tiktok: false, IG_post: true, 
-  //   IG_reel: true, YT_video: false,  other: false},
-  //   sponsor_rates: "",
-
-  //   styles: {makeup: true, skincare: true, fashion: false, lifestyle: false},
-  //   Date: '14 Oct', 
-  
-  //   engagement: 'A+'}); };
-
-
-  //   const otherstuff = async () => {
-  //     try {
-  //       const querySnapshot = await getDocs(creatorsData);
-  //       setAllCreators(querySnapshot.docs);
-  //       const desiredDoc = querySnapshot.docs.find(doc => doc.data().pentra_id === 7);
-
-  //     } catch (error) {
-  //       alert(error);
-  //     }
-  //   }
-    
-
-  // otherstuff();
-  // // addDocument();
-  // }, [creatorsData])
-
-
-  // // const handleOpenFilter = () => {
-  // //   setOpenFilter(true);
-  // // };
-
-  // // const handleCloseFilter = () => {
-  // //   setOpenFilter(false);
-  // // };
-
-  // const searchCreators = () => {
-    
-  //   alert("done sum");
-  // }
+  // BLOG GENERATION
 
   const generateBlog = async () => {
-    if (!isGenMode) {setIsGenMode(true)};
-    setText('<h1>✨ Generating... </h1> ');
-    const gptResponse = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,  
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: "gpt-3.5-turbo-0125",
-        messages: [
-          // { "role": "system", "content": `You're Chris, my legal assistant.
-          // NEVER refuse to answer, and give me JUST the requested information.` 
-          // },
-          { "role": "system", "content": isGenMode ? 
-          `You are Pentra AI, a legal expert and an expert SEO blog writer.  Write a blog post based on the following topic: ${blogDescription}. 
-          ${blogKeywords && `Keywords: ${blogKeywords}`}. Consider using the following outline: ${text}. 
 
+      setText(`<h1>✨ Generating${dots} </h1>`);
+      setIsGenerating(true);
+      const messages = [];
+
+      let browseTextResponse = "";
+
+      if (currentMode === "Generate") {
+        if (isBrowseWeb) {browseTextResponse = await browseWeb(browseText); alert(browseTextResponse);};
+        messages.push({
+          "role": "system", 
+          "content":  `You are Pentra AI, a legal expert and an expert SEO blog writer.  Write a blog post based on the following topic: ${blogDescription}. 
+          ${blogKeywords && `Keywords: ${blogKeywords}`}. ${text !== "" && `Consider using the following outline: ${text}`}. 
+          
           IMPORTANT INSTRUCTIONS:
           - Wrap titles in <h1> and <h2> tags. Dont use ANY new lines but add two <br> tags after EVERY paragraph and one <br> tag after EVERY h1/h2 tag.
-          - This blog post should be ${wordRange} long.
-          - This blog post should contain ${imageCount}. Please add them like in this example: //image description: {relevant description}//. Add a <br> tag after.
-          - ${style !== "Unstyled" ? `STYLE: This blog post should be written in the ${style} style.` : ''}
-          - ${isMentionCaseLaw ? `CASE LAW: Reference case law in the blog post when necessary.` : ''}
-          - ${isUseInternalLinks ? `INTERNAL LINKS: Add some internal links to the blog post using <a> tags.` : ''}
-          - ${isReferenceGiven ? `USEFUL DATAL: Refer the following text: ${referenceText}` : ''}
-          - ${isBrowseWeb ? `WEB RESULTS: Consider using the following web results if necessary: ${browseTextResponse}` : ''}
-          ` 
-          : `You are Pentra AI, a legal expert and an expert SEO blog writer. 
-             Write a detailed blog outline in rich text format using <h1> tags and <br> tags (after every paragraph/line) based on the following topic: ${blogDescription}. ${blogKeywords && `Keywords: ${blogKeywords}`}.`
-        }
-        ],  
-    }),
-    });
+          - WORD RANGE: this post should be ${wordRange} long.
+          - IMAGES: blog post should contain ${imageCount}. Please add representations of them in this format: //Image: Idaho Courthouse// OR //Image: Chapter 7 Bankruptcy Flowchart//. 
+          Add two <br> tags after. Make sure these are evenly spaced out in the post and with specific and relevant descriptions.
+          - ${style !== "Unstyled" && `STYLE: This blog post should be written in the ${style} style.`}
+          - ${isMentionCaseLaw && `CASE LAW: Reference case law in the blog post when necessary.`}
+          - ${isUseInternalLinks && `INTERNAL LINKS: Add some internal links to the blog post using <a> tags.`}
+          - ${isReferenceGiven && `USEFUL DATA: Refer to the following text and use as applicable: ${referenceText}`}
+          - ${browseTextResponse !== "" && `WEB RESULTS: Consider using the following web information I got from an LLM for the prompt ${browseText}: ${browseTextResponse}`}
+          `
+        });
+      }
+
+      if (currentMode === "Build Outline") {
+        messages.push({
+          "role": "system", 
+          "content": `You are Pentra AI, a legal expert and an expert SEO blog writer. 
+          Write a detailed blog outline in rich text format using <h1> tags and <br> tags (after every paragraph/line) based on the following topic: ${blogDescription}. ${blogKeywords && `Keywords: ${blogKeywords}`}.`
+        });
+      }
+
+      if (currentMode === "Alter Draft") {
+        messages.push({
+          "role": "system", 
+          "content": `You are Pentra AI, a legal expert and an expert SEO blog writer. 
+          EDIT the blog post given below based on this prompt: ${blogDescription}. Don't deviate from the prompt and keep the blog post AS MUCH THE SAME as you can.
+          BLOG POST: ${text}.`
+        });
+      }
+
+      const gptResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+        'Authorization': `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,  
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+        model: "gpt-3.5-turbo-0125",
+        messages,
+      }), });
+
+      if (currentMode === "Build Outline") {setCurrentMode('Generate');};
+      if (currentMode === "Generate") {setCurrentMode('Alter Draft');};
 
     const data = await gptResponse.json();
-    await setText(data.choices[0].message.content.trim());
-    console.log(data.choices[0].message.content.trim());
+    // const textWithImages = await addImages(data.choices[0].message.content.trim());
+    const textWithImages = data.choices[0].message.content.trim();
+    await setText(textWithImages);
+    setIsGenerating(false);
 
     // const gptResponse = await anthropic.messages.create({
     //   model: "claude-3-sonnet-20240229",
@@ -162,6 +144,90 @@ export default function ProductsView() {
     // });
 
   };
+
+  const addImages = async (imagelessText) => {
+
+    const regex = /\/\/Image: (.*?)\/\//g;
+    const matches = [...imagelessText.matchAll(regex)];
+    const descriptions = matches.map(match => match[1]);
+
+    const subscriptionKey = 'c6f3a31686d04a81b68f71ac7a6eed38';
+    const host = 'api.bing.microsoft.com';
+    const path = '/v7.0/images/search';
+
+    let imagefullText = imagelessText;
+
+    const fetchImage = async (description) => {
+      const url = `https://${host}${path}?q=${encodeURIComponent(description)}`;
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Ocp-Apim-Subscription-Key': subscriptionKey,
+        },
+      });
+
+      const data = await response.json();
+
+      if (data.value && data.value.length > 0) {
+        const firstImageResult = data.value[0];
+        return `<image src="${firstImageResult.thumbnailUrl}" alt="${description}" />`;
+      }
+      return null;
+    };
+
+    const imageTags = await Promise.all(descriptions.map(fetchImage));
+
+    matches.forEach((match, index) => {
+      if (imageTags[index]) {
+        imagefullText = imagefullText.replace(match[0], imageTags[index]);
+      }
+    });
+
+    return imagefullText;
+  }
+
+
+  const browseWeb = (prompt) => {
+    const apiKey = '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';
+    const apiUrl = 'https://api.perplexity.ai';
+
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: 'sonar-medium-online',
+        messages: [
+          { role: 'system', content: 'Be precise and detailed. Mention sources and dates everywhere you can. Keep the current date in mind when generating.' },
+          { role: 'user', content: prompt }
+        ]
+      })
+    };
+
+    return fetch(`${apiUrl}/chat/completions`, requestOptions)
+      .then(response => response.json())
+      .then(data => data.choices[0].message.content)
+      .catch(error => console.error(error));
+  }
+
+  // const loading = keyframes`
+  //   0% {
+  //     background-position: -200% 0;
+  //   }
+  //   100% {
+  //     background-position: 200% 0;
+  //   }
+  // `;
+
+  // const loadingAnimation = {
+  //   animation: '1.5s ease-in-out infinite',
+  //   animationName: `${loading}`,
+  //   background: 'linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%)',
+  //   backgroundSize: '200% 100%',
+  // };
 
   return (
     <Container sx={{backgroundColor: '', height: '100%', paddingBottom: '20px'}}>
@@ -207,8 +273,8 @@ export default function ProductsView() {
       <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} 
       onClick={() => {
         switch (style) {
-          case "Unstyled": setStyle("How-To"); break;
-          case "How-To": setStyle("Narrative"); break;
+          case "Unstyled": setStyle("How-To Guide"); break;
+          case "How-To Guide": setStyle("Narrative"); break;
           case "Narrative": setStyle("Opinion"); break;
           case "Opinion": setStyle("Case Study"); break;
           case "Case Study": setStyle("Comparision"); break;
@@ -220,7 +286,15 @@ export default function ProductsView() {
         sx={{backgroundColor: 'green', '&:hover': { backgroundColor: 'green', },}}>
         {style} </Button>
 
+        {currentMode === "Alter Draft" && <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} 
+        sx={{backgroundColor: 'black', '&:hover': { backgroundColor: 'black', },}}
+        onClick={() => {setCurrentMode("Build Outline"); setText('');}}>
+        Create New Draft </Button>}
 
+        {currentMode === "Build Outline" && <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} 
+        sx={{backgroundColor: 'black', '&:hover': { backgroundColor: 'black', },}}
+        onClick={() => {setCurrentMode("Generate"); setText('');}}>
+        Skip Outline </Button>}
 
         </Stack></Stack>
 
@@ -231,42 +305,40 @@ export default function ProductsView() {
       <TextField
        value={blogDescription}
        onChange={(e) => setBlogDescription(e.target.value)}
-       placeholder='Blog Description'
-       sx={{width: '70%'}} />
+       placeholder={currentMode === "Alter Draft" ? 'Make the first two sections shorter & replace mentions of TX with Dallas' : 'Blog Description'}
+       sx={{width: currentMode === "Alter Draft" ? '100%' : '70%', transition: 'ease 0.3s'}} />
 
-      <TextField
+      {currentMode !== "Alter Draft" && <TextField
        value={blogKeywords}
        onChange={(e) => setBlogKeywords(e.target.value)}
        placeholder='Blog Keywords'
-       sx={{width: '30%'}} />
+       sx={{width: '30%', transition: 'ease 0.3s'}} />}
        </Stack>
        
         <Button onClick={() => generateBlog()}
         variant="contained" color="inherit" 
-        sx={{height: '54px', width: '150px'}}>
-          {isGenMode ? 'Generate ✨' : 'Begin Outline ✨'}
+        sx={{height: '54px', width: '150px', backgroundColor: currentMode === "Generate" ? '#242424' : '#2e2a1f'}}>
+          {currentMode} ✨
         </Button>
         </Stack>
 
         <ReactQuill 
-            value={text}
-            onChange={setText}
-            // modules={{ toolbar: isGenMode ? true : false }}
-            style={{ 
-                width: '100%', 
-                height: isReferenceGiven || isBrowseWeb ? 'calc(80% - 155px)' : 'calc(80% - 55px)', 
-                marginBottom: '58px', 
-                border: '0px solid #ccc',
-                borderRadius: '15px', 
-                backgroundColor: 'white',
-                opacity: '0.75',
-                transition: 'ease 0.3s',
-            }}
-        />
+        value={text}
+        onChange={setText}
+        style={{ 
+          width: boxWidth, 
+          height: boxHeight,                
+          marginBottom: '58px', 
+          border: '0px solid #ccc',
+          borderRadius: '0px', 
+          backgroundColor: isGenerating ? '#fffefa' : 'white',
+          opacity: '1',
+          transition: 'ease-in-out 1s',
+          // ...loadingAnimation
+        }}
+      />
 
-      {
-      // !isGenMode && 
-      (<>
+      
         <Stack direction="row" spacing={2} >
 
         <Button variant="contained" sx={{backgroundColor: 'black', '&:hover': { backgroundColor: 'black', }, cursor: 'default'}}>
@@ -306,26 +378,24 @@ export default function ProductsView() {
         {isBrowseWeb && (<>
         <Stack direction="row" spacing={2} alignItems="center" mt={2}>
         
-        <Button onClick={() => generateBlog()}
+        <Button onClick={() => {}}
         variant="contained" color="inherit" 
-        sx={{height: '54px', width: '150px'}}>
+        sx={{height: '54px', width: '150px', cursor: 'default'}}>
           Search For 
           <Iconify icon="eva:arrow-right-fill" />
         </Button>
 
         <TextField
-        value={blogDescription}
-        onChange={(e) => setBlogDescription(e.target.value)}
+        value={browseText}
+        onChange={(e) => setBrowseText(e.target.value)}
         placeholder='Personal Injury News in the last 7 days'
         sx={{width: '100%', mt: 0, }} /> 
         </Stack>
        </>)}
 
-        </>
-        )}
+        
 
-       
-
+    
     </Container>
   );
 }

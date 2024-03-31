@@ -53,11 +53,11 @@ export default function Searchbar() {
   return (
     <ClickAwayListener onClickAway={handleClose}>
       <div>
-        {!open && (
+        {/* {!open && (
           <IconButton onClick={handleOpen}>
             <Iconify icon="eva:search-fill" />
           </IconButton>
-        )}
+        )} */}
 
         <Slide direction="down" in={open} mountOnEnter unmountOnExit>
           <StyledSearchbar>

@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { auth } from 'src/firebase-config/firebase';
-import { UserView } from 'src/sectionsk/user/view';
+import { UserView } from 'src/sectionsk/reviews/view';
 
 // ----------------------------------------------------------------------
 

@@ -47,40 +47,40 @@ export default function AccountView() {
 
 
   useEffect(() => {
-    const getBrandCampaigns = async () => {
-      try {
-        const data = await getDocs(brandsData);
-        const userDoc = data.docs.find((docc) => docc.id === auth.currentUser.email);
+    // const getBrandCampaigns = async () => {
+    //   try {
+    //     const data = await getDocs(brandsData);
+    //     const userDoc = data.docs.find((docc) => docc.id === auth.currentUser.email);
         
-        const campaigns = userDoc.data().campaigns;
-        const campaignFr = campaigns.find(c => c.campaign_id === campaign_id);
+    //     const campaigns = userDoc.data().campaigns;
+    //     const campaignFr = campaigns.find(c => c.campaign_id === campaign_id);
   
-             if (userDoc) {
-          await setCampaign(campaignFr);
+    //          if (userDoc) {
+    //       await setCampaign(campaignFr);
   
-        } else {
-          alert('Error: User document not found.');
-        }
-      } catch (err) {
-        alert(err);
-      }
-    };
+    //     } else {
+    //       alert('Error: User document not found.');
+    //     }
+    //   } catch (err) {
+    //     alert(err);
+    //   }
+    // };
   
-    const getPfp = async () => {
-      try {
-        const storage = getStorage();
-        const storageRef = ref(storage, `brands/${auth.currentUser.email}/${campaign_id}`);
-        const downloadUrl = await getDownloadURL(storageRef);
-        setPfp(downloadUrl);
-        return null;
-      } catch (err) {
-        console.error('Error fetching image:', err);
-        return ''; // Return an empty string if there's an error
-      }
-    };
-    getPfp();
-    getBrandCampaigns();
-  }, [brandsData, campaign_id])
+    // const getPfp = async () => {
+    //   try {
+    //     const storage = getStorage();
+    //     const storageRef = ref(storage, `brands/${auth.currentUser.email}/${campaign_id}`);
+    //     const downloadUrl = await getDownloadURL(storageRef);
+    //     setPfp(downloadUrl);
+    //     return null;
+    //   } catch (err) {
+    //     console.error('Error fetching image:', err);
+    //     return ''; // Return an empty string if there's an error
+    //   }
+    // };
+    // getPfp();
+    // getBrandCampaigns();
+  }, [])
 
   const handleButtonClick = () => {
     if (hiddenInputRef.current) {

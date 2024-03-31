@@ -40,7 +40,7 @@ export default function Header({ onOpenNav }) {
 
       <Stack direction="row" alignItems="center" spacing={1.5}>
         <NotificationsPopover />
-        <AccountPopover />
+        <AccountPopover sx={{paddingBottom: '20px'}}/>
       </Stack>
     </>
   );
@@ -59,7 +59,8 @@ export default function Header({ onOpenNav }) {
         }),
         ...(lgUp && {
           width: `calc(100% - ${NAV.WIDTH + 1}px)`,
-          height: HEADER.H_DESKTOP,
+          height: 0.85 * HEADER.H_DESKTOP,
+          marginBottom: 0.2 * HEADER.H_DESKTOP,
         }),
       }}
     >
@@ -67,6 +68,7 @@ export default function Header({ onOpenNav }) {
         sx={{
           height: 1,
           px: { lg: 4 },
+          marginBottom: { lg: 0.8 },
         }}
       >
         {renderContent}

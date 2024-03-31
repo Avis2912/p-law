@@ -101,7 +101,7 @@ export default function PostCard({ listName, date, listId, post, index }) {
   }
 
   return (
-    <Grid xs={12} sm={latestPostLarge ? 12 : 6} md={latestPostLarge ? 3 : 3} >
+    <Grid xs={12} sm={latestPostLarge ? 12 : 6} md={latestPostLarge ? 1 : 12} >
       <Card sx={{ height: 140 }}>
       <CardActionArea  sx={{ mt: -5.5, height: 200}} onClick={() => cardClick()}>
           
