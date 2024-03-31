@@ -122,11 +122,7 @@ const SignIn = async () => {
 
       <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ my: 2 }} />
 
-      <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ my: 3 }}>
-        <Link variant="subtitle2" underline="hover" onClick={handleClick}>
-          Forgot password?
-        </Link>
-      </Stack>
+      
 
       <LoadingButton
         fullWidth
@@ -138,6 +134,12 @@ const SignIn = async () => {
       >
         Login
       </LoadingButton>
+
+      <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ my: 2 }}>
+        <Link variant="subtitle2" underline="hover" onClick={handleClick}>
+          Forgot password?
+        </Link>
+      </Stack>
     </>
   );
 
@@ -169,17 +171,17 @@ const SignIn = async () => {
         <Stack
           alignItems="center"
           justifyContent="center"
-          sx={{ height: 1, p: { xs: 5, md: 0 } }}
+          sx={{ height: 1, p: { xs: 5, md: 0 },backgroundColor: theme.palette.primary.navBg }}
         >
           <Card
             sx={{
-              p: 5,
+              p: 5, pb: 1, pt: 4.25,
               width: 1,
               maxWidth: 420,
             }}
           >
             <Typography variant="h4">Sign in to Pentra</Typography>
-            <Typography variant="body2" sx={{ mt: 2, mb: 5 }}>
+            <Typography variant="body2" sx={{ mt: 2, mb: 3 }}>
               Don’t have an account?
               <Link variant="subtitle2" sx={{ ml: 0.5 }} onClick={handleClick}>
                 Get started

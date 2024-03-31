@@ -76,20 +76,21 @@ export default function Nav({ openNav, onCloseNav }) {
   const renderAccount = (
     <Box
       sx={{
-        my: 3,
+        my: 2.25,
         mx: 2.5,
         py: 2,
         px: 2.5,
         display: 'flex',
         borderRadius: 1.5,
         alignItems: 'center',
-        bgcolor: (theme) => alpha(theme.palette.grey[500], 0.12),
+        bgcolor: (theme) => alpha(theme.palette.grey[900], 0.12),
       }}
     >
       <Avatar src={account.photoURL} alt="photoURL" />
 
       <Box sx={{ ml: 2 }}>
-        <Typography variant="subtitle2">{account.displayName}</Typography>
+        <Typography variant="subtitle3" sx={{color: 'white', fontWeight: '700'}}>
+          {account.displayName}</Typography>
 
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
           {account.role}
@@ -146,7 +147,7 @@ export default function Nav({ openNav, onCloseNav }) {
         },
       }}
     >
-      <Logo sx={{ mt: 3, ml: 4 }} />
+      <Logo sx={{ mt: 3, ml: 3.25 }} />
 
       {renderAccount}
 
@@ -162,7 +163,8 @@ export default function Nav({ openNav, onCloseNav }) {
     <Box
       sx={{
         flexShrink: { lg: 0 },
-        width: { lg: NAV.WIDTH },
+        width: { lg: 1.00 * NAV.WIDTH },
+        backgroundColor: 'primary.navBg',
       }}
     >
       {upLg ? (
@@ -170,8 +172,10 @@ export default function Nav({ openNav, onCloseNav }) {
           sx={{
             height: 1,
             position: 'fixed',
-            width: NAV.WIDTH,
-            borderRight: (theme) => `dashed 0.5px ${theme.palette.divider}`,
+            width: 0.955 * NAV.WIDTH,
+            marginLeft: 0.00225 * NAV.WIDTH,
+            marginTop: 0.01495 * NAV.WIDTH,
+            // borderRight: (theme) => `dashed 0.5px ${theme.palette.divider}`,
           }}
         >
           {renderContent}
@@ -212,16 +216,20 @@ function NavItem({ item }) {
       sx={{
         minHeight: 48,
         borderRadius: 0.75,
+        width: '96%',
+        left: '5.5px',
+        paddingLeft: '12px',
         typography: 'body2',
-        color: 'text.secondary',
+        color: 'primary.white',
         textTransform: 'capitalize',
         fontWeight: 'fontWeightMedium',
+        transition: 'ease 0.3s',
         ...(active && {
-          color: 'primary.main',
-          fontWeight: 'fontWeightSemiBold',
-          bgcolor: (theme) => alpha(theme.palette.primary.main, 0.08),
+          color: 'primary.navBg',
+          fontWeight: '700',
+          bgcolor: (theme) => alpha(theme.palette.grey[300], 0.925),
           '&:hover': {
-            bgcolor: (theme) => alpha(theme.palette.primary.main, 0.16),
+            bgcolor: (theme) => alpha(theme.palette.grey[300], 1),
           },
         }),
       }}

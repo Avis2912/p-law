@@ -171,8 +171,8 @@ export default function BlogView() {
       }), });
 
     const data = await gptResponse.json();
-    const textWithoutImages = JSON.parse(data.choices[0].message.content.trim().replace(/^```|```$/g, ''));
-    console.log(textWithoutImages);
+    console.log(data);
+    const textWithoutImages = JSON.parse(data.choices[0].message.content.trim().replace(/^```|```$/g, '').replace(/json/g, ''));    console.log(textWithoutImages);
     // const textWithImages = await addImages(textWithoutImages);
     const textWithImages = textWithoutImages;
     await setGeneratedPosts(textWithImages);
@@ -186,7 +186,7 @@ export default function BlogView() {
     const regex = /\/\/Image: (.*?)\/\//g;
 
     const fetchImage = async (description) => {
-      const subscriptionKey = 'c6f3a31686d04a81b68f71ac7a6eed38';
+      const subscriptionKey = `${import.meta.env.VITE_BING_API_KEY}`;
       const host = 'api.bing.microsoft.com';
       const path = '/v7.0/images/search';
       const url = `https://${host}${path}?q=${encodeURIComponent(description)}`;
@@ -230,7 +230,7 @@ export default function BlogView() {
 
 
   const browseWeb = (prompt) => {
-    const apiKey = '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';
+    const apiKey = `${import.meta.env.VITE_PERPLEXITY_API_KEY}`;
     const apiUrl = 'https://api.perplexity.ai';
 
     const requestOptions = {
@@ -257,7 +257,11 @@ export default function BlogView() {
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
-        <Typography variant="h3">          
+        <style>
+          @import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap);
+        </style>
+        <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, 
+      letterSpacing: '1.05px',  fontWeight: 800, fontSize: '32.75px'}}>         
         {isNewPost ? 'Create New Posts' : 'Weekly Social Media Posts'}
         </Typography>
         
@@ -276,7 +280,7 @@ export default function BlogView() {
           default: setWordRange("2");
         }
       }}
-      sx={{backgroundColor: 'green', '&:hover': { backgroundColor: 'green', },}}>
+      sx={(theme) => ({backgroundColor: theme.palette.primary.green, '&:hover': { backgroundColor: theme.palette.primary.green, },})}>
       {wordRange} Paragraphs </Button>
 
         <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} 
@@ -292,10 +296,10 @@ export default function BlogView() {
           default: setStyle("Unstyled");
         }
       }}
-        sx={{backgroundColor: 'green', '&:hover': { backgroundColor: 'green', },}}>
+        sx={(theme) => ({backgroundColor: theme.palette.primary.green, '&:hover': { backgroundColor: theme.palette.primary.green, },})}>
         {style} </Button>
 
-        <Button variant="contained" sx={{backgroundColor: 'green', '&:hover': { backgroundColor: 'green', }}} startIcon={<Iconify icon="eva:plus-fill" />} 
+        <Button variant="contained" sx={(theme) => ({backgroundColor: theme.palette.primary.green, '&:hover': { backgroundColor: theme.palette.primary.green, }})} startIcon={<Iconify icon="eva:plus-fill" />} 
         onClick={() => {
           switch (genPostPlatform) {
           case "LinkedIn": setGenPostPlatform("Facebook"); break;
@@ -307,7 +311,8 @@ export default function BlogView() {
         </Button>
         </>)}
 
-        <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => handleClickRoute()}>
+        <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => handleClickRoute()}
+        sx={(theme) => ({backgroundColor: theme.palette.primary.black})}>
           {isNewPost ? 'Close Creator' : 'Create New Post'}
         </Button>
       </Stack></Stack>
@@ -365,10 +370,10 @@ export default function BlogView() {
       {isNewPost && (<>
       <Stack direction="row" spacing={2} mt={3}>
 
-        <Button variant="contained" sx={{backgroundColor: 'black', '&:hover': { backgroundColor: 'black', }, cursor: 'default'}}>
+        <Button variant="contained" sx={(theme) => ({backgroundColor: theme.palette.primary.black, '&:hover': { backgroundColor: theme.palette.primary.black, }, cursor: 'default'})}>
         Power Tools <Iconify icon="eva:arrow-right-fill" /></Button>
 
-        <Button variant="contained" sx={{backgroundColor: imageSettings !== "No" ? 'green' : 'grey', '&:hover': { backgroundColor: 'green', }}} startIcon={<Iconify icon="eva:plus-fill" />} 
+        <Button variant="contained" sx={(theme) => ({backgroundColor: imageSettings !== "No" ? theme.palette.primary.green : 'grey', '&:hover': { backgroundColor: theme.palette.primary.green, }})} startIcon={<Iconify icon="eva:plus-fill" />} 
         onClick={() => {
           switch (imageSettings) {
           case "Brand & Web": setImageSettings("Brand"); break;
@@ -380,12 +385,12 @@ export default function BlogView() {
           Use {imageSettings} Images
         </Button>
 
-        <Button variant="contained" sx={{backgroundColor: isUseNews ? 'green' : 'grey', '&:hover': { backgroundColor: 'green', }}} startIcon={<Iconify icon="eva:plus-fill" />} 
+        <Button variant="contained" sx={(theme) => ({backgroundColor: isUseNews ? theme.palette.primary.green : 'grey', '&:hover': { backgroundColor: theme.palette.primary.green, }})} startIcon={<Iconify icon="eva:plus-fill" />} 
         onClick={() => setIsUseNews(!isUseNews)}>
           Use News
         </Button>
 
-        <Button variant="contained" sx={{backgroundColor: isUseBlog ? 'green' :'grey', '&:hover': { backgroundColor: 'green', }}} startIcon={<Iconify icon="eva:plus-fill" />} 
+        <Button variant="contained" sx={(theme) => ({backgroundColor: isUseBlog ? theme.palette.primary.green :'grey', '&:hover': { backgroundColor: theme.palette.primary.green, }})} startIcon={<Iconify icon="eva:plus-fill" />} 
         onClick={() => setIsUseBlog(!isUseBlog)}>
           Use Blogs
         </Button>

@@ -21,8 +21,8 @@ const Logo = forwardRef(({ disabledLink = false, sx, ...other }, ref) => {
    const logo = (
     <Box
       component="img"
-    src="/assets/images/avatars/pentralogo3.png"
-   sx={{ width: 95, height: 38.5, cursor: 'pointer', ...sx }}
+    src="/assets/images/avatars/pentralogo8.png"
+   sx={{ width: 102, height: 44, marginRight: '10px', cursor: 'pointer', ...sx }}
   />
  );
     
@@ -32,7 +32,7 @@ const Logo = forwardRef(({ disabledLink = false, sx, ...other }, ref) => {
   }
 
   return (
-    <Link component={RouterLink} href="/" sx={{ display: 'contents' }}>
+    <Link component={RouterLink} href="/" sx={{ display: 'contents', marginRight: '10px', }}>
       {logo}
     </Link>
   );

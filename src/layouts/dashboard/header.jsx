@@ -67,7 +67,7 @@ export default function Header({ onOpenNav }) {
       <Toolbar
         sx={{
           height: 1,
-          px: { lg: 4 },
+          px: { lg: 2.5 },
           marginBottom: { lg: 0.8 },
         }}
       >

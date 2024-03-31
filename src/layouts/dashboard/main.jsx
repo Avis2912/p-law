@@ -23,7 +23,7 @@ export default function Main({ children, sx, ...other }) {
         flexDirection: 'column',
         py: `${HEADER.H_MOBILE + SPACING}px`,
         ...(lgUp && {
-          px: 2,
+          px: 3.75,
           py: `${0.825 * HEADER.H_DESKTOP + SPACING}px`,
           width: `calc(100% - ${NAV.WIDTH}px)`,
         }),

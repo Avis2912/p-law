@@ -54,7 +54,7 @@ export default function UserTableRow({
   };
 
   useEffect(() => {
-    if (isToday) {setRead(true)};
+    if (isToday) {setRead(false)};
   }, [isToday]);
 
 

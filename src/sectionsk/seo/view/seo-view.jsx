@@ -151,7 +151,7 @@ export default function ProductsView() {
     const matches = [...imagelessText.matchAll(regex)];
     const descriptions = matches.map(match => match[1]);
 
-    const subscriptionKey = 'c6f3a31686d04a81b68f71ac7a6eed38';
+    const subscriptionKey = `${import.meta.env.VITE_BING_API_KEY}`;
     const host = 'api.bing.microsoft.com';
     const path = '/v7.0/images/search';
 
@@ -189,7 +189,7 @@ export default function ProductsView() {
 
 
   const browseWeb = (prompt) => {
-    const apiKey = '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';
+    const apiKey = `${import.meta.env.VITE_PERPLEXITY_API_KEY}`;
     const apiUrl = 'https://api.perplexity.ai';
 
     const requestOptions = {
@@ -234,7 +234,11 @@ export default function ProductsView() {
       
       <Stack mb={2} direction="row" alignItems="center" justifyContent="space-between"
       sx={{}} spacing={2}>
-      <Typography variant="h3" sx={{ mb: 2, letterSpacing: '-0.px' }}>
+        <style>
+        @import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap);
+      </style>
+      <Typography sx={{ fontFamily: "DM Serif Display", mb: 2, 
+      letterSpacing: '1.05px',  fontWeight: 800, fontSize: '32.75px'}}>
         Create Blog Post
       </Typography>
 
@@ -252,7 +256,8 @@ export default function ProductsView() {
           default: setWordRange("600 - 800 Words");
         }
       }}
-      sx={{backgroundColor: 'green', '&:hover': { backgroundColor: 'green', },}}>
+      sx={(theme) => ({ backgroundColor: theme.palette.primary.green,
+      '&:hover': { backgroundColor: theme.palette.primary.green, }, })}>
       {wordRange} </Button>
 
       <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} 
@@ -267,7 +272,8 @@ export default function ProductsView() {
           default: setImageCount("2 Images");
         }
       }}
-      sx={{backgroundColor: 'green', '&:hover': { backgroundColor: 'green', },}}>
+      sx={(theme) => ({ backgroundColor: theme.palette.primary.green,
+      '&:hover': { backgroundColor: theme.palette.primary.green, }, })}>
       {imageCount} </Button>
 
       <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} 
@@ -283,8 +289,9 @@ export default function ProductsView() {
           default: setStyle("Unstyled");
         }
       }}
-        sx={{backgroundColor: 'green', '&:hover': { backgroundColor: 'green', },}}>
-        {style} </Button>
+      sx={(theme) => ({ backgroundColor: theme.palette.primary.green,
+      '&:hover': { backgroundColor: theme.palette.primary.green, }, })}>        
+      {style} </Button>
 
         {currentMode === "Alter Draft" && <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} 
         sx={{backgroundColor: 'black', '&:hover': { backgroundColor: 'black', },}}
@@ -292,7 +299,7 @@ export default function ProductsView() {
         Create New Draft </Button>}
 
         {currentMode === "Build Outline" && <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} 
-        sx={{backgroundColor: 'black', '&:hover': { backgroundColor: 'black', },}}
+        sx={(theme) => ({backgroundColor: theme.palette.primary.black, '&:hover': { backgroundColor: theme.palette.primary.black, },})}
         onClick={() => {setCurrentMode("Generate"); setText('');}}>
         Skip Outline </Button>}
 
@@ -317,7 +324,7 @@ export default function ProductsView() {
        
         <Button onClick={() => generateBlog()}
         variant="contained" color="inherit" 
-        sx={{height: '54px', width: '150px', backgroundColor: currentMode === "Generate" ? '#242424' : '#2e2a1f'}}>
+        sx={(theme) => ({height: '54px', width: '150px', backgroundColor: currentMode === "Generate" ? theme.palette.primary.navBg : theme.palette.primary.black})}>
           {currentMode} ✨
         </Button>
         </Stack>
@@ -333,7 +340,7 @@ export default function ProductsView() {
           borderRadius: '0px', 
           backgroundColor: isGenerating ? '#fffefa' : 'white',
           opacity: '1',
-          transition: 'ease-in-out 1s',
+          transition: 'ease-in-out 0.3s',
           // ...loadingAnimation
         }}
       />
@@ -341,29 +348,29 @@ export default function ProductsView() {
       
         <Stack direction="row" spacing={2} >
 
-        <Button variant="contained" sx={{backgroundColor: 'black', '&:hover': { backgroundColor: 'black', }, cursor: 'default'}}>
+        <Button variant="contained" sx={(theme) => ({backgroundColor: theme.palette.primary.black, '&:hover': { backgroundColor: theme.palette.primary.black, }, cursor: 'default'})}>
         Power Tools <Iconify icon="eva:arrow-right-fill" /></Button>
                   
         <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => {setIsBrowseWeb(!isBrowseWeb); setIsReferenceGiven(false);}}
-        sx={{backgroundColor: isBrowseWeb ? 'green' : 'grey', '&:hover': { backgroundColor: 'green', },}}>
+        sx={(theme) => ({backgroundColor: isBrowseWeb ? theme.palette.primary.green : 'grey', '&:hover': { backgroundColor: theme.palette.primary.green, },})}>
         Browse Web </Button>
 
         <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => {setIsMentionCaseLaw(!isMentionCaseLaw)}}
-        sx={{backgroundColor: isMentionCaseLaw ? 'green' : 'grey', '&:hover': { backgroundColor: 'green', },}}>
+        sx={(theme) => ({backgroundColor: isMentionCaseLaw ? theme.palette.primary.green : 'grey', '&:hover': { backgroundColor: theme.palette.primary.green, },})}>
         Mention Case Law </Button>
 
           <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => {setIsMimicBlogStyle(!isMimicBlogStyle)}}
-        sx={{backgroundColor: isMimicBlogStyle ? 'green' : 'grey', '&:hover': { backgroundColor: 'green', },}}>
-        Mimic My Firm&apos;s Style </Button>
+        sx={(theme) => ({backgroundColor: isMimicBlogStyle ? theme.palette.primary.green : 'grey', '&:hover': { backgroundColor: theme.palette.primary.green, },})}>
+        Mimic Our Blogs </Button>
 
 
           <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => {setIsReferenceGiven(!isReferenceGiven); setIsBrowseWeb(false);}}
-        sx={{backgroundColor: isReferenceGiven ? 'green' : 'grey', '&:hover': { backgroundColor: 'green', },}}>
-          Use New Data </Button>
+        sx={(theme) => ({backgroundColor: isReferenceGiven ? theme.palette.primary.green : 'grey', '&:hover': { backgroundColor: theme.palette.primary.green, },})}>
+        Use New Data </Button>
 
           <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => {setIsUseInternalLinks(!isUseInternalLinks)}}
-        sx={{backgroundColor: isUseInternalLinks ? 'green' : 'grey', '&:hover': { backgroundColor: 'green', },}}>
-          Internal Links </Button>
+        sx={(theme) => ({backgroundColor: isUseInternalLinks ? theme.palette.primary.green : 'grey', '&:hover': { backgroundColor: theme.palette.primary.green, },})}>
+        Internal Links </Button>
 
         </Stack> 
 

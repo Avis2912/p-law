@@ -1,1 +1,1 @@
-export { default as BlogView } from './campaign-view';
+export { default as BlogView } from './posts-view';

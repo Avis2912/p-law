@@ -17,6 +17,7 @@ export const grey = {
   900: '#161C24',
 };
 
+
 export const primary = {
   lighter: '#FFD0D0',   // Lightest shade of red
   light: '#FFA4A4',     // Light shade of red
@@ -24,6 +25,16 @@ export const primary = {
   dark: '#FF4444',      // Dark shade of red
   darker: '#FF2222',   // Darkest shade of red
   contrastText: '#FFFFFF',
+
+  white: '#FFFDF7',
+  green: '#428c51',
+  black: '#2e2426',
+  navBg: '#923341',
+  // navBg: '#62538B',
+  // navBg: '#57497D',
+
+  fontLink: 'https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap'
+
 };
 
 

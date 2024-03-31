@@ -64,11 +64,11 @@ export default function ListsView() {
   return (
     <div style={{ position: 'relative',   height: '100%',  }}>
       <div style={{
-      borderRadius: '10px',
+      borderRadius: '8px',
       position: 'absolute',
       top: 0,
-      left: 0,
-      right: 0,
+      left: 20,
+      right: 20,
       bottom: 0,
       background: 'rgba(255, 255, 255, 0.7)',
       backdropFilter: 'blur(3px)',
@@ -89,8 +89,13 @@ export default function ListsView() {
 
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={3}>
-        <Typography variant="h3">Competition & Analysis</Typography>
-        <Stack spacing={2} mb={2} direction="row" alignItems="center" justifyContent="space-between">
+      <style>
+          @import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap);
+        </style>
+        <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, 
+        letterSpacing: '1.05px',  fontWeight: 800, fontSize: '32.75px'}}> 
+        Competition & Analysis</Typography>
+        <Stack spacing={2} mb={0} direction="row" alignItems="center" justifyContent="space-between">
           <Stack direction="row" spacing={2}>
             {isAddingList && (
               <>
@@ -113,11 +118,11 @@ export default function ListsView() {
           </Stack>
           <Button
             variant="contained"
-            color="primary"
             startIcon={<Iconify icon="eva:plus-fill" />}
             onClick={handleNewListClick}
+            sx={{ backgroundColor: 'black', ':hover': { backgroundColor: 'black' } }}
           >
-            New List
+            Add New Competitor
           </Button>
         </Stack>
       </Stack>

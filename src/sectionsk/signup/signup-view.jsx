@@ -109,6 +109,7 @@ export default function SignUpView() {
           display: 'flex',
           flexDirection: 'column',
           flex: 1,
+          backgroundColor:theme.palette.primary.navBg,
           ...bgGradient({
             color: alpha(theme.palette.background.default, 0.9),
           }),

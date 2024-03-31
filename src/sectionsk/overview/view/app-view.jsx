@@ -30,7 +30,12 @@ export default function AppView() {
   const [brandName, setBrandName] = useState('');
 
 
-  const brandsData = collection(db, 'brands');
+  
+ 
+  useEffect(() => {
+
+
+  const brandsData = collection(db, 'firms');
 
   const getProfilePictureUrl = async (campaignId) => {
     const storage = getStorage();
@@ -43,10 +48,8 @@ export default function AppView() {
       // Return a default image or handle accordingly
       return '/assets/images/avatars/avatar_1.jpg';
     }
-  };
-  
- 
-  useEffect(() => {
+    };  
+
     const getBrandCampaigns = async () => {
       const data = await getDocs(brandsData);
       const userDoc = data.docs.find(docc => docc.id === auth.currentUser.email);
@@ -65,7 +68,7 @@ export default function AppView() {
     };
     
     getBrandCampaigns();
-  }, [brandsData]);
+  }, []);
 
   const PlaceholderCampaign = {
     id: 'placeholder',
@@ -86,16 +89,16 @@ export default function AppView() {
 
 
   return (
-    <div style={{ position: 'relative',   height: '100%', }}>
+    <div style={{ position: 'relative',   height: '100%', width: '100%' }}>
       <div style={{
-      borderRadius: '15px',
+      borderRadius: '7px',
       position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
+      top: 5,
+      left: 20,
+      right: 20,
       bottom: 0,
-      background: 'rgba(255, 255, 255, 0.7)',
-      backdropFilter: 'blur(3px)',
+      background: 'rgba(255, 255, 255, 0.4)',
+      backdropFilter: 'blur(4px)',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
@@ -111,7 +114,11 @@ export default function AppView() {
       </span>
     </div>
     <Container maxWidth="xl">
-      <Typography variant="h3" sx={{ mb: 5 }}>
+      <style>
+        @import url(https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Yeseva+One&display=swap);
+      </style>
+      <Typography variant="h3" sx={{ mb: 5, fontWeight: 700,letterSpacing: '-0.02em', 
+        fontFamily: '"Yeseva One", sans-serif', color: '#272727'}}>
         Hey {brandName}, Welcome Back 👋
       </Typography>
 

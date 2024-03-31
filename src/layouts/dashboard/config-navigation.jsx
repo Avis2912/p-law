@@ -33,7 +33,7 @@ const navConfig = [
     icon: icon('ic_blog'),
   },
   {
-    title: 'Google Reviews',
+    title: 'Firm Reviews',
     path: '/reviews',
     icon: icon('ic_user'),
   },

@@ -40,40 +40,40 @@ export default function AccountView() {
 
 
 
-  const brandsData = collection(db, 'brands');
   const storage = getStorage();
   
 
   useEffect(() => {
 
-  const getBrandInfo = async () => {
-    try {
-      const data = await getDocs(brandsData);
-      const userDoc = data.docs.find((docc) => docc.id === auth.currentUser.email);
-      if (userDoc) {
-        // ... your existing logic ...
-        setBrand(userDoc.data());
+  // const brandsData = collection(db, 'brands');
+
+  // const getBrandInfo = async () => {
+  //   try {
+  //     const data = await getDocs(brandsData);
+  //     const userDoc = data.docs.find((docc) => docc.id === auth.currentUser.email);
+  //     if (userDoc) {
+
+  //       setBrand(userDoc.data());
   
-        // Check for image in Firebase Storage
-        const imageRef = ref(storage, `brands/${auth.currentUser.email}/${auth.currentUser.email}`);
-        getDownloadURL(imageRef).then(downloadURL => {
-          setProfileSrc(downloadURL); // set the image from Firebase Storage if it exists
-        }).catch(error => {
-          setProfileSrc('/assets/images/avatars/avatar_20.jpg');
-          // If error is 'object-not-found', it means image doesn't exist in storage, so we use the default image.
-          if (error.code !== 'storage/object-not-found') {
-            console.error("Error fetching profile image:", error);
-          }
-        });
-      } else {
-        alert('Error: User not found.');
-      }
-    } catch (err) {
-      alert(err);
-    }
-  };
-    getBrandInfo();
-  }, [brandsData, storage])
+  //       // Check for image in Firebase Storage
+  //       const imageRef = ref(storage, `brands/${auth.currentUser.email}/${auth.currentUser.email}`);
+  //       getDownloadURL(imageRef).then(downloadURL => {
+  //         setProfileSrc(downloadURL); // set the image from Firebase Storage if it exists
+  //       }).catch(error => {
+  //         setProfileSrc('/assets/images/avatars/avatar_20.jpg');
+  //         if (error.code !== 'storage/object-not-found') {
+  //           console.error("Error fetching profile image:", error);
+  //         }
+  //       });
+  //     } else {
+  //       alert('Error: User not found.');
+  //     }
+  //   } catch (err) {
+  //     alert(err);
+  //   }
+  // };
+  //   getBrandInfo();
+  }, [])
 
 
 //    const handleImageUpload = async () => {
@@ -184,7 +184,13 @@ const handleImageChange = (event) => {
     <Container>
       
       <Stack className='heading' direction="row" alignItems="center" justifyContent="space-between" mb={3}>
-        <Typography variant="h3">My Account</Typography>
+      
+      <style>
+          @import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap);
+        </style>
+        <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, 
+      letterSpacing: '1.05px',  fontWeight: 800, fontSize: '32.75px'}}>         
+        My Account</Typography>
         <Button onClick={() => saveChanges()}
         sx={{ marginLeft:'40px' }} variant="contained" color="inherit">
         🎉 Save Changes
@@ -254,7 +260,7 @@ const handleImageChange = (event) => {
   multiline
   maxRows={1}
   size="small"
-  placeholder="Your Name"
+  placeholder="Firm Name"
   defaultValue={brand ? brand.user_name : null}
   onChange={(e) => setUserName(e.target.value)}
 />
@@ -266,7 +272,7 @@ const handleImageChange = (event) => {
   multiline
   maxRows={1}
   size="small"
-  placeholder="Brand Name"
+  placeholder="Location / State"
   defaultValue={brand ? brand.brand_name : null}
   onChange={(e) => setBrandName(e.target.value)}
 
@@ -280,7 +286,8 @@ const handleImageChange = (event) => {
 
         
 
-        <Button variant="contained" color="primary" onClick={() => alert("please mail us at pentra.beauty@gmail.com! We'll get back to you ASAP.")}>
+        <Button variant="contained" color="primary" onClick={() => alert("please Email us at pentra.legal@gmail.com! We'll get back to you ASAP.")}
+        sx={(theme) => ({backgroundColor: theme.palette.primary.main})}>
           Starter | Change Plan
         </Button>
 
@@ -309,7 +316,7 @@ const handleImageChange = (event) => {
           <Typography fontSize="24px"
            fontWeight={100} mt={3} mx={5} mb={2}
            fontFamily="Old Standard TT"
-           >💸  Sponsor Message
+           >💸  Indexed Blogs
           </Typography>
           <TextField 
           sx = {{ marginLeft:'38px', width:'89%' }}

@@ -1,1 +1,1 @@
-export { default as CreatorsView } from './creators-view';
+export { default as CreatorsView } from './seo-view';

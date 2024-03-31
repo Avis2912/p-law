@@ -99,22 +99,28 @@ export default function UserPage() {
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
-        <Typography variant="h3">All Website Leads</Typography>
+        <style>
+          @import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap);
+        </style>
+        <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, 
+        letterSpacing: '1.05px',  fontWeight: 800, fontSize: '32.75px'}}> 
+        All Website Leads</Typography>
 
-        <Card sx= {{ height: 68, width: 'auto', pt: 1.15, pl: 1.7, }} justifyContent="left" alignItems="center">
+        <Card sx= {{ height: 64.5, width: 'auto', pt: 1.15, pl: 1.7, borderRadius: '12px'  }} justifyContent="left" alignItems="center">
          
         <Stack direction="row" spacing={0} >
         
-        <Avatar cursor="pointer" src={user?.avatarUrl} onClick={() => handleClickRoute()} sx={{ mt: 0.45, mr: 2.0 }} />
+        <Avatar cursor="pointer" src={user?.avatarUrl} onClick={() => handleClickRoute()} sx={{ mt: 0.40, mr: 2.0 }} />
 
-        <Stack sx={{ width: '100%', mr: 2.5 }} justifyContent="center" direction="column" spacing={0.3} alignItems="start">
+        <Stack sx={{ width: '100%', mr: 2.5}} justifyContent="center" direction="column" 
+        spacing={0.0} alignItems="start">
             <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
-            <Iconify icon="mdi-instagram" style={{ color: 'black' }} />
+            <Iconify icon="ant-design:phone-filled" style={{ color: 'black', height: '18px', width: '18px'  }} />
             <Typography >657-642-7241</Typography>
             </Stack>
             
             <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
-            <Iconify icon="mdi-youtube" style={{ color: 'black' }} />
+            <Iconify icon="mdi:email" style={{ color: 'black', height: '18px', width: '18px' }} />
             <Typography >amna@hotmail.com</Typography>
             </Stack>
 
