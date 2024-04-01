@@ -140,7 +140,7 @@ export default function BlogView() {
 
       if (isUseNews) {browseTextResponse = await browseWeb(browseText); console.log('PERPLEXITY: ', browseTextResponse);};
       messages.push({
-        "role": "system", 
+        "role": "user", 
         "content":  `You are Pentra AI, a legal expert and an expert marketer.  
         YOUR GOAL: Write 3 posts for ${genPostPlatform} ${postDescription !== "" && `based roughly on the following topic: ${postDescription}.`}. 
         
@@ -154,25 +154,21 @@ export default function BlogView() {
         - ${browseTextResponse !== "" && `WEB RESULTS: Consider using the following web information I got from an LLM for the prompt ${browseText}: ${browseTextResponse}`}
         - ${postKeywords !== "" && `KEYWORDS: Use the following keywords in your posts: ${postKeywords}.`}
         - ${style !== "Unstyled" && `STYLE: This blog post should SPECIFICALLY be written in the ${style} style.`}
-        - 
+        - DONT ADD ANY SPACE BETWEEN THE JSON AND ARRAY BRACKETS. It should be proper [{}, {}, {}].
 
         `
       });
       
-      const gptResponse = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-        'Authorization': `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,  
-        'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-        model: "gpt-3.5-turbo-0125",
-        messages,
-      }), });
+    const response = await fetch('http://localhost:3050/claudeAPI', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ messages, blogDescription: postDescription, blogKeywords: postKeywords,
+      model: 'claude-3-haiku-20240307' })
+    });
 
-    const data = await gptResponse.json();
-    console.log(data);
-    const textWithoutImages = JSON.parse(data.choices[0].message.content.trim().replace(/^```|```$/g, '').replace(/json/g, ''));    console.log(textWithoutImages);
+    const gptResponse = (await response.text()); console.log(gptResponse);
+
+    const textWithoutImages = JSON.parse(gptResponse.trim().replace(/^```|```$/g, '').replace(/json/g, '')); console.log(textWithoutImages);
     // const textWithImages = await addImages(textWithoutImages);
     const textWithImages = textWithoutImages;
     await setGeneratedPosts(textWithImages);
@@ -363,7 +359,7 @@ export default function BlogView() {
 
       <Grid container spacing={3} sx={{width: '100%'}}>
         {weeklyPosts.map(({ platform, content }, index) => (
-          <PostCard key={index} platform={platform} content={content} index={index} />
+          <PostCard key={index} platform={platform} content={content} index={index} isGen={isGenerating} />
         ))}
       </Grid>
 

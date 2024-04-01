@@ -29,7 +29,7 @@ import { getDownloadURL, ref, getStorage } from 'firebase/storage'; // Import ne
 
 // ----------------------------------------------------------------------
 
-export default function PostCard({ platform, content, index, }) {
+export default function PostCard({ platform, content, index, isGen }) {
 
   const platformColors = {
     "LinkedIn": "#0072b1",
@@ -88,8 +88,9 @@ export default function PostCard({ platform, content, index, }) {
           marginBottom: '50px', 
           border: '0px solid #ccc',
           borderRadius: '0px', 
-          backgroundColor: 'white',
+          backgroundColor: isGen ? 'lightgrey' : 'white',
           opacity: '0.85',
+          transition: '0.75s ease',
         }}
       />
 
@@ -103,4 +104,5 @@ PostCard.propTypes = {
   content: PropTypes.object,
   platform: PropTypes.object,
   index: PropTypes.number,
+  isGen: PropTypes.bool,
 };

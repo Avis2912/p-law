@@ -62,7 +62,7 @@ export default function ProductsView() {
         const newDots = prevDots.length < 3 ? `${prevDots}.` : '';
         setText(`<h1>✨ Generating${newDots} </h1>`);
         return newDots;
-      }); }, 1000);
+      }); }, 350);
     return () => intervalId && clearInterval(intervalId);
   }, [isGenerating]);
 
@@ -77,15 +77,27 @@ export default function ProductsView() {
       let browseTextResponse = "";
 
       if (currentMode === "Generate") {
-        if (isBrowseWeb) {browseTextResponse = await browseWeb(browseText); alert(browseTextResponse);};
+        if (isBrowseWeb) {browseTextResponse = await browseWeb(browseText); console.log(browseTextResponse);};
         messages.push({
           "role": "user", 
           "content":  `You are Pentra AI, a legal expert and an expert SEO blog writer.  Write a blog post based on the following topic: ${blogDescription}. 
           ${blogKeywords && `Keywords: ${blogKeywords}`}. ${text !== "" && `Consider using the following outline: ${text}`}. 
           
+          // HERE ARE SOME SAMPLE BLOGS TO LEARN FROM:
+
+          // {BLOG 1}:
+
+
+          // {BLOG 2}:
+
+          
+          // {BLOG 3}:
+
+          
           IMPORTANT INSTRUCTIONS:
-          - Wrap titles in <h1> and <h2> tags. Dont use ANY new lines but add two <br> tags after EVERY paragraph and one <br> tag after EVERY h1/h2 tag.
+          - FORMATTING IN RICH TEXT: Wrap titles in <h1> and <h2> tags. Wrap all paragraphs in <p> tags. Wrap parts to be BOLDED in <b> tags. Dont use ANY new lines but add ONE <br> tag after EVERY paragraph and ONE after every closing h1/h2 tag.
           - WORD RANGE: this post should be ${wordRange} long.
+          - PERSPECTIVE: Don't refer to yourself in the post, but feel free to explain how your firm Thompson Lawyers can help.
           - IMAGES: blog post should contain ${imageCount}. Please add representations of them in this format: //Image: Idaho Courthouse// OR //Image: Chapter 7 Bankruptcy Flowchart//. 
           Add two <br> tags after. Make sure these are evenly spaced out in the post and with specific and relevant descriptions.
           - ${style !== "Unstyled" && `STYLE: This blog post should be written in the ${style} style.`}
@@ -99,7 +111,7 @@ export default function ProductsView() {
 
       if (currentMode === "Build Outline") {
         messages.push({
-          "role": "system", 
+          "role": "user", 
           "content": `You are Pentra AI, a legal expert and an expert SEO blog writer. 
           Write a detailed blog outline in rich text format using <h1> tags and <br> tags (after every paragraph/line) based on the following topic: ${blogDescription}. ${blogKeywords && `Keywords: ${blogKeywords}`}.`
         });
@@ -107,10 +119,23 @@ export default function ProductsView() {
 
       if (currentMode === "Alter Draft") {
         messages.push({
-          "role": "system", 
+          "role": "user", 
           "content": `You are Pentra AI, a legal expert and an expert SEO blog writer. 
           EDIT the blog post given below based on this prompt: ${blogDescription}. Don't deviate from the prompt and keep the blog post AS MUCH THE SAME as you can.
-          BLOG POST: ${text}.`
+          BLOG POST: ${text}.
+          
+          IMPORTANT INSTRUCTIONS:
+          - FORMATTING IN RICH TEXT: Wrap titles in <h1> and <h2> tags. Wrap all paragraphs in <p> tags. Wrap parts to be BOLDED in <b> tags. Dont use ANY new lines but add ONE <br> tag after EVERY paragraph and ONE after every closing h1/h2 tag.
+          - WORD RANGE: this post should be ${wordRange} long.
+          - PERSPECTIVE: Don't refer to yourself in the post, but feel free to explain how your firm Thompson Lawyers can help.
+          - IMAGES: blog post should contain ${imageCount}. Please add representations of them in this format: //Image: Idaho Courthouse// OR //Image: Chapter 7 Bankruptcy Flowchart//. 
+          Add two <br> tags after. Make sure these are evenly spaced out in the post and with specific and relevant descriptions.
+          - ${style !== "Unstyled" && `STYLE: This blog post should be written in the ${style} style.`}
+          - ${isMentionCaseLaw && `CASE LAW: Reference case law in the blog post when necessary.`}
+          - ${isUseInternalLinks && `INTERNAL LINKS: Add some internal links to the blog post using <a> tags.`}
+          - ${isReferenceGiven && `USEFUL DATA: Refer to the following text and use as applicable: ${referenceText}`}
+          - ${browseTextResponse !== "" && `WEB RESULTS: Consider using the following web information I got from an LLM for the prompt ${browseText}: ${browseTextResponse}`}
+          `
         });
       }
 
@@ -125,25 +150,24 @@ export default function ProductsView() {
     //     messages,
     //   }), });
 
-    //   if (currentMode === "Build Outline") {setCurrentMode('Generate');};
-    //   if (currentMode === "Generate") {setCurrentMode('Alter Draft');};
+      if (currentMode === "Build Outline") {setCurrentMode('Generate');};
+      if (currentMode === "Generate") {setCurrentMode('Alter Draft');};
 
     const response = await fetch('http://localhost:3050/claudeAPI', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ messages })
+      body: JSON.stringify({ messages, blogDescription, blogKeywords, model: 'claude-3-haiku-20240307' })
     });
 
-    const gptResponse = await response.text();
-    console.log(gptResponse);
+    const gptResponse = (await response.text()).replace(/<br><br> /g, '<br><br>'); console.log(gptResponse);
 
     // const data = await gptResponse.json();
     // const gptText = data.choices[0].message.content.trim();
     // const textWithImages = await addImages(gptText);
 
-    // const textWithImages = await addImages(gptResponse);
+    // const textWithImages = await addImages(gptResponse.trim());
     const textWithImages = gptResponse.trim();
     await setText(textWithImages);
     setIsGenerating(false);

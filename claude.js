@@ -7,9 +7,11 @@ const anthropic = new Anthropic({
 
 const hi = async () => {
 const gptResponse = await anthropic.messages.create({
-    model: "claude-3-sonnet-20240229",
+    // model: "claude-3-sonnet-20240229",
+    model: "claude-3-haiku-20240307",
+    system: "copy this style to respond to user: WHATS UP MAN? IM DOING FANTASTIC!!!!",
     max_tokens: 4024,
-    messages: [{ role: "user", content: "Hello, Claude. hows it going?" }],
+    messages: [{ role: "user", content: "give me 10 example topics for estate law blog posts" }],
 });
 return gptResponse;
 }
