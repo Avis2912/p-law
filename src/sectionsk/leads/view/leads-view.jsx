@@ -38,6 +38,10 @@ export default function UserPage() {
 
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [leads, setLeads] = useState([]);
+  const [activeUser, setActiveUser] = useState(null);
+  const [texts, setTexts] = useState([
+    {assistant: "No User Conversation Created."},
+  ]);
 
   useEffect(() => {
     const firmDatabase = collection(db, 'firms');
@@ -47,7 +51,7 @@ export default function UserPage() {
         const userDoc = data.docs.find((docc) => docc.id === 'testlawyers');
         if (userDoc) {
           const leadsData = userDoc.data().LEADS || [];
-          await setLeads(leadsData);       
+          setLeads(leadsData || []);          
           console.log(leadsData);
         } else {
           alert('Error: User document not found.');
@@ -78,8 +82,38 @@ export default function UserPage() {
 
   const [user, setUser] = useState(null);
 
-  const handleClick = (event, name, row) => {
-    setUser(row);
+  useEffect(() => {
+    console.log(isChatOpen);
+  }, [isChatOpen]);
+
+  const handleRowClick = async (event, number, row) => {
+    let newIsChatOpen;
+    if (!activeUser) {await setIsChatOpen(true); newIsChatOpen = true}
+    else if (activeUser.NUMBER === number) {setIsChatOpen(false); newIsChatOpen = false}
+    else {setIsChatOpen(true); newIsChatOpen = true}
+
+    if (!newIsChatOpen) {setActiveUser(null); return};
+
+    const firmDatabase = collection(db, 'firms');
+    const getFirmData = async () => {
+      try {
+        const data = await getDocs(firmDatabase);
+        const userDoc = data.docs.find((docc) => docc.id === 'testlawyers');
+        if (userDoc) {
+          const leadsArray = userDoc.data().LEADS || [];
+          const leadItem = leadsArray.find(lead => lead.NUMBER === number);
+          const leadsData = leadItem.CONVERSATION ? leadItem.CONVERSATION : [{assistant: "No Conversation Data Created"}];
+          await setTexts(leadsData);
+          await setActiveUser(leadItem);
+          console.log(leadsData); 
+          } else {
+          alert('Error: User document not found.');
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getFirmData();
     
   };
 
@@ -109,13 +143,6 @@ export default function UserPage() {
     window.location.href=`/influencer?influencer=$`
   }
 
-  const texts = [
-    {assistant: "Hey, whats good?"},
-    {user: "Nothing much, what about you?"},
-    {assistant: "Can I get your email?"},
-
-  ]
-
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
@@ -136,12 +163,12 @@ export default function UserPage() {
         spacing={0.0} alignItems="start">
             <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
             <Iconify icon="ant-design:phone-filled" style={{ color: 'black', height: '18px', width: '18px'  }} />
-            <Typography >657-642-7241</Typography>
+            <Typography >{activeUser ? activeUser.NUMBER : `Phone Number`}</Typography>
             </Stack>
             
             <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
             <Iconify icon="mdi:email" style={{ color: 'black', height: '18px', width: '18px' }} />
-            <Typography >amna@hotmail.com</Typography>
+            <Typography >{activeUser ? activeUser.EMAIL : `Lead Given Email`}</Typography>
             </Stack>
 
           </Stack>
@@ -170,12 +197,11 @@ export default function UserPage() {
                       date={row.DATE_TIME}
                       desc={row.SUMMARY}
                       conversation={row.CONVERSATION}
-                      avatarUrl={row.avatarUrl}
+                      avatarUrl={`https://robohash.org/${row.id}`}
                       isVerified={row.isVerified}
                       selected={selected.indexOf(row.name) !== -1}
                       handleClick={(event) => {
-                        handleClick(event, row.name, row);
-                        setIsChatOpen(!isChatOpen);
+                        handleRowClick(event, row.NUMBER, row);
                       }}
                       sx={{cursor: 'pointer'}}
                     />
@@ -198,7 +224,7 @@ export default function UserPage() {
           count={users.length}
           rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[5, 10, 25, 1000]}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Card>
@@ -225,7 +251,7 @@ export default function UserPage() {
                       alignItems: 'start',
                       borderBottomRightRadius: role === 'assistant' ? '0px' : '8px',
                       borderBottomLeftRadius: role === 'user' ? '0px' : '8px',
-                      maxWidth: '70%',
+                      maxWidth: '55%',
                     }}
                   >
                     <Typography variant="subtitle3" sx={{ color: 'white', justifyContent: 'left' }}>

@@ -28,7 +28,7 @@ export default function UserTableRow({
   avatarUrl,
   handleClick,
 }) {
-  const [open, setOpen] = useState(null);
+  const [open, setOpen] = useState(false);
   const [read, setRead] = useState(false);
 
   let backgroundColor = 'green';
@@ -51,6 +51,7 @@ export default function UserTableRow({
   const handleRowClick = () => {
     handleClick();
     setRead(true);
+    // setOpen(!open);
   };
 
   useEffect(() => {
