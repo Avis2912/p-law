@@ -17,6 +17,8 @@ export default function ListsView() {
 
   const [isAddingCompetitor, setAddingCompetitor] = useState(false);
   const [newCompetitor, setNewCompetitor] = useState('');
+  const [isUpdateTime, setIsUpdateTime] = useState(false);
+  const [timeToUpdate, setTimeToUpdate] = useState(0);
 
   const [competition, setCompetition] = useState([]);
 
@@ -28,8 +30,11 @@ export default function ListsView() {
         const data = await getDocs(firmDatabase);
         const userDoc = data.docs.find((docc) => docc.id === 'testlawyers');
         if (userDoc) {
-          await setCompetition(userDoc.data().COMPETITION || []);
-          console.log(userDoc.data().COMPETITION);
+          await setCompetition(userDoc.data().COMPETITION || []); console.log(userDoc.data().COMPETITION);
+          const lastDateParts = userDoc.data().WEEKLY_POSTS.LAST_DATE.split('/');
+          const lastDate = new Date(`20${lastDateParts[2]}/${lastDateParts[0]}/${lastDateParts[1]}`);
+          const diffDays = 7 - Math.ceil((new Date() - lastDate) / (1000 * 60 * 60 * 24));
+          if (diffDays >= 1) {await setTimeToUpdate(diffDays)} else {setIsUpdateTime(true);}  
         } else {
           alert('Error: User document not found.');
         }
@@ -92,7 +97,7 @@ export default function ListsView() {
 
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={3}>
-      <style>
+        <style>
           @import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap);
         </style>
         <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, 
@@ -119,6 +124,10 @@ export default function ListsView() {
               </>
             )}
           </Stack>
+          <Button variant="contained" onClick={() => {}}
+          sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, cursor: 'default', fontWeight: '600'})}>
+            {!isUpdateTime ? `${timeToUpdate} Days Left` : 'Report Update Coming Soon'}
+          </Button>
           <Button
             variant="contained"
             startIcon={<Iconify icon="eva:plus-fill" />}

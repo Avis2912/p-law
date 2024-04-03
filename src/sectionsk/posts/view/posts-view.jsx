@@ -17,7 +17,10 @@ import PostCard from '../post-card';
 import PostSort from '../post-sort';
 import PostSearch from '../post-search';
 
-const images = true;
+const isImagesOn = false;
+const modelToUse = 'claude-3-haiku-20240307';
+// const modelToUse: 'claude-3-sonnet-20240229';
+// const modelToUse: 'claude-3-opus-20240229';
 
 // ----------------------------------------------------------------------
 
@@ -37,12 +40,18 @@ export default function BlogView() {
 
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedPosts, setGeneratedPosts] = useState([]);
+  const [timeToUpdate, setTimeToUpdate] = useState("");
+  const [isUpdateTime, setIsUpdateTime] = useState(false);
+
 
   const [weeklyPosts, setWeeklyPosts] = useState([
   ]);
 
-  
+  // PAGE LOAD FUNCTIONS
+
   useEffect(() => {
+
+    if (isUpdateTime) {setWeeklyPosts([]); return;};
 
     if (genPostPlatform) {
       if (genPostPlatform === "LinkedIn") {
@@ -73,6 +82,10 @@ export default function BlogView() {
         const userDoc = data.docs.find((docc) => docc.id === 'testlawyers');
         if (userDoc) {
           await setWeeklyPosts(userDoc.data().WEEKLY_POSTS.POSTS || []);
+          const lastDateParts = userDoc.data().WEEKLY_POSTS.LAST_DATE.split('/');
+          const lastDate = new Date(`20${lastDateParts[2]}/${lastDateParts[0]}/${lastDateParts[1]}`);
+          const diffDays = 7 - Math.ceil((new Date() - lastDate) / (1000 * 60 * 60 * 24));
+          if (diffDays >= 1) {await setTimeToUpdate(diffDays)} else {setIsUpdateTime(true);}      
           console.log(userDoc.data().WEEKLY_POSTS.POSTS);
         } else {
           alert('Error: User document not found.');
@@ -82,8 +95,10 @@ export default function BlogView() {
       }
     };
 
-    getFirmData();
-  }, [genPostPlatform]);
+    if (!genPostPlatform) {getFirmData()};
+
+  }, [genPostPlatform, isUpdateTime]);
+    
 
   const handleClickRoute = () => {
     setIsNewPost(!isNewPost);
@@ -129,11 +144,24 @@ export default function BlogView() {
 
     const textWithoutImages = JSON.parse(gptResponse.trim().replace(/^```|```$/g, '').replace(/json/g, '')); console.log(textWithoutImages);
     let textWithImages = textWithoutImages;
-    if (images) {textWithImages = await addImages(textWithoutImages);}
+    if (isImagesOn) {textWithImages = await addImages(textWithoutImages);}
     await setGeneratedPosts(textWithImages);
     await setWeeklyPosts(textWithImages);   
     console.log(weeklyPosts);
     setIsGenerating(false);
+
+    try {
+      const firmDatabase = collection(db, 'firms');
+      const data = await getDocs(firmDatabase);
+      const userDoc = data.docs.find((docc) => docc.id === 'testlawyers');
+      if (userDoc) {  
+        const userDocRef = doc(db, 'firms', userDoc.id);
+        const currentDate = new Date();
+        const formattedDate = `${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear().toString().substr(-2)}`;
+        const genPosts = userDoc.data().GEN_POSTS || [];
+        const newPost = { [formattedDate]: textWithImages }; genPosts.unshift(newPost);
+        await updateDoc(userDocRef, { GEN_POSTS: genPosts });
+    }} catch (err) {console.log(err);}
     
   }
 
@@ -266,6 +294,13 @@ export default function BlogView() {
         </Button>
         </>)}
 
+       {!isNewPost && (<>
+        <Button variant="contained" onClick={() => {}}
+        sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, cursor: 'default', fontWeight: '600'})}>
+          {!isUpdateTime ? `${timeToUpdate} Days Left` : 'Update In Progress'}
+        </Button>
+        </>)}
+        
         <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => handleClickRoute()}
         sx={(theme) => ({backgroundColor: theme.palette.primary.black})}>
           {isNewPost ? 'Close Creator' : 'Create New Post'}

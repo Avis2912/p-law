@@ -19,13 +19,13 @@ import Button from '@mui/material/Button';
 // ----------------------------------------------------------------------
 
 export default function UserTableRow({
-  selected,
   name,
+  email,
+  number,
+  date,
+  desc,
+  conversation,
   avatarUrl,
-  company,
-  role,
-  isVerified,
-  status,
   handleClick,
 }) {
   const [open, setOpen] = useState(null);
@@ -33,7 +33,7 @@ export default function UserTableRow({
 
   let backgroundColor = 'green';
 
-  const buttonText = '03/31/24 | 3PM';
+  const buttonText = date;
   const buttonDate = buttonText.split(' | ')[0];
   const today = format(new Date(), 'MM/dd/yy');
   const isToday = buttonDate === today;
@@ -88,7 +88,7 @@ export default function UserTableRow({
           width: 'fit-content',
           maxWidth: 260,
         }}>
-        657-642-7241
+        {number}
       </Typography>
 
       </Stack>
@@ -96,8 +96,8 @@ export default function UserTableRow({
       {/* <Iconify icon="mdi:dot" color="red" sx={{ height: read ? 0 : 30, width: 30, }} /> */}
       
       <Button variant="contained" sx={{backgroundColor, '&:hover': { backgroundColor, },
-      boxShadow: 'none', position: 'absolute', left: '237.5px', borderRadius: '6px',
-      width: '115px', height: 'auto', paddingInline: '10px', fontSize: '12px', color: 'white',
+      boxShadow: 'none', position: 'absolute', left: '227.5px', borderRadius: '6px',
+      width: '135px', height: 'auto', paddingInline: '10px', fontSize: '12px', color: 'white',
       opacity: 0.7, paddingTop: '6px', paddingBottom: '6px',}}  
       >
         {buttonText}
@@ -109,16 +109,12 @@ export default function UserTableRow({
           whiteSpace: 'nowrap', display: 'block', fontSize: '16px',
           width: 'fit-content',  left: '410px',
         }}>
-        Hurt in Idaho car accident; looking for a personal injury lawyer.
+        {desc}
       </Typography>
       
-
     </Stack>
-
   </TableCell>
-
 </TableRow>
-
 
       <Popover
         open={!!open}
@@ -146,11 +142,14 @@ export default function UserTableRow({
 
 UserTableRow.propTypes = {
   avatarUrl: PropTypes.any,
-  company: PropTypes.any,
   handleClick: PropTypes.func,
-  isVerified: PropTypes.any,
   name: PropTypes.any,
-  role: PropTypes.any,
-  selected: PropTypes.any,
-  status: PropTypes.string,
+  // selected: PropTypes.bool,
+
+  email: PropTypes.any,
+  number: PropTypes.any,
+  date: PropTypes.any,
+  desc: PropTypes.any,
+  conversation: PropTypes.any,
+
 };

@@ -119,7 +119,7 @@ export default function AppView() {
       </style>
       <Typography variant="h3" sx={{ mb: 5, fontWeight: 700,letterSpacing: '-0.02em', 
         fontFamily: '"Yeseva One", sans-serif', color: '#272727'}}>
-        Hey {brandName}, Welcome Back 👋
+        Hey Martin Lawyers, Welcome Back 👋
       </Typography>
 
       <Grid container spacing={3}>

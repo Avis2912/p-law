@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -13,6 +13,9 @@ import TablePagination from '@mui/material/TablePagination';
 import { users } from 'src/_mock/user';
 import { Box, TextField, Avatar } from '@mui/material';
 
+import { db, auth } from 'src/firebase-config/firebase';
+import { getDocs, addDoc, collection, doc, updateDoc } from 'firebase/firestore';
+
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 
@@ -25,19 +28,36 @@ import { emptyRows, applyFilter, getComparator } from '../utils';
 // ----------------------------------------------------------------------
 
 export default function UserPage() {
+  
   const [page, setPage] = useState(0);
-
   const [order, setOrder] = useState('asc');
-
   const [selected, setSelected] = useState([]);
-
   const [orderBy, setOrderBy] = useState('name');
-
   const [filterName, setFilterName] = useState('');
-
-  const [rowsPerPage, setRowsPerPage] = useState(5000);
+  const [rowsPerPage, setRowsPerPage] = useState(1000);
 
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [leads, setLeads] = useState([]);
+
+  useEffect(() => {
+    const firmDatabase = collection(db, 'firms');
+    const getFirmData = async () => {
+      try {
+        const data = await getDocs(firmDatabase);
+        const userDoc = data.docs.find((docc) => docc.id === 'testlawyers');
+        if (userDoc) {
+          const leadsData = userDoc.data().LEADS || [];
+          await setLeads(leadsData);       
+          console.log(leadsData);
+        } else {
+          alert('Error: User document not found.');
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getFirmData();
+  }, []);
 
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === 'asc';
@@ -139,15 +159,17 @@ export default function UserPage() {
         <TableContainer sx={{ overflow: 'auto', maxHeight: 'calc(100% - 52px)' }}> {/* Adjust the maxHeight according to your needs */}
             <Table sx={{cursor: 'pointer'}}>
               <TableBody>
-                {dataFiltered
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                {leads
+                  // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => (
                     <UserTableRow
                       key={row.id}
-                      name={row.name}
-                      role={row.role}
-                      status={row.status}
-                      company={row.company}
+                      name={row.NAME}
+                      number={row.NUMBER}
+                      email={row.EMAIL}
+                      date={row.DATE_TIME}
+                      desc={row.SUMMARY}
+                      conversation={row.CONVERSATION}
                       avatarUrl={row.avatarUrl}
                       isVerified={row.isVerified}
                       selected={selected.indexOf(row.name) !== -1}

@@ -44,33 +44,33 @@ const NOTIFICATIONS = [
     createdAt: sub(new Date(), { hours: 3, minutes: 30 }),
     isUnRead: true,
   },
-  {
-    id: faker.string.uuid(),
-    title: 'You have new message',
-    description: '5 unread messages',
-    avatar: null,
-    type: 'chat_message',
-    createdAt: sub(new Date(), { days: 1, hours: 3, minutes: 30 }),
-    isUnRead: false,
-  },
-  {
-    id: faker.string.uuid(),
-    title: 'You have new mail',
-    description: 'sent from Guido Padberg',
-    avatar: null,
-    type: 'mail',
-    createdAt: sub(new Date(), { days: 2, hours: 3, minutes: 30 }),
-    isUnRead: false,
-  },
-  {
-    id: faker.string.uuid(),
-    title: 'Delivery processing',
-    description: 'Your order is being shipped',
-    avatar: null,
-    type: 'order_shipped',
-    createdAt: sub(new Date(), { days: 3, hours: 3, minutes: 30 }),
-    isUnRead: false,
-  },
+  // {
+  //   id: faker.string.uuid(),
+  //   title: 'You have new message',
+  //   description: '5 unread messages',
+  //   avatar: null,
+  //   type: 'chat_message',
+  //   createdAt: sub(new Date(), { days: 1, hours: 3, minutes: 30 }),
+  //   isUnRead: false,
+  // },
+  // {
+  //   id: faker.string.uuid(),
+  //   title: 'You have new mail',
+  //   description: 'sent from Guido Padberg',
+  //   avatar: null,
+  //   type: 'mail',
+  //   createdAt: sub(new Date(), { days: 2, hours: 3, minutes: 30 }),
+  //   isUnRead: false,
+  // },
+  // {
+  //   id: faker.string.uuid(),
+  //   title: 'Delivery processing',
+  //   description: 'Your order is being shipped',
+  //   avatar: null,
+  //   type: 'order_shipped',
+  //   createdAt: sub(new Date(), { days: 3, hours: 3, minutes: 30 }),
+  //   isUnRead: false,
+  // },
 ];
 
 export default function NotificationsPopover() {
@@ -152,7 +152,7 @@ export default function NotificationsPopover() {
             ))}
           </List>
 
-          <List
+          {/* <List
             disablePadding
             subheader={
               <ListSubheader disableSticky sx={{ py: 1, px: 2.5, typography: 'overline' }}>
@@ -163,16 +163,16 @@ export default function NotificationsPopover() {
             {notifications.slice(2, 5).map((notification) => (
               <NotificationItem key={notification.id} notification={notification} />
             ))}
-          </List>
+          </List> */}
         </Scrollbar>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <Box sx={{ p: 1 }}>
+        {/* <Box sx={{ p: 1 }}>
           <Button fullWidth disableRipple>
             View All
           </Button>
-        </Box>
+        </Box> */}
       </Popover>
     </>
   );

@@ -21,7 +21,7 @@ export default function UserTableToolbar({ numSelected, filterName, onFilterName
         p: (theme) => theme.spacing(0, 1, 0, 3),
         ...(numSelected > 0 && {
           color: 'primary.main',
-          bgcolor: 'primary.lighter',
+          bgcolor: 'primary.navBg',
         }),
       }}
     >

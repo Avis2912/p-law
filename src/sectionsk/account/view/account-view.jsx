@@ -38,45 +38,32 @@ export default function AccountView() {
   const [sponsorMessage, setSponsorMessage] = useState(brand ? brand.messages.sponsor : null);
   const [defaultMessage, setDefaultMessage] = useState(brand ? brand.messages.default : null);
 
-
+  const [userData, setUserData] = useState([]);
 
   const storage = getStorage();
   
 
   useEffect(() => {
+    const firmDatabase = collection(db, 'firms');
+    const getFirmData = async () => {
+      try {
+        const data = await getDocs(firmDatabase);
+        const userDoc = data.docs.find((docc) => docc.id === 'testlawyers');
+        if (userDoc) {
+          await setUserData(userDoc.data().FIRM_INFO || []); console.log(userDoc.data().FIRM_INFO);
+        } else {
+          alert('Error: User document not found.');
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
-  // const brandsData = collection(db, 'brands');
-
-  // const getBrandInfo = async () => {
-  //   try {
-  //     const data = await getDocs(brandsData);
-  //     const userDoc = data.docs.find((docc) => docc.id === auth.currentUser.email);
-  //     if (userDoc) {
-
-  //       setBrand(userDoc.data());
-  
-  //       // Check for image in Firebase Storage
-  //       const imageRef = ref(storage, `brands/${auth.currentUser.email}/${auth.currentUser.email}`);
-  //       getDownloadURL(imageRef).then(downloadURL => {
-  //         setProfileSrc(downloadURL); // set the image from Firebase Storage if it exists
-  //       }).catch(error => {
-  //         setProfileSrc('/assets/images/avatars/avatar_20.jpg');
-  //         if (error.code !== 'storage/object-not-found') {
-  //           console.error("Error fetching profile image:", error);
-  //         }
-  //       });
-  //     } else {
-  //       alert('Error: User not found.');
-  //     }
-  //   } catch (err) {
-  //     alert(err);
-  //   }
-  // };
-  //   getBrandInfo();
-  }, [])
+    getFirmData();
+  }, []);
 
 
-//    const handleImageUpload = async () => {
+//   const handleImageUpload = async () => {
 //   if (fileInputRef.current.files[0]) {
 //     const file = fileInputRef.current.files[0];
     
@@ -125,14 +112,9 @@ const uploadProfilePicture = async () => {
 
 const saveChanges = async () => {
   try {
-    // Check if a new image was selected by the user
-    if (fileInputRef.current?.files[0]) {
-      // If a new image was selected, upload it
-      await uploadProfilePicture();
-    }
-    // No else block needed because we don't want to do anything if no new image was selected
 
-    // The rest of the saveChanges logic to update the text fields
+    // if (fileInputRef.current?.files[0]) {await uploadProfilePicture();}
+
     const userDocRef = doc(db, 'brands', auth.currentUser.email);
     const updateData = {};
 
@@ -148,13 +130,13 @@ const saveChanges = async () => {
       updateData.messages.gift = giftMessage;
     }
 
-    if (sponsorMessage !== null) {
-      updateData.messages.sponsor = sponsorMessage;
-    }
+    // if (sponsorMessage !== null) {
+    //   updateData.messages.sponsor = sponsorMessage;
+    // }
 
-    if (defaultMessage !== null) {
-      updateData.messages.default = defaultMessage;
-    }
+    // if (defaultMessage !== null) {
+    //   updateData.messages.default = defaultMessage;
+    // }
 
     await updateDoc(userDocRef, updateData);
 
@@ -183,36 +165,37 @@ const handleImageChange = (event) => {
     
     <Container>
       
-      <Stack className='heading' direction="row" alignItems="center" justifyContent="space-between" mb={3}>
+      <Stack className='heading' direction="row" alignItems="center" justifyContent="space-between" mb={2.5}>
       
       <style>
           @import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap);
         </style>
-        <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, 
+
+      <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, 
       letterSpacing: '1.05px',  fontWeight: 800, fontSize: '32.75px'}}>         
-        My Account</Typography>
-        <Button onClick={() => saveChanges()}
-        sx={{ marginLeft:'40px' }} variant="contained" color="inherit">
-        🎉 Save Changes
-          </Button>
+      My Account</Typography>
+
+      <Button onClick={() => saveChanges()}
+      sx={{ marginLeft:'40px' }} variant="contained" color="inherit">
+      🎉 Save Changes
+      </Button>
+
       </Stack>
       
       <Stack className='divider' direction="row" spacing={2}>
           
       <Card sx={{ height: 600, width: '35%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         
-        <Card sx={{ height: 210, width: 210, mt: 8, boxShadow: 'none' }}>
-        
-        <input
-  type="file"
-  ref={fileInputRef}
-  onChange={handleImageChange}
-  style={{ display: 'none' }}
-  accept="image/*"
-/>
+      <Card sx={{ height: 210, width: 210, mt: 10, boxShadow: 'none' }}>
+            
+      <input type="file"
+      ref={fileInputRef}
+      onChange={handleImageChange}
+      style={{ display: 'none' }}
+      accept="image/*"/>
 
 
-<Box 
+    <Box 
     position="relative" 
     width={210} 
     height={210}
@@ -220,12 +203,13 @@ const handleImageChange = (event) => {
     cursor="pointer"
     sx={{
       borderRadius: '50%', // Apply a circular clipping mask
-    }}
->
+    }}>
+
     <Box 
         component="img"
-        alt="profile picture"
-        src={profileSrc}
+        // alt="profile picture"
+        // src={profileSrc}
+        src="https://firebasestorage.googleapis.com/v0/b/pentra-beauty.appspot.com/o/Gemini_Generated_Image_w2bk6ew2bk6ew2bk.jpeg?alt=media&token=555ce545-de49-4e1f-becf-9b985933a117"
         sx={{
             top: 0,
             width: '100%',
@@ -233,122 +217,136 @@ const handleImageChange = (event) => {
             objectFit: 'cover',
             position: 'absolute',
             borderRadius: '50%',
+            backgroundColor: 'pink',
         }}
     />
-    <Iconify icon="solar:camera-bold" 
-        sx={{
-            width: 30,
-            height: 30,
-            position: 'absolute', 
-            top: '87%', 
-            left: '83%',
-            transform: 'translate(-50%, -50%)', 
-            color: 'grey', // or any contrasting color
-        }}
-    />
+    
 
-</Box>
-       
-  </Card>
+      {/* <Iconify icon="solar:camera-bold" 
+      sx={{ width: 30, height: 30, position: 'absolute', top: '87%', left: '83%',
+      transform: 'translate(-50%, -50%)', color: 'grey', }} /> */}
 
+    </Box>
         
+    </Card>
 
-        <TextField
-  sx={{ width: '45%', mt: 4, textAlign: 'center', fontFamily: 'Old Standard TT' }}
-  id="standard-multiline-flexible"
-  label=""
-  multiline
-  maxRows={1}
-  size="small"
-  placeholder="Firm Name"
-  defaultValue={brand ? brand.user_name : null}
-  onChange={(e) => setUserName(e.target.value)}
-/>
+      <TextField
+      sx={{ width: '45%', mt: 4, textAlign: 'center', fontFamily: 'Old Standard TT' }}
+      id="standard-multiline-flexible"
+      label=""
+      multiline
+      maxRows={1}
+      size="small"
+      placeholder="Firm Name"
+      defaultValue={brand ? brand.user_name : null}
+      onChange={(e) => setUserName(e.target.value)}
+      value={userData.NAME}
+      />
 
-<TextField
-  sx={{ width: '45%', mt: 2, textAlign: 'center', fontFamily: 'Old Standard TT' }}
-  id="standard-multiline-flexible"
-  label=""
-  multiline
-  maxRows={1}
-  size="small"
-  placeholder="Location / State"
-  defaultValue={brand ? brand.brand_name : null}
-  onChange={(e) => setBrandName(e.target.value)}
+    <TextField
+      sx={{ width: '45%', mt: 2, textAlign: 'center', fontFamily: 'Old Standard TT' }}
+      id="standard-multiline-flexible"
+      label=""
+      multiline
+      maxRows={1}
+      size="small"
+      placeholder="Location / State"
+      defaultValue={brand ? brand.brand_name : null}
+      onChange={(e) => setBrandName(e.target.value)}
+      value={userData.NAME} />
 
-/>
+      <Typography fontSize="20px" fontWeight={100} mt={3} mb={1.75} fontFamily="Old Standard TT">
+        Current Pentra Plan
+      </Typography>
 
 
+      <Button variant="contained" color="primary" onClick={() => alert("please Email us at pentra.legal@gmail.com! We'll get back to you ASAP.")}
+      sx={(theme) => ({backgroundColor: theme.palette.primary.navBg})}>
+      {userData.PLAN} | Change Plan
+      </Button>
 
-        <Typography fontSize="20px" fontWeight={100} mt={3} mb={2} fontFamily="Old Standard TT">
-          Current Pentra Plan
-        </Typography>
+    </Card>
 
-        
+    <Card sx={{ height: 600, width: '65%' }}>
 
-        <Button variant="contained" color="primary" onClick={() => alert("please Email us at pentra.legal@gmail.com! We'll get back to you ASAP.")}
-        sx={(theme) => ({backgroundColor: theme.palette.primary.main})}>
-          Starter | Change Plan
-        </Button>
+      <style>
+        @import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap);
+      </style>
+
+      <Typography fontSize="24px" letterSpacing={0.25}
+      fontWeight={100} mt={5} mx={5} mb={2}
+      fontFamily="DM Serif Display">
+      Firm Description
+      </Typography>
+
+      <TextField 
+      sx = {{ marginLeft:'38px', width:'89%' }}
+      id="outlined-multiline-flexible"
+      label=""
+      multiline
+      minRows={3}
+      maxRows={3}
+      onChange={(e) => setGiftMessage(e.target.value)}
+      defaultValue={userData.DESCRIPTION} />
+
+      <Typography fontSize="24px" letterSpacing={0.25}
+      fontWeight={100} mt={3} mx={5} mb={2}
+      fontFamily="DM Serif Display">
+      Indexed Blogs
+      </Typography>
+
+      <TextField 
+      sx = {{ marginLeft:'38px', width:'89%' }}
+      id="outlined-multiline-flexible"
+      label=""
+      multiline
+      minRows={8}
+      width="50%"
+      onChange={(e) => setSponsorMessage(e.target.value)}
+      defaultValue={brand ? brand.messages.sponsor : null} />
+
+      <Stack direction="row" spacing={2} mb={2.5} mt={4} pl={5} justifyContent="space-between" alignItems="center" >
+
+      <Typography fontSize="24px" letterSpacing={0.25}
+      fontWeight={100} mt={3} mx={5} mb={2} 
+      fontFamily="DM Serif Display">
+      Current Model
+      </Typography>
+
+      <Stack direction="row" pr={4} spacing={2} justifyContent="left" alignItems="center" >
+      <Button variant="contained" color="primary" onClick={() => alert("please Email us at pentra.legal@gmail.com! We'll get back to you ASAP.")}
+      sx={(theme) => ({backgroundColor: theme.palette.primary.navBg})}>
+      Pentra Light </Button>
+
+      <Button variant="contained" color="primary" onClick={() => alert("please Email us at pentra.legal@gmail.com! We'll get back to you ASAP.")}
+      sx={(theme) => ({backgroundColor: `#DD8390`})}>
+      Pentra Medium </Button>
+
+      <Button variant="contained" color="primary" onClick={() => alert("please Email us at pentra.legal@gmail.com! We'll get back to you ASAP.")}
+      sx={(theme) => ({backgroundColor: '#DD8390'})}>
+      Pentra Opus </Button>
+
+      </Stack></Stack>
+
+      {/* <Typography fontSize="24px"
+        fontWeight={100} mt={3} mx={5} mb={2}
+        fontFamily="Old Standard TT"
+        >🖋️  Default Message
+      </Typography>
+      
+      <TextField 
+      sx = {{ marginLeft:'38px', width:'89%' }}
+      id="outlined-multiline-flexible"
+      label=""
+      multiline
+      minRows={3}
+      maxRows={3}
+      onChange={(e) => setDefaultMessage(e.target.value)}
+      defaultValue={brand ? brand.messages.default : null} /> */}
 
       </Card>
 
-
-
-
-          <Card sx={{ height: 600, width: '65%' }}>
-
-          <Typography fontSize="24px"
-           fontWeight={100} mt={5} mx={5} mb={2}
-           fontFamily="Old Standard TT"
-           >🎁 Gift Message
-          </Typography>
-          <TextField 
-          sx = {{ marginLeft:'38px', width:'89%' }}
-          id="outlined-multiline-flexible"
-          label=""
-          multiline
-          minRows={2}
-          maxRows={3}
-          onChange={(e) => setGiftMessage(e.target.value)}
-          defaultValue={brand ? brand.messages.gift : null} />
-
-          <Typography fontSize="24px"
-           fontWeight={100} mt={3} mx={5} mb={2}
-           fontFamily="Old Standard TT"
-           >💸  Indexed Blogs
-          </Typography>
-          <TextField 
-          sx = {{ marginLeft:'38px', width:'89%' }}
-          id="outlined-multiline-flexible"
-          label=""
-          multiline
-          minRows={2}
-          maxRows={3}
-          width="50%"
-          onChange={(e) => setSponsorMessage(e.target.value)}
-          defaultValue={brand ? brand.messages.sponsor : null} />
-
-          <Typography fontSize="24px"
-           fontWeight={100} mt={3} mx={5} mb={2}
-           fontFamily="Old Standard TT"
-           >🖋️  Default Message
-          </Typography>
-          <TextField 
-          sx = {{ marginLeft:'38px', width:'89%' }}
-          id="outlined-multiline-flexible"
-          label=""
-          multiline
-          minRows={3}
-          maxRows={3}
-          onChange={(e) => setDefaultMessage(e.target.value)}
-          defaultValue={brand ? brand.messages.default : null} />
-
-
-          </Card>
-
       </Stack>
-      
     </Container>
   );
 }

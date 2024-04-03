@@ -6,22 +6,23 @@ import Anthropic from '@anthropic-ai/sdk';
 import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import { collection } from 'firebase/firestore';
+import { getDocs, collection, doc, updateDoc, arrayUnion } from 'firebase/firestore';
 import Iconify from 'src/components/iconify';
-import { db } from 'src/firebase-config/firebase';
+import { db, auth } from 'src/firebase-config/firebase';
 import Button from '@mui/material/Button';
 import { Card, TextField } from '@mui/material';
 import { css, keyframes } from '@emotion/react';
 
-// import sdk from 'api'; 
+const isImagesOn = false;
+const modelToUse = 'claude-3-haiku-20240307';
+// const modelToUse: 'claude-3-sonnet-20240229';
+// const modelToUse: 'claude-3-opus-20240229';
 
 const domain = window?.location?.origin || '';
 const anthropic = new Anthropic({
   apiKey: `${import.meta.env.VITE_ANTHROPIC_API_KEY}`,
   baseURL: `/api`, 
 });
-
-const images = true;
 
 // ----------------------------------------------------------------------
 
@@ -33,6 +34,7 @@ export default function ProductsView() {
 
   const [blogDescription, setBlogDescription] = useState('');
   const [blogKeywords, setBlogKeywords] = useState(null);
+  const [smallBlog, setSmallBlog] = useState(null); 
 
   const [isGenMode, setIsGenMode] = useState(false);
   const [isAlterMode, setIsAlterMode] = useState(false);
@@ -69,6 +71,28 @@ export default function ProductsView() {
     return () => intervalId && clearInterval(intervalId);
   }, [isGenerating]);
 
+  useEffect(() => {
+    const firmDatabase = collection(db, 'firms');
+    const getFirmData = async () => {
+      try {
+        const data = await getDocs(firmDatabase);
+        const userDoc = data.docs.find((docc) => docc.id === 'testlawyers');
+        if (userDoc) {
+          const smallBlogArray = userDoc.data().BLOG_DATA.SMALL_BLOG || [];
+          const smallBlogString = smallBlogArray.map((item, index) => `{BLOG ${index + 1}}:\n\n${item}\n`).join('\n');
+          await setSmallBlog(smallBlogString);       
+          console.log(smallBlogString);
+        } else {
+          alert('Error: User document not found.');
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    getFirmData();
+  }, []);
+
   // BLOG GENERATION
 
   const generateBlog = async () => {
@@ -85,20 +109,16 @@ export default function ProductsView() {
           "role": "user", 
           "content":  `You are Pentra AI, a legal expert and an expert SEO blog writer.  Write a blog post based on the following topic: ${blogDescription}. 
           ${blogKeywords && `Keywords: ${blogKeywords}`}. ${text !== "" && `Consider using the following outline: ${text}`}. 
-          
-          // HERE ARE SOME SAMPLE BLOGS TO LEARN FROM:
 
-          // {BLOG 1}:
+         ${isMimicBlogStyle && 
+          `HERE ARE SOME SAMPLE BLOGS TO LEARN FROM. REPRODUCE THIS TONE & STYLE PERFECTLY IN YOUR OUTPUT.
+         ${smallBlog}`
+          } 
 
 
-          // {BLOG 2}:
-
-          
-          // {BLOG 3}:
-
-          
           IMPORTANT INSTRUCTIONS:
-          - FORMATTING IN RICH TEXT: Wrap titles in <h1> and <h2> tags. Wrap all paragraphs in <p> tags. Wrap parts to be BOLDED in <b> tags. Dont use ANY new lines but add ONE <br> tag after EVERY paragraph and ONE after every closing h1/h2 tag.
+          - FORMATTING IN RICH TEXT: Wrap titles in <h1> and <h2> tags. Wrap all paragraphs in <p> tags. Wrap parts to be BOLDED in <b> tags. 
+          - <br> TAG RULES: add ONE <br> tag after EVERY </p>. ONE AFTER every closing </h1> AND </h2> tags. and TWO after EVERY image.
           - WORD RANGE: this post should be ${wordRange} long.
           - PERSPECTIVE: Don't refer to yourself in the post, but feel free to explain how your firm Thompson Lawyers can help.
           - IMAGES: blog post should contain ${imageCount}. Please add representations of them in this format: //Image: Idaho Courthouse// OR //Image: Chapter 7 Bankruptcy Flowchart//. 
@@ -108,6 +128,8 @@ export default function ProductsView() {
           - ${isUseInternalLinks && `INTERNAL LINKS: Add some internal links to the blog post using <a> tags.`}
           - ${isReferenceGiven && `USEFUL DATA: Refer to the following text and use as applicable: ${referenceText}`}
           - ${browseTextResponse !== "" && `WEB RESULTS: Consider using the following web information I got from an LLM for the prompt ${browseText}: ${browseTextResponse}`}
+          - NEVER OUTPUT ANYTHING other than the blog content. DONT START BY DESCRIBING WHAT YOURE OUTPUTING, JUST OUTPUT. 
+
           `
         });
       }
@@ -116,7 +138,7 @@ export default function ProductsView() {
         messages.push({
           "role": "user", 
           "content": `You are Pentra AI, a legal expert and an expert SEO blog writer. 
-          Write a detailed blog outline in rich text format using <h1> tags and <br> tags (after every paragraph/line) based on the following topic: ${blogDescription}. ${blogKeywords && `Keywords: ${blogKeywords}`}.`
+          Write a detailed blog outline in rich text format using <b> tags and <br> tags (after every paragraph/line) based on the following topic: ${blogDescription}. ${blogKeywords && `Keywords: ${blogKeywords}`}.`
         });
       }
 
@@ -162,8 +184,7 @@ export default function ProductsView() {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ messages, blogDescription, blogKeywords, 
-        model: 'claude-3-sonnet-20240229' })
-        // model: 'claude-3-haiku-20240307' })
+        model: modelToUse })
     });
 
     const gptResponse = (await response.text()).replace(/<br><br> /g, '<br><br>'); console.log(gptResponse);
@@ -173,9 +194,22 @@ export default function ProductsView() {
     // const textWithImages = await addImages(gptText);
 
     let textWithImages = gptResponse.trim();
-    if (images) {textWithImages = await addImages(gptResponse.trim());}
+    if (isImagesOn) {textWithImages = await addImages(gptResponse.trim());}
     await setText(textWithImages);
     setIsGenerating(false);
+
+    try {
+      const firmDatabase = collection(db, 'firms');
+      const data = await getDocs(firmDatabase);
+      const userDoc = data.docs.find((docc) => docc.id === 'testlawyers');
+      if (userDoc) {  
+        const userDocRef = doc(db, 'firms', userDoc.id);
+        const currentDate = new Date();
+        const formattedDate = `${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear().toString().substr(-2)}`;
+        const genPosts = userDoc.data().GEN_POSTS || [];
+        const newPost = { [formattedDate]: textWithImages }; genPosts.unshift(newPost);
+        await updateDoc(userDocRef, { GEN_POSTS: genPosts });
+    }} catch (err) {console.log(err);}
 
 
   };
