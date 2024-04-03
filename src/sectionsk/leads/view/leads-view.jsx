@@ -168,7 +168,7 @@ export default function UserPage() {
             
             <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
             <Iconify icon="mdi:email" style={{ color: 'black', height: '18px', width: '18px' }} />
-            <Typography >{activeUser ? activeUser.EMAIL : `Lead Given Email`}</Typography>
+            <Typography >{activeUser ? activeUser.EMAIL : `Provided Email`}</Typography>
             </Stack>
 
           </Stack>

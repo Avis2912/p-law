@@ -17,7 +17,7 @@ import PostCard from '../post-card';
 import PostSort from '../post-sort';
 import PostSearch from '../post-search';
 
-const isImagesOn = false;
+const isImagesOn = true;
 const modelToUse = 'claude-3-haiku-20240307';
 // const modelToUse: 'claude-3-sonnet-20240229';
 // const modelToUse: 'claude-3-opus-20240229';

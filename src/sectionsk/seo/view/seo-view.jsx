@@ -13,7 +13,7 @@ import Button from '@mui/material/Button';
 import { Card, TextField } from '@mui/material';
 import { css, keyframes } from '@emotion/react';
 
-const isImagesOn = false;
+const isImagesOn = true;
 const modelToUse = 'claude-3-haiku-20240307';
 // const modelToUse: 'claude-3-sonnet-20240229';
 // const modelToUse: 'claude-3-opus-20240229';
