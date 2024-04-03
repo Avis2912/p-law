@@ -14,51 +14,54 @@ import { useState, useEffect } from 'react';
 import PostCard from '../post-card';
 
 export default function ListsView() {
-  const [brandLists, setBrandLists] = useState([]);
-  const [isAddingList, setAddingList] = useState(false);
-  const [newList, setNewList] = useState('');
+
+  const [isAddingCompetitor, setAddingCompetitor] = useState(false);
+  const [newCompetitor, setNewCompetitor] = useState('');
+
+  const [competition, setCompetition] = useState([]);
 
 
   useEffect(() => {
-    const brandsData = collection(db, 'brands');
-
-  const getBrandLists = async () => {
-    try {
-      const data = await getDocs(brandsData);
-      const userDoc = data.docs.find(docc => docc.id === auth.currentUser.email);
-      if (userDoc) {
-        setBrandLists(userDoc.data().lists || []);
-      } else {
-        alert('Error: User document not found.');
+    const firmDatabase = collection(db, 'firms');
+    const getFirmData = async () => {
+      try {
+        const data = await getDocs(firmDatabase);
+        const userDoc = data.docs.find((docc) => docc.id === 'testlawyers');
+        if (userDoc) {
+          await setCompetition(userDoc.data().COMPETITION || []);
+          console.log(userDoc.data().COMPETITION);
+        } else {
+          alert('Error: User document not found.');
+        }
+      } catch (err) {
+        console.log(err);
       }
-    } catch (err) {
-      alert(err);
-    }
-  };
-    getBrandLists();
+    };
+
+    getFirmData();
   }, []);
 
   const today = new Date();
   const formattedDate = `${today.getDate()} ${today.toLocaleString('default', { month: 'short' })}`;
 
-  const handleNewListClick = () => {
-    setAddingList(!isAddingList);
+  const handleNewCompetitionClick = () => {
+
   };
 
-  const handleAddListClick = async () => {
-    const newListData = { listName: newList, date: formattedDate, listMembers: [1, 7, 5] };
-
-    try {
-      const userDocRef = doc(db, 'brands', auth.currentUser.email);
-      await updateDoc(userDocRef, {
-        lists: [...brandLists, newListData]
-      });
-      setBrandLists(prevLists => [...prevLists, newListData]);
-      setNewList('');
-      setAddingList(false);
-    } catch (err) {
-      alert(err);
-    }
+  const handleAddNewCompetitionClick = async () => {
+    
+    // const newListData = { listName: newList, date: formattedDate, listMembers: [1, 7, 5] };
+    // try {
+    //   const userDocRef = doc(db, 'brands', auth.currentUser.email);
+    //   await updateDoc(userDocRef, {
+    //     lists: [...brandLists, newListData]
+    //   });
+    //   setBrandLists(prevLists => [...prevLists, newListData]);
+    //   setNewList('');
+    //   setAddingList(false);
+    // } catch (err) {
+    //   alert(err);
+    // }
   };
 
   return (
@@ -70,8 +73,8 @@ export default function ListsView() {
       left: 20,
       right: 20,
       bottom: 0,
-      background: 'rgba(255, 255, 255, 0.7)',
-      backdropFilter: 'blur(3px)',
+      background: 'rgba(255, 255, 255, 0.4)',
+      backdropFilter: 'blur(0px)',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
@@ -97,21 +100,21 @@ export default function ListsView() {
         Competition & Analysis</Typography>
         <Stack spacing={2} mb={0} direction="row" alignItems="center" justifyContent="space-between">
           <Stack direction="row" spacing={2}>
-            {isAddingList && (
+            {isAddingCompetitor && (
               <>
                 <Button
                   variant="contained"
                   color="inherit"
                   startIcon={<Iconify icon="eva:plus-fill" />}
-                  onClick={handleAddListClick}
+                  onClick={handleAddNewCompetitionClick}
                 >
                   Add
                 </Button>
                 <TextField
                   size="small"
                   placeholder="List Name"
-                  value={newList}
-                  onChange={(e) => setNewList(e.target.value)}
+                  value={newCompetitor}
+                  onChange={(e) => {}}
                 />
               </>
             )}
@@ -119,7 +122,7 @@ export default function ListsView() {
           <Button
             variant="contained"
             startIcon={<Iconify icon="eva:plus-fill" />}
-            onClick={handleNewListClick}
+            onClick={handleNewCompetitionClick}
             sx={{ backgroundColor: 'black', ':hover': { backgroundColor: 'black' } }}
           >
             Add New Competitor
@@ -127,9 +130,23 @@ export default function ListsView() {
         </Stack>
       </Stack>
       <Grid container spacing={3}>
-        {brandLists.map((list, index) => (
-          <PostCard key={index} date={list.date} listMembers={list.listMembers} listName={list.listName} title post={list} index={index} />
-        ))}
+        {Object.entries(competition).map(([key, value], index) => {
+          if (typeof value === 'object' && value !== null) {
+            return (
+              <PostCard 
+                key={index} 
+                traffic={value.TRAFFIC} 
+                linkedinData={value.LINKEDIN_DATA} 
+                date={value.LAST_DATE} 
+                blogsThisMonth={value.BLOGS_THIS_MONTH} 
+                competitorName={key} 
+                listId={index} 
+                index={index} 
+              />
+            );
+          }
+          return null;
+        })}
       </Grid>
     </Container>
     </div>

@@ -17,6 +17,8 @@ import PostCard from '../post-card';
 import PostSort from '../post-sort';
 import PostSearch from '../post-search';
 
+const images = true;
+
 // ----------------------------------------------------------------------
 
 export default function BlogView() {
@@ -37,54 +39,10 @@ export default function BlogView() {
   const [generatedPosts, setGeneratedPosts] = useState([]);
 
   const [weeklyPosts, setWeeklyPosts] = useState([
-    { platform: "LinkedIn", content: "<h1>Weekly Post 1</h1> This is where content appears. <image src='https://via.placeholder.com/150' />" },
-    { platform: "LinkedIn", content: "<h1>Weekly Post 1</h1> This is where content appears. <image src='https://via.placeholder.com/150' />" },
-    { platform: "LinkedIn", content: "<h1>Weekly Post 1</h1> This is where content appears. <image src='https://via.placeholder.com/150' />" },
-    { platform: "LinkedIn", content: "<h1>Weekly Post 1</h1> This is where content appears. <image src='https://via.placeholder.com/150' />" },
-    { platform: "LinkedIn", content: "<h1>Weekly Post 1</h1> This is where content appears. <image src='https://via.placeholder.com/150' />" },
-    { platform: "LinkedIn", content: "<h1>Weekly Post 1</h1> This is where content appears. <image src='https://via.placeholder.com/150' />" },
-
-    { platform: "Facebook", content: "<h1>Weekly Post 2</h1> This is where content appears. <image src='https://via.placeholder.com/150' />" },
-    { platform: "Facebook", content: "<h1>Weekly Post 2</h1> This is where content appears. <image src='https://via.placeholder.com/150' />" },
-    { platform: "Facebook", content: "<h1>Weekly Post 2</h1> This is where content appears. <image src='https://via.placeholder.com/150' />" },
-    { platform: "Facebook", content: "<h1>Weekly Post 2</h1> This is where content appears. <image src='https://via.placeholder.com/150' />" },
-    { platform: "Facebook", content: "<h1>Weekly Post 2</h1> This is where content appears. <image src='https://via.placeholder.com/150' />" },
-    { platform: "Facebook", content: "<h1>Weekly Post 2</h1> This is where content appears. <image src='https://via.placeholder.com/150' />" },
-
-    { platform: "Instagram", content: "<h1>Weekly Post 1</h1> This is where content appears. <image src='https://via.placeholder.com/150' />" },
-    { platform: "Instagram", content: "<h1>Weekly Post 1</h1> This is where content appears. <image src='https://via.placeholder.com/150' />" },
-    { platform: "Instagram", content: "<h1>Weekly Post 1</h1> This is where content appears. <image src='https://via.placeholder.com/150' />" },
-    { platform: "Instagram", content: "<h1>Weekly Post 1</h1> This is where content appears. <image src='https://via.placeholder.com/150' />" },
-    { platform: "Instagram", content: "<h1>Weekly Post 1</h1> This is where content appears. <image src='https://via.placeholder.com/150' />" },
-    { platform: "Instagram", content: "<h1>Weekly Post 1</h1> This is where content appears. <image src='https://via.placeholder.com/150' />" },
-    
   ]);
 
   
   useEffect(() => {
-    
-    setWeeklyPosts([
-      { platform: "LinkedIn", content: "<h2>Weekly Post 1</h2> This is where content appears. <image src=https://cdn-prod.medicalnewstoday.com/content/images/articles/325/325253/assortment-of-fruits.jpg> " },
-      { platform: "LinkedIn", content: "<h2>Weekly Post 1</h2> This is where content appears. <image src=https://cdn-prod.medicalnewstoday.com/content/images/articles/325/325253/assortment-of-fruits.jpg> " },
-      { platform: "LinkedIn", content: "<h2>Weekly Post 1</h2> This is where content appears. <image src=https://cdn-prod.medicalnewstoday.com/content/images/articles/325/325253/assortment-of-fruits.jpg> " },
-      { platform: "LinkedIn", content: "<h2>Weekly Post 1</h2> This is where content appears. <image src='https://via.placeholder.com/150' />" },
-      { platform: "LinkedIn", content: "<h2>Weekly Post 1</h2> This is where content appears. <image src='https://via.placeholder.com/150' />" },
-      { platform: "LinkedIn", content: "<h2>Weekly Post 1</h2> This is where content appears. <image src='https://via.placeholder.com/150' />" },
-
-      { platform: "Facebook", content: "<h2>Weekly Post 2</h2> This is where content appears. <image src='https://via.placeholder.com/150' />" },
-      { platform: "Facebook", content: "<h2>Weekly Post 2</h2> This is where content appears. <image src='https://via.placeholder.com/150' />" },
-      { platform: "Facebook", content: "<h2>Weekly Post 2</h2> This is where content appears. <image src='https://via.placeholder.com/150' />" },
-      { platform: "Facebook", content: "<h2>Weekly Post 2</h2> This is where content appears. <image src='https://via.placeholder.com/150' />" },
-      { platform: "Facebook", content: "<h2>Weekly Post 2</h2> This is where content appears. <image src='https://via.placeholder.com/150' />" },
-      { platform: "Facebook", content: "<h2>Weekly Post 2</h2> This is where content appears. <image src='https://via.placeholder.com/150' />" },
-
-      { platform: "Instagram", content: "<h2>Weekly Post 1</h2> This is where content appears. <image src='https://via.placeholder.com/150' />" },
-      { platform: "Instagram", content: "<h2>Weekly Post 1</h2> This is where content appears. <image src='https://via.placeholder.com/150' />" },
-      { platform: "Instagram", content: "<h2>Weekly Post 1</h2> This is where content appears. <image src='https://via.placeholder.com/150' />" },
-      { platform: "Instagram", content: "<h2>Weekly Post 1</h2> This is where content appears. <image src='https://via.placeholder.com/150' />" },
-      { platform: "Instagram", content: "<h2>Weekly Post 1</h2> This is where content appears. <image src='https://via.placeholder.com/150' />" },
-      { platform: "Instagram", content: "<h2>Weekly Post 1</h2> This is where content appears. <image src='https://via.placeholder.com/150' />" },
-    ])
 
     if (genPostPlatform) {
       if (genPostPlatform === "LinkedIn") {
@@ -108,22 +66,23 @@ export default function BlogView() {
       }
     }
     
-    // const brandsData = collection(db, 'brands');
-    // const getBrandCampaigns = async () => {
-    //   try {
-    //     const data = await getDocs(brandsData);
-    //     const userDoc = data.docs.find((docc) => docc.id === auth.currentUser.email);
-    //     if (userDoc) {
-    //       await setBrandCampaigns(userDoc.data().campaigns || []);
-    //     } else {
-    //       alert('Error: User document not found.');
-    //     }
-    //   } catch (err) {
-    //     alert(err);
-    //   }
-    // };
+    const firmDatabase = collection(db, 'firms');
+    const getFirmData = async () => {
+      try {
+        const data = await getDocs(firmDatabase);
+        const userDoc = data.docs.find((docc) => docc.id === 'testlawyers');
+        if (userDoc) {
+          await setWeeklyPosts(userDoc.data().WEEKLY_POSTS.POSTS || []);
+          console.log(userDoc.data().WEEKLY_POSTS.POSTS);
+        } else {
+          alert('Error: User document not found.');
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
-    // getBrandCampaigns();
+    getFirmData();
   }, [genPostPlatform]);
 
   const handleClickRoute = () => {
@@ -169,8 +128,8 @@ export default function BlogView() {
     const gptResponse = (await response.text()); console.log(gptResponse);
 
     const textWithoutImages = JSON.parse(gptResponse.trim().replace(/^```|```$/g, '').replace(/json/g, '')); console.log(textWithoutImages);
-    // const textWithImages = await addImages(textWithoutImages);
-    const textWithImages = textWithoutImages;
+    let textWithImages = textWithoutImages;
+    if (images) {textWithImages = await addImages(textWithoutImages);}
     await setGeneratedPosts(textWithImages);
     await setWeeklyPosts(textWithImages);   
     console.log(weeklyPosts);

@@ -20,6 +20,9 @@ const anthropic = new Anthropic({
   apiKey: `${import.meta.env.VITE_ANTHROPIC_API_KEY}`,
   baseURL: `/api`, 
 });
+
+const images = true;
+
 // ----------------------------------------------------------------------
 
 export default function ProductsView() {
@@ -158,7 +161,9 @@ export default function ProductsView() {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ messages, blogDescription, blogKeywords, model: 'claude-3-haiku-20240307' })
+      body: JSON.stringify({ messages, blogDescription, blogKeywords, 
+        model: 'claude-3-sonnet-20240229' })
+        // model: 'claude-3-haiku-20240307' })
     });
 
     const gptResponse = (await response.text()).replace(/<br><br> /g, '<br><br>'); console.log(gptResponse);
@@ -167,8 +172,8 @@ export default function ProductsView() {
     // const gptText = data.choices[0].message.content.trim();
     // const textWithImages = await addImages(gptText);
 
-    // const textWithImages = await addImages(gptResponse.trim());
-    const textWithImages = gptResponse.trim();
+    let textWithImages = gptResponse.trim();
+    if (images) {textWithImages = await addImages(gptResponse.trim());}
     await setText(textWithImages);
     setIsGenerating(false);
 

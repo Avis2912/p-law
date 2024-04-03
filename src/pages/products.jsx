@@ -2,13 +2,24 @@ import { Helmet } from 'react-helmet-async';
 import { CreatorsView } from 'src/sectionsk/creators/view';
 import React, { useState, useEffect } from 'react'; // <-- Import useState and useEffect
 import { auth } from 'src/firebase-config/firebase';
-// ----------------------------------------------------------------------
+import { useNavigate } from 'react-router-dom'; // <-- Import useNavigate instead of useHistory
 
 export default function ProductsPage() {
-  const [isLoading, setIsLoading] = useState(true); // <-- Loading state
-  if (!auth.currentUser) {
-    window.location.href = '/login';
-  }
+  const navigate = useNavigate(); // <-- Use useNavigate instead of useHistory
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      if (!user) {
+        navigate('/login');
+      }
+    });
+
+    // Cleanup function
+    return () => unsubscribe();
+  }, [navigate]);
+
+  const [isLoading, setIsLoading] = useState(true); // <-- Set loading to true
+
   useEffect(() => {
     // Simulate a network request or some loading process
     setTimeout(() => {

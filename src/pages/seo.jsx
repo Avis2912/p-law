@@ -1,14 +1,24 @@
 import { Helmet } from 'react-helmet-async';
 import { CreatorsView } from 'src/sectionsk/seo/view';
-import React, { useState, useEffect } from 'react'; // <-- Import useState and useEffect
+import React, { useState, useEffect } from 'react';
 import { auth } from 'src/firebase-config/firebase';
-// ----------------------------------------------------------------------
+import { useNavigate } from 'react-router-dom';
 
 export default function SeoPage() {
-  const [isLoading, setIsLoading] = useState(true); // <-- Loading state
-  if (!auth.currentUser) {
-    window.location.href = '/login';
-  }
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      if (!user) {
+        navigate('/login');
+      }
+    });
+
+    // Cleanup function
+    return () => unsubscribe();
+  }, [navigate]);
+
   useEffect(() => {
     // Simulate a network request or some loading process
     setTimeout(() => {

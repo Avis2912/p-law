@@ -23,8 +23,7 @@ import Iconify from 'src/components/iconify';
 import { db } from 'src/firebase-config/firebase';
 import { deleteDoc, doc } from 'firebase/firestore';
 
-export default function PostCard({ listName, date, listId, post, index }) {
-  const { title, createdAt } = post;
+export default function PostCard({ competitorName, blogsThisMonth, linkedinData, traffic, lastDate, index }) {
 
   const latestPostLarge = index === -10;
   const latestPost = index === -10 || index === -20;
@@ -42,7 +41,7 @@ export default function PostCard({ listName, date, listId, post, index }) {
   const handleDeleteConfirmed = () => {
     // Handle the delete action here
     setDeleteConfirmation(false);
-    try {deleteList(listId);} catch (err) {alert(err)};
+    try {deleteList(competitorName);} catch (err) {alert(err)};
   };
 
   const renderTitle = (
@@ -64,7 +63,7 @@ export default function PostCard({ listName, date, listId, post, index }) {
         ...(latestPost && { color: 'common.white' }),
       }}
     >
-      {listName}
+      {competitorName}
     </Link>
   );
 
@@ -79,7 +78,7 @@ export default function PostCard({ listName, date, listId, post, index }) {
         ...(latestPost && { opacity: 0.48, color: 'common.white' }),
       }}
     >
-      {date}
+      {lastDate}
     </Typography>
   );
 
@@ -87,17 +86,17 @@ export default function PostCard({ listName, date, listId, post, index }) {
 
 
   const deleteList = async () => {
-  const listDoc = doc(db, 'lists', listId);
-  try {
-    await deleteDoc(listDoc);
-  } catch (err) {
-    alert(err);
-  } 
-  return Date.now();
+  // const listDoc = doc(db, 'firms', competitorName);
+  // try {
+  //   await deleteDoc(listDoc);
+  // } catch (err) {
+  //   alert(err);
+  // } 
+  // return Date.now();
  };
 
   const cardClick = async () => {
-    window.location.href = `/listnames?listId=${listId}&listName=${listName}`;
+    // DROP IT DOWN
   }
 
   return (
@@ -164,9 +163,10 @@ export default function PostCard({ listName, date, listId, post, index }) {
 }
 
 PostCard.propTypes = {
-  post: PropTypes.object.isRequired,
-  index: PropTypes.number,
-  date: PropTypes.any,
-  listId: PropTypes.any,
-  listName: PropTypes.string,
+  linkedinData: PropTypes.object.isRequired,
+  traffic: PropTypes.any,
+  blogsThisMonth: PropTypes.any,
+  competitorName: PropTypes.string,
+  lastDate: PropTypes.any,
+  index: PropTypes.any,
 };
