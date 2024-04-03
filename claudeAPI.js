@@ -1,9 +1,12 @@
 const express = require('express');
+
 const cors = require('cors');
+
 const app = express();
 const port = 3050;
 
 require('dotenv').config();
+
 const Anthropic = require('@anthropic-ai/sdk');
 
 const anthropic = new Anthropic({
@@ -27,10 +30,10 @@ app.post('/claudeAPI', (req, res) => {
     const gptResponse = await anthropic.messages.create({
       // model: "claude-3-sonnet-20240229",
       // model: "claude-3-haiku-20240307",
-      model: model,
+      model,
       system: "",
       max_tokens: 4096,
-      messages: messages, 
+      messages, 
     });
     return gptResponse;
   }
