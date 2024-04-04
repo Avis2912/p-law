@@ -20,9 +20,9 @@ export const grey = {
 
 export const primary = {
   lighter: '#FFD0D0',   // Lightest shade of red
-  light: '#FFA4A4',     // Light shade of red
-  main: '#FF6171',      // Main red color
-  dark: '#FF4444',      // Dark shade of red
+  light: '#DD8390',     // Light shade of red
+  main: '#DD8390',      // Main red color
+  dark: '#DD8390',      // Dark shade of red
   darker: '#FF2222',   // Darkest shade of red
   contrastText: '#FFFFFF',
 

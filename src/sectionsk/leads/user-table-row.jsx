@@ -15,6 +15,7 @@ import { format } from 'date-fns';
 import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 import Button from '@mui/material/Button';
+// import { truncate } from 'fs/promises';
 
 // ----------------------------------------------------------------------
 
@@ -29,17 +30,19 @@ export default function UserTableRow({
   handleClick,
 }) {
   const [open, setOpen] = useState(false);
-  const [read, setRead] = useState(false);
+  const [read, setRead] = useState(true);
 
   let backgroundColor = 'green';
 
   const buttonText = date;
+  let formattedButtonText = buttonText.replace(/:\d{2}\s/, ' ');  
   const buttonDate = buttonText.split(' | ')[0];
-  const today = format(new Date(), 'MM/dd/yy');
+  const today = format(new Date(), 'MM/dd/yy'); 
   const isToday = buttonDate === today;
 
   backgroundColor = isToday ? 'green' : 'black';
-
+  formattedButtonText = isToday ? formattedButtonText.replace(/\d{2}\/\d{2}\/\d{2}/, 'Today') : formattedButtonText;
+  
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
   };
@@ -51,6 +54,7 @@ export default function UserTableRow({
   const handleRowClick = () => {
     handleClick();
     setRead(true);
+    console.log('read:', read);
     // setOpen(!open);
   };
 
@@ -97,11 +101,11 @@ export default function UserTableRow({
       {/* <Iconify icon="mdi:dot" color="red" sx={{ height: read ? 0 : 30, width: 30, }} /> */}
       
       <Button variant="contained" sx={{backgroundColor, '&:hover': { backgroundColor, },
-      boxShadow: 'none', position: 'absolute', left: '227.5px', borderRadius: '6px',
-      width: '135px', height: 'auto', paddingInline: '10px', fontSize: '12px', color: 'white',
+      boxShadow: 'none', position: 'absolute', left: '232.5px', borderRadius: '6px',
+      width: '115px', height: 'auto', paddingInline: '10px', fontSize: '12px', color: 'white',
       opacity: 0.7, paddingTop: '6px', paddingBottom: '6px',}}  
       >
-        {buttonText}
+        {formattedButtonText}
       </Button>
 
       <Typography 

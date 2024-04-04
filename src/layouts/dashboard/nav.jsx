@@ -2,6 +2,9 @@ import { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { getDownloadURL, ref, getStorage } from 'firebase/storage';
 
+import { db, auth } from 'src/firebase-config/firebase';
+import { getDocs, collection, doc, updateDoc } from 'firebase/firestore';
+
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Drawer from '@mui/material/Drawer';
@@ -15,7 +18,6 @@ import { usePathname } from 'src/routes/hooks';
 import { RouterLink } from 'src/routes/components';
 
 import { useResponsive } from 'src/hooks/use-responsive';
-import { auth } from 'src/firebase-config/firebase';
 
 // import { account } from 'src/_mock/account';
 
@@ -29,35 +31,32 @@ import navConfig from './config-navigation';
 
 export default function Nav({ openNav, onCloseNav }) {
 
-  const [profileSrc, setProfileSrc] = useState('/assets/images/avatars/avatar_20.jpg');
+  const [profileSrc, setProfileSrc] = useState('/assets/images/avatars/avatar_4.jpg');
+  const [firmName, setFirmName] = useState('hi');
 
-  // Fetch the profile image URL from Firebase Storage when the component mounts
   useEffect(() => {
-    const fetchProfileImage = async () => {
-      const storage = getStorage();
-      const imageRef = ref(storage, `brands/${auth.currentUser.email}/${auth.currentUser.email}`);
-      getDownloadURL(imageRef)
-        .then((url) => {
-          setProfileSrc(url);
-        })
-        .catch((error) => {
-          console.error('Error fetching profile image:', error);
-          // Handle any errors here, such as setting a default image if the profile image is not found
-          setProfileSrc('/assets/images/avatars/avatar_20.jpg'); // Default image
-        });
-    };
-
-    if (auth.currentUser) {
-      fetchProfileImage();
-    }
+    const firmDatabase = collection(db, 'firms');
+    const getFirmData = async () => {
+      try {
+        const data = await getDocs(firmDatabase);
+        const userDoc = data.docs.find((docc) => docc.id === 'testlawyers');
+        if (userDoc) {
+          await setFirmName(userDoc.data().FIRM_INFO.NAME); 
+          await setProfileSrc(userDoc.data().FIRM_INFO.IMAGE); 
+        } else {
+          alert('Error: User document not found.');
+        }
+      } catch (err) {
+        console.log(err);
+      }};
+    getFirmData();
   }, []);
 
   // Define the account object for the user
   const account = {
-    displayName: auth.currentUser
-      ? auth.currentUser.email.split('@')[0].charAt(0).toUpperCase() + auth.currentUser.email.split('@')[0].slice(1)
-      : 'N/A',
-    email: auth.currentUser ? auth.currentUser.email : 'N/A',
+    displayName: auth.currentUser // ? auth.currentUser.email.split('@')[0].charAt(0).toUpperCase() + auth.currentUser.email.split('@')[0].slice(1)
+    ? firmName: 'N/A',
+    email: auth.currentUser ? auth?.currentUser?.email : 'N/A',
     photoURL: profileSrc,
   };
 

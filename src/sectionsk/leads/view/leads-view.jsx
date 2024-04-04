@@ -34,7 +34,7 @@ export default function UserPage() {
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
-  const [rowsPerPage, setRowsPerPage] = useState(1000);
+  const [rowsPerPage, setRowsPerPage] = useState(50);
 
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [leads, setLeads] = useState([]);
@@ -86,7 +86,7 @@ export default function UserPage() {
     console.log(isChatOpen);
   }, [isChatOpen]);
 
-  const handleRowClick = async (event, number, row) => {
+  const handleRowClick = async (event, number, row, avatarUrl) => {
     let newIsChatOpen;
     if (!activeUser) {await setIsChatOpen(true); newIsChatOpen = true}
     else if (activeUser.NUMBER === number) {setIsChatOpen(false); newIsChatOpen = false}
@@ -104,8 +104,8 @@ export default function UserPage() {
           const leadItem = leadsArray.find(lead => lead.NUMBER === number);
           const leadsData = leadItem.CONVERSATION ? leadItem.CONVERSATION : [{assistant: "No Conversation Data Created"}];
           await setTexts(leadsData);
-          await setActiveUser(leadItem);
-          console.log(leadsData); 
+          const leadItemWithAvatar = {...leadItem, avatarUrl: `https://ui-avatars.com/api/?name=${row.NAME}`};
+          await setActiveUser(leadItemWithAvatar); console.log(leadsData); 
           } else {
           alert('Error: User document not found.');
         }
@@ -157,10 +157,10 @@ export default function UserPage() {
          
         <Stack direction="row" spacing={0} >
         
-        <Avatar cursor="pointer" src={user?.avatarUrl} onClick={() => handleClickRoute()} sx={{ mt: 0.40, mr: 2.0 }} />
+        <Avatar cursor="pointer" src={activeUser ? activeUser.avatarUrl : `https://ui-avatars.com/api/?name=NA`} onClick={() => handleClickRoute()} sx={{ mt: 0.40, mr: 2.0 }} />
 
         <Stack sx={{ width: '100%', mr: 2.5}} justifyContent="center" direction="column" 
-        spacing={0.0} alignItems="start">
+        spacing={0} alignItems="start">
             <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
             <Iconify icon="ant-design:phone-filled" style={{ color: 'black', height: '18px', width: '18px'  }} />
             <Typography >{activeUser ? activeUser.NUMBER : `Phone Number`}</Typography>
@@ -190,15 +190,14 @@ export default function UserPage() {
                   // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => (
                     <UserTableRow
-                      key={row.id}
+                      key={row.NUMBER}
                       name={row.NAME}
                       number={row.NUMBER}
                       email={row.EMAIL}
                       date={row.DATE_TIME}
                       desc={row.SUMMARY}
                       conversation={row.CONVERSATION}
-                      avatarUrl={`https://robohash.org/${row.id}`}
-                      isVerified={row.isVerified}
+                      avatarUrl={`https://ui-avatars.com/api/?name=${row.NAME}`}                      
                       selected={selected.indexOf(row.name) !== -1}
                       handleClick={(event) => {
                         handleRowClick(event, row.NUMBER, row);
@@ -224,8 +223,9 @@ export default function UserPage() {
           count={users.length}
           rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}
-          rowsPerPageOptions={[5, 10, 25, 1000]}
+          rowsPerPageOptions={[5, 10, 25, 50]}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          labelDisplayedRows={({ from, to, count }) => `${from}-${to} of ${count}`}
         />
       </Card>
 

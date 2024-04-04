@@ -18,9 +18,10 @@ import PostSort from '../post-sort';
 import PostSearch from '../post-search';
 
 const isImagesOn = true;
-const modelToUse = 'claude-3-haiku-20240307';
-// const modelToUse: 'claude-3-sonnet-20240229';
-// const modelToUse: 'claude-3-opus-20240229';
+const modelKeys = {
+1: 'claude-3-haiku-20240307',
+2: 'claude-3-sonnet-20240229',
+3: 'claude-3-opus-20240229'} 
 
 // ----------------------------------------------------------------------
 
@@ -43,9 +44,9 @@ export default function BlogView() {
   const [timeToUpdate, setTimeToUpdate] = useState("");
   const [isUpdateTime, setIsUpdateTime] = useState(false);
 
-
-  const [weeklyPosts, setWeeklyPosts] = useState([
-  ]);
+  const [selectedModel, setSelectedModel] = useState(1);
+  const [weeklyPosts, setWeeklyPosts] = useState([]);
+  const [bigBlogString, setBigBlogString] = useState([]);
 
   // PAGE LOAD FUNCTIONS
 
@@ -85,7 +86,21 @@ export default function BlogView() {
           const lastDateParts = userDoc.data().WEEKLY_POSTS.LAST_DATE.split('/');
           const lastDate = new Date(`20${lastDateParts[2]}/${lastDateParts[0]}/${lastDateParts[1]}`);
           const diffDays = 7 - Math.ceil((new Date() - lastDate) / (1000 * 60 * 60 * 24));
-          if (diffDays >= 1) {await setTimeToUpdate(diffDays)} else {setIsUpdateTime(true);}      
+          if (diffDays >= 1) {await setTimeToUpdate(diffDays)} else {setIsUpdateTime(true);}  
+          
+          // GET BIG BLOG DATA
+
+          const bigBlog = userDoc.data().BLOG_DATA.BIG_BLOG;
+          const selectedBlogs = [];
+          const numBlogsToSelect = Math.min(5, bigBlog.length);
+          for (let i = 0; i < numBlogsToSelect; i += 1) {
+            const randomIndex = Math.floor(Math.random() * bigBlog.length);
+            selectedBlogs.push(bigBlog[randomIndex]);
+            bigBlog.splice(randomIndex, 1);
+          }
+          const bigBlogData = selectedBlogs.map(blog => `${blog.TITLE}: ${blog.CONTENT}`).join('\n\n');
+          setBigBlogString(bigBlogData); console.log(bigBlogData); 
+          
           console.log(userDoc.data().WEEKLY_POSTS.POSTS);
         } else {
           alert('Error: User document not found.');
@@ -128,6 +143,7 @@ export default function BlogView() {
         - ${browseTextResponse !== "" && `WEB RESULTS: Consider using the following web information I got from an LLM for the prompt ${browseText}: ${browseTextResponse}`}
         - ${postKeywords !== "" && `KEYWORDS: Use the following keywords in your posts: ${postKeywords}.`}
         - ${style !== "Unstyled" && `STYLE: This blog post should SPECIFICALLY be written in the ${style} style.`}
+        - ${isUseBlog && `BLOGS: Use the following blogs from the firm to source content from: ${bigBlogString}.`}
         - DONT ADD ANY SPACE BETWEEN THE JSON AND ARRAY BRACKETS. It should be proper [{}, {}, {}].
 
         `
@@ -137,7 +153,7 @@ export default function BlogView() {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ messages, blogDescription: postDescription, blogKeywords: postKeywords,
-      model: 'claude-3-haiku-20240307' })
+      model: modelKeys[selectedModel] })
     });
 
     const gptResponse = (await response.text()); console.log(gptResponse);

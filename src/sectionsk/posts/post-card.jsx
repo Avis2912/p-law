@@ -40,12 +40,29 @@ export default function PostCard({ platform, content, index, isGen }) {
   }
 
   const [isCopied, setIsCopied] = useState(false);
+  const [imgUrl, setImgUrl] = useState(null);
 
   const copyText = async (text) => {
-    const postableText = text;
+    const imgRegex = /<image[^>]*src=['"]([^'"]*)['"][^>]*>/gi; const match = imgRegex.exec(text);
+    if (match) {const imgLink = match[1]; await setImgUrl(imgLink);} 
+    const postableText = text.replace(/<\/?h[1-3]>|<\/?b>|<image[^>]*>/gi, '').replace(/<br\s*\/?>/gi, '\n');
     await navigator.clipboard.writeText(postableText);
+    downloadPic(imgUrl);
   };
-  
+
+  const downloadPic = async (url) => {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    
+    const link = document.createElement('a');
+    link.href = blobUrl;
+    link.download = 'image.jpg'; // or any other filename you want
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const latestPostLarge = index === -10;
   const latestPost = index === -10 || index === -20;
   
@@ -73,6 +90,9 @@ export default function PostCard({ platform, content, index, isGen }) {
           {platform}
         </Typography> 
         </Stack>
+        <Iconify icon="uil:image-download"
+          sx={{right: '44.5px', top: '10.5px', height: '26px', width: '26px', position: 'absolute', color: 'white', cursor: 'pointer', opacity: '0.9'}}
+          onClick={async () => {setIsCopied(true); copyText(content);}}/>
         <Iconify icon={isCopied ? "mingcute:clipboard-fill" : "mingcute:clipboard-line"} 
           sx={{right: '13px', top: '11.5px', height: '26px', width: '26px', position: 'absolute', color: 'white', cursor: 'pointer', opacity: '0.9'}}
           onClick={async () => {setIsCopied(true); copyText(content);}}/>

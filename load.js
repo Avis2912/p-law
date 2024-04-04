@@ -31,10 +31,7 @@ const uploadSome = async () => {
             });
             console.log('New post added');
             process.exit(0); // Exit the process successfully
-        } else {
-            console.log('Error: User document not found.');
-            process.exit(1); // Exit the process with an error code
-        }
+        } else {console.log('Error: User document not found.'); process.exit(1); }
     } catch (err) {
         console.log(err);
         process.exit(1); // Exit the process with an error code

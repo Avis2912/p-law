@@ -14,9 +14,10 @@ import { Card, TextField } from '@mui/material';
 import { css, keyframes } from '@emotion/react';
 
 const isImagesOn = true;
-const modelToUse = 'claude-3-haiku-20240307';
-// const modelToUse: 'claude-3-sonnet-20240229';
-// const modelToUse: 'claude-3-opus-20240229';
+const modelKeys = {
+1: 'claude-3-haiku-20240307',
+2: 'claude-3-sonnet-20240229',
+3: 'claude-3-opus-20240229'} 
 
 const domain = window?.location?.origin || '';
 const anthropic = new Anthropic({
@@ -35,6 +36,7 @@ export default function ProductsView() {
   const [blogDescription, setBlogDescription] = useState('');
   const [blogKeywords, setBlogKeywords] = useState(null);
   const [smallBlog, setSmallBlog] = useState(null); 
+  const [internalLinks, setInternalLinks] = useState(null); 
 
   const [isGenMode, setIsGenMode] = useState(false);
   const [isAlterMode, setIsAlterMode] = useState(false);
@@ -43,7 +45,9 @@ export default function ProductsView() {
 
   const [isBrowseWeb, setIsBrowseWeb] = useState(false);
   const [browseText, setBrowseText] = useState("");
-  // const [browseTextResponse, setBrowseTextResponse] = useState(null);
+  const [selectedModel, setSelectedModel] = useState(1);
+  const [wordCount, setWordCount] = useState(0);
+  const [contactUsLink, setContactUsLink] = useState(null);
 
   const [isMimicBlogStyle, setIsMimicBlogStyle] = useState(false);
   const [imageCount, setImageCount] = useState("2 Images");
@@ -80,8 +84,12 @@ export default function ProductsView() {
         if (userDoc) {
           const smallBlogArray = userDoc.data().BLOG_DATA.SMALL_BLOG || [];
           const smallBlogString = smallBlogArray.map((item, index) => `{BLOG ${index + 1}}:\n\n${item}\n`).join('\n');
-          await setSmallBlog(smallBlogString);       
-          console.log(smallBlogString);
+          await setSmallBlog(userDoc.data().FIRM_INFO.CONTACT_US);   
+          await setContactUsLink(smallBlogString);           
+          const bigBlog = userDoc.data().BLOG_DATA.BIG_BLOG || [];
+          const internalLinkData = bigBlog.map(blog => `${blog.TITLE}: ${blog.LINK}`).join('\n');
+          await setInternalLinks(internalLinkData); console.log(internalLinkData);  
+          console.log(smallBlogString); 
         } else {
           alert('Error: User document not found.');
         }
@@ -125,7 +133,8 @@ export default function ProductsView() {
           Add two <br> tags after. Make sure these are evenly spaced out in the post and with specific and relevant descriptions.
           - ${style !== "Unstyled" && `STYLE: This blog post should be written in the ${style} style.`}
           - ${isMentionCaseLaw && `CASE LAW: Reference case law in the blog post when necessary.`}
-          - ${isUseInternalLinks && `INTERNAL LINKS: Add some internal links to the blog post using <a> tags.`}
+          - ${isUseInternalLinks && `INTERNAL LINKS: Add internal links to the blog post using <a> tags wherever applicable using thi data: ${internalLinks}.`}
+          - ${contactUsLink && `CONTACT US LINK: Use this contact us link with <a> tags toward the end if applicable: ${contactUsLink}`}
           - ${isReferenceGiven && `USEFUL DATA: Refer to the following text and use as applicable: ${referenceText}`}
           - ${browseTextResponse !== "" && `WEB RESULTS: Consider using the following web information I got from an LLM for the prompt ${browseText}: ${browseTextResponse}`}
           - NEVER OUTPUT ANYTHING other than the blog content. DONT START BY DESCRIBING WHAT YOURE OUTPUTING, JUST OUTPUT. 
@@ -184,8 +193,8 @@ export default function ProductsView() {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ messages, blogDescription, blogKeywords, 
-        model: modelToUse })
-    });
+        model: modelKeys[selectedModel] })
+      });
 
     const gptResponse = (await response.text()).replace(/<br><br> /g, '<br><br>'); console.log(gptResponse);
 
@@ -196,6 +205,7 @@ export default function ProductsView() {
     let textWithImages = gptResponse.trim();
     if (isImagesOn) {textWithImages = await addImages(gptResponse.trim());}
     await setText(textWithImages);
+    await setWordCount(textWithImages.split(' ').length);
     setIsGenerating(false);
 
     try {
@@ -413,6 +423,12 @@ export default function ProductsView() {
           // ...loadingAnimation
         }}
       />
+
+      <Typography sx={{ position: 'absolute', fontSize: '14px', fontFamily: 'Arial', 
+            top: '206.5px', right: '72.5px', letterSpacing: '-0.25px', fontWeight: '600' }}>
+        {wordCount && currentMode === "Alter Draft" ? `${wordCount} Words` : ''}
+      </Typography>
+
 
       
         <Stack direction="row" spacing={2} >
