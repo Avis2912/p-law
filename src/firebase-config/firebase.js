@@ -4,13 +4,13 @@ import { getFirestore, collection, getDocs } from 'firebase/firestore';
 import { getStorage, ref, listAll, getDownloadURL, uploadBytes, updateMetadata, getMetadata } from 'firebase/storage';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDySSZ4BcVkOP9XWyKWB-8kcRp35unMVBE",
-  authDomain: "pentra-beauty.firebaseapp.com",
-  projectId: "pentra-beauty",
-  storageBucket: "pentra-beauty.appspot.com",
-  messagingSenderId: "442585176085",
-  appId: "1:442585176085:web:473bd180ee9c03d4b6d61c",
-  measurementId: "G-N3ET2JTE5K"
+  apiKey: "AIzaSyDTHCh3zY33u47WqfBQrmUINYuFe68_0HY",
+  authDomain: "pentra-hub.firebaseapp.com",
+  projectId: "pentra-hub",
+  storageBucket: "pentra-hub.appspot.com",
+  messagingSenderId: "153834735221",
+  appId: "1:153834735221:web:a5cb4ef6822090f44b9a3c",
+  measurementId: "G-HLWN09H5X5"
 };
 
 const app = initializeApp(firebaseConfig);

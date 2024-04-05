@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { db, auth } from 'src/firebase-config/firebase';
+import { useState, useEffect } from 'react';
+import { getDocs, getDoc, collection, doc, updateDoc } from 'firebase/firestore';
 
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -37,16 +39,12 @@ import { emptyRows, applyFilter, getComparator } from '../utils';
 // ----------------------------------------------------------------------
 
 export default function UserPage() {
+  
   const [page, setPage] = useState(0);
-
   const [order, setOrder] = useState('asc');
-
   const [selected, setSelected] = useState([]);
-
   const [orderBy, setOrderBy] = useState('name');
-
   const [filterName, setFilterName] = useState('');
-
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [engagement, setEngagement] = useState([]);
@@ -54,6 +52,26 @@ export default function UserPage() {
   const [platforms, setPlatforms] = useState([]);
   const [followers, setFollowers] = useState([]);
   const [styles, setStyles] = useState([]);
+
+  const [reviewData, setReviewData] = useState([]);
+
+  useEffect(() => {
+    const getFirmData = async () => {
+      try {
+        const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
+        if (userDoc.exists()) {
+          const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
+          if (firmDoc.exists()) {
+            await setReviewData(firmDoc.data().REVIEWS);
+          } else {
+            console.log('Error: Firm document not found.');
+          }}
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getFirmData();
+  }, []);
 
 
   const handleSort = (event, id) => {

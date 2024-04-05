@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 
 import { db, auth } from 'src/firebase-config/firebase';
-import { getDocs, addDoc, collection, doc, updateDoc } from 'firebase/firestore';
+import { getDocs, getDoc, addDoc, collection, doc, updateDoc } from 'firebase/firestore';
 
 import Iconify from 'src/components/iconify';
 import { useState, useEffect } from 'react';
@@ -27,14 +27,18 @@ export default function ListsView() {
     const firmDatabase = collection(db, 'firms');
     const getFirmData = async () => {
       try {
-        const data = await getDocs(firmDatabase);
-        const userDoc = data.docs.find((docc) => docc.id === 'testlawyers');
-        if (userDoc) {
-          await setCompetition(userDoc.data().COMPETITION || []); console.log(userDoc.data().COMPETITION);
-          const lastDateParts = userDoc.data().WEEKLY_POSTS.LAST_DATE.split('/');
-          const lastDate = new Date(`20${lastDateParts[2]}/${lastDateParts[0]}/${lastDateParts[1]}`);
-          const diffDays = 7 - Math.ceil((new Date() - lastDate) / (1000 * 60 * 60 * 24));
-          if (diffDays >= 1) {await setTimeToUpdate(diffDays)} else {setIsUpdateTime(true);}  
+        const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
+        if (userDoc.exists()) {
+          const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
+          if (firmDoc.exists()) {
+            await setCompetition(firmDoc.data().COMPETITION || []); console.log(firmDoc.data().COMPETITION);
+            const lastDateParts = firmDoc.data().WEEKLY_POSTS.LAST_DATE.split('/');
+            const lastDate = new Date(`20${lastDateParts[2]}/${lastDateParts[0]}/${lastDateParts[1]}`);
+            const diffDays = 7 - Math.ceil((new Date() - lastDate) / (1000 * 60 * 60 * 24));
+            if (diffDays >= 1) {await setTimeToUpdate(diffDays)} else {setIsUpdateTime(true);}  
+          } else {
+            alert('Error: Firm document not found.');
+          }
         } else {
           alert('Error: User document not found.');
         }

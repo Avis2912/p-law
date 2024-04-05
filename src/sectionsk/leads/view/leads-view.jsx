@@ -14,7 +14,7 @@ import { users } from 'src/_mock/user';
 import { Box, TextField, Avatar } from '@mui/material';
 
 import { db, auth } from 'src/firebase-config/firebase';
-import { getDocs, addDoc, collection, doc, updateDoc } from 'firebase/firestore';
+import { getDocs, getDoc, addDoc, collection, doc, updateDoc } from 'firebase/firestore';
 
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
@@ -44,18 +44,18 @@ export default function UserPage() {
   ]);
 
   useEffect(() => {
-    const firmDatabase = collection(db, 'firms');
     const getFirmData = async () => {
       try {
-        const data = await getDocs(firmDatabase);
-        const userDoc = data.docs.find((docc) => docc.id === 'testlawyers');
-        if (userDoc) {
-          const leadsData = userDoc.data().LEADS || [];
-          setLeads(leadsData || []);          
-          console.log(leadsData);
-        } else {
-          alert('Error: User document not found.');
-        }
+        const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
+        if (userDoc.exists()) {
+          const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
+          if (firmDoc.exists()) {
+            const leadsData = firmDoc.data().LEADS || [];
+            setLeads(leadsData);          
+            console.log(leadsData);
+          } else {
+            console.log('Error: Firm document not found.');
+          }}
       } catch (err) {
         console.log(err);
       }
@@ -63,25 +63,7 @@ export default function UserPage() {
     getFirmData();
   }, []);
 
-  const handleSort = (event, id) => {
-    const isAsc = orderBy === id && order === 'asc';
-    if (id !== '') {
-      setOrder(isAsc ? 'desc' : 'asc');
-      setOrderBy(id);
-    }
-  };
-
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = users.map((n) => n.name);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const [user, setUser] = useState(null);
-
+  
   useEffect(() => {
     console.log(isChatOpen);
   }, [isChatOpen]);
@@ -94,27 +76,12 @@ export default function UserPage() {
 
     if (!newIsChatOpen) {setActiveUser(null); return};
 
-    const firmDatabase = collection(db, 'firms');
-    const getFirmData = async () => {
-      try {
-        const data = await getDocs(firmDatabase);
-        const userDoc = data.docs.find((docc) => docc.id === 'testlawyers');
-        if (userDoc) {
-          const leadsArray = userDoc.data().LEADS || [];
-          const leadItem = leadsArray.find(lead => lead.NUMBER === number);
-          const leadsData = leadItem.CONVERSATION ? leadItem.CONVERSATION : [{assistant: "No Conversation Data Created"}];
-          await setTexts(leadsData);
-          const leadItemWithAvatar = {...leadItem, avatarUrl: `https://ui-avatars.com/api/?name=${row.NAME}`};
-          await setActiveUser(leadItemWithAvatar); console.log(leadsData); 
-          } else {
-          alert('Error: User document not found.');
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getFirmData();
-    
+    const leadsArray = leads; 
+    const leadItem = leadsArray.find(lead => lead.NUMBER === number);
+    const leadsData = leadItem.CONVERSATION ? leadItem.CONVERSATION : [{assistant: "No Conversation Data Created"}];
+    await setTexts(leadsData);
+    const leadItemWithAvatar = {...leadItem, avatarUrl: `https://ui-avatars.com/api/?name=${row.NAME}`};
+    await setActiveUser(leadItemWithAvatar); console.log(leadsData); 
   };
 
   const handleChangePage = (event, newPage) => {

@@ -15,7 +15,7 @@ const navConfig = [
   {
     title: 'SEO Blogger',
     path: '/seo',
-    icon: icon('ic_user'),
+    icon: icon('ic_blog'),
   },
   {
     title: 'Post Generator',
@@ -25,12 +25,12 @@ const navConfig = [
   {
     title: 'My Site Leads',
     path: '/leads',
-    icon: icon('ic_blog'),
+    icon: icon('ic_user'),
   },
   {
     title: 'Competition',
     path: '/competition',
-    icon: icon('ic_blog'),
+    icon: icon('ic_user'),
   },
   {
     title: 'Firm Reviews',

@@ -72,8 +72,8 @@ export default function UserTableRow({
     <Stack sx={{ ml: 0.5 }} direction="row" alignItems="center" spacing={2}> {/* <-- Applied margin left here */}
       <Avatar alt={name} src={avatarUrl} />
 
-      <Stack spacing={0}>
-        <Stack direction="row" justifyContent="left" spacing={1}>
+      <Stack spacing={0} sx={{ pl: 0.5 }}>
+      <Stack direction="row" justifyContent="left" spacing={1}>
       <Typography variant="subtitle2" noWrap>
         {name}
       </Typography>

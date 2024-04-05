@@ -6,7 +6,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import { getDocs, collection, doc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { getDocs, getDoc, collection, doc, updateDoc, arrayUnion } from 'firebase/firestore';
 import Iconify from 'src/components/iconify';
 import { db, auth } from 'src/firebase-config/firebase';
 import Button from '@mui/material/Button';
@@ -19,11 +19,6 @@ const modelKeys = {
 2: 'claude-3-sonnet-20240229',
 3: 'claude-3-opus-20240229'} 
 
-const domain = window?.location?.origin || '';
-const anthropic = new Anthropic({
-  apiKey: `${import.meta.env.VITE_ANTHROPIC_API_KEY}`,
-  baseURL: `/api`, 
-});
 
 // ----------------------------------------------------------------------
 
@@ -76,29 +71,32 @@ export default function ProductsView() {
   }, [isGenerating]);
 
   useEffect(() => {
-    const firmDatabase = collection(db, 'firms');
+
     const getFirmData = async () => {
       try {
-        const data = await getDocs(firmDatabase);
-        const userDoc = data.docs.find((docc) => docc.id === 'testlawyers');
-        if (userDoc) {
-          const smallBlogArray = userDoc.data().BLOG_DATA.SMALL_BLOG || [];
-          const smallBlogString = smallBlogArray.map((item, index) => `{BLOG ${index + 1}}:\n\n${item}\n`).join('\n');
-          await setSmallBlog(userDoc.data().FIRM_INFO.CONTACT_US);   
-          await setContactUsLink(smallBlogString);           
-          const bigBlog = userDoc.data().BLOG_DATA.BIG_BLOG || [];
-          const internalLinkData = bigBlog.map(blog => `${blog.TITLE}: ${blog.LINK}`).join('\n');
-          await setInternalLinks(internalLinkData); console.log(internalLinkData);  
-          console.log(smallBlogString); 
-        } else {
-          alert('Error: User document not found.');
+        const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
+        if (userDoc.exists()) {
+          const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
+          if (firmDoc.exists()) {
+            const smallBlogArray = firmDoc.data().BLOG_DATA.SMALL_BLOG || [];
+            const smallBlogString = smallBlogArray.map((item, index) => `{BLOG ${index + 1}}:\n\n${item}\n`).join('\n');
+            await setSmallBlog(smallBlogString);   
+            await setContactUsLink(firmDoc.data().FIRM_INFO.CONTACT_US);         
+            const bigBlog = firmDoc.data().BLOG_DATA.BIG_BLOG || [];
+            const internalLinkData = bigBlog.map(blog => `${blog.TITLE}: ${blog.LINK}`).join('\n');
+            await setInternalLinks(internalLinkData); 
+            console.log(internalLinkData);  
+            console.log(smallBlogString); 
+          } else {
+            console.log('Error: Firm document not found.');
+          }
         }
       } catch (err) {
         console.log(err);
       }
     };
-
     getFirmData();
+  
   }, []);
 
   // BLOG GENERATION
@@ -120,25 +118,10 @@ export default function ProductsView() {
 
          ${isMimicBlogStyle && 
           `HERE ARE SOME SAMPLE BLOGS TO LEARN FROM. REPRODUCE THIS TONE & STYLE PERFECTLY IN YOUR OUTPUT.
-         ${smallBlog}`
-          } 
+         ${smallBlog}`} 
 
-
-          IMPORTANT INSTRUCTIONS:
-          - FORMATTING IN RICH TEXT: Wrap titles in <h1> and <h2> tags. Wrap all paragraphs in <p> tags. Wrap parts to be BOLDED in <b> tags. 
-          - <br> TAG RULES: add ONE <br> tag after EVERY </p>. ONE AFTER every closing </h1> AND </h2> tags. and TWO after EVERY image.
-          - WORD RANGE: this post should be ${wordRange} long.
-          - PERSPECTIVE: Don't refer to yourself in the post, but feel free to explain how your firm Thompson Lawyers can help.
-          - IMAGES: blog post should contain ${imageCount}. Please add representations of them in this format: //Image: Idaho Courthouse// OR //Image: Chapter 7 Bankruptcy Flowchart//. 
-          Add two <br> tags after. Make sure these are evenly spaced out in the post and with specific and relevant descriptions.
-          - ${style !== "Unstyled" && `STYLE: This blog post should be written in the ${style} style.`}
-          - ${isMentionCaseLaw && `CASE LAW: Reference case law in the blog post when necessary.`}
-          - ${isUseInternalLinks && `INTERNAL LINKS: Add internal links to the blog post using <a> tags wherever applicable using thi data: ${internalLinks}.`}
-          - ${contactUsLink && `CONTACT US LINK: Use this contact us link with <a> tags toward the end if applicable: ${contactUsLink}`}
-          - ${isReferenceGiven && `USEFUL DATA: Refer to the following text and use as applicable: ${referenceText}`}
           - ${browseTextResponse !== "" && `WEB RESULTS: Consider using the following web information I got from an LLM for the prompt ${browseText}: ${browseTextResponse}`}
-          - NEVER OUTPUT ANYTHING other than the blog content. DONT START BY DESCRIBING WHAT YOURE OUTPUTING, JUST OUTPUT. 
-
+          
           `
         });
       }
@@ -147,7 +130,8 @@ export default function ProductsView() {
         messages.push({
           "role": "user", 
           "content": `You are Pentra AI, a legal expert and an expert SEO blog writer. 
-          Write a detailed blog outline in rich text format using <b> tags and <br> tags (after every paragraph/line) based on the following topic: ${blogDescription}. ${blogKeywords && `Keywords: ${blogKeywords}`}.`
+          Write a detailed blog outline in rich text format using <b> tags and <br> tags (after every paragraph/line) based on the following topic: ${blogDescription}. ${blogKeywords && `Keywords: ${blogKeywords}`}.
+          KEEP IN MIND: this is for a blog post ${wordRange} long.`
         });
       }
 
@@ -166,7 +150,7 @@ export default function ProductsView() {
           Add two <br> tags after. Make sure these are evenly spaced out in the post and with specific and relevant descriptions.
           - ${style !== "Unstyled" && `STYLE: This blog post should be written in the ${style} style.`}
           - ${isMentionCaseLaw && `CASE LAW: Reference case law in the blog post when necessary.`}
-          - ${isUseInternalLinks && `INTERNAL LINKS: Add some internal links to the blog post using <a> tags.`}
+          - ${isUseInternalLinks && `INTERNAL LINKS: Add internal links to the blog post using <a> tags.`}
           - ${isReferenceGiven && `USEFUL DATA: Refer to the following text and use as applicable: ${referenceText}`}
           - ${browseTextResponse !== "" && `WEB RESULTS: Consider using the following web information I got from an LLM for the prompt ${browseText}: ${browseTextResponse}`}
           `
@@ -193,7 +177,21 @@ export default function ProductsView() {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ messages, blogDescription, blogKeywords, 
-        model: modelKeys[selectedModel] })
+        model: modelKeys[selectedModel], system: `<instruction>
+        IMPORTANT INSTRUCTIONS:
+        - FORMATTING IN RICH TEXT: Wrap titles in <h1> and <h2> tags. Wrap all paragraphs in <p> tags. Wrap parts to be BOLDED in <b> tags. 
+        - <br> TAG RULES: add ONE <br> tag after EVERY </p>. ONE AFTER every closing </h1> AND </h2> tags. and TWO after EVERY image.
+        - WORD RANGE: this post should be ${wordRange} long.
+        - PERSPECTIVE: Don't refer to yourself in the post, but feel free to explain how your firm Thompson Lawyers can help.
+        ${imageCount !== "No Images" && `- IMAGES: blog post should contain ${imageCount}. Please add representations of them in this format: //Image: Idaho Courthouse// OR //Image: Chapter 7 Bankruptcy Flowchart//.
+        Add two <br> tags after. Make sure these are evenly spaced out in the post and with specific and relevant descriptions.`}
+        - ${style !== "Unstyled" && `STYLE: This blog post should be written in the ${style} style.`}
+        - ${isMentionCaseLaw && `CASE LAW: Reference case law in the blog post when necessary.`}
+        - ${isReferenceGiven && `USEFUL DATA: Refer to the following text and use as applicable: ${referenceText}`}
+        - ${contactUsLink && `CONTACT US LINK AT END: Use this contact us link with <a> tags toward the end if applicable: ${contactUsLink}`}
+        - ${isUseInternalLinks && `LINK TO RELEVANT POSTS: Use <a> tags to add link(s) to relevant blog posts from the firm wherever applicable: ${internalLinks}.`}
+        - NEVER OUTPUT ANYTHING other than the blog content. DONT START BY DESCRIBING WHAT YOURE OUTPUTING, JUST OUTPUT. 
+        </instruction>` })
       });
 
     const gptResponse = (await response.text()).replace(/<br><br> /g, '<br><br>'); console.log(gptResponse);
@@ -204,8 +202,8 @@ export default function ProductsView() {
 
     let textWithImages = gptResponse.trim();
     if (isImagesOn) {textWithImages = await addImages(gptResponse.trim());}
-    await setText(textWithImages);
-    await setWordCount(textWithImages.split(' ').length);
+    console.log('1'); await setText(textWithImages); console.log('2');
+    if (currentMode === "Generate") await setWordCount(textWithImages.split(' ').length);
     setIsGenerating(false);
 
     try {
@@ -215,7 +213,7 @@ export default function ProductsView() {
       if (userDoc) {  
         const userDocRef = doc(db, 'firms', userDoc.id);
         const currentDate = new Date();
-        const formattedDate = `${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear().toString().substr(-2)}`;
+        const formattedDate = `${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear().toString().substr(-2)} | ${currentDate.getHours() % 12 || 12}:${currentDate.getMinutes()} ${currentDate.getHours() >= 12 ? 'PM' : 'AM'}`;
         const genPosts = userDoc.data().GEN_POSTS || [];
         const newPost = { [formattedDate]: textWithImages }; genPosts.unshift(newPost);
         await updateDoc(userDocRef, { GEN_POSTS: genPosts });

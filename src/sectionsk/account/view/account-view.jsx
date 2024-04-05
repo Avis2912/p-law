@@ -12,7 +12,7 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box'
 
 import { db, auth } from 'src/firebase-config/firebase';
-import { getDocs, collection, doc, updateDoc } from 'firebase/firestore';
+import { getDocs, getDoc, collection, doc, updateDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, getStorage, deleteObject, uploadString } from 'firebase/storage'; // Import necessary Firebase Storage functions
 import { List, ListItem, ListItemText } from '@mui/material';
 
@@ -47,17 +47,20 @@ export default function AccountView() {
   const navigate = useNavigate(); 
 
   useEffect(() => {
-    const firmDatabase = collection(db, 'firms');
     const getFirmData = async () => {
       try {
-        const data = await getDocs(firmDatabase);
-        const userDoc = data.docs.find((docc) => docc.id === 'testlawyers');
-        if (userDoc) {
-          await setUserData(userDoc.data().FIRM_INFO || []); console.log(userDoc.data().FIRM_INFO);
-          await setSelectedModel(userDoc.data().FIRM_INFO.MODEL || 2);
-          await setImagePfp(userDoc.data().FIRM_INFO.IMAGE || '');
-          await setIndexedBlogs(userDoc.data().BLOG_DATA.BIG_BLOG || {});
-          } else {alert('Error: User document not found.')};
+        const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
+        if (userDoc.exists()) {
+          const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
+          if (firmDoc.exists()) {
+            await setUserData(firmDoc.data().FIRM_INFO || []);
+            await setSelectedModel(firmDoc.data().FIRM_INFO.MODEL || 2);
+            await setImagePfp(firmDoc.data().FIRM_INFO.IMAGE || '');
+            await setIndexedBlogs(firmDoc.data().BLOG_DATA.BIG_BLOG || {});
+          } else {
+            console.log('Error: Firm document not found.');
+          }
+        } 
       } catch (err) {console.log(err);}
     };
     getFirmData();
@@ -259,8 +262,7 @@ const handleImageChange = (event) => {
       id="outlined-multiline-flexible"
       label=""
       multiline
-      minRows={3}
-      maxRows={3}
+      minRows={3} maxRows={3}
       onChange={(e) => setFirmDescription(e.target.value)}
       defaultValue={userData.DESCRIPTION} />
 
@@ -292,7 +294,17 @@ const handleImageChange = (event) => {
 
       </List>
 
-      <Stack direction="row" spacing={2} mb={2.5} mt={4.25} pl={5} justifyContent="space-between" alignItems="center" >
+      {/* <Stack direction="row" spacing={2} mb={0} mt={3.5} pl={5} justifyContent="space-between" alignItems="center" >
+
+      <Typography fontSize="24px" letterSpacing={0.25}
+      fontWeight={100} mt={0} mx={5} mb={0} 
+      fontFamily="DM Serif Display">
+      Contact Link
+      </Typography>
+
+      </Stack> */}
+
+      <Stack direction="row" spacing={2} mb={2.5} mt={4.5} pl={5} justifyContent="space-between" alignItems="center" >
 
       <Typography fontSize="24px" letterSpacing={0.25}
       fontWeight={100} mt={3} mx={5} mb={2} 

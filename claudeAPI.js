@@ -24,6 +24,7 @@ app.use(express.json()); // Use express.json middleware to parse JSON bodies
 app.post('/claudeAPI', (req, res) => {
   const messages = req.body.messages; // Access messages from request body
   const model = req.body.model; 
+  const system = req.body.system;
 
 
   const hi = async () => {
@@ -31,7 +32,7 @@ app.post('/claudeAPI', (req, res) => {
       // model: "claude-3-sonnet-20240229",
       // model: "claude-3-haiku-20240307",
       model,
-      system: "",
+      system,
       max_tokens: 4096,
       messages, 
     });

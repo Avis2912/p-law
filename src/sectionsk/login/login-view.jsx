@@ -45,7 +45,7 @@ export default function LoginView() {
 
 
   const createBrandDocument = async (user) => {
-    const brandRef = doc(db, 'brands', user.email);
+    const brandRef = doc(db, 'users', user.email);
     const brandSnapshot = await getDoc(brandRef);
 
     if (!brandSnapshot.exists()) {
@@ -53,17 +53,8 @@ export default function LoginView() {
         const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'short' })}`;
 
         await setDoc(brandRef, {
-            uid: user.uid,
-            email: user.email,
-            lists: [{date: formattedDate, listName:"❤️ Favourites", listMembers: []},],
-            campaigns: [],
-            conversations: [],
-            date_signed_up: formattedDate,
-            messages: {gift: "Heya! This is Amanda from FENTY. We're absolutely in love with your content and would be super interested in sending over some stuff and collaborating long-term. Can we hop on a call?",
-            sponsor: "Hey! This is Amanda from FENTY. We're looking to promote our newest line of winter lipgloss and I'd love to send over a pack to you for an Instagram post promoting us. What would a fair price be?",
-            default: "Heya! This is Amanda from FENTY. We're absolutely in love with your content and would be super interested in sending over some stuff and collaborating long-term. Can we hop on a call?"},
-            user_name: '',
-            brand_name: ''
+            FIRM: 'testlawyers',
+            DATE_SIGNED_UP: formattedDate,
         });
     }
 }

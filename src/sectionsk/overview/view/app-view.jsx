@@ -9,7 +9,7 @@ import Iconify from 'src/components/iconify';
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 
-import { getDocs, addDoc, collection, doc, updateDoc } from 'firebase/firestore';
+import { getDocs, getDoc, addDoc, collection, doc, updateDoc } from 'firebase/firestore';
 
 
 import AppTasks from '../app-tasks';
@@ -27,47 +27,27 @@ import AppConversionRates from '../app-conversion-rates';
 export default function AppView() {
 
   const [brandCampaigns, setBrandCampaigns] = useState([]);
-  const [brandName, setBrandName] = useState('');
-
-
-  
+  const [firmName, setFirmName] = useState('');
  
   useEffect(() => {
-
-
-  const brandsData = collection(db, 'firms');
-
-  const getProfilePictureUrl = async (campaignId) => {
-    const storage = getStorage();
-    const storageRef = ref(storage, `brands/${auth.currentUser.email}/${campaignId}`);
-    try {
-      const downloadUrl = await getDownloadURL(storageRef);
-      return downloadUrl;
-    } catch (err) {
-      console.error('Error fetching campaign image:', err);
-      // Return a default image or handle accordingly
-      return '/assets/images/avatars/avatar_1.jpg';
-    }
-    };  
-
-    const getBrandCampaigns = async () => {
-      const data = await getDocs(brandsData);
-      const userDoc = data.docs.find(docc => docc.id === auth.currentUser.email);
-      if (userDoc) {
-        const name = userDoc.data().user_name || [];
-        const campaigns = userDoc.data().campaigns || [];
-        const campaignsWithPfp = await Promise.all(campaigns.map(async (campaign) => {
-          const pfpUrl = await getProfilePictureUrl(campaign.campaign_id);
-          return { ...campaign, pfpUrl };
-        }));
-        setBrandCampaigns(campaignsWithPfp);
-        setBrandName(name);
-      } else {
-        console.log('Error: User document not found.');
+    const getFirmData = async () => {
+      try {
+        const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
+        if (userDoc.exists()) {
+          const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
+          if (firmDoc.exists()) {
+            await setFirmName(firmDoc.data().FIRM_INFO.NAME);
+          } else {
+            alert('Error: Firm document not found.');
+          }
+        } else {
+          alert('Error: User document not found.');
+        }
+      } catch (err) {
+        console.log(err);
       }
     };
-    
-    getBrandCampaigns();
+    getFirmData();
   }, []);
 
   const PlaceholderCampaign = {
@@ -119,7 +99,7 @@ export default function AppView() {
       </style>
       <Typography variant="h3" sx={{ mb: 5, fontWeight: 700,letterSpacing: '-0.02em', 
         fontFamily: '"Yeseva One", sans-serif', color: '#272727'}}>
-        Hey Martin Lawyers, Welcome Back 👋
+        Hey {firmName}, Welcome Back 👋
       </Typography>
 
       <Grid container spacing={3}>

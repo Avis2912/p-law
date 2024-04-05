@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 
 import { db, auth } from 'src/firebase-config/firebase';
 import { useState, useEffect } from 'react';
-import { getDocs, collection, doc, updateDoc } from 'firebase/firestore';
+import { getDocs, getDoc, collection, doc, updateDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, getStorage } from 'firebase/storage'; // Import necessary Firebase Storage functions
 
 import Iconify from 'src/components/iconify';
@@ -76,35 +76,34 @@ export default function BlogView() {
       }
     }
     
-    const firmDatabase = collection(db, 'firms');
     const getFirmData = async () => {
       try {
-        const data = await getDocs(firmDatabase);
-        const userDoc = data.docs.find((docc) => docc.id === 'testlawyers');
-        if (userDoc) {
-          await setWeeklyPosts(userDoc.data().WEEKLY_POSTS.POSTS || []);
-          const lastDateParts = userDoc.data().WEEKLY_POSTS.LAST_DATE.split('/');
-          const lastDate = new Date(`20${lastDateParts[2]}/${lastDateParts[0]}/${lastDateParts[1]}`);
-          const diffDays = 7 - Math.ceil((new Date() - lastDate) / (1000 * 60 * 60 * 24));
-          if (diffDays >= 1) {await setTimeToUpdate(diffDays)} else {setIsUpdateTime(true);}  
-          
-          // GET BIG BLOG DATA
+        const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
+        if (userDoc.exists()) {
+          const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
+          if (firmDoc.exists()) {
+            await setWeeklyPosts(firmDoc.data().WEEKLY_POSTS.POSTS || []);
+            const lastDateParts = firmDoc.data().WEEKLY_POSTS.LAST_DATE.split('/');
+            const lastDate = new Date(`20${lastDateParts[2]}/${lastDateParts[0]}/${lastDateParts[1]}`);
+            const diffDays = 7 - Math.ceil((new Date() - lastDate) / (1000 * 60 * 60 * 24));
+            if (diffDays >= 1) {await setTimeToUpdate(diffDays);} else {setIsUpdateTime(true);}
 
-          const bigBlog = userDoc.data().BLOG_DATA.BIG_BLOG;
-          const selectedBlogs = [];
-          const numBlogsToSelect = Math.min(5, bigBlog.length);
-          for (let i = 0; i < numBlogsToSelect; i += 1) {
-            const randomIndex = Math.floor(Math.random() * bigBlog.length);
-            selectedBlogs.push(bigBlog[randomIndex]);
-            bigBlog.splice(randomIndex, 1);
-          }
-          const bigBlogData = selectedBlogs.map(blog => `${blog.TITLE}: ${blog.CONTENT}`).join('\n\n');
-          setBigBlogString(bigBlogData); console.log(bigBlogData); 
-          
-          console.log(userDoc.data().WEEKLY_POSTS.POSTS);
-        } else {
-          alert('Error: User document not found.');
-        }
+            // GET BIG BLOG DATA
+
+            const bigBlog = firmDoc.data().BLOG_DATA.BIG_BLOG;
+            const selectedBlogs = [];
+            const numBlogsToSelect = Math.min(5, bigBlog.length);
+            for (let i = 0; i < numBlogsToSelect; i += 1) {
+              const randomIndex = Math.floor(Math.random() * bigBlog.length);
+              selectedBlogs.push(bigBlog[randomIndex]);
+              bigBlog.splice(randomIndex, 1);
+            }
+            const bigBlogData = selectedBlogs.map(blog => `${blog.TITLE}: ${blog.CONTENT}`).join('\n\n');
+            setBigBlogString(bigBlogData);
+            console.log(bigBlogData);
+
+            console.log(firmDoc.data().WEEKLY_POSTS.POSTS);
+          }}
       } catch (err) {
         console.log(err);
       }
@@ -167,17 +166,18 @@ export default function BlogView() {
     setIsGenerating(false);
 
     try {
-      const firmDatabase = collection(db, 'firms');
-      const data = await getDocs(firmDatabase);
-      const userDoc = data.docs.find((docc) => docc.id === 'testlawyers');
-      if (userDoc) {  
-        const userDocRef = doc(db, 'firms', userDoc.id);
+      const userDoc = await getDoc(doc(db, 'firms', 'testlawyers'));
+      if (userDoc.exists()) {
         const currentDate = new Date();
-        const formattedDate = `${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear().toString().substr(-2)}`;
+        const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'long' })} ${currentDate.getFullYear()} | ${(currentDate.getHours() % 12 || 12).toString().padStart(2, '0')}:${currentDate.getMinutes().toString().padStart(2, '0')} ${currentDate.getHours() >= 12 ? 'PM' : 'AM'}`;
         const genPosts = userDoc.data().GEN_POSTS || [];
-        const newPost = { [formattedDate]: textWithImages }; genPosts.unshift(newPost);
-        await updateDoc(userDocRef, { GEN_POSTS: genPosts });
-    }} catch (err) {console.log(err);}
+        const newPost = { [formattedDate]: textWithImages }; 
+        genPosts.unshift(newPost);
+        await updateDoc(doc(db, 'firms', userDoc.id), { GEN_POSTS: genPosts });
+      }
+    } catch (err) {
+      console.log(err);
+    }
     
   }
 
