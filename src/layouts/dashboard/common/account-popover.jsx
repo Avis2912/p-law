@@ -62,7 +62,7 @@ export default function AccountPopover() {
         console.log(err);
       }
     };
-    getFirmData();
+    setTimeout(getFirmData, 2000);
   }, []);
 
   

@@ -26,11 +26,8 @@ app.post('/claudeAPI', (req, res) => {
   const model = req.body.model; 
   const system = req.body.system;
 
-
   const hi = async () => {
     const gptResponse = await anthropic.messages.create({
-      // model: "claude-3-sonnet-20240229",
-      // model: "claude-3-haiku-20240307",
       model,
       system,
       max_tokens: 4096,

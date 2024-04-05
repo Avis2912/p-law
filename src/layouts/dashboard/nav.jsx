@@ -48,8 +48,8 @@ export default function Nav({ openNav, onCloseNav }) {
         console.log(err);
       }
     };
-    getFirmData();
-  }, []);
+    setTimeout(getFirmData, 2000);
+    }, []);
 
   // Define the account object for the user
   const account = {

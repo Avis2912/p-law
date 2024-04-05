@@ -102,7 +102,7 @@ export default function UserTableRow({
       
       <Button variant="contained" sx={{backgroundColor, '&:hover': { backgroundColor, },
       boxShadow: 'none', position: 'absolute', left: '232.5px', borderRadius: '6px',
-      width: '115px', height: 'auto', paddingInline: '10px', fontSize: '12px', color: 'white',
+      width: '120px', height: 'auto', paddingInline: '10px', fontSize: '12px', color: 'white',
       opacity: 0.7, paddingTop: '6px', paddingBottom: '6px',}}  
       >
         {formattedButtonText}

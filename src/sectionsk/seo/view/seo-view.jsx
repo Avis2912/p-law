@@ -39,6 +39,7 @@ export default function ProductsView() {
   const [isAlterMode, setIsAlterMode] = useState(false);
   const [currentMode, setCurrentMode] = useState('Build Outline');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isElongating, setIsElongating] = useState(false);
 
   const [isBrowseWeb, setIsBrowseWeb] = useState(false);
   const [browseText, setBrowseText] = useState("");
@@ -109,7 +110,7 @@ export default function ProductsView() {
 
       setText(`<h1>✨ Generating${dots} </h1>`);
       setIsGenerating(true);
-      const messages = [];
+      let messages = [];
 
       let browseTextResponse = "";
 
@@ -177,15 +178,15 @@ export default function ProductsView() {
       if (currentMode === "Generate") {setCurrentMode('Alter Draft');};
 
 
-    const response = await fetch('http://localhost:3050/claudeAPI', {
+    const claudeResponse = await fetch('http://localhost:3050/claudeAPI', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ messages, blogDescription, blogKeywords, 
+      body: JSON.stringify({ messages, blogDescription, blogKeywords,
         model: modelKeys[selectedModel], system: 
-        currentMode === "Generate" ?
-
+        `
+        ${currentMode === "Generate" ?
         `
         <role>You are Pentra AI, a friendly, witty legal & creative writing expert for ${firmName}. ${firmDescription}.
         Mention firm ONLY at the end. </role> 
@@ -209,24 +210,51 @@ export default function ProductsView() {
         - ${browseTextResponse !== "" && `WEB RESULTS: Consider using the following web information I got from an LLM for the prompt ${browseText}: ${browseTextResponse}`}
         - ${isUseInternalLinks && `LINK TO RELEVANT POSTS: Use <a> tags to add link(s) to relevant blog posts from the firm wherever applicable: ${internalLinks}.`}
         - NEVER OUTPUT ANYTHING other than the blog content. DONT START BY DESCRIBING WHAT YOURE OUTPUTING, JUST OUTPUT. 
-        
       
         </instruction>
-        
-        ` : `<role>You are Pentra AI, a legal expert and an expert SEO blog writer for ${firmName}. ${firmDescription}.</role>`})
-      });
+        `
+        : `<role>You are Pentra AI, a legal expert and an expert SEO blog writer for ${firmName}. ${firmDescription}.</role>` 
+      }`
+    }), });
 
-    const gptResponse = (await response.text()).replace(/<br><br> /g, '<br><br>'); console.log(gptResponse);
+    const elongationPrompt = `
+    <instruction>
+    - YOUR GOAL IS TO COPY THE USER-GIVEN DRAFT AND ELONGATE IT TO MAKE IT ${wordRange} LONG. 
+    Right now it's falling a little short.
+    - EXCEPTION: Just make sure the final how we can help / contact us paragraph remains at the end of your output.
+    - COPY THE TEXT'S CURRENT FORMAT EXACTLY: Wrap titles in <h1> and <h2> tags. Wrap all paragraphs in <p> tags. Wrap parts to be BOLDED in <b> tags.
+    - STYLE & TONE: Keep the voice and tone of the text exactly the same when elongating it.
+    - IMAGES: You're allowed to add one new image in your elongation in the same format.
+    - OUTPUT: ONLY output for me the final article. Nothing else.
+    </instruction>
+    `
+
+    let gptResponse = (await claudeResponse.text()).replace(/<br><br> /g, '<br><br>'); console.log(gptResponse);
 
     // const data = await gptResponse.json();
     // const gptText = data.choices[0].message.content.trim();
     // const textWithImages = await addImages(gptText);
 
+    const lowerRange = wordRange === "Upto 200 Words" ? 0 : parseInt(wordRange.split('-')[0], 10); let counter = 0;
+    while (lowerRange > gptResponse.split(' ').length && counter < 3) {
+
+      messages = [{"role": "user", "content": gptResponse}]; console.log('RUNNING:', gptResponse.split(' ').length, ' < ', lowerRange, 'count: ', counter);
+      // eslint-disable-next-line no-await-in-loop
+      const claudeElongationResponse = await fetch('http://localhost:3050/claudeAPI', {
+        method: 'POST', headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ messages, model: modelKeys[selectedModel], system: elongationPrompt})});
+
+      // eslint-disable-next-line no-await-in-loop
+      gptResponse = await claudeElongationResponse.text();
+      counter += 1; console.log('RAN: gptresponse', gptResponse, gptResponse.split(' ').length, lowerRange);
+    }
+
     let textWithImages = gptResponse.trim();
     if (isImagesOn) {textWithImages = await addImages(gptResponse.trim());}
-    const textWithBreaks = textWithImages.replace(/<br\s*\/?>/gi, '').replace(/<\/p>|<\/h1>|<\/h2>|<\/h3>|\/\/Image:.*?\/\//gi, '$&<br>').replace(/(<image[^>]*>)/gi, '$&<br>');
+    const textWithBreaks = textWithImages.replace(/<br\s*\/?>/gi, '').replace(/<\/p>|<\/h1>|<\/h2>|<\/h3>|\/\/Image:.*?\/\//gi, '$&<br>').replace(/(<image[^>]*>)/gi, '$&<br><br>');
     await setText(textWithBreaks); console.log(textWithBreaks);
-    if (currentMode === "Generate") await setWordCount(textWithImages.split(' ').length);
+
+    if (currentMode === "Generate") await setWordCount(textWithBreaks.split(' ').length);
     setIsGenerating(false);
 
     try {
@@ -352,7 +380,9 @@ export default function ProductsView() {
           case "400 - 600 Words": setWordRange("600 - 800 Words"); break;
           case "600 - 800 Words": setWordRange("800 - 1000 Words"); break;
           case "800 - 1000 Words": setWordRange("1000 - 1200 Words"); break;
-          case "1000 - 1200 Words": setWordRange("Upto 200 Words"); break;
+          case "1000 - 1200 Words": setWordRange("1200 - 1400 Words"); break;
+          case "1200 - 1400 Words": setWordRange("1400 - 1600 Words"); break;
+          case "1400 - 1600 Words": setWordRange("Upto 200 Words"); break;
           default: setWordRange("600 - 800 Words");
         }
       }}
