@@ -148,7 +148,7 @@ export default function ProductsView() {
           BLOG POST: ${text}.
           
           IMPORTANT INSTRUCTIONS:
-          - FORMATTING IN RICH TEXT: Wrap titles in <h1> and <h2> tags. Wrap all paragraphs in <p> tags. Wrap parts to be BOLDED in <b> tags. Dont use ANY new lines but add ONE <br> tag after EVERY paragraph and ONE after every closing h1/h2 tag.
+          - FORMATTING IN RICH TEXT: Wrap titles in <h1> and <h2> tags. Wrap all paragraphs in <p> tags. Wrap parts to be bolded in <b> tags. 
           - WORD RANGE: this post should be ${wordRange} long.
           - PERSPECTIVE: Don't refer to yourself in the post, but feel free to explain how your firm  can help.
           - IMAGES: blog post should contain ${imageCount}. Please add representations of them in this format: //Image: Chapter 7 Bankruptcy Flowchart//. 
@@ -187,7 +187,8 @@ export default function ProductsView() {
         currentMode === "Generate" ?
 
         `
-        <role>You are Pentra AI, a friendly legal & creative writing expert for ${firmName}. ${firmDescription}.</role> 
+        <role>You are Pentra AI, a friendly, witty legal & creative writing expert for ${firmName}. ${firmDescription}.
+        Mention firm ONLY at the end. </role> 
 
         <instruction>
 
@@ -196,7 +197,7 @@ export default function ProductsView() {
          ${smallBlog}`} 
 
         IMPORTANT INSTRUCTIONS:
-        - FORMATTING: Wrap titles in <h1> and <h2> tags. Wrap all paragraphs in <p> tags. Wrap parts to be BOLDED in <b> tags. Use new lines but no other tags
+        - FORMATTING: Wrap titles in <h1> and <h2> tags. Wrap all paragraphs in <p> tags. Wrap parts to be BOLDED in <b> tags. 
         - WORD RANGE: this post should be ${wordRange} long.
         - PERSPECTIVE: Don't refer to yourself in the post, but feel free to explain how your firm ${firmName} can help.
         ${imageCount !== "No Images" && `- IMAGES: blog post should contain ${imageCount}. Please add representations of them in this format: //Image: Chapter 7 Bankruptcy Flowchart//.
