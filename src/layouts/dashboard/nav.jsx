@@ -32,7 +32,7 @@ import navConfig from './config-navigation';
 export default function Nav({ openNav, onCloseNav }) {
 
   const [profileSrc, setProfileSrc] = useState('/assets/images/avatars/avatar_4.jpg');
-  const [firmName, setFirmName] = useState('hi');
+  const [firmName, setFirmName] = useState('N/A');
 
   useEffect(() => {
     const getFirmData = async () => {
@@ -43,12 +43,7 @@ export default function Nav({ openNav, onCloseNav }) {
           if (firmDoc.exists()) {
             await setFirmName(firmDoc.data().FIRM_INFO.NAME); 
             await setProfileSrc(firmDoc.data().FIRM_INFO.IMAGE); 
-          } else {
-            console.log('Error: Firm document not found.');
-          }
-        } else {
-          console.log('Error: User document not found.');
-        }
+          }}
       } catch (err) {
         console.log(err);
       }
@@ -59,7 +54,7 @@ export default function Nav({ openNav, onCloseNav }) {
   // Define the account object for the user
   const account = {
     displayName: auth.currentUser // ? auth.currentUser.email.split('@')[0].charAt(0).toUpperCase() + auth.currentUser.email.split('@')[0].slice(1)
-    ? firmName: 'N/A',
+    ? firmName : 'N/A',
     email: auth.currentUser ? auth?.currentUser?.email : 'N/A',
     photoURL: profileSrc,
   };

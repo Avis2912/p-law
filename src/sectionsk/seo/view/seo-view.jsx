@@ -32,6 +32,8 @@ export default function ProductsView() {
   const [blogKeywords, setBlogKeywords] = useState(null);
   const [smallBlog, setSmallBlog] = useState(null); 
   const [internalLinks, setInternalLinks] = useState(null); 
+  const [firmName, setFirmName] = useState(null);
+  const [firmDescription, setFirmDescription] = useState(null);
 
   const [isGenMode, setIsGenMode] = useState(false);
   const [isAlterMode, setIsAlterMode] = useState(false);
@@ -78,6 +80,8 @@ export default function ProductsView() {
         if (userDoc.exists()) {
           const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
           if (firmDoc.exists()) {
+            await setFirmName(firmDoc.data().FIRM_INFO.NAME);
+            await setFirmDescription(firmDoc.data().FIRM_INFO.DESCRIPTION);
             const smallBlogArray = firmDoc.data().BLOG_DATA.SMALL_BLOG || [];
             const smallBlogString = smallBlogArray.map((item, index) => `{BLOG ${index + 1}}:\n\n${item}\n`).join('\n');
             await setSmallBlog(smallBlogString);   
@@ -113,15 +117,16 @@ export default function ProductsView() {
         if (isBrowseWeb) {browseTextResponse = await browseWeb(browseText); console.log(browseTextResponse);};
         messages.push({
           "role": "user", 
-          "content":  `You are Pentra AI, a legal expert and an expert SEO blog writer.  Write a blog post based on the following topic: ${blogDescription}. 
+          "content":  `
+
+
+          <instruction>
+          Write a blog post based on the following topic: ${blogDescription}. 
           ${blogKeywords && `Keywords: ${blogKeywords}`}. ${text !== "" && `Consider using the following outline: ${text}`}. 
+          </instruction>
 
-         ${isMimicBlogStyle && 
-          `HERE ARE SOME SAMPLE BLOGS TO LEARN FROM. REPRODUCE THIS TONE & STYLE PERFECTLY IN YOUR OUTPUT.
-         ${smallBlog}`} 
 
-          - ${browseTextResponse !== "" && `WEB RESULTS: Consider using the following web information I got from an LLM for the prompt ${browseText}: ${browseTextResponse}`}
-          
+
           `
         });
       }
@@ -145,8 +150,8 @@ export default function ProductsView() {
           IMPORTANT INSTRUCTIONS:
           - FORMATTING IN RICH TEXT: Wrap titles in <h1> and <h2> tags. Wrap all paragraphs in <p> tags. Wrap parts to be BOLDED in <b> tags. Dont use ANY new lines but add ONE <br> tag after EVERY paragraph and ONE after every closing h1/h2 tag.
           - WORD RANGE: this post should be ${wordRange} long.
-          - PERSPECTIVE: Don't refer to yourself in the post, but feel free to explain how your firm Thompson Lawyers can help.
-          - IMAGES: blog post should contain ${imageCount}. Please add representations of them in this format: //Image: Idaho Courthouse// OR //Image: Chapter 7 Bankruptcy Flowchart//. 
+          - PERSPECTIVE: Don't refer to yourself in the post, but feel free to explain how your firm  can help.
+          - IMAGES: blog post should contain ${imageCount}. Please add representations of them in this format: //Image: Chapter 7 Bankruptcy Flowchart//. 
           Add two <br> tags after. Make sure these are evenly spaced out in the post and with specific and relevant descriptions.
           - ${style !== "Unstyled" && `STYLE: This blog post should be written in the ${style} style.`}
           - ${isMentionCaseLaw && `CASE LAW: Reference case law in the blog post when necessary.`}
@@ -171,27 +176,43 @@ export default function ProductsView() {
       if (currentMode === "Build Outline") {setCurrentMode('Generate');};
       if (currentMode === "Generate") {setCurrentMode('Alter Draft');};
 
+
     const response = await fetch('http://localhost:3050/claudeAPI', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ messages, blogDescription, blogKeywords, 
-        model: modelKeys[selectedModel], system: `<instruction>
+        model: modelKeys[selectedModel], system: 
+        currentMode === "Generate" ?
+
+        `
+        <role>You are Pentra AI, a friendly legal & creative writing expert for ${firmName}. ${firmDescription}.</role> 
+
+        <instruction>
+
+        ${isMimicBlogStyle && 
+          `VERY VERY IMPORTANT: REPRODUCE THE TONE & STYLE OF THE FOLLOWING BLOGS PERFECTLY IN YOUR OUTPUT. YOUR OUTPUT MUST BE FRIENDLY & APPROACHABLE.
+         ${smallBlog}`} 
+
         IMPORTANT INSTRUCTIONS:
-        - FORMATTING IN RICH TEXT: Wrap titles in <h1> and <h2> tags. Wrap all paragraphs in <p> tags. Wrap parts to be BOLDED in <b> tags. 
-        - <br> TAG RULES: add ONE <br> tag after EVERY </p>. ONE AFTER every closing </h1> AND </h2> tags. and TWO after EVERY image.
+        - FORMATTING: Wrap titles in <h1> and <h2> tags. Wrap all paragraphs in <p> tags. Wrap parts to be BOLDED in <b> tags. Use new lines but no other tags
         - WORD RANGE: this post should be ${wordRange} long.
-        - PERSPECTIVE: Don't refer to yourself in the post, but feel free to explain how your firm Thompson Lawyers can help.
-        ${imageCount !== "No Images" && `- IMAGES: blog post should contain ${imageCount}. Please add representations of them in this format: //Image: Idaho Courthouse// OR //Image: Chapter 7 Bankruptcy Flowchart//.
+        - PERSPECTIVE: Don't refer to yourself in the post, but feel free to explain how your firm ${firmName} can help.
+        ${imageCount !== "No Images" && `- IMAGES: blog post should contain ${imageCount}. Please add representations of them in this format: //Image: Chapter 7 Bankruptcy Flowchart//.
         Add two <br> tags after. Make sure these are evenly spaced out in the post and with specific and relevant descriptions.`}
         - ${style !== "Unstyled" && `STYLE: This blog post should be written in the ${style} style.`}
         - ${isMentionCaseLaw && `CASE LAW: Reference case law in the blog post when necessary.`}
         - ${isReferenceGiven && `USEFUL DATA: Refer to the following text and use as applicable: ${referenceText}`}
         - ${contactUsLink && `CONTACT US LINK AT END: Use this contact us link with <a> tags toward the end if applicable: ${contactUsLink}`}
+        - ${browseTextResponse !== "" && `WEB RESULTS: Consider using the following web information I got from an LLM for the prompt ${browseText}: ${browseTextResponse}`}
         - ${isUseInternalLinks && `LINK TO RELEVANT POSTS: Use <a> tags to add link(s) to relevant blog posts from the firm wherever applicable: ${internalLinks}.`}
         - NEVER OUTPUT ANYTHING other than the blog content. DONT START BY DESCRIBING WHAT YOURE OUTPUTING, JUST OUTPUT. 
-        </instruction>` })
+        
+      
+        </instruction>
+        
+        ` : `<role>You are Pentra AI, a legal expert and an expert SEO blog writer for ${firmName}. ${firmDescription}.</role>`})
       });
 
     const gptResponse = (await response.text()).replace(/<br><br> /g, '<br><br>'); console.log(gptResponse);
@@ -202,7 +223,8 @@ export default function ProductsView() {
 
     let textWithImages = gptResponse.trim();
     if (isImagesOn) {textWithImages = await addImages(gptResponse.trim());}
-    console.log('1'); await setText(textWithImages); console.log('2');
+    const textWithBreaks = textWithImages.replace(/<br\s*\/?>/gi, '').replace(/<\/p>|<\/h1>|<\/h2>|<\/h3>|\/\/Image:.*?\/\//gi, '$&<br>').replace(/(<image[^>]*>)/gi, '$&<br>');
+    await setText(textWithBreaks); console.log(textWithBreaks);
     if (currentMode === "Generate") await setWordCount(textWithImages.split(' ').length);
     setIsGenerating(false);
 

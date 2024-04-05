@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { getDownloadURL, ref, getStorage } from 'firebase/storage';
 
 import { db, auth } from 'src/firebase-config/firebase';
-import { getDocs, collection, doc, updateDoc } from 'firebase/firestore';
+import { getDocs, getDoc, collection, doc, updateDoc } from 'firebase/firestore';
 
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
@@ -40,23 +40,28 @@ const MENU_OPTIONS = [
 export default function AccountPopover() {
 
   const [profileSrc, setProfileSrc] = useState('/assets/images/avatars/avatar_4.jpg');
-  const [firmName, setFirmName] = useState('hi');
+  const [firmName, setFirmName] = useState('N/A');
 
   useEffect(() => {
     const firmDatabase = collection(db, 'firms');
     const getFirmData = async () => {
       try {
-        const data = await getDocs(firmDatabase);
-        const userDoc = data.docs.find((docc) => docc.id === 'testlawyers');
-        if (userDoc) {
-          await setFirmName(userDoc.data().FIRM_INFO.NAME); 
-          await setProfileSrc(userDoc.data().FIRM_INFO.IMAGE); 
+        const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
+        if (userDoc.exists()) {
+          const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
+          if (firmDoc.exists()) {
+            await setFirmName(firmDoc.data().FIRM_INFO.NAME); 
+            await setProfileSrc(firmDoc.data().FIRM_INFO.IMAGE); 
+          } else {
+            alert('Error: Firm document not found.');
+          }
         } else {
           alert('Error: User document not found.');
         }
       } catch (err) {
         console.log(err);
-      }};
+      }
+    };
     getFirmData();
   }, []);
 
