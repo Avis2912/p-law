@@ -224,7 +224,7 @@ export default function ProductsView() {
     - EXCEPTION: Just make sure the final how we can help / contact us paragraph remains at the end of your output.
     - COPY THE TEXT'S CURRENT FORMAT EXACTLY: Wrap titles in <h1> and <h2> tags. Wrap all paragraphs in <p> tags. Wrap parts to be BOLDED in <b> tags.
     - STYLE & TONE: Keep the voice and tone of the text exactly the same when elongating it.
-    - IMAGES: You're allowed to add one new image in your elongation in the same format.
+    - IMAGES: KEEP ALL IMAGES as they are. You're allowed to add one new one in your elongation in the same format.
     - OUTPUT: ONLY output for me the final article. Nothing else.
     </instruction>
     `

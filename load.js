@@ -118,7 +118,7 @@ newUser(docName = 'W&M Texas',
 
 firmInfo = {
     CONTACT_US: "https://www.wmtxlaw.com/contact-us/",
-    NAME: "W&M Texas",
+    NAME: "Massive Capital",
     LOCATION: "Dallas, TX",
     DESCRIPTION: "At Warren & Migliaccio, our attorneys are dedicated to positively influencing the lives of Texas families in Bankruptcy, Famil & Divorce Law, Estate Planning, & Credit Card Lawsuits. Each of our attorneys focuses on a specific area of the law. ",
     IMAGE: 'https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/decentral%20(24).png?alt=media&token=92bde069-bcee-4dbe-a859-a4f81eb23064',
