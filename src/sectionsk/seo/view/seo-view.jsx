@@ -274,7 +274,6 @@ export default function ProductsView() {
   };
 
   const addImages = async (imagelessText) => {
-
     const regex = /\/\/Image: (.*?)\/\//g;
     const matches = [...imagelessText.matchAll(regex)];
     const descriptions = matches.map(match => match[1]);
@@ -304,7 +303,19 @@ export default function ProductsView() {
       return null;
     };
 
-    const imageTags = await Promise.all(descriptions.map(fetchImage));
+    const imageTags = [];
+
+    for (let i = 0; i < descriptions.length; i += 3) {
+      const batch = descriptions.slice(i, i + 3);
+      // eslint-disable-next-line no-await-in-loop
+      const batchImageTags = await Promise.all(batch.map(fetchImage));
+      imageTags.push(...batchImageTags);
+
+      if (i + 3 < descriptions.length) {
+        // eslint-disable-next-line no-await-in-loop
+        await new Promise(resolve => setTimeout(resolve, 2000));
+      }
+    }
 
     matches.forEach((match, index) => {
       if (imageTags[index]) {
