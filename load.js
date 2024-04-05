@@ -81,7 +81,15 @@ const newUser = async (docName, firmInfo, smallBlog, bigBlog, competition) => {
                 LAST_DATE: "03/31/24",
                 POSTS: [
                     {platform: "LinkedIn", content: "<h1>Example Post</h1>This is what a weekly post idea looks like."},
+                    {platform: "LinkedIn", content: "<h1>Example Post</h1>This is what a weekly post idea looks like."},
+                    {platform: "LinkedIn", content: "<h1>Example Post</h1>This is what a weekly post idea looks like."},
+
                     {platform: "Facebook", content: "<h1>Example Post</h1>This is what a weekly post idea looks like."},
+                    {platform: "Facebook", content: "<h1>Example Post</h1>This is what a weekly post idea looks like."},
+                    {platform: "Facebook", content: "<h1>Example Post</h1>This is what a weekly post idea looks like."},
+
+                    {platform: "Instagram", content: "<h1>Example Post</h1>This is what a weekly post idea looks like."},
+                    {platform: "Instagram", content: "<h1>Example Post</h1>This is what a weekly post idea looks like."},
                     {platform: "Instagram", content: "<h1>Example Post</h1>This is what a weekly post idea looks like."},
             ]},
 
