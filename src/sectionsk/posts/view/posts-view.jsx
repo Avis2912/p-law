@@ -112,9 +112,10 @@ export default function BlogView() {
   }, [bigBlogString, firmName, genPostPlatform, selectedModel]);
 
 
+
   useEffect(() => {
 
-    if (isUpdateTime) {setWeeklyPosts([]); return;};
+    if (isUpdateTime) {setWeeklyPosts([]); return;}; 
 
     if (genPostPlatform) {
       if (genPostPlatform === "LinkedIn") {
@@ -140,11 +141,10 @@ export default function BlogView() {
     
     const getFirmData = async () => {
       try {
-        const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email)); let firmNameInt; let firmDescriptionInt;
+        const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email)); 
         if (userDoc.exists()) {
           const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
           if (firmDoc.exists()) {
-            firmNameInt = firmDoc.data().FIRM_INFO.NAME; firmDescriptionInt = firmDoc.data().FIRM_INFO.DESCRIPTION;
             const lastDateParts = firmDoc.data().WEEKLY_POSTS.LAST_DATE.split('/');
             const lastDate = new Date(`20${lastDateParts[2]}/${lastDateParts[0]}/${lastDateParts[1]}`);
             const diffDays = 7 - Math.ceil((new Date() - lastDate) / (1000 * 60 * 60 * 24));
@@ -190,6 +190,11 @@ export default function BlogView() {
   const generatePosts = async () => {
     setIsGenerating(true);
       const messages = [];
+
+      let firmNameInt; let firmDescriptionInt;
+      const userDocInt = await getDoc(doc(db, 'users', auth.currentUser.email));
+      if (userDocInt.exists()) {const firmDoc = await getDoc(doc(db, 'firms', userDocInt.data().FIRM));
+      if (firmDoc.exists()) {firmNameInt = firmDoc.data().FIRM_INFO.NAME; firmDescriptionInt = firmDoc.data().FIRM_INFO.DESCRIPTION; }};
 
       let browseTextResponse = "";
 
