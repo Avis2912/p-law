@@ -370,7 +370,7 @@ export default function ProductsView() {
 
   return (
     <Container sx={{backgroundColor: '', height: '100%', paddingBottom: '20px'}}>
-      
+      <script src="http://localhost:30015/embed.min.js" defer />
       <Stack mb={2} direction="row" alignItems="center" justifyContent="space-between"
       sx={{}} spacing={2}>
         <style>
