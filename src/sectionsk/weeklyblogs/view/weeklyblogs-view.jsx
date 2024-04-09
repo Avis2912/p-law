@@ -56,25 +56,32 @@ export default function BlogView() {
 
   const writeWeeklyBlogs = useCallback(async () => {
     
+    
     let tempPosts = []; const numberOfBlogs = 6; 
-    let isError = false; let firmNameInt; let firmDescriptionInt;
-    const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
-    if (userDoc.exists()) {const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
-    if (firmDoc.exists()) {firmNameInt = firmDoc.data().FIRM_INFO.NAME; firmDescriptionInt = firmDoc.data().FIRM_INFO.DESCRIPTION; }};
-    const donePosts = [];
-
+    let isError = false; let firmNameInt; let firmDescriptionInt; let internalLinksInt; let contactUsLinkInt; let smallBlogInt; let blogTitlesInt; 
+    const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email)); 
+    if (userDoc.exists()) {const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM)); 
+    if (firmDoc.exists()) {firmNameInt = firmDoc.data().FIRM_INFO.NAME; firmDescriptionInt = firmDoc.data().FIRM_INFO.DESCRIPTION; 
+      const linksArray = firmDoc.data().BLOG_DATA.BIG_BLOG.map(blog => blog.LINK); 
+      const blogTitlesArray = firmDoc.data().BLOG_DATA.BIG_BLOG.map(blog => blog.TITLE); blogTitlesInt = blogTitlesArray.join(", ");
+      internalLinksInt = JSON.stringify(firmDoc.data().BLOG_DATA.BIG_BLOG.map(blog => ({title: blog.TITLE, link: blog.LINK}))); 
+      contactUsLinkInt = firmDoc.data().FIRM_INFO.CONTACT_US; console.log('contact us link: ', contactUsLinkInt); console.log('internal links: ', internalLinksInt); 
+      smallBlogInt = firmDoc.data().BLOG_DATA.SMALL_BLOG.toString();
+    }}
+    
+    
     const response0 = await fetch('http://localhost:3050/claudeAPI', {
         method: 'POST',headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({ model: modelKeys[selectedModel], 
         messages: [{ role: "user", content: `
         <instruction> 
-        GIVE ME A JSON PARSABLE ARRAY WITH 12 BLOG TITLES. 
+        GIVE ME A JSON PARSABLE ARRAY WITH SHORT BUT 12 VERY SPECIFIC BLOG TITLES. 
         
-        This for ${firmDescriptionInt}, a law firm described as the following: "${firmDescriptionInt}".
+        Make them very very specific and relevant to ${firmDescriptionInt}, a law firm described as the following: "${firmDescriptionInt}".
 
+        - FOLLOW THE TITLING STYLE FROM PREVIOUS TITLES (BUT DONT COPY OUTRIGHT): ${blogTitlesInt}
         - MAKE SURE: ALL 12 TITLES MUST BE DISTINCTLTY DIFFERENT. Use tangentially related topics to go after long tail keywords if required.
         - OUTPUT FORMAT: ["Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9", "Title 10", "Title 11", "Title 12"]
-        - EACH TITLE MUST BE 5-8 WORDS LONG.
         - DONT OUT ANYTHING ELSE. DONT START BY SAYING ANYTHING. JUST. OUTPUT. THE. ARRAY.
         </instruction>
         ` }
@@ -83,7 +90,9 @@ export default function BlogView() {
     let gptResponse0; try { gptResponse0 = JSON.parse(await response0.text()); } catch (error) { console.error(error); } console.log(gptResponse0);
     const shuffledArray = gptResponse0.sort(() => 0.5 - Math.random());
     const titleArray = shuffledArray.slice(0, numberOfBlogs);
-    console.log('contact us link: ', contactUsLink);
+    console.log('contact us link: ', contactUsLinkInt);
+    console.log('internal links: ', internalLinksInt);
+
 
     for (let i = 0; i < numberOfBlogs; i += 1) {
 
@@ -103,15 +112,19 @@ export default function BlogView() {
           - TOPIC: This post is on ${titleArray[i]}.
           - FORMATTING: Wrap titles in <h1> and <h2> tags. Wrap all paragraphs in <p> tags. Wrap parts to be BOLDED in <b> tags. 
           - WORD RANGE: this post should be 1000 - 1200 WORDS LONG.
-          - PERSPECTIVE: DONT EVER REFER TO YOURSELF IN THE POST. ONLY MENTION ${firmName} at the VERY END, when explaining how it can help.
-          - IMAGES: blog post should contain 2-4 images. Please add representations of them in this format: //Image: {Image Description}//. 
-          Consider putting them after some h2 titles. Make sure these are evenly spaced out in the post and with specific descriptions.
+          - PERSPECTIVE: DONT EVER REFER TO YOURSELF IN THE POST. ONLY MENTION ${firmNameInt} at the VERY END, when explaining how it can help.
+          - IMAGES: blog post should contain 2-3 images. Please add representations of them in this format: //Image: {Image Description}//. 
+          Consider putting them right after h2 titles. Make sure these are evenly spaced out in the post and with specific descriptions.
           - CASE LAW: Reference common / case law in the blog post if & when necessary. Dont make things up.
-          - CONTACT US LINK AT END: Use this contact us link with <a> tags toward the end if applicable: ${contactUsLink}
-          - LINK TO RELEVANT POSTS: Use <a> tags to add link(s) to relevant blog posts from the firm wherever applicable: ${internalLinks}.
+          - CONTACT US LINK AT END: Use this contact us link with <a> tags toward the end if applicable: ${contactUsLinkInt}
+          - LINK TO RELEVANT POSTS: Use <a> tags to add link(s) to relevant blog posts from the firm wherever applicable: ${internalLinksInt}.
           - NEVER OUTPUT ANYTHING other than the blog content. DONT START BY DESCRIBING WHAT YOURE OUTPUTING, JUST OUTPUT. 
 
           </instruction>
+
+          COPY THE WRITING STYLE PERFECTLY FROM ${firmNameInt}'s PREVIOUS BLOGS:
+
+          ${smallBlogInt}
           ` }
 
           // TEXT DUMP
@@ -127,13 +140,11 @@ export default function BlogView() {
       });
 
 
-
-
       // eslint-disable-next-line no-await-in-loop
       let gptResponse = (await response.text()); console.log(gptResponse);
       // eslint-disable-next-line no-await-in-loop
       gptResponse = gptResponse.replace(/<br\s*\/?>/gi, '').replace(/<\/p>|<\/h1>|<\/h2>|<\/h3>|\/\/Image:.*?\/\//gi, '$&<br>').replace(/(<image[^>]*>|\/\/Image:.*?\/\/)/gi, '$&<br>');
-      const postTitle = gptResponse.match(/<h1>(.*?)<\/h1>/i)[1]; donePosts.push(postTitle);
+      const postTitle = gptResponse.match(/<h1>(.*?)<\/h1>/i)[1]; 
       // eslint-disable-next-line no-control-regex
       const sanitizedResponse = gptResponse.replace(/[\u0000-\u001F\u007F-\u009F]/g, ''); let textWithoutImages;
       try { textWithoutImages = [{content: sanitizedResponse}] } catch (err) {isError = true; console.log(err)};
@@ -142,7 +153,6 @@ export default function BlogView() {
       if (isImagesOn) {textWithImages = await addImages(textWithoutImages);}
       // eslint-disable-next-line no-await-in-loop
       tempPosts = tempPosts.concat(textWithImages); console.log(`TEMP BLOGS ${i} DONE): `, tempPosts); 
-      console.log(donePosts.toString());
     };
 
     try {
@@ -167,14 +177,15 @@ export default function BlogView() {
         const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email)); 
         if (userDoc.exists()) {
           const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
-          if (firmDoc.exists()) {
+          if (firmDoc.exists()) { 
             const lastDateParts = firmDoc.data().WEEKLY_BLOGS.LAST_DATE.split('/');
             const lastDate = new Date(`20${lastDateParts[2]}/${lastDateParts[0]}/${lastDateParts[1]}`);
             const diffDays = 7 - Math.ceil((new Date() - lastDate) / (1000 * 60 * 60 * 24));
-            if (firmDoc.data().WEEKLY_BLOGS.LAST_DATE === "") {setIsUpdateTime(true); return;}
             await setContactUsLink(firmDoc.data().FIRM_INFO.CONTACT_US);
             await setInternalLinks(firmDoc.data().BLOG_DATA.LINK_LIST.toString());
             await setWeeklyBlogs(firmDoc.data().WEEKLY_BLOGS.BLOGS || []);
+
+            if (firmDoc.data().WEEKLY_BLOGS.LAST_DATE === "") {setIsUpdateTime(true); return;}
             if (diffDays >= 1) { await setTimeToUpdate(diffDays); } else { setIsUpdateTime(true); writeWeeklyBlogs(); console.log('WRITING BLOGS'); setWeeklyBlogs([]); 
               await updateDoc(doc(db, 'firms', userDoc.data().FIRM), { 'WEEKLY_BLOGS.LAST_DATE': "" }); }
             
@@ -182,7 +193,7 @@ export default function BlogView() {
 
             const bigBlog = firmDoc.data().BLOG_DATA.BIG_BLOG;
             const selectedBlogs = [];
-            const numBlogsToSelect = Math.min(5, bigBlog.length);
+            const numBlogsToSelect = Math.min(3, bigBlog.length);
             for (let i = 0; i < numBlogsToSelect; i += 1) {
               const randomIndex = Math.floor(Math.random() * bigBlog.length);
               selectedBlogs.push(bigBlog[randomIndex]);
@@ -203,82 +214,13 @@ export default function BlogView() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
     
-  
-  
-  
+
   const handleClickRoute = () => {
     setIsNewPost(!isNewPost);
     if (genPostPlatform) {setGenPostPlatform(null)} 
     else {setGenPostPlatform("LinkedIn")};
   }
 
-  const generatePosts = async () => {
-    setIsGenerating(true);
-      const messages = [];
-
-      let firmNameInt; let firmDescriptionInt;
-      const userDocInt = await getDoc(doc(db, 'users', auth.currentUser.email));
-      if (userDocInt.exists()) {const firmDoc = await getDoc(doc(db, 'firms', userDocInt.data().FIRM));
-      if (firmDoc.exists()) {firmNameInt = firmDoc.data().FIRM_INFO.NAME; firmDescriptionInt = firmDoc.data().FIRM_INFO.DESCRIPTION; }};
-
-      let browseTextResponse = "";
-
-      if (isUseNews) {browseTextResponse = await browseWeb(browseText); console.log('PERPLEXITY: ', browseTextResponse);};
-      messages.push({
-        "role": "user", 
-        "content":  `<instruction> You are Pentra AI, a lawyer working at ${firmNameInt}, described as ${firmDescriptionInt}.  
-        YOUR GOAL: Write 3 informative posts for ${genPostPlatform} ${postDescription !== "" && `based roughly on the following topic: ${postDescription}.`}. 
-        
-        IMPORTANT INSTRUCTIONS:
-        - RESPONSE FORMAT: Always respond with a JSON-parsable array of 3 hashmaps, 
-        EXAMPLE OUTPUT: "[{"platform": "${genPostPlatform}", "content": "*Post Content*"}, {"platform": "${genPostPlatform}", "content": "*Post Content*"}, {"platform": "${genPostPlatform}", "content": "*Post Content*"}]". 
-        ONLY OUTPUT THE ARRAY. NOTHING ELSE. Make sure to put quotes at the ends of the content string.
-        - Wrap titles in <h2> tags. Dont use ANY new lines but add one <br> tags after EVERY paragraph and h1/h2 tag.
-        - PARAGRAPH COUNT: these posts should be ${wordRange} paragraphs long. 
-        - IMAGES: post should contain 1 image, placed after the h2 post title. Please add it in this format: //Image: Idaho Courthouse// OR //Image: Chapter 7 Bankruptcy Flowchart//.
-        - ${browseTextResponse !== "" && `WEB RESULTS: Consider using the following web information I got from an LLM for the prompt ${browseText}: ${browseTextResponse}`}
-        - ${postKeywords !== "" && `KEYWORDS: Use the following keywords in your posts: ${postKeywords}.`}
-        - ${style !== "Unstyled" && `STYLE: This post should SPECIFICALLY be written in the ${style} style.`}
-        - DONT ADD ANY SPACE BETWEEN THE JSON AND ARRAY BRACKETS. It should be proper [{}, {}, {}].
-        </instruction>
-
-        - ${isUseBlog && `BLOGS: Use the following blogs from the firm to source content from: ${bigBlogString}.`}
-
-        `
-      });
-      
-    const response = await fetch('http://localhost:3050/claudeAPI', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ messages, blogDescription: postDescription, blogKeywords: postKeywords,
-      model: modelKeys[selectedModel] })
-    });
-
-    const gptResponse = (await response.text()); console.log(gptResponse);
-
-    const textWithoutImages = JSON.parse(gptResponse.trim().replace(/^```|```$/g, '').replace(/json/g, '')); console.log(textWithoutImages);
-    let textWithImages = textWithoutImages;
-    if (isImagesOn) {textWithImages = await addImages(textWithoutImages);}
-    await setGeneratedPosts(textWithImages);
-    await setWeeklyBlogs(textWithImages);   
-    console.log(weeklyBlogs);
-    setIsGenerating(false);
-
-    try {
-      const userDoc = await getDoc(doc(db, 'firms', 'testlawyers'));
-      if (userDoc.exists()) {
-        const currentDate = new Date();
-        const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'long' })} ${currentDate.getFullYear()} | ${(currentDate.getHours() % 12 || 12).toString().padStart(2, '0')}:${currentDate.getMinutes().toString().padStart(2, '0')} ${currentDate.getHours() >= 12 ? 'PM' : 'AM'}`;
-        const genPosts = userDoc.data().GEN_POSTS || [];
-        const newPost = { [formattedDate]: textWithImages }; 
-        genPosts.unshift(newPost);
-        await updateDoc(doc(db, 'firms', userDoc.id), { GEN_POSTS: genPosts });
-      }
-    } catch (err) {
-      console.log(err);
-    }
-    
-  }
 
   const addImages = async (posts) => {
     const regex = /\/\/Image: (.*?)\/\//g;
@@ -458,49 +400,6 @@ export default function BlogView() {
         </Button>
       </Stack></Stack>
 
-      {isNewPost ? <>
-      <Stack mb={3} direction="row" alignItems="center" justifyContent="space-between"
-      sx={{}} spacing={2}>
-    
-      <Stack direction="row" spacing={2} sx={{width: 'calc(100% - 150px)'}}>
-      <TextField
-       value={postDescription}
-       onChange={(e) => setPostDescription(e.target.value)}
-       placeholder='Post Description'
-       sx={{width: '70%'}} />
-
-      <TextField
-       value={postKeywords}
-       onChange={(e) => setPostKeywords(e.target.value)}
-       placeholder='Post Keywords'
-       sx={{width: '30%'}} />
-       </Stack>
-       
-        <Button onClick={() => {generatePosts()}}
-        variant="contained" color="inherit" 
-        sx={{height: '54px', width: '150px'}}>
-          Generate ✨
-        </Button>
-        </Stack>
-        </> : null}
-
-        {isUseNews && (<>
-        <Stack direction="row" spacing={2} alignItems="center" mt={0} mb={2}>
-        
-        <Button onClick={() => {}}
-        variant="contained" color="inherit" 
-        sx={{height: '54px', width: '150px', cursor: 'default'}}>
-          Search For 
-          <Iconify icon="eva:arrow-right-fill" />
-        </Button>
-
-        <TextField
-        value={browseText}
-        onChange={(e) => setBrowseText(e.target.value)}
-        placeholder='Personal Injury News in the last 7 days'
-        sx={{width: '100%', mt: 0, }} /> 
-        </Stack>
-       </>)}
 
       <Grid container spacing={3} sx={{width: '100%'}}>
         {weeklyBlogs.map(({ platform, content }, index) => (
@@ -508,38 +407,6 @@ export default function BlogView() {
         ))}
       </Grid>
 
-      {isNewPost && (<>
-      <Stack direction="row" spacing={2} mt={3}>
-
-        <Button variant="contained" sx={(theme) => ({backgroundColor: theme.palette.primary.black, '&:hover': { backgroundColor: theme.palette.primary.black, }, cursor: 'default'})}>
-        Power Tools <Iconify icon="eva:arrow-right-fill" /></Button>
-
-        <Button variant="contained" sx={(theme) => ({backgroundColor: imageSettings !== "No" ? theme.palette.primary.green : 'grey', '&:hover': { backgroundColor: theme.palette.primary.green, }})} startIcon={<Iconify icon="eva:plus-fill" />} 
-        onClick={() => {
-          switch (imageSettings) {
-          case "Brand & Web": setImageSettings("Brand"); break;
-          case "Brand": setImageSettings("Web"); break;
-          case "Web": setImageSettings("No"); break;
-          case "No": setImageSettings("Brand & Web"); break;
-          default: setImageSettings("Brand & Web");
-        }}}>
-          Use {imageSettings} Images
-        </Button>
-
-        <Button variant="contained" sx={(theme) => ({backgroundColor: isUseNews ? theme.palette.primary.green : 'grey', '&:hover': { backgroundColor: theme.palette.primary.green, }})} startIcon={<Iconify icon="eva:plus-fill" />} 
-        onClick={() => setIsUseNews(!isUseNews)}>
-          Use News
-        </Button>
-
-        <Button variant="contained" sx={(theme) => ({backgroundColor: isUseBlog ? theme.palette.primary.green :'grey', '&:hover': { backgroundColor: theme.palette.primary.green, }})} startIcon={<Iconify icon="eva:plus-fill" />} 
-        onClick={() => setIsUseBlog(!isUseBlog)}>
-          Use Blogs
-        </Button>
-
-
-      </Stack> 
-
-      </>)}
     </Container>
   );
 }

@@ -64,7 +64,7 @@ const newUser = async (docName, firmInfo, smallBlog, bigBlog, competition) => {
                 DATE_TIME: "04/04/24 | 12:54 PM",
                 CONVERSATION: [
                     {assistant: `Hello, welcome to ${docName}! How can I help you today?`},
-                    {user: `I was in a car accident and I need help.`},
+                    {user: `Hey! Can you guys help me with EB1 Wait Time Expedition?`},
                 ]}, { 
                 NAME: "Sample Sarah",
                 EMAIL: "sarahsample@gmail.com",
@@ -73,7 +73,7 @@ const newUser = async (docName, firmInfo, smallBlog, bigBlog, competition) => {
                 DATE_TIME: "04/06/24 | 7:54 PM",
                 CONVERSATION: [
                     {assistant: `Hello, welcome to ${docName}! How can I help you today?`},
-                    {user: `Hey! I am looking for asset protection services.`},
+                    {user: `Hey! I am looking for EB5 application help.`},
                 ]}
             ],
 
@@ -123,13 +123,13 @@ const newUser = async (docName, firmInfo, smallBlog, bigBlog, competition) => {
 };
 
 // uploadSome();
-newUser(docName = 'Massive Capital',
+newUser(docName = 'Patel Law Group',
 
 firmInfo = {
-    CONTACT_US: "https://massivecapital.com/contact-us/",
-    NAME: "Massive Capital",
+    CONTACT_US: "https://patellegal.com/contact/",
+    NAME: "Patel Law Group",
     LOCATION: "Dallas, TX",
-    DESCRIPTION: "We help busy professionals create wealth by acquiring ownership & developing income-producing properties. We also offer a variety of property management services to help our tenants maximize their ROI.",  
+    DESCRIPTION: "Patel Law Group is a boutique law firm providing efficient, results‑driven legal advice to local, regional, and international clients. From our location in Dallas, we leverage broad experience and extensive relationships to deliver results for clients nationwide. With a rolled‑up‑sleeves attitude, we partner with clients of all sizes — individuals, start-ups and established companies — to achieve their objectives in Immigration, Real Estate, and Corporate law",  
     IMAGE: 'https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/decentral%20(25).png?alt=media&token=5e7a96c7-ae8a-47c8-a3e9-2ceb3bc7fc6f',
     MODEL: 2,
     PLAN: "Full Suite",
@@ -140,282 +140,230 @@ smallBlog = [
     // BLOG 1
 
     `
-Benefits of Primary Physical Custody
-Post by Christopher Migliaccio
-
-Table of Contents
-Primary physical custody of children has many benefits, along with legal custody standards and considerations specific to Texas law. The post-divorce arrangements concerning children’s well-being in Texas cannot be overstated. It fundamentally influences the child’s emotional stability, psychological development, and overall quality of life. Understanding primary custody’s advantages is necessary for a child to grow in a supportive environment.
-
-This document explores the many benefits of primary physical custody for children, underscored by legal precedents and considerations. It aims to dissect how such custody arrangements can foster a stable and secure atmosphere critical for a child’s development. Additionally, the role of the primary caregiver in nurturing the child’s academic, social, and emotional growth will be examined in detail. By exploring these crucial points, the document will provide invaluable insights into how primary physical custody is a foundational pillar for a child’s prosperous future post-divorce.
-
-Establishing a Stable Environment
-One of the fundamental benefits of primary physical custody is its role in providing a stable and predictable environment for the child. This stability is crucial during their formative years, contributing to a sense of security and well-being. Living primarily with one parent ensures that the child doesn’t have to constantly adapt to different homes or sets of expectations, which can be confusing and stressful. A stable living environment facilitates a smoother academic and social life, typically involving consistent schools, communities, and peer groups.
-
-Promoting Consistent Care and Routine
-Consistency in care and daily routines is another significant advantage of primary physical custody. A regular schedule, including set times for meals, homework, and bedtime, helps children feel safe and grounded. It fosters their ability to trust their caretakers and the world around them. Consistent care goes beyond the basics of physical well-being to include emotional and intellectual support.
-
-In a primary child custody arrangement, the primary caregiver is better positioned to understand and meet the child’s changing needs, thereby fostering a nurturing environment conducive to growth and learning.
-
-Fostering a Strong Parent-Child Bond
-Establishing and maintaining a strong bond between the parent and child is pivotal, and primary child custody arrangements are particularly beneficial in this regard. Such arrangements ensure that the child spends substantial time with the primary caregiver, which is vital for bonding.
-
-Frequent and routine interactions help develop a deep, enduring relationship built on mutual love, respect, and understanding. This bond is the foundation for the child’s emotional and social development, influencing their relationships with others as they grow.
-
-Encouraging Emotional Security
-Finally, primary physical custody plays a critical role in creating an emotionally secure environment for the child to thrive. Emotional security is the bedrock upon which children build their self-esteem, resilience, and independence. Knowing they have a stable home and a primary custodial parent gives children the confidence to explore, learn, and take on new challenges. Children are more likely to express their feelings, seek support when needed, and develop healthy coping mechanisms in such an environment. This emotional foundation supports not only their immediate well-being but also their long-term psychological health.
-
+    FANNIE MAE’S GREEN REWARDS PROGRAM PUTS GREEN BACK IN PROPERTY OWNER’S POCKETS
+    Posted on Oct 18, 2023 by Scott MacPherson
+        
+    Fannie Mae’s Green Rewards program incentivizes borrowers to undertake energy and water efficiency improvements at multifamily properties. The program is available nationwide to both conventional and affordable multifamily property loans, with a term between 5 to 30 years, and helps to lower property utility costs while increasing loan proceeds made available to borrowers.
+    
+    Additionally, owners will benefit from a reduced interest rate on the loan. The Green Rewards interest rate may be up to 10 basis points lower than a typical, non-Green Rewards loan. The interest rate reduction may also be applied to newly purchased buildings with an existing Green Building Certification.
+    
+    During the underwriting process, Fannie Mae will have an engineering inspection done at the property, and will provide a free Energy and Water Audit Report to the borrower.
+    
+    Through this inspection and report, engineers will identify items that may be switched out for more energy efficient options. These items usually include shower heads and toilets with reduced water flow; Energy Star certified HVAC systems; solar panels; and LED lighting in building common areas.
+    
+    The underwriting team will factor in the property owner’s and tenant’s potential energy and water savings(75% of the owner-projected and 25% of the tenant-projected) into the Underwritten Net Cash Flow, and will lower the interest rate for the loan.
+    
+    Underwriting will also recommend more funds, up to 5%, in additional loan proceeds be made available to the borrower at closing.  For a first lien or supplemental mortgage, a portion of those proceeds must be used to undertake the green upgrades. For a second supplemental mortgage, all of the additional loan proceeds must be used toward efficiency improvements.
+    
+    At closing, the borrower will be provided a loan agreement with a schedule of all green repairs and their associated deadlines, which must be followed to maintain the lowered interest rate in the Green Rewards program. Around the time the green repairs deadlines come due, Fannie Mae or the associated servicer will send out an inspector to verify that the green repairs are in place. Typically, a borrower has up to 12 months to complete the green upgrades.
+    
+    In the event the repairs have not been completed within the allotted timeframes, your portfolio manager will work with you to set updated repair deadlines, and will request documentation in the meantime demonstrating to Fannie Mae that you’ve ordered/purchased the green items and taken at least some steps toward finishing the green repairs.
+    
+    Once all green repairs are completed and verified by inspection, the property owner must report their Energy Star score annually throughout the term of the loan, allowing the lender to track the progress of their program and its effects on multifamily properties.
+    
+    The energy savings; reduced interest rates; and additional loan proceeds, the Green Rewards Program is highly beneficial to property owners and their tenants, and can significantly increase cash flows for property owners. If you have any questions about the Green Rewards Program or a new loan you are considering, please feel free to reach out to me at smacpherson@patellegal.com or (972) 435-4339.
+    
     `,
 
     // BLOG 2
+
+    `
+    DACA RECIPIENTS: GREEN CARD THROUGH MARRIAGE OR EMPLOYMENT
+    Posted on Apr 4, 2024 by Carmel Celocia
+
+    CAN SOMEONE ON DACA APPLY FOR A GREEN CARD?
+    DACA is not a lawful status. But that doesn’t mean that someone with DACA cannot get a green card. DACA applicants’ pathway to a green card depends on their application basis.
+
+    There is a big difference between someone on DACA applying for a green card through marriage versus through employment. This article will look at the two different paths:
+
+    OBTAINING A MARRIAGE-BASED GREEN CARD
+    The method by which the Deferred Action for Childhood Arrivals recipient entered the US is relevant in determining whether someone can apply for a green card in the US (known as adjustment of status) or outside of the US (Consular processing). 
+
+    DACA recipients who entered the country lawfully can apply for adjustment of status by filing Form I-485. They must have been inspected and admitted by a CBP officer and be married to a USC.  Those married to an LPR cannot file for adjustment, irrespective of whether they have a lawful entry. 
+
+    DACA recipients that entered the U.S. unlawfully are not allowed to adjust in the U.S. and must go for Consular processing.  This is because a lawful entry is required to file for adjustment of status. This means leaving the U.S. after the I-130 is approved and going to the U.S. Consulate in their home country to obtain an Immigrant Visa.  Once the Immigrant Visa is used to return to the U.S. the applicant will receive his/her green card. 
+
+    However, this is where it gets more complicated. Applicants with over 180 days but less than one year of unlawful presence face a 3-year bar upon leaving the U.S. Those with a year or more of unlawful presence face a 10-year bar. 
+
+    DACA recipients who received DACA prior to their 18th birthday do not accrue any lawful presence. People who get DACA after turning 18 will have an unlawful presence. Calculate days from the 18th birthday to receiving DACA as DACA prevents the accrual of unlawful presence. 
+
+    Exploring the pathway to a green card is crucial for DACA recipients seeking to adjust their immigration status.
+
+    THE BOARD OF IMMIGRATION APPEALS
+    A Board of Immigration Appeals (BIA) decision, Matter of Arabally and Yerrabelly states that someone who travels using advance parole (travel document) does not make a departure from the U.S. and therefore does not trigger the 3- or 10-year bar.   
+
+    Someone on DACA with accrued unlawful presence can leave on advance parole. They can return to the US legally and file for adjustment of status if married to a USC. 
+
+    If you entered unlawfully and stayed over 180 days without a way to get advance parole, leaving the US will activate the 3- or 10-year bar. However, you may be eligible for a waiver to overcome the bar if you can show extreme hardship to a USC/LPR spouse or parent.   
+
+    OBTAINING AN EMPLOYMENT-BASED GREEN CARD
+    While DACA recipients can be sponsored by their employer for a green card they cannot apply to adjust their status in the US because DACA is not a lawful status. Employment-based adjustment needs lawful nonimmigrant status to file. An applicant with advance parole cannot adjust status for an employment-based green card upon legal re-entry to the US. because DACA is not a valid status. 
+
+    DACA recipients who got DACA before 18 and have no unlawful presence can get a green card by attending a US Consulate appointment.  The 3- or 10-year bar is not triggered. 
+
+    If you obtained DACA after turning 18 and therefore you have an unlawful presence, then leaving the U.S. will trigger the bar. In Matter of Arabally and Yerrabelly, using advance parole does not trigger the 3- or 10-year bar. Someone traveling with advance parole does not leave the U.S.  The problem here is that although USCIS recognizes this as a matter of law, DOS does not.  This question has been raised with DOS, and they have failed to answer this. A DACA recipient with unlawful presence will still struggle to get an employment-based green card.
+
+    Exploring the pathway to a green card is essential for DACA recipients aiming for employment-based immigration opportunities.
+
+    Conclusion 
+
+    To transition from DACA to a Green Card, consult an Immigration Attorney.  If you have questions regarding any of the above, please contact PLG Partner cprescott@patellegal.com. 
+
+
+    `
     
 ],
 
 bigBlog = [
     {
-        TITLE: "Real vs Poor Ebook",
-        LINK: `https://www.wmtxlaw.com/benefits-of-primary-physical-custody/`,
+        TITLE: "DACA RECIPIENTS: GREEN CARD THROUGH MARRIAGE OR EMPLOYMENT",
+        LINK: `https://patellegal.com/blog/daca-recipients-green-card-through-marriage-or-employment/`,
         CONTENT: `
+
+Blog DACA Recipients: Green Card through Marriage or Employment
+
+CAN SOMEONE ON DACA APPLY FOR A GREEN CARD?
+DACA is not a lawful status. But that doesn’t mean that someone with DACA cannot get a green card. DACA applicants’ pathway to a green card depends on their application basis.
+
+There is a big difference between someone on DACA applying for a green card through marriage versus through employment. This article will look at the two different paths:
+
+OBTAINING A MARRIAGE-BASED GREEN CARD
+The method by which the Deferred Action for Childhood Arrivals recipient entered the US is relevant in determining whether someone can apply for a green card in the US (known as adjustment of status) or outside of the US (Consular processing). 
+
+DACA recipients who entered the country lawfully can apply for adjustment of status by filing Form I-485. They must have been inspected and admitted by a CBP officer and be married to a USC.  Those married to an LPR cannot file for adjustment, irrespective of whether they have a lawful entry. 
+
+DACA recipients that entered the U.S. unlawfully are not allowed to adjust in the U.S. and must go for Consular processing.  This is because a lawful entry is required to file for adjustment of status. This means leaving the U.S. after the I-130 is approved and going to the U.S. Consulate in their home country to obtain an Immigrant Visa.  Once the Immigrant Visa is used to return to the U.S. the applicant will receive his/her green card. 
+
+However, this is where it gets more complicated. Applicants with over 180 days but less than one year of unlawful presence face a 3-year bar upon leaving the U.S. Those with a year or more of unlawful presence face a 10-year bar. 
+
+DACA recipients who received DACA prior to their 18th birthday do not accrue any lawful presence. People who get DACA after turning 18 will have an unlawful presence. Calculate days from the 18th birthday to receiving DACA as DACA prevents the accrual of unlawful presence. 
+
+Exploring the pathway to a green card is crucial for DACA recipients seeking to adjust their immigration status.
+
+THE BOARD OF IMMIGRATION APPEALS
+A Board of Immigration Appeals (BIA) decision, Matter of Arabally and Yerrabelly states that someone who travels using advance parole (travel document) does not make a departure from the U.S. and therefore does not trigger the 3- or 10-year bar.   
+
+Someone on DACA with accrued unlawful presence can leave on advance parole. They can return to the US legally and file for adjustment of status if married to a USC. 
+
+If you entered unlawfully and stayed over 180 days without a way to get advance parole, leaving the US will activate the 3- or 10-year bar. However, you may be eligible for a waiver to overcome the bar if you can show extreme hardship to a USC/LPR spouse or parent.   
+
+OBTAINING AN EMPLOYMENT-BASED GREEN CARD
+While DACA recipients can be sponsored by their employer for a green card they cannot apply to adjust their status in the US because DACA is not a lawful status. Employment-based adjustment needs lawful nonimmigrant status to file. An applicant with advance parole cannot adjust status for an employment-based green card upon legal re-entry to the US. because DACA is not a valid status. 
+
+DACA recipients who got DACA before 18 and have no unlawful presence can get a green card by attending a US Consulate appointment.  The 3- or 10-year bar is not triggered. 
+
+If you obtained DACA after turning 18 and therefore you have an unlawful presence, then leaving the U.S. will trigger the bar. In Matter of Arabally and Yerrabelly, using advance parole does not trigger the 3- or 10-year bar. Someone traveling with advance parole does not leave the U.S.  The problem here is that although USCIS recognizes this as a matter of law, DOS does not.  This question has been raised with DOS, and they have failed to answer this. A DACA recipient with unlawful presence will still struggle to get an employment-based green card.
+
+Exploring the pathway to a green card is essential for DACA recipients aiming for employment-based immigration opportunities.
+
+Conclusion 
+
+To transition from DACA to a Green Card, consult an Immigration Attorney.  If you have questions regarding any of the above, please contact PLG Partner cprescott@patellegal.com. 
 
 
         `,
     },
-//     {
-//         TITLE: "What Legal Documents Should an 18-Year-Old Have in Texas?",
-//         LINK: `https://www.wmtxlaw.com/what-legal-documents-should-an-18-year-old-have-in-texas/`,
-//         CONTENT: `
-// Table of Contents
-// Confident student with a backpack holding a clipboard and pencil in a modern classroom setting.
+    {
+        TITLE: "THE VISA BULLETIN EXPLAINED: UNDERSTANDING THE EB-5 CATEGORIES PRE AND POST RIA",
+        LINK: `https://patellegal.com/blog/the-visa-bulletin-explained-understanding-the-eb-5-categories-pre-and-post-ria/`,
+        CONTENT: `
+        Posted on Mar 12, 2024 by Rakesh Patel and Jacqueline Trevino
+        
+        Blog The Visa Bulletin Explained: Understanding the EB-5 Categories Pre and Post RIA
+        
+        The visa bulletin is a monthly publication issued by the US Department of State that provides information on the availability of immigrant visas. It categorizes applicants based on their priority date and country of birth, determining when they can proceed with applying for a green card. On the visa bulletin, the 5th preference category refers to the EB-5 Immigrant Investor Program. There are two main EB-5 categories on the visa bulletin: the unreserved categories and set aside categories.  
+        
+        Unreserved Category 
+        
+        The unreserved category is for investments made before the enactment of the Reform and Integrity Act (RIA) in 2022 or subsequent investments post-RIA that do not meet the criteria for the visa set aside categories. This category relates to investments of $1,050,000 and is not subject to specific allocation percentages.  
+        
+        In April 2024, the unreserved categories will remain current for all countries with the exception of China and India. For a green card application to move forward, investors from China must have the priority date of December 15, 2015, or earlier, while investors from India must have a priority date of December 01, 2020, or earlier. Furthermore, it is taking approximately two to three years to receive conditional green card status for these types of projects. 
+        
+        Set Aside Categories   
+        
+        The set asides are listed in three distinct rows, each indicating the percentage of the EB-5 visas that are set aside for each category each fiscal year. These categories include visas set asides for rural projects (20%), high unemployment projects (10%), and infrastructure projects (2%), all requiring an investment of at least $800,000. 
+        
+        Any of the set aside visas that go unused are held within the same category for the following fiscal year. If there are remaining unused visas in these categories after the second fiscal year, they are released to the unreserved categories during the third fiscal year. 
+        
+        In April 2024, the set aside categories will remain current for all countries. No specific priority date is required for an investor currently in the US on a valid status to concurrently file Form I-526 or I-526E along with Form I-485 to initiate their adjustment of status to a conditional green card holder. Furthermore, these post-RIA investments are experiencing notably faster processing times in comparison to the unreserved category, with some investors receiving their conditional green card as fast as 12 to 18 months.  
+        
+        To learn more about the EB-5 visa set aside categories or concurrent filing, please visit our blog site at https://patellegal.com/blog/category/immigration-blog/. 
+        
+        If you have any questions regarding the EB-5 process or your place in line for a green card, please email us at rpatel@patellegal.com and jtrevino@patellegal.com.  
+        
+        `
+    },
+    {
+        TITLE: "CONCURRENT FILING SPARKS INCREASED INTEREST IN THE EB-5 PROGRAM",
+        CONTENT: `The EB-5 Reform and Integrity Act (RIA) of 2022 authorizes certain new investors to file a Form I-485 (Application for Adjustment of Status) along with a Form I-526 (Immigrant Petition by Standalone Investor) or Form I-526E (Immigrant Petition by Regional Center Investor). This is called concurrent filing, and to take advantage of it, there must be a visa available for the applicant, and the applicant must reside in the U.S. in a nonimmigrant status that is eligible for adjustment of status. If a visa is available, it indicates there is space within the annual quota set by the U.S. government for EB-5 immigrant investors to proceed with their visa application process. This is evidenced by the visa category being listed as “Current” in the U.S. Department of State visa bulletin, which displays the availability of immigrant visas each month. 
 
-// When you turn 18, you legally become an adult in Texas. With this major milestone, you gain new freedoms and responsibilities. Suddenly, you can vote, marry, open your own bank account, sign contracts, and enlist in the military. You are also legally independent from your parents. This means they can no longer access your medical records, manage your finances, or make critical decisions on your behalf. You are now in charge of your life, and with that comes the need to think about your future and protecting yourself in ways you might not have before. Below, our Texas estate planning lawyers answer the critical question, “What legal documents should an 18-year-old have?”
+        The provision for concurrent filing is advantageous for eligible individuals. By submitting an I-485 application for adjustment of status, investors can seek work authorization and advance parole documents. These documents allow lawful employment and international travel during the pendency of both the I-526 petition and adjustment of status application. 
+        
+        As of January 2024, the set-aside EB-5 categories are classified as “Current” for all countries, meaning an EB-5 investor need not have a particular priority date (the date they filed their application) for a visa to be available to them. Thus, if an investor invests the minimum requirement of $800,000.00 USD in a rural, high unemployment, or infrastructure project, they can move forward with their immigration application process. This is particularly notable for China and India, the only countries whose unreserved EB-5 categories remain uncurrent. 
+        
+        The option to concurrently file is one of the provisions that makes the reformed program more effective and appealing to foreign investors residing in the U.S. on a nonimmigrant visa. It enables applicants to remain in the U.S. and avoid lengthy processing times. For example, it may take USCIS up to 56.5 months to process the I-526 petition and 49 months to process the I-485 petition. However, USCIS often processes the I-485 application shortly after approving the I-526 petition. Nonetheless, it is recommended to maintain nonimmigrant status until a conditional green card is approved. 
+        
+        We encourage Indian and Chinese nationals to take advantage of this provision while the priority dates remain current. 
+        
+        If you have any questions regarding the EB-5 process, please email us at rpatel@patellegal.com and jtrevino@patellegal.com.`,
+        LINK: "https://patellegal.com/blog/concurrent-filing-sparks-increased-interest-in-the-eb-5-program-2/",
+    },
 
-// Essential Legal Documents for an 18-Year-Old
-// Lacking essential estate planning documents can leave your parents or loved ones in a bind, unable to assist you with medical or financial matters in an emergency. Setting up certain documents can ensure that the people you trust can advocate for you and make decisions on your behalf if needed. We recommend having a simple estate plan that contains the following documents:
+    {TITLE: "LOAN MODIFICATION BASICS",
+    LINK: `https://patellegal.com/blog/loan-modification-basics/`,
+    CONTENT: `
+    The Mortgage Bankers Association estimates that nearly $1 trillion in multifamily CRE debt will mature by 2027.  An historically large number of multifamily debt maturities is on the horizon, leading many borrowers seeking to extend time on their current loans waiting for better interest rates and loan terms,  rather than refinancing their property at a high interest rates or selling it at a loss. Over the last few months I’ve been increasingly asked by lenders and borrowers to write up or review such loan modifications for the purpose of keeping current debt where it is, and thought I’d go over the basics with you.
 
-// Medical power of attorney
-// HIPAA release
-// Financial power of attorney
-// Last will and testament
-// Medical Power of Attorney
-// A medical power of attorney is a legal document that allows someone you choose to make healthcare decisions on your behalf if you cannot. This person is a medical agent. 
+    A number of loan terms can be altered through a loan modification including, but not limited to, the loan balance, interest rate, date of payments/deferral, reserve and escrow amounts, providing access to reserve/escrow funds to borrower, and extending the maturity date of the loan.
 
-// This document becomes critical if you are unconscious, severely injured, or incapacitated due to illness. Your medical agent will be able to talk to your healthcare providers and make medical treatment decisions for you. 
+    The adjustment of these terms affects the loan agreement, promissory note, and the deed of trust. However, all changes may be made through one loan modifying document, the loan modification. The modification also doesn’t need to be recorded, although this is up to your lender. Changing the loan terms through one, unrecorded document simplifies the updating process, and avoids costs like origination fees and prepayment penalties or premiums which would likely be required under a refinance. Although there may not be recording or origination fees, a borrower will likely have to pay the lender’s attorneys’ fees for their work on the modification. The lender may tack this amount onto the principal of your loan or may expect it at the time of the modification.
 
-// You can designate one or more people you trust to be your medical agent. Whether you choose your parents, or another loved one, a medical agent can advocate for you when you cannot advocate for yourself.  
+    Despite the whole process sounding fairly simple, the lender will have a number of considerations before approving your loan modification. One issue is whether the modification will in any way affect the structure of the borrower or the control of borrower. The lender will not want the currently controlling entities or individuals of the borrower to change, taking control away from a guarantor who will be on the hook if the borrower defaults. The lender will also want to reevaluate the financial condition of these parties to confirm that they are still in a position to pay back the loan if things go south.
 
-// HIPAA Release
-// Once you turn 18, your medical information becomes protected under the Health Insurance Portability and Accountability Act (HIPAA). Without your written authorization, your healthcare providers are legally prohibited from sharing your health status, treatment recommendations, or medical records with anyone, including your parents.
+    The lender will also want to ensure that the modification does not negatively impact the performance of the property, reducing the revenue of the property used to pay back the loan or causing any loss in value of the collateral. A loss in revenue or value both create greater risk for the lender in the event of a default, since the lender won’t have adequate collateral to repay the debt. For the same reason, the lender will send out an inspector, prior to the modification’s execution, to review the property for any needed repairs or capital improvements, and to ensure the property is in compliance with the current loan.
 
-// Unlike a medical power of attorney, a HIPAA release grants no decision-making powers. Instead, it allows the individuals you select to talk to your healthcare providers and access your medical records. This access can become critical in medical emergencies, like if you are unconscious or incapacitated, where informed decisions about your health must be made.
+    A loan modification can be a useful tool for those seeking updated terms or an alternative to refinance. If you’re interested in modifying a current loan and have any questions, please feel free to reach out to smacpherson@patellegal.com discuss the process; what to expect; and how we can help.
+    `
+    },
 
-// A HIPAA release is critical if you want someone you trust, like your parents or another loved one, to be informed about your health and involved in a medical emergency. However, a HIPAA release does not have to be all-inclusive. Depending on your comfort level, you can grant broad access to your medical information or limit it. 
+    {
+        TITLE: "SELLING OR TRANSFERRING YOUR INTEREST IN REAL ESTATE SYNDICATIONS OR OTHER INVESTMENTS",
+        LINK: `https://patellegal.com/blog/selling-or-transferring-your-interest-in-real-estate-syndications-or-other-investments/`,
+        CONTENT: `
+        YOU INVESTED IN A PRIVATE OFFERING AND WANT TO SELL YOUR INTEREST – WHAT DO YOU DO?
 
-// Financial Power of Attorney
-// A financial power of attorney is a legal document that allows you to designate one or more people to manage your financial matters if you cannot do so yourself. Generally, it allows someone you trust to help you with financial tasks. For example, your financial agent may be able to do the following on your behalf:
-
-// Access your bank accounts
-// Pay your rent and utility bills
-// Pay any other bills you have, such as a car loan, credit card bills, or student loan bills
-// Renew your car registration
-// File your taxes
-// Make financial decisions
-// You can choose when a financial power of attorney goes into effect, whether immediately, which may be helpful for convenience, or only in the event of incapacitation. You can also limit or expand your agent’s powers and change or update the document at any time when you have a sound mind.
-
-// Why is establishing a financial power of attorney important? Without one, in the event of incapacitation, your parents or loved ones would have to go through a lengthy court process to get guardianship rights and the authority to manage your finances. In the meantime, your financial obligations may go unmanaged, leading to serious consequences. For example, you could face late fees, eviction, and credit damage.
-
-// Last Will and Testament
-// A will is a legal document that outlines your wishes regarding the distribution of your assets and belongings after you pass away. It may seem premature to think about a will at 18. However, having one can benefit anyone, regardless of age or assets. You may find that you have possessions of sentimental or even monetary value that you want to leave to certain people.
-
-// If you pass away in Texas without a will, state law determines how to distribute your estate. State law may not align with your wishes. You can provide clear instructions for your assets and property by creating a simple will. 
-
-// Keep in mind that once you establish a will, you can modify it as needed when significant life changes occur or as your assets grow. You should revisit your estate planning documents every couple of years to ensure the documents continue to meet your needs.
-
-// Man relaxing with hands behind head at a desk, appearing content and thoughtful.
-// Create a Simple Estate Plan Using Our Estate Plan Express Service
-// As you navigate the new freedoms and responsibilities of adulthood, it is essential to take proactive steps to protect your future. That is where our Estate Plan Express service can help. 
-
-// Our online will service streamlines the process of creating the essential legal documents every young adult in Texas should have. Our service includes a medical power of attorney, a HIPAA release, a financial power of attorney, and a will.
-
-// You can get a simple estate plan prepared by our experienced Texas estate planning lawyer from the comfort of your home. You can answer and submit a guided questionnaire using our user-friendly online estate planning portal. From there, our attorney will draft and review your documents. 
-
-// At Warren & Migliaccio, we provide a range of estate planning services tailored to accommodate the varying needs of our clients. If your estate planning requirements extend beyond a simple will, or if you prefer a more personable and hands-on approach from your attorney, our White Glove or Everything but the Execution services might be the perfect fit for you.
-
-// Start your online will package, or contact us if you have questions about preparing an estate plan. We are happy to answer your legal questions and discuss how we can help you. Call us at (888) 584-9614  or contact us online to schedule a consultation.
-
-//         `
-//     },
-//     {
-//         TITLE: "Notice of Appraised Value",
-//         CONTENT: `The day has arrived! You look forward to it every year; ok, dread could be a better description for most. In your mailbox is your property’s new Notice of Appraised Value, lovingly constructed, sealed, and sent to you by your local appraisal district. Do you rip it up and throw it away in disgust, or stick it on your refrigerator as a reminder for later like a ‘20% Off Your Entire Purchase’ coupon at your favorite store? Hopefully what you read below will help you decide that. This article takes a deeper look at what the tax code says about the Notice of Appraised Value, how to get the most from them, and why receiving one shouldn’t ruin your whole summer.
-
-//         Texas Property Tax Code
-//         The rule book when it comes to anything property tax related in Texas is the Texas Property Tax Code. It outlines everything from appraisal methods used, record keeping requirements by appraisal districts, and tax liens for delinquent payers. It’s the Bible of Texas property taxes, and what it says must be followed.
+        For all private offerings, restricted and/or controlled securities are issued, thus inhibiting the ability for investors to sell or transfer their interest. For securities purchased in a Regulation D offering, the interest is considered “restricted” and cannot be freely resold to the public. Thus, investors must identify an exemption from the Security and Exchange Commission’s (“SEC”) registration requirements. Rule 144 serves as one such exemption allowing public resale of restricted and control securities if certain conditions are met. This article aims to educate real estate syndication investors on Rule 144, as well as other similarly situated investors, on how they may sell their interest after investing in a restricted offering.
         
-//         What does the Texas Property Tax Code say about a Notice of Appraised Value? I’m glad I asked. It mentions many things, but some things are WAY more important than others. First, it’s important to know under what circumstances you will receive a Notice of Appraised Value (Notice) from your local appraisal district. Tax code specifically says that an appraisal district is not required to send you an annual appraisal Notice unless: 1) Your new market value for the year is more than $1,000 higher than it was the preceding year -OR- 2) The property in question wasn’t on the appraisal roll, which is the county’s record system, in the previous year -OR- 3) There was a change in the exemption status from the previous year that results in more taxes (PTC 25.19a,e).
+        Background on Rule 144
         
-//         You’d be surprised how many people don’t know the ‘$1,000 or greater’ rule and when they don’t receive a Notice they call us up in July and say “can I still file a protest?” The short answer 99.9% of the time is “no, it’s too late to file a protest”. I’ve seen this argument shut-down more times than I can count in a hearing to determine if a late protest should be allowed. Just because you weren’t made aware of your current year value and didn’t receive a Notice, due to one of the three previously listed reasons, doesn’t mean you have valid cause to file a late protest after the protest deadline (which is May 15th for most). In fact, I tell almost anyone who asks me about Notices to ignore the snail mail system and just check their value on the appraisal district’s website starting in early April. Often the county website will tell you everything you need to know including the deadline to file a protest. It may even offer you a digital copy of your Notice.
+        Under the Securities Act of 1933 (“Securities Act”), securities are required to be registered with the SEC prior to being issued to the public. However, some securities such as restricted securities and control securities are not required to be issued. Restricted securities are securities acquired in unregistered, private sales from the issuing company or from an affiliate of the issuer. These include private placements, Regulation D offerings, and equity compensation. Control securities are those held by an affiliate of the issuing company such as the manager of a syndication, an executive, or a major shareholder. Because restricted and control securities are not required to be registered, they generally may not be freely resold. Rule 144 functions as an exemption to the general rule provided that the following five conditions are met:
         
-//         So, what else does tax code say about Notices? Great question. Tax code says that there must be very specific pieces of information on all official Notices. I have to say official Notices because some counties will send unofficial postcards to property owners who are not required to receive an official Notice based on the criteria I mentioned previously. But unlike postcards, true Notices are required to show the following: your property identification, your taxing entities, the current and previous year’s appraised value and taxable value accounting for exemptions, an estimate of taxes based on that value and the latest know tax rates, and a glance of your value from 5 years ago along with the percentage change your property value has made since then. If you have an exemption that freezes taxes for a certain entity, that frozen amount should be indicated as well. The district is also required to break down land value versus improvement value, meaning any structure that has been built on the land itself.
+        Holding Period: The holding period condition applies only to restricted securities and begins on the date the securities were bought and paid for. The length of time restricted securities are required to be held prior to sale is dependent on whether the issuer is considered a “reporting company” or a “non-reporting company.” A reporting company is one subject to the reporting requirements under the Securities and Exchange Act of 1934 while a non-reporting company is not subject to such requirements. Investors in an issuer considered a reporting company are required to hold the interest for a minimum of six months while investors in an issuer considered a non-reporting company are required to hold the interest for a minimum of one year prior to a public sale. Real estate syndication issuers are generally non-reporting companies and investors are thus required to hold their interest for a minimum of one year.
+         
         
+        Current Public Information: Before any sale of unregistered securities may be made, adequate current information about the issuer must be available. Reporting companies must comply with periodic requirements of the Securities and Exchange Act of 1934 while non-reporting companies must provide company information such as the nature of business, the identity of officers and directors or managers, and financial statements.
+        Trading Volume Formula: For affiliates wishing to sell their interest, the number of equity securities sold within a three-month period cannot exceed 1% of all outstanding shares being sold within the same class. This is typically the formula for real estate syndications. For a class listed on a stock exchange, the trading formula is the greater of the above or 1% or average reported weekly trading volume during the four weeks preceding a Form 144 notice of sale.
+         
         
+        Ordinary Brokerage Transactions: Brokers may not receive more than a normal commission and neither sellers nor brokers may solicit the purchase of securities. Instead, if the seller is an affiliate, all securities sales but be within routine trading transactions.
+        Filing a Notice of Proposed Sale With the SEC: Affiliates must file a notice with the SEC if the sale involves more than 5,000 shares or the interest is greater than $50,000 in any three month period. The notice filed is on a Form 144 which asks for basic information about the issuer and purchaser, the securities to be sold, and securities sold during the past three months.
+        Determining How Rule 144 Applies to You
         
-//         On top of all of that information that is super specific to your property, a Notice will include statements about local appraisal, tax rate creation, and rate adoption. They are required to let you know that property taxes are a local issue so that you don’t call the State to complain about your value or taxes. And they’re right, you won’t get anywhere calling the State about that stuff.
+        Affiliate or Non-Affiliate?	Restricted Securities
+        Affiliate: An individual such as an executive officer, director, or large shareholder with the ability to influence or control the issuer company.	·         Affiliates must comply with all Rule 144 conditions prior to any proposed sale. This means that even if all of the requirements are met, a Form 144 notice must sill be filed if the sale involves more than 5,000 shares or is greater than $50,000 in any three month period.
+        Non-Affiliate: An individual without the ability to influence or control the issuer.	·         For non-affiliates, if the interest is held for over one year, the interest may be sold without regard to Rule 144. If the interest with an issuer considered a “reporting company” is held for over six months but less than a year, the interest may be sold if the current public information condition is satisfied.
+         
         
+        Meeting Rule 144 Conditions Does Not Mean the Interest may be Freely Traded
         
+        Despite the safe-harbor provided by Rule 144, satisfying the five conditions does not mean the interest may be freely traded. Restricted securities still may not be resold until the issuer consents and the issuer’s counsel provides an opinion letter to remove the certificate’s restrictive legend. This opinion letter covers a three month period and serves to protect the issuer against securities law violations by certifying that certain requirements are met and the issuer is in compliance.
         
-//         This is all well and good information they are providing, but why shouldn’t I just rip up and throw away this statement? Hang with me, I haven’t mentioned the most important piece of information provided on Notices. All Notices are required to provide detailed instructions on how, by what means, and by when you may file a protest to dispute the current value which includes a Notice of Protest form with instructions on how to complete it and send it back to the appraisal district (PTC 25.19g, j).
+        Ensuring compliance with Rule 144 and related Securities Act rules is imperative to avoid legal and monetary penalties.
         
-        
-        
-//         What does that mean for me? It means you can protest that value if you aren’t happy with it... regardless of previous years’ value or prior results. Collect sales data, property damage photos, repair bids, and other evidence to make your case (see also How to Protest Your Property Taxes). Property owners are sometimes treated more favorably than property tax agents at the appraisal district; use that to your advantage. Be polite but compelling. You may be surprised with the results of your protest.
-        
-//         Hire The Pros
-//         Or don’t protest yourself and hire a pro to do it for you. You mean like Resolute Property Tax Solutions? EXACTLY! But at least exercise your right to dispute your property value. It’s just like voting. You can’t complain later about your property taxes if you didn’t do anything about them when you had the chance. Well you can, but it’d be insincere and annoying.
-        
-//         At least 20 times a year I hear a prospective client say, “I don’t think I have a good case, why bother protesting?” The simple answer is doing nothing results in nothing 100% of the time when it comes to property taxes. You’ll really never know unless you try. And the beauty of our service, aside from time saved and professional service, is that we don’t charge you a dime if we’re unsuccessful in saving you money. That’s what you would call a No-Lose scenario.
-        
-//         If you would like to have us protest your property taxes on your behalf, then Sign Up.`,
-//         LINK: "https://resolutepts.com/notice-of-appraised-value",
-//     },
-
-//     {TITLE: "How Much Does a Will Cost in Texas?",
-//     LINK: `https://www.wmtxlaw.com/how-much-does-a-will-cost-in-texas/`,
-//     CONTENT: `
-//     How Much Does a Will Cost in Texas?
-// Post by Christopher Migliaccio
-
-// Table of Contents
-// Document titled "testament" with text about the last will, accompanied by u.s. currency notes.
-
-// There is a common misconception that estate planning is only for wealthy or older people. However, having a will can benefit anyone, regardless of financial status or age. You can use a will to appoint a guardian for minor children, provide for your family, and safeguard your legacy. Recognizing the importance of this document, you may wonder, “How much does a will cost in Texas?” Below, our Texas estate planning lawyers discuss the cost of a will in Texas and our Estate Plan Express service.
-
-// What Is a Will in Texas?
-// A will is a legal document that specifies how your assets should be distributed after you pass away. It allows you to choose your beneficiaries and what they should receive from your estate. It also allows you to designate an executor or the person to manage your estate and carry out your wishes after death.
-
-// Life is unpredictable, and unforeseen events can happen at any age. Even if you do not believe you have any significant assets, you likely have possessions of sentimental or monetary value that you wish to leave to specific people. For parents, you can use a will to name a guardian for minor children in the event that both parents pass. 
-
-// If you die without a will, it is called dying intestate. In this situation, Texas intestacy laws apply and will decide the distribution of your estate. If you do not have another estate planning document in place that names a guardian for your minor children, the court will decide on guardianship. Texas law may not align with your wishes. 
-
-// How Much Does It Cost to Make a Will in Texas?
-// The cost of a will in Texas can vary widely based on several factors, including the method you choose to create your will and the complexity of your estate. For example, a DIY will kit may seem like the cheapest option over hiring a lawyer, but it comes with serious risks. Without professional oversight, you may leave gaps in your estate plan or make errors that could lead to the will being invalidated or easily contested.
-
-// However, hiring a lawyer to create your will could cost thousands of dollars, right? While some Texas law firms may charge thousands of dollars to make your will, at Warren & Migliaccio, we offer a flat fee will package for Texans. 
-
-// Our Texas estate planning law firm offers a convenient online will preparation service called Estate Plan Express. With this service, you get professional document preparation from a licensed attorney and assurance that your will is legally sound at affordable prices. 
-
-// Our fee varies depending on whether you prepare your will documents as single or married. We charge $599 for single adults and $799 for married couples.
-
-// Two colleagues discussing work on a digital tablet in a modern office setting.
-
-// What Does Our Estate Plan Express Service Include?
-// Our Estate Plan Express service is online and is ideal for individuals or families across Texas who need a simple estate plan. It includes four essential estate planning documents:
-
-// Last will and testament
-// Financial power of attorney
-// Medical power of attorney
-// HIPAA release
-// Our experienced Texas estate planning attorney will prepare and review your will documents. Then, you will legally execute them yourself. Our attorney will provide you with instructions on how to legally execute your documents.
-
-// Estate Plan Express includes free document revision for six months, excluding converting a different plan. When life events happen, and you need changes to your will or power of attorney documents, we will update them. Your estate plan should continue to meet your needs. 
-
-// Learn more about our Estate Plan Express service or get started with your online will today. If you have questions about estate planning or whether Estate Plan Express is right for your estate planning needs, do not hesitate to schedule a consultation with us.
-
-// Schedule a Consultation With Our Texas Estate Planning Lawyers Today
-// At Warren & Migliaccio, we offer three levels of estate planning services to meet our clients’ diverse needs. Do you have more complex estate planning needs than a basic will or want more hands-on support from your attorney? If so, our White Glove or Everything but the Execution service may be better suited for you.
-
-// If you have questions about estate planning, we welcome you to schedule a consultation with us. We are happy to answer your legal questions and discuss how we can help you plan for the future, protect your family, and safeguard your legacy. Call us at (888) 584-9614 or contact us online to schedule a consultation.
-//     `
-//     },
-
-//     {
-//         TITLE: "Mediator vs Lawyer in Divorce: What’s Best for You?",
-//         LINK: `https://www.wmtxlaw.com/mediator-vs-lawyer-in-divorce-whats-best-for-you/`,
-//         CONTENT: `
-//         Mediator vs Lawyer in Divorce: What’s Best for You?
-//         Post by Christopher Migliaccio
-        
-//         Table of Contents
-//         “We’re still a great team when it comes to making plans for the kids and running the house. She’s reasonable and fair most of the time,” Steve said to his father. “We make good business partners, but there’s just no love left, heck, we barely even like each other anymore, and I need to move on before I get too old to find somebody else.”
-        
-//         “Yeah, I’ve heard that story before,” his father said, “but if you get along as business partners, you might be able to save some cash and skip the nasty legal battle. Jimmy was in a similar situation and he used a divorce mediator.”
-        
-//         A mediator holding hands with a lawyer in a divorce.
-        
-//         Deciding between a mediator vs a lawyer in divorce is pivotal for those preparing to end a marriage. Mediation offers a path to untangle marital knots with less conflict and often at lower costs, making it an appealing option for many. Yet, when disagreements run deep or legal complexities arise, having a seasoned divorce attorney by your side becomes essential. Our guide will help you understand each role clearly and weigh their benefits as you move forward.
-        
-//         We’ll explore how mediators facilitate agreement on tough issues like child custody and spousal support while aiming to save both time and money. On the flip side, we delve into why lawyers are key in contested cases where stakes are high or laws get tricky. By reading on, you’ll gain insight into cost comparisons and strategic factors that could shape your decision—empowering you with knowledge tailored for Dallas families facing these life-changing choices.
-        
-//         Understanding Divorce Mediation and Its Benefits
-//         Understanding divorce mediation and its benefits, including the role of a mediator versus a lawyer in divorce.
-        
-//         If you’re navigating the rough waters of divorce, mediation might just be your lifeline. It’s a private process where both parties come together with a professionally trained neutral mediator to hash out their differences and work towards an amicable settlement agreement.
-        
-//         What is Divorce Mediation?
-//         Divorce mediation puts the decision-making power in your hands, not some stranger’s who wears a robe to work. This alternative dispute resolution method lets divorcing spouses sit down with a neutral third-party—a mediator—to resolve issues ranging from child support to property division without stepping foot in family court.
-        
-//         The beauty of this process lies in its flexibility; it can adapt to fit unique situations that couples face during the emotionally charged divorce proceedings. Plus, because mediators are neutral facilitators rather than decision-makers, they help people find common ground and help them come to their own agreements.
-        
-//         The Role of a Divorce Mediator
-//         A divorce mediator isn’t there to take sides or make judgments. They’re like Switzerland—totally neutral but incredibly helpful. Their main objective is to guide conversations so each person can express what they want and need out of the settlement agreement safely and constructively while minimizing the levels of conflict.
-        
-//         This neutrality helps keep emotions at bay as you figure out everything from parenting plans for shared children to how financial matters will be handled post-divorce—all crucial elements for success in mediated divorces.
-        
-//         Advantages of Choosing Mediation Over Litigation 
-//         A blue background with text and icons related to the mediator vs lawyer in divorce.
-//         Ditching litigation for mediation could save you more than just money—it could save your sanity too. By choosing private mediation over public courtroom battles (which often turn adversarial), many folks have found themselves breathing easier thanks to less emotional stress.
-        
-//         Faster resolution: On average, families wrap up these sessions within 6 months tops.
-//         Saving big bucks: When compared with traditional lawyer-led fights, most see savings between 40% – 60%, meaning potentially thousands stay in your pocket instead going towards legal fees.
-//         Mediated divorces aren’t just good options—they’re smart ones, especially if time is tight or resources are limited.
-        
-//         In Dallas alone, countless successful family mediations demostrate why it’s a worthy option to consider. So before deciding to take that trek through a traditional contested divorce, give some thought to whether mediation might be a better option for you.
-        
-//         Key Takeaway: 
-        
-//         Mediation can be your peacekeeper in divorce, letting you call the shots and avoid court drama. It’s flexible, keeps things cool, and could save time and money—a win-win for a smoother split.
-        
-//         The Role of Divorce Lawyers in Litigated Divorces
-//         Legal Advice and Representation
-//         A divorce lawyer stands as a guide through the tangled forest of family law. When emotions run high, these seasoned professionals ensure you don’t lose your way. They’re more than just legal experts; they are advocates who fight for your rights, especially when the path to agreement is overgrown with discord.
-        
-//         Lady at desk with a text bubble stating If you are chasing over the kids then strongly consider using a mediator or divorce lawyer.
-        
-//         With a wealth of knowledge on everything from child custody to spousal support, these attorneys help people tackle complex issues that often arise during divorce proceedings. It’s not simply about knowing the law—it’s about applying it strategically to safeguard what matters most to their clients.
-        
-//         In contested divorces where spouses clash over assets or parenting plans, having an attorney in your corner can help you reach the outcome you desire.
-        
-//         Navigating Contested Divorces
-//         Litigation isn’t anyone’s first choice; but sometimes it’s inevitable. In cases where former partners can’t see eye-to-eye—whether due to financial matters or deep-seated disagreements—a skilled attorney becomes indispensable. They deftly handle every volley in this adversarial legal process: drafting pleadings, managing discovery requests and responses, representing you at trial if needed.
-        
-//         Family court battles aren’t just fought with legal briefs though; there’s also a psychological element at play. A good family law attorney knows this well and will work tirelessly behind scenes so that when push comes to shove—in negotiations or before a judge—their client is poised for success rather than caught off guard by unforeseen challenges.
-        
-//         Divorce lawyers, trained within rigorous law school programs, become essential allies because they possess both detailed legal expertise and courtroom experience that only professionals have gained through practice—not theory alone—which helps them navigate litigation smoothly despite its complexities.
-        
-//         A road with a divorce lawyer.
-        
-//         Key Takeaway: 
-        
-//         Divorce lawyers are your champions in the legal and emotional battleground of a litigated divorce. They blend deep legal knowledge with strategic action to protect what you value most.
-        
-//         Their courtroom savvy can turn the tide in contested divorces, giving you an edge when agreements seem impossible and stakes are high.
-        
-//         Cost Comparison Between Mediation and Litigation
-//         Average Costs of Mediation vs. Litigation
-//         Divorce can put a strain on your finances as much as it does on your emotions. When you’re at the crossroads, knowing how to save money on divorce while still achieving a fair outcome is crucial. That’s where understanding the cost-effective divorce options of mediation versus litigation comes in.
-        
-//         In Dallas, like elsewhere across the country, couples face an average bill ranging from $15,000 to $30,000 for litigated divorces—a hefty price tag that underscores the adversarial nature of such proceedings. Contrast this with mediated divorces where costs are significantly lower; often leading to savings between 40% and 60%. A mediator helps people by serving as a neutral party who guides them through resolving the issues without taking sides—potentially saving thousands.
-        
-//         Mediation isn’t just about cutting costs though—it also involves less time than typical court battles. The collaborative process typically wraps up within three to six months which means legal fees don’t pile up over years like they do with drawn-out court cases.
-        
-//         A woman getting divorced with her hand on her chin thinking about mediation. 
-        
-//         The American Bar Association highlights mediation as not only being more affordable but also allowing parties control over their outcomes—an empowering aspect when navigating through difficult times like divorce.
-        
-//         Litigation stacks up differently financially because every hour spent in family court or wrangling paperwork contributes to escalating attorney bills—one reason why some might prefer settling out of court via private mediation sessions conducted by professionally trained individuals.
-        
-//         It’s essential then for those facing divorce proceedings to weigh these differences carefully before deciding which route best aligns with both their financial limitations and desired results.
-        
-//     `
-//     }
+        By: Kamden Crawford, Securities Attorney
+                
+    `
+    }
 ],
 
 competition = {
