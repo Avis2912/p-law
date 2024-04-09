@@ -127,7 +127,6 @@ export default function ProductsView() {
           </instruction>
 
 
-
           `
         });
       }
@@ -178,7 +177,7 @@ export default function ProductsView() {
       if (currentMode === "Generate") {setCurrentMode('Alter Draft');};
 
 
-    const claudeResponse = await fetch('http://localhost:3050/claudeAPI', {
+    const claudeResponse = await fetch('www.http://p-law.vercel.app/claudeAPI', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

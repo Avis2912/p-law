@@ -53,6 +53,7 @@
     "simplebar-react": "^3.2.4"
   },
   "devDependencies": {
+    "@vercel/node": "^3.0.26",
     "@vitejs/plugin-react-swc": "^3.4.0",
     "eslint": "^8.51.0",
     "eslint-config-airbnb": "^19.0.4",
