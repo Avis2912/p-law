@@ -118,7 +118,7 @@ export default function UserPage() {
         </style>
         <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, 
         letterSpacing: '1.05px',  fontWeight: 800, fontSize: '32.75px'}}> 
-        All Website Leads</Typography>
+        All Website Leads (Not Linked)</Typography>
 
         <Card sx= {{ height: 64.5, width: 'auto', pt: 1.15, pl: 1.7, borderRadius: '12px'  }} justifyContent="left" alignItems="center">
          
