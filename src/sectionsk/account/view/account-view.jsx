@@ -335,7 +335,7 @@ const handleImageChange = (event) => {
           onClick={() => {setSelectedModel(3);}}
           sx={(theme) => ({backgroundColor: selectedModel === 3 ? theme.palette.primary.navBg : '#DD8390'})}
         >
-          Pentra Opus 
+          Pentra Ultra 
         </Button>
       </Stack></Stack>
 
