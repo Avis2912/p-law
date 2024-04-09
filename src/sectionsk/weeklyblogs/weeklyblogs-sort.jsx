@@ -5,12 +5,12 @@ import TextField from '@mui/material/TextField';
 
 // ----------------------------------------------------------------------
 
-CreatorSort.propTypes = {
+PostSort.propTypes = {
   options: PropTypes.array,
   onSort: PropTypes.func,
 };
 
-export default function CreatorSort({ options, onSort }) {
+export default function PostSort({ options, onSort }) {
   return (
     <TextField select size="small" value="latest" onChange={onSort}>
       {options.map((option) => (

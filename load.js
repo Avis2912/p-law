@@ -78,7 +78,7 @@ const newUser = async (docName, firmInfo, smallBlog, bigBlog, competition) => {
             ],
 
             WEEKLY_POSTS: {
-                LAST_DATE: "03/31/24",
+                LAST_DATE: "3/3/3",
                 POSTS: [
                     {platform: "LinkedIn", content: "<h1>Example Post</h1>This is what a weekly post idea looks like."},
                     {platform: "LinkedIn", content: "<h1>Example Post</h1>This is what a weekly post idea looks like."},
@@ -91,6 +91,15 @@ const newUser = async (docName, firmInfo, smallBlog, bigBlog, competition) => {
                     {platform: "Instagram", content: "<h1>Example Post</h1>This is what a weekly post idea looks like."},
                     {platform: "Instagram", content: "<h1>Example Post</h1>This is what a weekly post idea looks like."},
                     {platform: "Instagram", content: "<h1>Example Post</h1>This is what a weekly post idea looks like."},
+            ]},
+
+            WEEKLY_BLOGS: {
+                LAST_DATE: "3/3/3",
+                BLOGS: [
+                    {content: "<h1>Example Post</h1> <p> This is what a weekly post idea looks like. </p>"},
+                    {content: "<h1>Example Post</h1> <p> This is what a weekly post idea looks like. </p>"},
+                    {content: "<h1>Example Post</h1> <p> This is what a weekly post idea looks like. </p>"},
+                
             ]},
 
             COMPETITION: competition,
