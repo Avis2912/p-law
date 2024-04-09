@@ -338,7 +338,7 @@ export default function BlogView() {
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
         <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, 
       letterSpacing: '1.05px',  fontWeight: 800, fontSize: '32.75px'}}>         
-        {isNewPost ? 'Create New Posts' : 'Weekly Blog Post Drafts'}
+        {isNewPost ? 'Create New Posts' : 'Weekly Blog Idea Drafts'}
         </Typography>
         
         <Stack direction="row" spacing={2}>

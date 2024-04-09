@@ -13,7 +13,7 @@ const navConfig = [
   //   icon: icon('ic_analytics'),
   // },
   {
-    title: 'Blog Generator',
+    title: 'Blog Creator',
     path: '/seo',
     icon: icon('ic_blog'),
   },
