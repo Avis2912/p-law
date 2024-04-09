@@ -284,7 +284,7 @@ const handleImageChange = (event) => {
           , justifyContent: 'space-between'}}>          
           <ListItemText primary={blog.TITLE} sx={{fontWeight: '900'}}/>
           <Button variant="contained" color="primary" sx={(theme) => ({height: '27px', width: '28px', 
-          backgroundColor: theme.palette.primary.navBg, 
+          backgroundColor: theme.palette.primary.navBg, marginLeft: '30px',
           borderRadius: '5px', fontSize: '14px'})} onClick={() => {
             const url = blog.LINK.startsWith('http://') || blog.LINK.startsWith('https://') ? blog.LINK : `http://${blog.LINK}`;
             window.open(url, '_blank');
