@@ -68,7 +68,7 @@ const signUpWithGoogle = async () => {
         alert(err);
         return;
     }
-    router.push('/');
+    router.push('/seo');
 };
 
 const SignIn = async () => {
@@ -80,7 +80,7 @@ const SignIn = async () => {
         alert('Invalid email / password');
         return;
     }
-    router.push('/');
+    router.push('/seo');
 };
 
   const renderForm = (

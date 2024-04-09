@@ -41,7 +41,7 @@ export default function SignUpView() {
       alert('');
       return;
     }
-    router.push('/');
+    router.push('/seo');
   };
 
   const SignUp = async () => {
@@ -51,7 +51,7 @@ export default function SignUpView() {
       alert('Invalid entry. Password must be 6+ characters long.');
       return;
     }
-    router.push('/');
+    router.push('/seo');
   };
 
   const renderForm = (

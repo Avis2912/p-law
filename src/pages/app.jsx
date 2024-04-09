@@ -22,13 +22,11 @@ export default function AppPage() {
 
   return (
     <>
-    {/* <Router> */}
       <Helmet>
-        <title> Home | Pentra* </title>
+        <title> Home | Pentra </title>
       </Helmet>
 
       <AppView />
-      {/* <Route path="/blog/:id" component={CreatorsView} /></Router> */}
     </>
   );
 }

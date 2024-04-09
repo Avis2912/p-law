@@ -8,7 +8,7 @@ export default function SignUpPage() {
   return (
     <>
       <Helmet>
-        <title> SignUp | Minimal UI </title>
+        <title> SignUp | Pentra </title>
       </Helmet>
 
       <SignUpView />

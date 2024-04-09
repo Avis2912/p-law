@@ -37,6 +37,7 @@ export default function Router() {
       ),
       children: [
         { element: <IndexPage />, index: true },
+        { path: '/', element: <IndexPage /> },
         { path: 'reviews', element: <ReviewsPage /> },
         { path: 'seo', element: <SeoPage /> },
         { path: 'blog', element: <BlogPage /> },
