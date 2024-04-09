@@ -140,7 +140,7 @@ export default function UserPage() {
     <Stack sx={{ mb: 3.5 }} justifyContent="space-between" direction="row" alignItems="center">
       <style>@import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap);</style>
       <Typography sx={{ fontFamily: "DM Serif Display", letterSpacing: '1.05px',  fontWeight: 800, fontSize: '32.75px'}}> 
-        Invite Clients To Review</Typography>
+        Invite Reviewers (Releasing Very Soon)</Typography>
       <Stack direction="row" spacing={2}>
       <Button target="_blank" href="https://tally.so/r/mBxLkR" variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}
       sx={(theme)=>({backgroundColor: theme.palette.primary.navBg })} >
