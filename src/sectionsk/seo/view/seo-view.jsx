@@ -175,8 +175,6 @@ export default function ProductsView() {
       if (currentMode === "Build Outline") {setCurrentMode('Generate');};
       if (currentMode === "Generate") {setCurrentMode('Alter Draft');};
 
-
-    // const claudeResponse = await fetch('https://p-law.vercel.app/api/claudeAPI', {
     const claudeResponse = await fetch('https://us-central1-pentra-claude-gcp.cloudfunctions.net/gcp-claudeAPI', {
           method: 'POST',
           headers: {
@@ -239,7 +237,7 @@ export default function ProductsView() {
 
       messages = [{"role": "user", "content": gptResponse}]; console.log('RUNNING:', gptResponse.split(' ').length, ' < ', lowerRange, 'count: ', counter);
       // eslint-disable-next-line no-await-in-loop
-      const claudeElongationResponse = await fetch('http://localhost:3050/claudeAPI', {
+      const claudeElongationResponse = await fetch('https://us-central1-pentra-claude-gcp.cloudfunctions.net/gcp-claudeAPI', {
         method: 'POST', headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({ messages, model: modelKeys[selectedModel], system: elongationPrompt})});
 

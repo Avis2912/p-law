@@ -70,7 +70,7 @@ export default function BlogView() {
     }}
     
     
-    const response0 = await fetch('http://localhost:3050/claudeAPI', {
+    const response0 = await fetch('https://us-central1-pentra-claude-gcp.cloudfunctions.net/gcp-claudeAPI', {
         method: 'POST',headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({ model: modelKeys[selectedModel], 
         messages: [{ role: "user", content: `
@@ -97,7 +97,7 @@ export default function BlogView() {
     for (let i = 0; i < numberOfBlogs; i += 1) {
 
       // eslint-disable-next-line no-await-in-loop
-      const response = await fetch('http://localhost:3050/claudeAPI', {
+      const response = await fetch('https://us-central1-pentra-claude-gcp.cloudfunctions.net/gcp-claudeAPI', {
         method: 'POST',headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({ model: modelKeys[selectedModel], 
         messages: [
