@@ -176,7 +176,7 @@ export default function BlogView() {
 
     if (!genPostPlatform) {getFirmData()};
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isNewPost]);
+  }, [isNewPost, genPostPlatform]);
     
   
   
@@ -210,7 +210,7 @@ export default function BlogView() {
         ONLY OUTPUT THE ARRAY. NOTHING ELSE. Make sure to put quotes at the ends of the content string.
         - Wrap titles in <h2> tags. Dont use ANY new lines but add one <br> tags after EVERY paragraph and h1/h2 tag.
         - PARAGRAPH COUNT: these posts should be ${wordRange} paragraphs long. 
-        - IMAGES: post should contain 1 image, placed after the h2 post title. Please add it in this format: //Image: Idaho Courthouse// OR //Image: Chapter 7 Bankruptcy Flowchart//.
+        - IMAGES: post should contain 1 image, placed after the h2 post title. Please add it in this format: //Image: {relevant description}//.
         - ${browseTextResponse !== "" && `WEB RESULTS: Consider using the following web information I got from an LLM for the prompt ${browseText}: ${browseTextResponse}`}
         - ${postKeywords !== "" && `KEYWORDS: Use the following keywords in your posts: ${postKeywords}.`}
         - ${style !== "Unstyled" && `STYLE: This post should SPECIFICALLY be written in the ${style} style.`}
