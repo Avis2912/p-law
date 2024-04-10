@@ -1,33 +1,47 @@
+const express = require('express');
+
 const cors = require('cors');
-const Anthropic = require('@anthropic-ai/sdk');
+
+const app = express();
+const port = 3050;
 
 require('dotenv').config();
 
+const Anthropic = require('@anthropic-ai/sdk');
+
 const anthropic = new Anthropic({
-    apiKey: `${process.env.VITE_ANTHROPIC_API_KEY}`,
+  apiKey: `${process.env.VITE_ANTHROPIC_API_KEY}`,
 });
 
-const corsMiddleware = cors();
+// const corsOptions = {
+//   origin: '*', // Replace with your production domain
+//   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+// };
 
-module.exports = (req, res) => {
-    // Run the cors middleware
-    corsMiddleware(req, res, async () => {
-        if (req.method === 'POST') {
-            const messages = req.body.messages;
-            const model = req.body.model; 
-            const system = req.body.system;
+app.use(cors());
+app.use(express.json()); // Use express.json middleware to parse JSON bodies
 
-            const gptResponse = await anthropic.messages.create({
-                model,
-                system,
-                max_tokens: 4096,
-                messages, 
-            });
+app.post('/claudeAPI', (req, res) => {
+  const messages = req.body.messages; // Access messages from request body
+  const model = req.body.model; 
+  const system = req.body.system;
 
-            res.send(gptResponse.content[0].text);
-        } else {
-            // Handle any other HTTP method
-            res.status(405).send('Method Not Allowed');
-        }
+  const hi = async () => {
+    const gptResponse = await anthropic.messages.create({
+      model,
+      system,
+      max_tokens: 4096,
+      messages, 
     });
-};
+    return gptResponse;
+  }
+    
+  hi().then((data) => {
+    res.send(data.content[0].text);
+  });
+});
+
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
+});
+

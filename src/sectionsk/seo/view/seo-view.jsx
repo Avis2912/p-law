@@ -177,7 +177,7 @@ export default function ProductsView() {
 
 
     // const claudeResponse = await fetch('https://p-law.vercel.app/api/claudeAPI', {
-    const claudeResponse = await fetch('api/claudeAPI', {
+    const claudeResponse = await fetch('http://localhost:3050/claudeAPI', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
