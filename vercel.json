@@ -4,10 +4,5 @@
       "source": "/(.*)",
       "destination": "/"
     }
-  ],
-  "functions": {
-    "./claudeAPI.js": {
-      "runtime": "@vercel/node@3.0.26"
-    }
-  }
+  ]
 }

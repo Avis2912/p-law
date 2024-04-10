@@ -177,13 +177,13 @@ export default function ProductsView() {
 
 
     // const claudeResponse = await fetch('https://p-law.vercel.app/api/claudeAPI', {
-    const claudeResponse = await fetch('http://localhost:3050/claudeAPI', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ messages, blogDescription, blogKeywords,
-        model: modelKeys[selectedModel], system: 
+    const claudeResponse = await fetch('https://us-central1-pentra-claude-gcp.cloudfunctions.net/gcp-claudeAPI', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ messages, blogDescription, blogKeywords,
+            model: modelKeys[selectedModel], system: 
         `
         ${currentMode === "Generate" ?
         `
