@@ -200,8 +200,8 @@ export default function ProductsView() {
         - FORMATTING: Wrap titles in <h1> and <h2> tags. Wrap all paragraphs in <p> tags. Wrap parts to be BOLDED in <b> tags. 
         - WORD RANGE: this post should be ${wordRange} long.
         - PERSPECTIVE: Don't refer to yourself in the post, but feel free to explain how your firm ${firmName} can help.
-        ${imageCount !== "No Images" && `- IMAGES: blog post should contain ${imageCount}. Please add representations of them in this format: //Image: Chapter 7 Bankruptcy Flowchart//.
-        Add two <br> tags after. Make sure these are evenly spaced out in the post and with specific and relevant descriptions.`}
+        ${imageCount !== "No Images" && `- IMAGES: blog post should contain ${imageCount}. Please add representations of them in this format: //Image: {Relevant Image Description}//.
+        Add two <br> tags after. Make sure these are evenly spaced out in the post.`}
         - ${style !== "Unstyled" && `STYLE: This blog post should be written in the ${style} style.`}
         - ${isMentionCaseLaw && `CASE LAW: Reference case law in the blog post when necessary.`}
         - ${isReferenceGiven && `USEFUL DATA: Refer to the following text and use as applicable: ${referenceText}`}
