@@ -19,8 +19,10 @@ import { bgGradient } from 'src/theme/css';
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
 
-import { auth, googleProvider } from 'src/firebase-config/firebase';
+import { db, auth, googleProvider } from 'src/firebase-config/firebase';
 import { createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+
+import { getDoc, doc, setDoc, updateDoc, collection, query, where } from 'firebase/firestore';
 
 
 export default function SignUpView() {
@@ -30,6 +32,24 @@ export default function SignUpView() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const createUserDocument = async (userEmail) => {
+    const usersRef = doc(db, 'users', userEmail);
+    const usersSnapshot = await getDoc(usersRef);
+
+    if (!usersSnapshot.exists()) {
+        const currentDate = new Date();
+        const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'short' })}`;
+
+        await setDoc(usersRef, {
+            FIRM: 'testlawyers',
+            DATE_SIGNED_UP: formattedDate,
+        });
+    } else {
+        const userData = usersSnapshot.data();
+        if (!userData.FIRM) {await updateDoc(usersRef, {FIRM: 'testlawyers', });   
+    }}
+}
+
   const GoToLogin = () => {
     router.push('/login');
   };
@@ -37,6 +57,7 @@ export default function SignUpView() {
   const signUpWithGoogle = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
+      await createUserDocument(email);
     } catch (err) {
       alert('');
       return;
@@ -47,6 +68,7 @@ export default function SignUpView() {
   const SignUp = async () => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
+      await createUserDocument(email);
     } catch (err) {
       alert('Invalid entry. Password must be 6+ characters long.');
       return;

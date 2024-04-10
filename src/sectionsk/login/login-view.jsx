@@ -11,7 +11,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { alpha, useTheme } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
 
-import { getDoc, doc, setDoc, collection, query, where } from 'firebase/firestore';
+import { getDoc, updateDoc, doc, setDoc, collection, query, where } from 'firebase/firestore';
 
 import { useRouter } from 'src/routes/hooks';
 
@@ -44,26 +44,29 @@ export default function LoginView() {
   };
 
 
-  const createBrandDocument = async (user) => {
-    const brandRef = doc(db, 'users', user.email);
-    const brandSnapshot = await getDoc(brandRef);
+const createUserDocument = async (user) => {
+    const usersRef = doc(db, 'users', user.email);
+    const usersSnapshot = await getDoc(usersRef);
 
-    if (!brandSnapshot.exists()) {
+    if (!usersSnapshot.exists()) {
         const currentDate = new Date();
         const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'short' })}`;
 
-        await setDoc(brandRef, {
+        await setDoc(usersRef, {
             FIRM: 'testlawyers',
             DATE_SIGNED_UP: formattedDate,
         });
-    }
+    } else {
+        const userData = usersSnapshot.data();
+        if (!userData.FIRM) {await updateDoc(usersRef, {FIRM: 'testlawyers', });   
+    }}
 }
 
 const signUpWithGoogle = async () => {
     try {
         const userCredential = await signInWithPopup(auth, googleProvider);
         const user = userCredential.user;
-        await createBrandDocument(user);
+        await createUserDocument(user);
     } catch (err) {
         alert(err);
         return;
@@ -75,7 +78,7 @@ const SignIn = async () => {
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
-        await createBrandDocument(user);
+        // await createUserDocument(user);
     } catch (err) {
         alert('Invalid email / password');
         return;

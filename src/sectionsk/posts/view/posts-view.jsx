@@ -240,18 +240,17 @@ export default function BlogView() {
     setIsGenerating(false);
 
     try {
-      const userDoc = await getDoc(doc(db, 'firms', 'testlawyers'));
-      if (userDoc.exists()) {
-        const currentDate = new Date();
-        const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'long' })} ${currentDate.getFullYear()} | ${(currentDate.getHours() % 12 || 12).toString().padStart(2, '0')}:${currentDate.getMinutes().toString().padStart(2, '0')} ${currentDate.getHours() >= 12 ? 'PM' : 'AM'}`;
-        const genPosts = userDoc.data().GEN_POSTS || [];
-        const newPost = { [formattedDate]: textWithImages }; 
-        genPosts.unshift(newPost);
-        await updateDoc(doc(db, 'firms', userDoc.id), { GEN_POSTS: genPosts });
-      }
-    } catch (err) {
-      console.log(err);
-    }
+      const firmDatabase = collection(db, 'firms');
+      const data = await getDocs(firmDatabase);
+      const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
+      const firmDoc = data.docs.find((docc) => docc.id === userDoc.data().FIRM);
+      if (firmDoc) {  
+        const firmDocRef = doc(db, 'firms', firmDoc.id);
+        const currentDate = new Date(); const formattedDate = `${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear().toString().substr(-2)} | ${currentDate.getHours() % 12 || 12}:${currentDate.getMinutes()} ${currentDate.getHours() >= 12 ? 'PM' : 'AM'}`;
+        const genPosts = firmDoc.data().GEN_POSTS || [];
+        const newPost = { [formattedDate]: textWithImages }; genPosts.unshift(newPost);
+        await updateDoc(firmDocRef, { GEN_POSTS: genPosts });
+    }} catch (err) {console.log('ERRORRRRRR', err);}
     
   }
 
