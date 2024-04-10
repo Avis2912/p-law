@@ -126,7 +126,6 @@ export default function ProductsView() {
           ${blogKeywords && `Keywords: ${blogKeywords}`}. ${text !== "" && `Consider using the following outline: ${text}`}. 
           </instruction>
 
-
           `
         });
       }
@@ -177,7 +176,8 @@ export default function ProductsView() {
       if (currentMode === "Generate") {setCurrentMode('Alter Draft');};
 
 
-    const claudeResponse = await fetch('https://p-law.vercel.app/api/claudeAPI', {
+    // const claudeResponse = await fetch('https://p-law.vercel.app/api/claudeAPI', {
+    const claudeResponse = await fetch('api/claudeAPI', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

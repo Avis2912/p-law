@@ -6,7 +6,7 @@
     }
   ],
   "functions": {
-    "api/claudeAPI.js": {
+    "claudeAPI.js": {
       "runtime": "@vercel/node@3.0.26"
     }
   }
