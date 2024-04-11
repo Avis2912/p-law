@@ -192,7 +192,7 @@ export default function ProductsView() {
           BLOG POST: ${text}.
           
           IMPORTANT INSTRUCTIONS:
-          - FORMATTING: Wrap titles in <h1> and <h2> tags. Wrap all paragraphs in <p> tags. Wrap the occasional important phrase in <b> tags. 
+          - FORMATTING: Wrap titles in <h1> and <h2> tags. Wrap all paragraphs in <p> tags. Use heading tags and b tags for titles and subtitles. 
           - WORD RANGE: this post should be ${wordRange} long.
           - PERSPECTIVE: Don't refer to yourself in the post, but feel free to explain how your firm  can help.
           - IMAGES: blog post should contain ${imageCount}. Please add representations of them in this format: //Image: Chapter 7 Bankruptcy Flowchart//. 
