@@ -39,7 +39,7 @@
     "firebase": "^10.6.0",
     "history": "^5.3.0",
     "lodash": "^4.17.21",
-    "node-fetch": "^3.3.2",
+    "node-fetch": "^2.6.1",
     "numeral": "^2.0.6",
     "openai": "^4.29.2",
     "prop-types": "^15.8.1",

@@ -164,7 +164,8 @@ const handleImageChange = (event) => {
       
       <Stack className='divider' direction="row" spacing={2}>
           
-      <Card sx={{ height: 565, width: '35%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <Card sx={{ height: 565, width: '35%', display: 'flex', 
+      flexDirection: 'column', alignItems: 'center', borderRadius: '11px' }}>
         
       <Card sx={{ height: 210, width: 210, mt: 7.75, boxShadow: 'none' }}>
             
@@ -245,7 +246,7 @@ const handleImageChange = (event) => {
 
     </Card>
 
-    <Card sx={{ height: 565, width: '65%' }}>
+    <Card sx={{ height: 565, width: '65%', borderRadius: '11px' }}>
 
       <style>
         @import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap);

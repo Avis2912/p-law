@@ -101,7 +101,7 @@ export default function PostCard({ competitorName, blogsThisMonth, linkedinData,
 
   return (
     <Grid xs={12} sm={latestPostLarge ? 12 : 6} md={latestPostLarge ? 1 : 12} >
-      <Card sx={{ height: 140 }}>
+      <Card sx={{ height: 140, borderRadius: '11px'}}>
       <CardActionArea  sx={{ mt: -5.5, height: 200}} onClick={() => cardClick()}>
           
           <Box 

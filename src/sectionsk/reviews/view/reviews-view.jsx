@@ -56,6 +56,7 @@ export default function UserPage() {
   const [reviewPlace, setReviewPlace] = useState(1);
   const [reviewLink, setReviewLink] = useState(`www.pentra.club/review?firm=w&mtx`);
   const [reviews, setReviews] = useState([]);
+  const [firmName, setFirmName] = useState('');
 
   useEffect(() => {
     const getFirmData = async () => {
@@ -65,6 +66,7 @@ export default function UserPage() {
           const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
           if (firmDoc.exists()) {
             await setReviews(firmDoc.data().REVIEWS);
+            await setFirmName(firmDoc.data().FIRM_INFO.NAME);
           } else {
             console.log('Error: Firm document not found.');
           }}
@@ -137,10 +139,10 @@ export default function UserPage() {
     <>
       <Container>
 
-    <Stack sx={{ mb: 3.5 }} justifyContent="space-between" direction="row" alignItems="center">
+    <Stack sx={{ mb: 3.25 }} justifyContent="space-between" direction="row" alignItems="center">
       <style>@import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap);</style>
       <Typography sx={{ fontFamily: "DM Serif Display", letterSpacing: '1.05px',  fontWeight: 800, fontSize: '32.75px'}}> 
-        Invite Reviewers (Releasing Very Soon)</Typography>
+        Invite Clients To Review</Typography>
       <Stack direction="row" spacing={2}>
       <Button target="_blank" href="https://tally.so/r/mBxLkR" variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}
       sx={(theme)=>({backgroundColor: theme.palette.primary.navBg })} >
@@ -154,7 +156,8 @@ export default function UserPage() {
     <Stack direction="column" spacing={2.25}>
 
 
-    <Card sx ={(theme) => ({ height: '110px', width: '100%', border: `4px solid ${theme.palette.primary.main}`})}>
+    <Card sx ={(theme) => ({ height: '110px', width: '100%', borderRadius: '11px', 
+    border: `4px solid ${theme.palette.primary.main}`})}>
         <Stack direction="row" sx ={{ justifyContent: 'center', alignItems: 'center', height: '100%',
       width: '100%', }} spacing={2}>
 
@@ -175,18 +178,19 @@ export default function UserPage() {
 
 
     <Stack direction="row" spacing={2.25}>
-     <Card sx ={(theme) => ({ height: 'auto', width: '70%', border: `4px solid ${theme.palette.primary.lighter}`,  })}>
+     <Card sx ={(theme) => ({ height: 'auto', width: '70%', borderRadius: '11px',
+     border: `4px solid ${theme.palette.primary.lighter}`,  })}>
       <Stack
         direction="column"
         spacing={0}>
 
         <Card sx ={{ height: '100px', backgroundColor: "white", display: 'flex', justifyContent: 'center',
       borderRadius: '0px', borderBottomWidth: '3px', borderColor: 'black', alignItems: 'center' }}>
-      <Iconify icon="simple-icons:googlemybusiness" position="absolute" left="30px" width="22.5px" height="22.5px"/>
-      <Typography variant="subtitle2" fontSize="20px" position="absolute" left="67.5px" 
-      fontFamily='' letterSpacing="-0.4px" fontWeight="400"> Google Reviews </Typography>
-      <TextField label="Firm Review Page Link" size="small" variant="outlined" sx={{position: "absolute", 
-      right: '147.5px', width: '310px', bottom: '29px', borderRadius: '0px'}}/>
+      <Iconify icon="streamline:business-card-solid" position="absolute" left="30px" width="24px" height="24px"/>
+      <Typography variant="subtitle2" fontSize="19.5px" position="absolute" left="67.5px" 
+      fontFamily='' letterSpacing="-1.00px" fontWeight="400"> Google Reviews </Typography>
+      <TextField label="Firm Review Page" size="small" variant="outlined" sx={{position: "absolute", 
+      right: '147.5px', width: '320px', bottom: '29px', borderRadius: '0px'}}/>
         <Button variant="contained" startIcon={<Iconify icon="fluent:link-multiple-24-filled" />}
         sx={(theme)=>({backgroundColor: reviewPlace === 1 ? theme.palette.primary.navBg : theme.palette.primary.main ,
         position: "absolute", right: '30px', height: '40px'})} onClick={()=>{setReviewPlace(1)}}>
@@ -194,11 +198,11 @@ export default function UserPage() {
 
            <Card sx ={{ height: '100px', backgroundColor: "white", display: 'flex', justifyContent: 'center',
       borderRadius: '0px', borderBottomWidth: '4px', borderColor: 'black', alignItems: 'center' }}>
-      <Iconify icon="simple-icons:googlemybusiness" position="absolute" left="30px" width="22.5px" height="22.5px"/>
-      <Typography variant="subtitle2" fontSize="20px" position="absolute" left="67.5px" 
-      fontFamily='' letterSpacing="-0.4px" fontWeight="400"> Super Lawyers </Typography>
-      <TextField label="Firm Review Page Link" size="small" variant="outlined" sx={{position: "absolute", 
-      right: '147.5px', width: '310px', bottom: '29px', borderRadius: '0px'}}/>
+      <Iconify icon="streamline:business-card-solid" position="absolute" left="30px" width="24px" height="24px"/>
+      <Typography variant="subtitle2" fontSize="19.5px" position="absolute" left="67.5px" 
+      fontFamily='' letterSpacing="-1.00px" fontWeight="400"> Super Lawyers </Typography>
+      <TextField label="Firm Review Page" size="small" variant="outlined" sx={{position: "absolute", 
+      right: '147.5px', width: '320px', bottom: '29px', borderRadius: '0px'}}/>
         <Button variant="contained" startIcon={<Iconify icon="fluent:link-multiple-24-filled" />}
         sx={(theme)=>({backgroundColor: reviewPlace === 2 ? theme.palette.primary.navBg : theme.palette.primary.main ,
         position: "absolute", right: '30px', height: '40px'})} onClick={()=>{setReviewPlace(2)}}>
@@ -206,11 +210,11 @@ export default function UserPage() {
 
            <Card sx ={{ height: '100px', backgroundColor: "white", display: 'flex', justifyContent: 'center',
       borderRadius: '0px', borderBottomWidth: '4px', borderColor: 'black', alignItems: 'center' }}>
-      <Iconify icon="simple-icons:googlemybusiness" position="absolute" left="30px" width="22.5px" height="22.5px"/>
-      <Typography variant="subtitle2" fontSize="20px" position="absolute" left="67.5px" 
-      fontFamily='' letterSpacing="-0.4px" fontWeight="400"> Find Law USA </Typography>
-      <TextField label="Firm Review Page Link" size="small" variant="outlined" sx={{position: "absolute", 
-      right: '147.5px', width: '310px', bottom: '29px', borderRadius: '0px'}}/>
+      <Iconify icon="streamline:business-card-solid" position="absolute" left="30px" width="24px" height="24px"/>
+      <Typography variant="subtitle2" fontSize="19.5px" position="absolute" left="67.5px" 
+      fontFamily='' letterSpacing="-1.00px" fontWeight="400"> Find Law USA </Typography>
+      <TextField label="Firm Review Page" size="small" variant="outlined" sx={{position: "absolute", 
+      right: '147.5px', width: '320px', bottom: '29px', borderRadius: '0px'}}/>
         <Button variant="contained" startIcon={<Iconify icon="fluent:link-multiple-24-filled" />}
         sx={(theme)=>({backgroundColor: reviewPlace === 3 ? theme.palette.primary.navBg : theme.palette.primary.main ,
         position: "absolute", right: '30px', height: '40px'})} onClick={()=>{setReviewPlace(3)}}>
@@ -218,11 +222,11 @@ export default function UserPage() {
 
            <Card sx ={{ height: '100px', backgroundColor: "white", display: 'flex', justifyContent: 'center',
       borderRadius: '0px', borderBottomWidth: '4px', borderColor: 'black', alignItems: 'center' }}>
-      <Iconify icon="simple-icons:googlemybusiness" position="absolute" left="30px" width="22.5px" height="22.5px"/>
-      <Typography variant="subtitle2" fontSize="20px" position="absolute" left="67.5px" 
-      fontFamily='' letterSpacing="-0.4px" fontWeight="400"> Lawyers.com </Typography>
-      <TextField label="Firm Review Page Link" size="small" variant="outlined" sx={{position: "absolute", 
-      right: '147.5px', width: '310px', bottom: '29px', borderRadius: '0px'}}/>
+      <Iconify icon="streamline:business-card-solid" position="absolute" left="30px" width="24px" height="24px"/>
+      <Typography variant="subtitle2" fontSize="19.25px" position="absolute" left="67.5px" 
+      fontFamily='' letterSpacing="-1.00px" fontWeight="400"> Lawyers.com </Typography>
+      <TextField label="Firm Review Page" size="small" variant="outlined" sx={{position: "absolute", 
+      right: '147.5px', width: '320px', bottom: '29px', borderRadius: '0px'}}/>
         <Button variant="contained" startIcon={<Iconify icon="fluent:link-multiple-24-filled" />}
         sx={(theme)=>({backgroundColor: reviewPlace === 4 ? theme.palette.primary.navBg : theme.palette.primary.main ,
         position: "absolute", right: '30px', height: '40px'})} onClick={()=>{setReviewPlace(4)}}>
@@ -232,7 +236,8 @@ export default function UserPage() {
       </Card>
       
       
-      <Card sx ={(theme) => ({ border: `4px solid ${theme.palette.primary.lighter}`, height: 'auto', width: '30%', display: 'flex', justifyContent: 'center', alignItems: 'center'})}>
+      <Card sx ={(theme) => ({ border: `4px solid ${theme.palette.primary.lighter}`, height: 'auto', width: '30%', 
+      display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: '11px',})}>
       <Typography sx={{ fontFamily: "DM Serif Display", letterSpacing: '-0.75px',  fontWeight: 500, fontSize: '32.75px', textAlign: 'center',
       position: "absolute", top: "70px", width: "200px"}}> 
                 {"Invite To Leave Review "}

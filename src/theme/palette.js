@@ -27,7 +27,7 @@ export const primary = {
   contrastText: '#FFFFFF',
 
   white: '#FFFDF7',
-  green: '#428c51',
+  green: '#417a4c',
   black: '#242122',
   navBg: '#923341',
   // navBg: '#62538B',

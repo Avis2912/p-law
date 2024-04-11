@@ -28,8 +28,8 @@ export default function ProductsView() {
   useState(`<h1>Welcome Back!</h1> Let's draft a new legal blog post. <br>This is where your content shows up.`);
   // useState(`<h1>✨ Generating... </h1>`);
 
-  const [blogDescription, setBlogDescription] = useState('');
-  const [blogKeywords, setBlogKeywords] = useState(null);
+  const [blogTitle, setBlogTitle] = useState('');
+  const [blogInstructions, setBlogInstructions] = useState(null);
   const [smallBlog, setSmallBlog] = useState(null); 
   const [internalLinks, setInternalLinks] = useState(null); 
   const [firmName, setFirmName] = useState(null);
@@ -90,8 +90,7 @@ export default function ProductsView() {
             const bigBlog = firmDoc.data().BLOG_DATA.BIG_BLOG || [];
             const internalLinkData = bigBlog.map(blog => `${blog.TITLE}: ${blog.LINK}`).join('\n');
             await setInternalLinks(internalLinkData); 
-            console.log(internalLinkData);  
-            console.log(smallBlogString); 
+            if (smallBlogString) {console.log('smallBlogString: ', true) } else {console.log('smallBlogString: ', false);}
           } else {
             console.log('Error: Firm document not found.');
           }
@@ -115,17 +114,15 @@ export default function ProductsView() {
       let browseTextResponse = "";
 
       if (currentMode === "Generate") {
-        if (isBrowseWeb) {browseTextResponse = await browseWeb(browseText); console.log(browseTextResponse);};
+        if (isBrowseWeb) {browseTextResponse = await browseWeb(browseText); console.log('browseTextResponse: ', browseTextResponse);};
         messages.push({
           "role": "user", 
           "content":  `
-
-
           <instruction>
-          Write a blog post based on the following topic: ${blogDescription}. 
-          ${blogKeywords && `Keywords: ${blogKeywords}`}. ${text !== "" && `Consider using the following outline: ${text}`}. 
+          Write an accurate, specific, ${wordRange} legal blog post based on the following title: ${blogTitle}. 
+          ${blogInstructions && `IMPORTANT INSTRUCTIONS (THIS TRUMPS EVERYTHING): ${blogInstructions}`}. 
+          ${text !== "" && `Consider using the following outline: ${text}`}. 
           </instruction>
-
           `
         });
       }
@@ -134,8 +131,56 @@ export default function ProductsView() {
         messages.push({
           "role": "user", 
           "content": `You are Pentra AI, a legal expert and an expert SEO blog writer. 
-          Write a detailed blog outline in rich text format using <b> tags and <br> tags (after every paragraph/line) based on the following topic: ${blogDescription}. ${blogKeywords && `Keywords: ${blogKeywords}`}.
-          KEEP IN MIND: this is for a blog post ${wordRange} long.`
+          Write a brief blog outline in rich text using <b> tags based on the following topic: ${blogTitle}. 
+          ${blogInstructions && `USER INSTRUCTIONS FOR BLOG (use only if necessary): ${blogInstructions}`}.
+          KEEP IN MIND: this is for a blog post ${wordRange} long.
+          ALSO, WRAP EVERY NEW LINE & HEADING IN <p> TAGS.
+          
+          EXAMPLE OUTLINE FORMAT TO FOLLOW:
+
+          I. Introduction
+              A. Definition of Probate Law
+              B. Importance of Avoiding Probate
+              C. Overview of Probate Process in Dallas
+
+          II. Understanding Probate Law
+              A. What is Probate?
+              B. How Does Probate Work in Dallas?
+              C. Key Terms and Concepts in Probate Law
+
+          III. Reasons to Avoid Probate
+              A. Time Consuming Process
+              B. Costly Fees and Expenses
+              C. Lack of Privacy
+              D. Potential Family Conflicts
+
+          IV. Strategies for Avoiding Probate in Dallas
+              A. Estate Planning Tools
+                  1. Revocable Living Trusts
+                  2. Joint Ownership
+                  3. Beneficiary Designations
+                  4. Transfer-on-Death Designations
+              B. Importance of Legal Counsel
+                  1. Hiring an Experienced Estate Planning Attorney
+                  2. Tailoring Strategies to Individual Needs
+                  3. Ensuring Compliance with Texas Laws
+
+          V. Steps to Take to Avoid Probate
+              A. Reviewing and Updating Estate Plan Regularly
+              B. Organizing and Documenting Assets
+              C. Communicating Plans with Family Members
+
+          VI. Common Misconceptions About Probate
+              A. "I Don't Need an Estate Plan Because I'm Not Wealthy"
+              B. "My Will Can Avoid Probate"
+              C. "Probate is Only Necessary for Large Estates"
+
+          VII. Conclusion
+              A. Summary of Key Points
+              B. Importance of Taking Action to Avoid Probate
+              C. Encouragement to Seek Professional Legal Advice
+                    
+          `
         });
       }
 
@@ -143,11 +188,11 @@ export default function ProductsView() {
         messages.push({
           "role": "user", 
           "content": `You are Pentra AI, a legal expert and an expert SEO blog writer. 
-          EDIT the blog post given below based on this prompt: ${blogDescription}. Don't deviate from the prompt and keep the blog post AS MUCH THE SAME as you can.
+          EDIT the blog post given below based on this prompt: ${blogTitle}. Don't deviate from the prompt and keep the blog post AS MUCH THE SAME as you can.
           BLOG POST: ${text}.
           
           IMPORTANT INSTRUCTIONS:
-          - FORMATTING IN RICH TEXT: Wrap titles in <h1> and <h2> tags. Wrap all paragraphs in <p> tags. Wrap parts to be bolded in <b> tags. 
+          - FORMATTING: Wrap titles in <h1> and <h2> tags. Wrap all paragraphs in <p> tags. Wrap the occasional important phrase in <b> tags. 
           - WORD RANGE: this post should be ${wordRange} long.
           - PERSPECTIVE: Don't refer to yourself in the post, but feel free to explain how your firm  can help.
           - IMAGES: blog post should contain ${imageCount}. Please add representations of them in this format: //Image: Chapter 7 Bankruptcy Flowchart//. 
@@ -156,7 +201,7 @@ export default function ProductsView() {
           - ${isMentionCaseLaw && `CASE LAW: Reference case law in the blog post when necessary.`}
           - ${isUseInternalLinks && `INTERNAL LINKS: Add internal links to the blog post using <a> tags.`}
           - ${isReferenceGiven && `USEFUL DATA: Refer to the following text and use as applicable: ${referenceText}`}
-          - ${browseTextResponse !== "" && `WEB RESULTS: Consider using the following web information I got from an LLM for the prompt ${browseText}: ${browseTextResponse}`}
+          - ${browseTextResponse !== "" && `WEB RESULTS: Please consider using the following internet information I got from an LLM for the prompt ${browseText}: ${browseTextResponse}`}
           `
         });
       }
@@ -180,35 +225,34 @@ export default function ProductsView() {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ messages, blogDescription, blogKeywords,
+          body: JSON.stringify({ messages, blogTitle, blogInstructions,
             model: modelKeys[selectedModel], system: 
         `
         ${currentMode === "Generate" ?
         `
-        <role>You are Pentra AI, a friendly, witty legal & creative writing expert for ${firmName}. ${firmDescription}.
-        Mention firm ONLY at the end. </role> 
+        <role>You are Pentra AI, a friendly, witty lawyer & expert SEO writer for ${firmName}. ${firmName} is described as such: ${firmDescription}.
+        Mention ${firmName} ONLY at the end. </role> 
 
         <instruction>
 
-        ${isMimicBlogStyle && 
-          `VERY VERY IMPORTANT: REPRODUCE THE TONE & STYLE OF THE FOLLOWING BLOGS PERFECTLY IN YOUR OUTPUT. YOUR OUTPUT MUST BE FRIENDLY & APPROACHABLE.
-         ${smallBlog}`} 
-
         IMPORTANT INSTRUCTIONS:
         - FORMATTING: Wrap titles in <h1> and <h2> tags. Wrap all paragraphs in <p> tags. Wrap parts to be BOLDED in <b> tags. 
-        - WORD RANGE: this post should be ${wordRange} long.
-        - PERSPECTIVE: Don't refer to yourself in the post, but feel free to explain how your firm ${firmName} can help.
+        - PERSPECTIVE: Don't refer to yourself in the post. Explain how your firm ${firmName} can help only at the end.
         ${imageCount !== "No Images" && `- IMAGES: blog post should contain ${imageCount}. Please add representations of them in this format: //Image: {Relevant Image Description}//.
-        Add two <br> tags after. Make sure these are evenly spaced out in the post.`}
-        - ${style !== "Unstyled" && `STYLE: This blog post should be written in the ${style} style.`}
+        Make sure these are evenly spaced out in the post.`}
+        - ${style !== "Unstyled" && `STYLE: This blog post MUST be written in the ${style} style. Keep this in mind.`}
         - ${isMentionCaseLaw && `CASE LAW: Reference case law in the blog post when necessary.`}
         - ${isReferenceGiven && `USEFUL DATA: Refer to the following text and use as applicable: ${referenceText}`}
         - ${contactUsLink && `CONTACT US LINK AT END: Use this contact us link with <a> tags toward the end if applicable: ${contactUsLink}`}
         - ${browseTextResponse !== "" && `WEB RESULTS: Consider using the following web information I got from an LLM for the prompt ${browseText}: ${browseTextResponse}`}
         - ${isUseInternalLinks && `LINK TO RELEVANT POSTS: Use <a> tags to add link(s) to relevant blog posts from the firm wherever applicable: ${internalLinks}.`}
-        - NEVER OUTPUT ANYTHING other than the blog content. DONT START BY DESCRIBING WHAT YOURE OUTPUTING, JUST OUTPUT. 
+        - NEVER OUTPUT ANYTHING other than the blog content. DONT START BY DESCRIBING WHAT YOURE OUTPUTING, JUST OUTPUT. DONT OUTPUT INACCURATE INFORMATION.
       
         </instruction>
+
+        ${isMimicBlogStyle && 
+          `VERY VERY IMPORTANT: REPRODUCE THE TONE & STYLE OF THE FOLLOWING BLOGS PERFECTLY IN YOUR OUTPUT. YOUR OUTPUT ALSO MUST BE FRIENDLY & APPROACHABLE. BLOGS:
+         ${smallBlog}`} 
         `
         : `<role>You are Pentra AI, a legal expert and an expert SEO blog writer for ${firmName}. ${firmDescription}.</role>` 
       }`
@@ -218,15 +262,17 @@ export default function ProductsView() {
     <instruction>
     - YOUR GOAL IS TO COPY THE USER-GIVEN DRAFT AND ELONGATE IT TO MAKE IT ${wordRange} LONG. 
     Right now it's falling a little short.
-    - EXCEPTION: Just make sure the final how we can help / contact us paragraph remains at the end of your output.
     - COPY THE TEXT'S CURRENT FORMAT EXACTLY: Wrap titles in <h1> and <h2> tags. Wrap all paragraphs in <p> tags. Wrap parts to be BOLDED in <b> tags.
+    - EXCEPTION: Just make sure the final how we can help / contact us paragraph remains at the end of your output.
     - STYLE & TONE: Keep the voice and tone of the text exactly the same when elongating it.
     - IMAGES: KEEP ALL IMAGES as they are. You're allowed to add one new one in your elongation in the same format.
     - OUTPUT: ONLY output for me the final article. Nothing else.
     </instruction>
     `
 
-    let gptResponse = (await claudeResponse.text()).replace(/<br><br> /g, '<br><br>'); console.log(gptResponse);
+    let gptResponse = (await claudeResponse.text()).replace(/<br><br> /g, '<br><br>');
+    const textWithBreaks0 = await gptResponse.replace(/<br\s*\/?>/gi, '').replace(/<\/p>|<\/h1>|<\/h2>|<\/h3>|\/\/Image:.*?\/\//gi, '$&<br>').replace(/(<image[^>]*>)/gi, '$&<br><br>');
+    if (currentMode === "Build Outline") {await setIsGenerating(false); await setText(textWithBreaks0); console.log('return'); return;};
 
     // const data = await gptResponse.json();
     // const gptText = data.choices[0].message.content.trim();
@@ -326,28 +372,54 @@ export default function ProductsView() {
 
 
   const browseWeb = (prompt) => {
-    const apiKey = `${import.meta.env.VITE_PERPLEXITY_API_KEY}`;
-    const apiUrl = 'https://api.perplexity.ai';
+    // const apiKey = `${import.meta.env.VITE_PERPLEXITY_API_KEY}`;
+    // const apiUrl = 'https://api.perplexity.ai';
 
-    const requestOptions = {
+    // const requestOptions = {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'Authorization': `Bearer ${apiKey}`,
+    //   },
+    //   body: JSON.stringify({
+    //     model: 'sonar-medium-online',
+    //     messages: [
+    //       { role: 'system', content: `` },
+    //       { role: 'user', content: 
+    //       `Be precise and detailed. Mention sources and dates everywhere you can. 
+    //       Keep the current date in mind when generating. 
+    //       Remember that this is for a law firm. Now respond to user query.
+          
+    //       USER QUERY: ${prompt}` }
+    //     ]
+    //   })
+    // };
+
+    // return fetch(`${apiUrl}/chat/completions`, requestOptions)
+    //   .then(response => response.json())
+    //   .then(data => data.choices[0].message.content)
+    //   .catch(error => console.error(error));
+
+    const youUrl = `https://us-central1-pentra-claude-gcp.cloudfunctions.net/youAPIFunction`;
+    const apiKey = '7cc375a9-d226-4d79-b55d-b1286ddb4609<__>1P4FjdETU8N2v5f458P2BaEp-Pu3rUjGEYkI4jh';
+    const query = encodeURIComponent(
+    `BE EXTREMELY PRECISE. answer in 3-6 points. PROMPT: ${prompt}
+    `);
+
+    const options = {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
         'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'sonar-medium-online',
-        messages: [
-          { role: 'system', content: 'Be precise and detailed. Mention sources and dates everywhere you can. Keep the current date in mind when generating.' },
-          { role: 'user', content: prompt }
-        ]
+        prompt: query,
       })
     };
 
-    return fetch(`${apiUrl}/chat/completions`, requestOptions)
-      .then(response => response.json())
-      .then(data => data.choices[0].message.content)
-      .catch(error => console.error(error));
+    return fetch(youUrl, options)
+      .then(response => response.text())
+      .catch(err => {console.error(err); return err;});
   }
 
   // const loading = keyframes`
@@ -419,11 +491,10 @@ export default function ProductsView() {
       onClick={() => {
         switch (style) {
           case "Unstyled": setStyle("How-To Guide"); break;
-          case "How-To Guide": setStyle("Narrative"); break;
+          case "How-To Guide": setStyle("Data-Dense"); break;
           case "Narrative": setStyle("Opinion"); break;
           case "Opinion": setStyle("Case Study"); break;
-          case "Case Study": setStyle("Comparision"); break;
-          case "Comparision": setStyle("Case Law Breakdown"); break;
+          case "Case Study": setStyle("Case Law Breakdown"); break;
           case "Case Law Breakdown": setStyle("Unstyled"); break;
           default: setStyle("Unstyled");
         }
@@ -434,7 +505,7 @@ export default function ProductsView() {
 
         {currentMode === "Alter Draft" && <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} 
         sx={{backgroundColor: 'black', '&:hover': { backgroundColor: 'black', },}}
-        onClick={() => {setCurrentMode("Build Outline"); setText('');}}>
+        onClick={() => {setCurrentMode("Generate"); setText('');}}>
         Create New Draft </Button>}
 
         {currentMode === "Build Outline" && <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} 
@@ -449,16 +520,16 @@ export default function ProductsView() {
     
       <Stack direction="row" spacing={2} sx={{width: 'calc(100% - 150px)'}}>
       <TextField
-       value={blogDescription}
-       onChange={(e) => setBlogDescription(e.target.value)}
-       placeholder={currentMode === "Alter Draft" ? 'Make the first two sections shorter & replace mentions of TX with Dallas' : 'Blog Description'}
-       sx={{width: currentMode === "Alter Draft" ? '100%' : '70%', transition: 'ease 0.3s'}} />
+       value={blogTitle}
+       onChange={(e) => setBlogTitle(e.target.value)}
+       placeholder={currentMode === "Alter Draft" ? 'Make the first two sections shorter & replace mentions of TX with Dallas' : 'Blog Title'}
+       sx={{width: currentMode === "Alter Draft" ? '100%' : '40%', transition: 'ease 0.3s'}} />
 
       {currentMode !== "Alter Draft" && <TextField
-       value={blogKeywords}
-       onChange={(e) => setBlogKeywords(e.target.value)}
-       placeholder='Blog Keywords'
-       sx={{width: '30%', transition: 'ease 0.3s'}} />}
+       value={blogInstructions}
+       onChange={(e) => setBlogInstructions(e.target.value)}
+       placeholder='Optional Instructions'
+       sx={{width: '60%', transition: 'ease 0.3s'}} />}
        </Stack>
        
         <Button onClick={() => generateBlog()}
@@ -500,14 +571,13 @@ export default function ProductsView() {
         sx={(theme) => ({backgroundColor: isBrowseWeb ? theme.palette.primary.green : 'grey', '&:hover': { backgroundColor: theme.palette.primary.green, },})}>
         Browse Web </Button>
 
+        <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => {setIsMimicBlogStyle(!isMimicBlogStyle)}}
+        sx={(theme) => ({backgroundColor: isMimicBlogStyle ? theme.palette.primary.green : 'grey', '&:hover': { backgroundColor: theme.palette.primary.green, },})}>
+        Mimic Firm Blogs </Button>
+
         <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => {setIsMentionCaseLaw(!isMentionCaseLaw)}}
         sx={(theme) => ({backgroundColor: isMentionCaseLaw ? theme.palette.primary.green : 'grey', '&:hover': { backgroundColor: theme.palette.primary.green, },})}>
         Mention Case Law </Button>
-
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => {setIsMimicBlogStyle(!isMimicBlogStyle)}}
-        sx={(theme) => ({backgroundColor: isMimicBlogStyle ? theme.palette.primary.green : 'grey', '&:hover': { backgroundColor: theme.palette.primary.green, },})}>
-        Mimic Our Blogs </Button>
-
 
           <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => {setIsReferenceGiven(!isReferenceGiven); setIsBrowseWeb(false);}}
         sx={(theme) => ({backgroundColor: isReferenceGiven ? theme.palette.primary.green : 'grey', '&:hover': { backgroundColor: theme.palette.primary.green, },})}>

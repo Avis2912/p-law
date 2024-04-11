@@ -118,9 +118,9 @@ export default function UserPage() {
         </style>
         <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, 
         letterSpacing: '1.05px',  fontWeight: 800, fontSize: '32.75px'}}> 
-        All Website Leads (Not Linked)</Typography>
+        All Website Leads</Typography>
 
-        <Card sx= {{ height: 64.5, width: 'auto', pt: 1.15, pl: 1.7, borderRadius: '12px'  }} justifyContent="left" alignItems="center">
+        <Card sx= {{ height: 64.5, width: 'auto', pt: 1.15, pl: 1.7, borderRadius: '11px'  }} justifyContent="left" alignItems="center">
          
         <Stack direction="row" spacing={0} >
         
@@ -146,7 +146,7 @@ export default function UserPage() {
 
       <Stack direction="row" spacing={3}>
 
-      <Card sx={{ width: isChatOpen ? '420px' : '100%', height: 575, transition: 'ease 0.3s' }}>
+      <Card sx={{ borderRadius: '11px', width: isChatOpen ? '420px' : '100%', height: 575, transition: 'ease 0.3s' }}>
         
 
         <Scrollbar>
@@ -196,7 +196,7 @@ export default function UserPage() {
         />
       </Card>
 
-      <Card sx={{ height: 575, width: isChatOpen ? 'calc(100% - 385px)' : '0%', transition: 'ease 0.3s' }}>
+      <Card sx={{ borderRadius: '11px', height: 575, width: isChatOpen ? 'calc(100% - 385px)' : '0%', transition: 'ease 0.3s' }}>
  
           <Card sx = {{ width: '100%', height: 575, p: 2.5}}>
 
