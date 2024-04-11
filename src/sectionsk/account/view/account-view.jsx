@@ -328,7 +328,7 @@ const handleImageChange = (event) => {
           onClick={() => {setSelectedModel(2);}}
           sx={(theme) => ({backgroundColor: selectedModel === 2 ? theme.palette.primary.navBg : '#DD8390'})}
         >
-          Pentra Medium 
+          Pentra Balanced 
         </Button>
 
         <Button 
