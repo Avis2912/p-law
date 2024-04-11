@@ -50,13 +50,13 @@ export default function BlogView() {
 
   const writeWeeklyPosts = useCallback(async () => {
     
-    let tempPosts = []; const platforms = ["LinkedIn", "Facebook", "Instagram"]; 
+    let tempPosts = []; const platforms = ["LinkedIn", "LinkedIn", "Facebook", "Facebook", "Instagram", "Instagram"]; 
     let isError = false; let firmNameInt; let firmDescriptionInt;
     const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
     if (userDoc.exists()) {const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
     if (firmDoc.exists()) {firmNameInt = firmDoc.data().FIRM_INFO.NAME; firmDescriptionInt = firmDoc.data().FIRM_INFO.DESCRIPTION; }};
     
-    for (let i = 0; i < 3; i += 1) {
+    for (let i = 0; i < 6; i += 1) {
       const tempPlatform = platforms[i];
 
       // eslint-disable-next-line no-await-in-loop
@@ -157,7 +157,7 @@ export default function BlogView() {
 
             const bigBlog = firmDoc.data().BLOG_DATA.BIG_BLOG;
             const selectedBlogs = [];
-            const numBlogsToSelect = Math.min(5, bigBlog.length);
+            const numBlogsToSelect = Math.min(4, bigBlog.length);
             for (let i = 0; i < numBlogsToSelect; i += 1) {
               const randomIndex = Math.floor(Math.random() * bigBlog.length);
               selectedBlogs.push(bigBlog[randomIndex]);

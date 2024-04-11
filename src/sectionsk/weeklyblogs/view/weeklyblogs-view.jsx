@@ -66,7 +66,8 @@ export default function BlogView() {
       const blogTitlesArray = firmDoc.data().BLOG_DATA.BIG_BLOG.map(blog => blog.TITLE); blogTitlesInt = blogTitlesArray.join(", ");
       internalLinksInt = JSON.stringify(firmDoc.data().BLOG_DATA.BIG_BLOG.map(blog => ({title: blog.TITLE, link: blog.LINK}))); 
       contactUsLinkInt = firmDoc.data().FIRM_INFO.CONTACT_US; console.log('contact us link: ', contactUsLinkInt); console.log('internal links: ', internalLinksInt); 
-      smallBlogInt = firmDoc.data().BLOG_DATA.SMALL_BLOG.toString();
+      const bigBlog = firmDoc.data().BLOG_DATA.BIG_BLOG; const smallBlogArray = firmDoc.data().BLOG_DATA.SMALL_BLOG || [];
+      smallBlogInt = smallBlogArray.map(index => `[${bigBlog[index]?.TITLE || ''}]: ${bigBlog[index]?.CONTENT || ''}`).join('\n'); 
     }}
     
     

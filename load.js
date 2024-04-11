@@ -47,11 +47,6 @@ const newUser = async (docName, firmInfo, smallBlog, bigBlog, competition) => {
             FIRM_INFO: firmInfo,
 
             BLOG_DATA: {
-                LINK_LIST: {
-                    "How to get the compensation you deserve": "https://www.1800lionlaw.com/blog/how-to-get-the-compensation-you-deserve",
-                    "What to do after a car accident": "https://www.1800lionlaw.com/blog/what-to-do-after-a-car-accident",
-                    "How to protect your assets": "https://www.1800lionlaw.com/blog/how-to-protect-your-assets",
-                },
                 SMALL_BLOG: smallBlog,
                 BIG_BLOG: bigBlog,
             },
@@ -123,247 +118,303 @@ const newUser = async (docName, firmInfo, smallBlog, bigBlog, competition) => {
 };
 
 // uploadSome();
-newUser(docName = 'Patel Law Group',
+newUser(docName = 'BPJ&R LLP',
 
 firmInfo = {
-    CONTACT_US: "https://patellegal.com/contact/",
-    NAME: "Patel Law Group",
+    CONTACT_US: "BPJ&R LLP",
+    NAME: "BPJ&R LLP",
     LOCATION: "Dallas, TX",
-    DESCRIPTION: "Patel Law Group is a boutique law firm providing efficient, results‑driven legal advice to local, regional, and international clients. From our location in Dallas, we leverage broad experience and extensive relationships to deliver results for clients nationwide. With a rolled‑up‑sleeves attitude, we partner with clients of all sizes — individuals, start-ups and established companies — to achieve their objectives in Immigration, Real Estate, and Corporate law",  
-    IMAGE: 'https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/decentral%20(25).png?alt=media&token=5e7a96c7-ae8a-47c8-a3e9-2ceb3bc7fc6f',
+    DESCRIPTION: `
+    Berg Plummer Johnson & Raval, LLP is a Houston based litigation law firm offering sophisticated representation to a range of clients in both insurance litigation and commercial litigation matters. We are skilled advocates who have routinely helped clients secure favorable results through negotiation and compromise.
+    `,  
+    IMAGE: `
+    https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/decentral%20(27).png?alt=media&token=76585ed5-36aa-499a-b891-e70c41d144f9
+    `,
     MODEL: 2,
     PLAN: "Full Suite",
 },
 
-smallBlog = [
-
-    // BLOG 1
-
-    `
-    FANNIE MAE’S GREEN REWARDS PROGRAM PUTS GREEN BACK IN PROPERTY OWNER’S POCKETS
-    Posted on Oct 18, 2023 by Scott MacPherson
-        
-    Fannie Mae’s Green Rewards program incentivizes borrowers to undertake energy and water efficiency improvements at multifamily properties. The program is available nationwide to both conventional and affordable multifamily property loans, with a term between 5 to 30 years, and helps to lower property utility costs while increasing loan proceeds made available to borrowers.
-    
-    Additionally, owners will benefit from a reduced interest rate on the loan. The Green Rewards interest rate may be up to 10 basis points lower than a typical, non-Green Rewards loan. The interest rate reduction may also be applied to newly purchased buildings with an existing Green Building Certification.
-    
-    During the underwriting process, Fannie Mae will have an engineering inspection done at the property, and will provide a free Energy and Water Audit Report to the borrower.
-    
-    Through this inspection and report, engineers will identify items that may be switched out for more energy efficient options. These items usually include shower heads and toilets with reduced water flow; Energy Star certified HVAC systems; solar panels; and LED lighting in building common areas.
-    
-    The underwriting team will factor in the property owner’s and tenant’s potential energy and water savings(75% of the owner-projected and 25% of the tenant-projected) into the Underwritten Net Cash Flow, and will lower the interest rate for the loan.
-    
-    Underwriting will also recommend more funds, up to 5%, in additional loan proceeds be made available to the borrower at closing.  For a first lien or supplemental mortgage, a portion of those proceeds must be used to undertake the green upgrades. For a second supplemental mortgage, all of the additional loan proceeds must be used toward efficiency improvements.
-    
-    At closing, the borrower will be provided a loan agreement with a schedule of all green repairs and their associated deadlines, which must be followed to maintain the lowered interest rate in the Green Rewards program. Around the time the green repairs deadlines come due, Fannie Mae or the associated servicer will send out an inspector to verify that the green repairs are in place. Typically, a borrower has up to 12 months to complete the green upgrades.
-    
-    In the event the repairs have not been completed within the allotted timeframes, your portfolio manager will work with you to set updated repair deadlines, and will request documentation in the meantime demonstrating to Fannie Mae that you’ve ordered/purchased the green items and taken at least some steps toward finishing the green repairs.
-    
-    Once all green repairs are completed and verified by inspection, the property owner must report their Energy Star score annually throughout the term of the loan, allowing the lender to track the progress of their program and its effects on multifamily properties.
-    
-    The energy savings; reduced interest rates; and additional loan proceeds, the Green Rewards Program is highly beneficial to property owners and their tenants, and can significantly increase cash flows for property owners. If you have any questions about the Green Rewards Program or a new loan you are considering, please feel free to reach out to me at smacpherson@patellegal.com or (972) 435-4339.
-    
-    `,
-
-    // BLOG 2
-
-    `
-    DACA RECIPIENTS: GREEN CARD THROUGH MARRIAGE OR EMPLOYMENT
-    Posted on Apr 4, 2024 by Carmel Celocia
-
-    CAN SOMEONE ON DACA APPLY FOR A GREEN CARD?
-    DACA is not a lawful status. But that doesn’t mean that someone with DACA cannot get a green card. DACA applicants’ pathway to a green card depends on their application basis.
-
-    There is a big difference between someone on DACA applying for a green card through marriage versus through employment. This article will look at the two different paths:
-
-    OBTAINING A MARRIAGE-BASED GREEN CARD
-    The method by which the Deferred Action for Childhood Arrivals recipient entered the US is relevant in determining whether someone can apply for a green card in the US (known as adjustment of status) or outside of the US (Consular processing). 
-
-    DACA recipients who entered the country lawfully can apply for adjustment of status by filing Form I-485. They must have been inspected and admitted by a CBP officer and be married to a USC.  Those married to an LPR cannot file for adjustment, irrespective of whether they have a lawful entry. 
-
-    DACA recipients that entered the U.S. unlawfully are not allowed to adjust in the U.S. and must go for Consular processing.  This is because a lawful entry is required to file for adjustment of status. This means leaving the U.S. after the I-130 is approved and going to the U.S. Consulate in their home country to obtain an Immigrant Visa.  Once the Immigrant Visa is used to return to the U.S. the applicant will receive his/her green card. 
-
-    However, this is where it gets more complicated. Applicants with over 180 days but less than one year of unlawful presence face a 3-year bar upon leaving the U.S. Those with a year or more of unlawful presence face a 10-year bar. 
-
-    DACA recipients who received DACA prior to their 18th birthday do not accrue any lawful presence. People who get DACA after turning 18 will have an unlawful presence. Calculate days from the 18th birthday to receiving DACA as DACA prevents the accrual of unlawful presence. 
-
-    Exploring the pathway to a green card is crucial for DACA recipients seeking to adjust their immigration status.
-
-    THE BOARD OF IMMIGRATION APPEALS
-    A Board of Immigration Appeals (BIA) decision, Matter of Arabally and Yerrabelly states that someone who travels using advance parole (travel document) does not make a departure from the U.S. and therefore does not trigger the 3- or 10-year bar.   
-
-    Someone on DACA with accrued unlawful presence can leave on advance parole. They can return to the US legally and file for adjustment of status if married to a USC. 
-
-    If you entered unlawfully and stayed over 180 days without a way to get advance parole, leaving the US will activate the 3- or 10-year bar. However, you may be eligible for a waiver to overcome the bar if you can show extreme hardship to a USC/LPR spouse or parent.   
-
-    OBTAINING AN EMPLOYMENT-BASED GREEN CARD
-    While DACA recipients can be sponsored by their employer for a green card they cannot apply to adjust their status in the US because DACA is not a lawful status. Employment-based adjustment needs lawful nonimmigrant status to file. An applicant with advance parole cannot adjust status for an employment-based green card upon legal re-entry to the US. because DACA is not a valid status. 
-
-    DACA recipients who got DACA before 18 and have no unlawful presence can get a green card by attending a US Consulate appointment.  The 3- or 10-year bar is not triggered. 
-
-    If you obtained DACA after turning 18 and therefore you have an unlawful presence, then leaving the U.S. will trigger the bar. In Matter of Arabally and Yerrabelly, using advance parole does not trigger the 3- or 10-year bar. Someone traveling with advance parole does not leave the U.S.  The problem here is that although USCIS recognizes this as a matter of law, DOS does not.  This question has been raised with DOS, and they have failed to answer this. A DACA recipient with unlawful presence will still struggle to get an employment-based green card.
-
-    Exploring the pathway to a green card is essential for DACA recipients aiming for employment-based immigration opportunities.
-
-    Conclusion 
-
-    To transition from DACA to a Green Card, consult an Immigration Attorney.  If you have questions regarding any of the above, please contact PLG Partner cprescott@patellegal.com. 
-
-
-    `
-    
-],
+smallBlog = [0, 1],
 
 bigBlog = [
-    {
-        TITLE: "DACA RECIPIENTS: GREEN CARD THROUGH MARRIAGE OR EMPLOYMENT",
-        LINK: `https://patellegal.com/blog/daca-recipients-green-card-through-marriage-or-employment/`,
-        CONTENT: `
-
-Blog DACA Recipients: Green Card through Marriage or Employment
-
-CAN SOMEONE ON DACA APPLY FOR A GREEN CARD?
-DACA is not a lawful status. But that doesn’t mean that someone with DACA cannot get a green card. DACA applicants’ pathway to a green card depends on their application basis.
-
-There is a big difference between someone on DACA applying for a green card through marriage versus through employment. This article will look at the two different paths:
-
-OBTAINING A MARRIAGE-BASED GREEN CARD
-The method by which the Deferred Action for Childhood Arrivals recipient entered the US is relevant in determining whether someone can apply for a green card in the US (known as adjustment of status) or outside of the US (Consular processing). 
-
-DACA recipients who entered the country lawfully can apply for adjustment of status by filing Form I-485. They must have been inspected and admitted by a CBP officer and be married to a USC.  Those married to an LPR cannot file for adjustment, irrespective of whether they have a lawful entry. 
-
-DACA recipients that entered the U.S. unlawfully are not allowed to adjust in the U.S. and must go for Consular processing.  This is because a lawful entry is required to file for adjustment of status. This means leaving the U.S. after the I-130 is approved and going to the U.S. Consulate in their home country to obtain an Immigrant Visa.  Once the Immigrant Visa is used to return to the U.S. the applicant will receive his/her green card. 
-
-However, this is where it gets more complicated. Applicants with over 180 days but less than one year of unlawful presence face a 3-year bar upon leaving the U.S. Those with a year or more of unlawful presence face a 10-year bar. 
-
-DACA recipients who received DACA prior to their 18th birthday do not accrue any lawful presence. People who get DACA after turning 18 will have an unlawful presence. Calculate days from the 18th birthday to receiving DACA as DACA prevents the accrual of unlawful presence. 
-
-Exploring the pathway to a green card is crucial for DACA recipients seeking to adjust their immigration status.
-
-THE BOARD OF IMMIGRATION APPEALS
-A Board of Immigration Appeals (BIA) decision, Matter of Arabally and Yerrabelly states that someone who travels using advance parole (travel document) does not make a departure from the U.S. and therefore does not trigger the 3- or 10-year bar.   
-
-Someone on DACA with accrued unlawful presence can leave on advance parole. They can return to the US legally and file for adjustment of status if married to a USC. 
-
-If you entered unlawfully and stayed over 180 days without a way to get advance parole, leaving the US will activate the 3- or 10-year bar. However, you may be eligible for a waiver to overcome the bar if you can show extreme hardship to a USC/LPR spouse or parent.   
-
-OBTAINING AN EMPLOYMENT-BASED GREEN CARD
-While DACA recipients can be sponsored by their employer for a green card they cannot apply to adjust their status in the US because DACA is not a lawful status. Employment-based adjustment needs lawful nonimmigrant status to file. An applicant with advance parole cannot adjust status for an employment-based green card upon legal re-entry to the US. because DACA is not a valid status. 
-
-DACA recipients who got DACA before 18 and have no unlawful presence can get a green card by attending a US Consulate appointment.  The 3- or 10-year bar is not triggered. 
-
-If you obtained DACA after turning 18 and therefore you have an unlawful presence, then leaving the U.S. will trigger the bar. In Matter of Arabally and Yerrabelly, using advance parole does not trigger the 3- or 10-year bar. Someone traveling with advance parole does not leave the U.S.  The problem here is that although USCIS recognizes this as a matter of law, DOS does not.  This question has been raised with DOS, and they have failed to answer this. A DACA recipient with unlawful presence will still struggle to get an employment-based green card.
-
-Exploring the pathway to a green card is essential for DACA recipients aiming for employment-based immigration opportunities.
-
-Conclusion 
-
-To transition from DACA to a Green Card, consult an Immigration Attorney.  If you have questions regarding any of the above, please contact PLG Partner cprescott@patellegal.com. 
-
-
-        `,
-    },
-    {
-        TITLE: "THE VISA BULLETIN EXPLAINED: UNDERSTANDING THE EB-5 CATEGORIES PRE AND POST RIA",
-        LINK: `https://patellegal.com/blog/the-visa-bulletin-explained-understanding-the-eb-5-categories-pre-and-post-ria/`,
-        CONTENT: `
-        Posted on Mar 12, 2024 by Rakesh Patel and Jacqueline Trevino
-        
-        Blog The Visa Bulletin Explained: Understanding the EB-5 Categories Pre and Post RIA
-        
-        The visa bulletin is a monthly publication issued by the US Department of State that provides information on the availability of immigrant visas. It categorizes applicants based on their priority date and country of birth, determining when they can proceed with applying for a green card. On the visa bulletin, the 5th preference category refers to the EB-5 Immigrant Investor Program. There are two main EB-5 categories on the visa bulletin: the unreserved categories and set aside categories.  
-        
-        Unreserved Category 
-        
-        The unreserved category is for investments made before the enactment of the Reform and Integrity Act (RIA) in 2022 or subsequent investments post-RIA that do not meet the criteria for the visa set aside categories. This category relates to investments of $1,050,000 and is not subject to specific allocation percentages.  
-        
-        In April 2024, the unreserved categories will remain current for all countries with the exception of China and India. For a green card application to move forward, investors from China must have the priority date of December 15, 2015, or earlier, while investors from India must have a priority date of December 01, 2020, or earlier. Furthermore, it is taking approximately two to three years to receive conditional green card status for these types of projects. 
-        
-        Set Aside Categories   
-        
-        The set asides are listed in three distinct rows, each indicating the percentage of the EB-5 visas that are set aside for each category each fiscal year. These categories include visas set asides for rural projects (20%), high unemployment projects (10%), and infrastructure projects (2%), all requiring an investment of at least $800,000. 
-        
-        Any of the set aside visas that go unused are held within the same category for the following fiscal year. If there are remaining unused visas in these categories after the second fiscal year, they are released to the unreserved categories during the third fiscal year. 
-        
-        In April 2024, the set aside categories will remain current for all countries. No specific priority date is required for an investor currently in the US on a valid status to concurrently file Form I-526 or I-526E along with Form I-485 to initiate their adjustment of status to a conditional green card holder. Furthermore, these post-RIA investments are experiencing notably faster processing times in comparison to the unreserved category, with some investors receiving their conditional green card as fast as 12 to 18 months.  
-        
-        To learn more about the EB-5 visa set aside categories or concurrent filing, please visit our blog site at https://patellegal.com/blog/category/immigration-blog/. 
-        
-        If you have any questions regarding the EB-5 process or your place in line for a green card, please email us at rpatel@patellegal.com and jtrevino@patellegal.com.  
-        
-        `
-    },
-    {
-        TITLE: "CONCURRENT FILING SPARKS INCREASED INTEREST IN THE EB-5 PROGRAM",
-        CONTENT: `The EB-5 Reform and Integrity Act (RIA) of 2022 authorizes certain new investors to file a Form I-485 (Application for Adjustment of Status) along with a Form I-526 (Immigrant Petition by Standalone Investor) or Form I-526E (Immigrant Petition by Regional Center Investor). This is called concurrent filing, and to take advantage of it, there must be a visa available for the applicant, and the applicant must reside in the U.S. in a nonimmigrant status that is eligible for adjustment of status. If a visa is available, it indicates there is space within the annual quota set by the U.S. government for EB-5 immigrant investors to proceed with their visa application process. This is evidenced by the visa category being listed as “Current” in the U.S. Department of State visa bulletin, which displays the availability of immigrant visas each month. 
-
-        The provision for concurrent filing is advantageous for eligible individuals. By submitting an I-485 application for adjustment of status, investors can seek work authorization and advance parole documents. These documents allow lawful employment and international travel during the pendency of both the I-526 petition and adjustment of status application. 
-        
-        As of January 2024, the set-aside EB-5 categories are classified as “Current” for all countries, meaning an EB-5 investor need not have a particular priority date (the date they filed their application) for a visa to be available to them. Thus, if an investor invests the minimum requirement of $800,000.00 USD in a rural, high unemployment, or infrastructure project, they can move forward with their immigration application process. This is particularly notable for China and India, the only countries whose unreserved EB-5 categories remain uncurrent. 
-        
-        The option to concurrently file is one of the provisions that makes the reformed program more effective and appealing to foreign investors residing in the U.S. on a nonimmigrant visa. It enables applicants to remain in the U.S. and avoid lengthy processing times. For example, it may take USCIS up to 56.5 months to process the I-526 petition and 49 months to process the I-485 petition. However, USCIS often processes the I-485 application shortly after approving the I-526 petition. Nonetheless, it is recommended to maintain nonimmigrant status until a conditional green card is approved. 
-        
-        We encourage Indian and Chinese nationals to take advantage of this provision while the priority dates remain current. 
-        
-        If you have any questions regarding the EB-5 process, please email us at rpatel@patellegal.com and jtrevino@patellegal.com.`,
-        LINK: "https://patellegal.com/blog/concurrent-filing-sparks-increased-interest-in-the-eb-5-program-2/",
-    },
-
-    {TITLE: "LOAN MODIFICATION BASICS",
-    LINK: `https://patellegal.com/blog/loan-modification-basics/`,
+{
+    TITLE: "Long-Term Disability Insurance vs Short-Term Disability Insurance Explained",
+    LINK: `https://bergplummer.com/blog/disability-insurance/long-term-vs-short-term/`,
     CONTENT: `
-    The Mortgage Bankers Association estimates that nearly $1 trillion in multifamily CRE debt will mature by 2027.  An historically large number of multifamily debt maturities is on the horizon, leading many borrowers seeking to extend time on their current loans waiting for better interest rates and loan terms,  rather than refinancing their property at a high interest rates or selling it at a loss. Over the last few months I’ve been increasingly asked by lenders and borrowers to write up or review such loan modifications for the purpose of keeping current debt where it is, and thought I’d go over the basics with you.
 
-    A number of loan terms can be altered through a loan modification including, but not limited to, the loan balance, interest rate, date of payments/deferral, reserve and escrow amounts, providing access to reserve/escrow funds to borrower, and extending the maturity date of the loan.
+    Long-Term Disability Insurance vs Short-Term Disability Insurance Explained
+    by Amar Raval
+    Dec 11, 2023
+    Doctor touching shoulders of patient in a wheelchair. long term disability vs short term.
+    Disability insurance provides financial security and peace of mind to those looking for additional protection if they can no longer work due to an injury or disabling illness. Americans suffer chronic and debilitating illnesses more and more every year. These injuries and ailments can dramatically impact a person’s ability to work. Thus, many workers have the option of obtaining disability insurance to supplement their income in times of medical crisis.
+    
+    What is Texas Disability Coverage?
+    Disability insurance is a form of insurance designed to supplement a person’s income while that person is out of work – often related to a medical illness. This type of insurance allows workers to supplement their income during medical treatment and / or recovery. Depending on the coverage plan, insurance may cover between a couple of months to a year or more of income.
+    
+    Texas is one of many states that does not offer government-funded disability coverage. Instead, Texans must utilize Social Security Disability Insurance (SSDI), Supplemental Security Income (SSI), Veterans disability benefits (applicable to U.S. Veterans), or private disability coverage. This blog’s primary focus is privately funded disability insurance plans.
+    
+    Minimum Standards for Disability Coverage
+    Texas law refers to short-term disability and long-term disability insurance as “disability income protection coverage.” Under 28 Tex. Admin. Code § 3.3075, the minimum standard for disability income protection coverage includes the following:
+    
+    The plan must provide a periodic payment of at least $100 per month, payable through age 62 and payable for at least $50 after age 62.
+    The plan must contain an elimination period of 90, 180, or 365 days, depending on the policyholder’s circumstances.
+    The plan must have a maximum time period for payable benefits of at least six months.
+    Insurance companies cannot offer disability income protection coverage plans in the state of Texas without abiding by these minimum standards.
+    
+    The Differences Between Long-Term Disability Insurance and Short-Term Disability Insurance Coverage
+    Hands hovering over image of a person in a wheelchair. Long term disability vs short term.Disability insurance provides a policyholder with supplemental income while on leave from their employment due to a disability. However, there are two forms of disability coverage based on the type of disability a person is experiencing and the duration of their disability.
+    
+    Short-term disability insurance coverage allows a person to obtain supplemental income while dealing with a disabling affliction. This type of insurance can last three to six months, depending on the disability. Most short-term disability insurance plans cover approximately 40 percent to 70 percent of a person’s income when they become eligible for coverage. Short-term disability insurance coverage only covers afflictions that can be recovered from over a short period of time.
+    
+    Long-term disability insurance coverage allows a person to supplement their income after a crippling injury or illness that leaves them unable to work for the foreseeable future or even for the rest of their lives. Long-term disability coverage typically pays 60 percent of a person’s gross monthly wage during the coverage period.
+    
+    Long-term disability coverage can span a year or more, including the duration of time from disability inception until the insured becomes eligible for Social Security or retirement. The terms of coverage will vary by policy.
+    
+    Understanding Disability Coverage
+    Those seeking disability coverage from private insurance should understand what they can expect in most disability insurance policies. See below for a breakdown of standard disability insurance policies and their clauses.
+    
+    Eligibility Clause
+    After a policyholder has purchased the plan and commenced paying monthly premiums, a particular set of circumstances must occur before they can utilize their disability benefits:
+    
+    The policyholder must complete a mandatory waiting period before becoming eligible for benefits under the plan.
+    Plans typically include an assessment conducted by a medical professional who can adequately evaluate the claim for disability benefits by reviewing the policyholder’s injury or illness.
+    The insurance company typically conducts an independent third-party review of the claim by another medical professional of its own choosing.
+    Pre-Existing Condition Clause
+    Most clauses governing pre-existing conditions do not preclude a person with a pre-existing condition from purchasing disability insurance coverage and utilizing their benefits when the need arises.
+    
+    Instead, a pre-existing condition clause usually encompasses illnesses and injuries that occurred within the prior three months before obtaining coverage. In those cases, the insurance company may prohibit a policyholder from obtaining income benefits from the plan for the first six months of coverage.
+    
+    After the preliminary six months of premiums have been paid, the policyholder will likely have to enter a waiting period. Once the waiting period has ended, the policyholder will probably be eligible for benefits.
+    
+    Waiting Period Clause (Long-Term Disability Insurance)
+    Disability insurance form. Long term vs short term disability.As stated above, policyholders may have to engage in a waiting period under a disability plan before obtaining benefits. This waiting period is similar to a probationary period to deter users from receiving benefits directly after purchasing coverage. Under most waiting period clauses, a policyholder will likely have to wait anywhere from 180 days to six months to qualify for coverage. Often, policyholders must utilize their employer-provided sick and benefit time before receiving income benefits from a disability plan.
+    
+    Coverage Period
+    The coverage period depends on the nature of the affliction and the plan’s parameters. For short-term plans, a person can expect to see between three to six months of benefits. However, this depends on the policyholder’s illness and whether it is a short-term affliction. For long-term plans, policyholders should expect benefits for as long as they are disabled, which can easily reach a year or more of benefits.
+    
+    Monthly Benefits
+    Monthly benefits range from 40 percent to 70 percent of the policyholder’s income, depending on the type of coverage and policy terms. Most plans will calculate how much to provide in monthly benefits using a person’s average weekly wage or gross monthly wage, which all depends on the policy and the person’s occupation. For example, if a person earns $2,000 a month in wages, they can expect to receive $800 to $1,400 a month in disability benefits.
+    
+    Can I Use Disability Insurance While on FMLA Leave?
+    The short answer is yes. The Family Medical Leave Act offers eligible employees 12 weeks of unpaid leave due to a qualifying medical or family event. During the leave period, the employee’s position with their employer is protected from termination. Qualifying events can include:
+    
+    Birth of a child.
+    Adoption or foster care of a child within one year of placement.
+    Affliction of an illness or injury that renders an employee unable to perform their essential job functions.
+    Providing care to a qualifying family member.
+    When on FMLA, a person may be eligible for disability benefits depending on the type of plan they purchase. For long-term disability insurance coverage, FMLA leave will likely expire before a person is eligible for disability insurance coverage, which means the benefit may only be utilized after they are no longer on FMLA leave. However, because short-term disability insurance has a shorter eligibility window, a policyholder may use disability insurance to supplement their income while on leave.
+    
+    Contact Us About Your Disability Claim Today
+    Disability insurance can be a savior to many experiencing a long-term or short-term disability. However, understanding a disability insurance policy and the claims process can be difficult. If you have questions or concerns about your disability coverage, please contact one of our Houston disability insurance lawyers today at Berg Plummer Johnson & Raval, LLP for a consultation.
+    `,
+},
+{
+    TITLE: "Types of Life Insurance Exclusions",
+    LINK: `https://bergplummer.com/blog/life-insurance/types-of-exclusions/`,
+    CONTENT: `
+    ypes of Life Insurance Exclusions
+    by Amar Raval
+    Dec 04, 2023
+    Family gathered in a living room. Types of Life Insurance Exclusions
+    Life insurance provides a financial safety net for surviving family members when someone dies unexpectedly. Life insurance proceeds must be paid to the beneficiaries in a timely manner. But there are circumstances which can excuse an insurance company from the obligation to pay benefits.
+    
+    The person on whose life the insurance policy is underwritten has entered into a contract with the insurance company. In that contract, the insurance company has promised to pay a certain sum of money to beneficiaries designated by the policy owner upon the owner’s death. However, in order to trigger the insurance company’s obligation to pay, the policy owner must comply with certain conditions and no policy exclusion can apply.
+    
+    Life insurance companies are allowed to avoid paying the benefits on a life insurance policy if one of the coverage exclusions permitted in Texas applies. Insurance companies may sometimes argue an exclusion applies when the claim is actually legitimate.
+    
+    It can be devastating to families to have a life insurance claim denied after the already harsh impact of losing a loved one. Life insurance companies need to be held to the commitments made to policy owners. A Houston life insurance lawyer can help beneficiaries collect the life insurance proceeds they are entitled to.
+    
+    Permissible Life Insurance Policy Exclusions Under Texas Law
+    With limited exceptions, life insurance companies operating in Texas cannot exclude coverage based on a particular cause of death. The Texas Insurance Code’s life insurance section, 1101.055, lists the causes of death that insurance companies are allowed to exclude:
+    
+    Death by suicide whether the decedent was mentally competent or not
+    Death as the result of a hazardous occupation
+    Death as the result of aviation activities
+    Death by Suicide
+    Exclusions of coverage, when the cause of death is self-inflicted, are aimed at discouraging financial benefit as a motive for suicide. The exclusion of coverage when death is by suicide only lasts for two years after a policy is issued. After two years, a life insurance policy must pay benefits regardless of how the policy owner died except for a beneficiary who was involved in willfully bringing about the policy owner’s death.
+    
+    Hazardous Occupation
+    Life insurance policies may exclude coverage when death is the result of engaging in an occupation where the risk of death is greater than average. Occupations are to be distinguished from hobbies and recreational activities which cannot be excluded.
+    
+    Military service and occupations such as construction, oil and gas extraction, law enforcement, and commercial fishing are among some of the occupations a life insurance company may choose not to underwrite. For the exclusion to apply, the excluded hazardous occupation must be listed in the policy.
+    
+    Aviation Activities
+    Hang glider. Types of Life Insurance ExclusionsLife insurance policies may exclude coverage when death is caused by certain aviation activities stated in the policy. The Texas Department of Insurance says the following types of aviation activities are acceptable to exclude:
+    
+    Duties aboard an aircraft as a pilot or member of a flight crew
+    Assisting in the operation of an aircraft
+    Giving or receiving training regarding an aircraft
+    Being aboard an aircraft for any purpose other than as a passenger
+    Hang gliding
+    Para-planing
+    Death by descending or falling from an aircraft is not considered an excludable aviation activity. Thus, skydiving cannot be an excluded cause of death in a life insurance policy but hang gliding could be.
+    
+    Insurance Companies Have A Two-Year Window to Contest Coverage
+    Limiting the amount of time a life insurance company has to challenge the obligation to pay benefits protects consumers from having coverage voided years after a policy is issued. Life Insurance policies in Texas are required to contain language stating they will be uncontestable if the insured lives two years from the date the policy is issued and pays the premiums.
+    
+    After the contestability period, life insurance companies generally cannot deny the payment of claims based on misrepresentations made by the policyholder. But there is no limit on the contestability period when a policyholder has committed fraud. Fraud voids the contract and the obligation to pay.
+    
+    There are some circumstances under which the contestability period may be extended. Life insurance companies can choose to include policy language that extends the contestability period for challenging the violation of policy conditions relating to military service during a time of war.
+    
+    Misrepresentations May Reduce Proceeds but Rarely Void Life Insurance Contracts
+    A misrepresentation as to age in a life insurance application will not void the insurance company’s obligation to pay but the payout will be reduced to the amount of insurance that the policy owner could have purchased with the premiums paid had the correct age been given.
+    
+    The Texas Insurance Code says a misrepresentation made in an application to an insurance company will only void the contract if it is material to the risk or contributes to the circumstances triggering the insurance company’s obligation to pay.
+    
+    The Supreme Court of Texas recently clarified when a misrepresentation made on an application would be sufficient to excuse a life insurance company from paying the policy amount during the contestability period. The policy owner had indicated ‘no’ on a medical history question. Upon reviewing the policy owner’s medical records, it was discovered that the question should have been answered ‘yes’. The insurance company tried to deny paying the benefits based on the insured’s misrepresentation.
+    
+    The issue was whether a misrepresentation need only be of a material fact affecting the risk assumed or whether the applicant must also intend to deceive the insurance company. The Texas Insurance Code makes no mention of intent as necessary for a misrepresentation to void a life insurance contract; however, common law does.
+    
+    The Texas high court upheld the longstanding principle that there must be an intent to deceive in order for a material inaccuracy to void an insurer’s obligation to pay.
+    
+    What Happens When Your Life Insurance Claim is Denied?
+    Life insurance policy papers. Types of life insurance exclusions.The problem with insurance companies is that they are for-profit businesses. The more claims they pay, the less money they make. Insurance companies have a strong incentive to limit the payment of claims as much as they can legally get away with. To protect against the perverse incentive to deny clains, insurance companies are required by Texas law to settle claims in good faith. An insurance company that acts in bad faith can be held liable for damages – often beyond the value of the actual policy.
+    
+    Misrepresentation is a common reason life insurance companies attempt to deny paying claims. If a life insurance claim is denied based on a misrepresentation by the policy owner, the insurance company cannot avoid paying the claim unless the misrepresentation was both significant to the insurance company’s decision to underwrite the risk and made with the intention to influence the company into issuing the policy.
+    
+    There is typically an appeal process where life insurance claimants can refute the insurance company’s reasons for denying the claim. Getting legal help at this stage of the process can help persuade the insurance company to reverse its decision and pay the claim. It will also lay the foundation for a more successful claim in court should you need to move into civil litigation to recover what you are rightfully owed.
+    
+    Where To Get Help Fighting the Wrongful Denial of a Life Insurance Claim
+    After a loved one has passed, the last thing a grieving family needs is a hassle with an insurance company over paying a claim. Unfortunately, life insurance claim denials are all too common and can create hardships, adding more anguish to an already difficult situation.
+    
+    At Berg Plummer Johnson & Raval, LLP, we help life insurance beneficiaries challenge claim denials and force insurance companies to honor their contractual obligations to pay claims.
+    `
+},
+{
+    TITLE: "Damages for Breach of Contract – What You May Be Entitled To",
+    CONTENT: `
+    You entered into your contract agreement carefully. You thought the terms were clear, and you signed on the dotted line feeling confident. You trusted the other party to fulfill their duties and leave you with a “job well done.” That is what contracts are supposed to guarantee. But what if the other party does not hold up their end of the deal and leaves you to face the consequences?
 
-    The adjustment of these terms affects the loan agreement, promissory note, and the deed of trust. However, all changes may be made through one loan modifying document, the loan modification. The modification also doesn’t need to be recorded, although this is up to your lender. Changing the loan terms through one, unrecorded document simplifies the updating process, and avoids costs like origination fees and prepayment penalties or premiums which would likely be required under a refinance. Although there may not be recording or origination fees, a borrower will likely have to pay the lender’s attorneys’ fees for their work on the modification. The lender may tack this amount onto the principal of your loan or may expect it at the time of the modification.
+    Though frustrating, unfair, and unfortunate, this scenario is not uncommon. But it is not hopeless. With the help of a Houston business litigation attorney from Berg, Plummer, Johnson & Raval LLP, you can fight to recover your losses and hold the negligent party accountable for breach of contract.
+    
+    Damages for Breach of Contract
+    There are different damages you may be entitled to following a breach of contract. In some cases, contract language establishes the consequences if one party fails to fulfill their part of the deal. Even if your contract does not include that information, an experienced breach of contract attorney in Houston will help direct your case and work toward fair compensation.
+    
+    Compensatory Damages
+    As indicated in the name, “compensatory” damages compensate a party harmed by a breach of contract for their losses. Compensatory damages can be general or specific.
+    
+    In pursuing general compensatory damages, you seek to recover direct losses sustained from the breach. For example, downhole drillers depend on their mud suppliers to deliver orders on time. If those suppliers fail, the driller has to purchase mud from another source – usually at the last minute. The rushed timing may make the purchase more expensive as the driller cannot negotiate a price and is thus required to pay extra for the rushed order. In seeking general damages, the driller may pursue:
+    
+    A refund of the money already paid to the mud supplier for the original order
+    The difference between the amount of the original order and what the new supplier charged
+    Reimbursement for the expense of sending the late, and now not-needed, mud back to the supplier
+    Special damages are also called “consequential damages.” They cover losses caused by the breach of contract that are not ordinarily predictable.
+    
+    For example, if you, as the plaintiff (the non-breaching party), lost earnings, sustained damage to your reputation, or lost business opportunities because of the defendant’s contractual breach, you may be entitled to special damages.
+    
+    Special damages may also apply when there are “special conditions” related to your contract. A party planner may order tents for a weekend-long outdoor bash. When those tents do not arrive on time, the planner has to rent tents to cover the delay. Those rental fees may be included as special damages as long as the party planner can prove the original tent company knew of the specific circumstances, in this case, the dates for the party, upon entering the agreement.
+    
+    Liquidated Damages
+    Liquidated damages means the amount owed is readily ascertainable. If a company sells a drill bit for $100,000 and the buyer picks up the product but never pays, damages are clearly at least $100,000 – plus pre- and post-judgment interest and attorneys’ fees. Those damages are “liquidated.”
+    
+    Specific Performance
+    When specific performance damages are applied to a breach of contract case, the terms of a contract are legally enforced after the breach has occurred. The remedy for the breach is to force the breaching party to honor that original deal. For example, if a property seller enters a contract agreement with a buyer and then refuses to sell, the buyer may seek specific performance damages to continue with the purchase.
+    
+    A Houston breach of contract lawyer will help you decide if seeking specific performance damages is in your best interest. It is important to consider why the breaching party failed to uphold the deal, whether this remedy will cause the defendant harm or force them to act against their will, and / or if enforcement is impractical, among other issues.
+    
+    Injunction
+    Injunctions serve the opposite purpose of specific performance where a party is ordered to act in order to fulfill the contract through specific performance. Under an injunction, a court may order a party not to act.
+    
+    Employees must often sign non-compete agreements. For example, a salesperson who separates from a company may be bound by a non-compete. If the salesperson takes a job in sales with a competitor, a court may enter an order preventing the former employee from engaging in competition in violation of the employment contract signed with the former employer.
+    
+    Injunctions can be temporary or permanent. Temporary injunctions may be ordered as the case is litigated to protect against further potential damage. Permanent injunctions are part of a final decision.
+    
+    Rescission
+    Rescission allows the non-breaching party to back out of the contract legally. The contract is canceled, and both parties are restored to their pre-contractual situations. Rescission generally does not involve the pursuit or payment of monetary damages, though it may include an award of attorneys’ fees.
+    
+    For rescission to apply, the breach has to be material to, or go to the heart of the contract. If you are a caterer, you may demand partial payment by a specified date. If the party who booked you does not pay, rescission likely applies. You can be released from providing the catering services agreed upon in the contract.
+    
+    Considerations When Claiming Damages After a Breach of Contract
+    contract - damages for breach of contractSeveral factors come under consideration in breach of contract cases, and each can influence the success of the case, including but not limited to those listed below.
+    
+    Transparency
+    It is essential for the terms and conditions of a contract to be transparent or clear. The contract must clearly establish each party’s roles and responsibilities, as well as timelines, deliverables, benchmarks, standards for quality, performance indicators, methods of communication, and all other relevant factors.
+    
+    Expectation
+    If expectations are not clearly established in a contract, it is hard to enforce them. If you claim a vendor, employee, service provider, or someone else has breached a contract by failing to meet expectations, you must prove that claim. It is not possible to do that if expectations are not defined.
+    
+    Legality
+    You can only claim breach of contract if the contract in question is legal. The contract must comply with relevant laws and regulations for the jurisdiction. In addition, for your case to be heard, you must file a breach of contract lawsuit within the statute of limitations or legal deadline. In Texas, the deadline for filing breach of contract claims is generally four years from the date of the breach.
+    
+    Defenses To Allegations of Breach of Contract
+    There are defenses to claims of breach of contract. For example, claims can be filed too late, contracts can be legally invalid, the breach may have occurred because of circumstances beyond the breaching party’s control, and / or the contract may have been signed under duress. These, and other situations, may lead to a claim’s dismissal.
+    
+    Contact a Houston Breach of Contract Lawyer
+    When involved in a breach of contract case, you need an experienced attorney guiding your claim and fighting for you. Reach out to the Houston breach of contract lawyers at Berg, Plummer, Johnson & Raval LLP to get the help you need. Our skilled attorneys will provide bold representation so you can reach a favorable resolution.
+    `,
+    LINK: "https://bergplummer.com/blog/breach-of-contract/damages/",
+},
 
-    Despite the whole process sounding fairly simple, the lender will have a number of considerations before approving your loan modification. One issue is whether the modification will in any way affect the structure of the borrower or the control of borrower. The lender will not want the currently controlling entities or individuals of the borrower to change, taking control away from a guarantor who will be on the hook if the borrower defaults. The lender will also want to reevaluate the financial condition of these parties to confirm that they are still in a position to pay back the loan if things go south.
+{   
+    TITLE: "Fiduciary Duty to Shareholders Explained",
+    LINK: `https://bergplummer.com/blog/commercial-litigation/fiduciary-duty-shareholders/`,
+    CONTENT: `
+    The directors of a corporation owe shareholders a fiduciary duty to act in their best interests. This duty allows shareholders to safely and securely finance a corporation and its business goals while ensuring their capital investment is safe. With a prescribed fiduciary duty, shareholders would be more likely to engage in this commercial activity, providing a corporation the ability to raise capital for growth over time.
 
-    The lender will also want to ensure that the modification does not negatively impact the performance of the property, reducing the revenue of the property used to pay back the loan or causing any loss in value of the collateral. A loss in revenue or value both create greater risk for the lender in the event of a default, since the lender won’t have adequate collateral to repay the debt. For the same reason, the lender will send out an inspector, prior to the modification’s execution, to review the property for any needed repairs or capital improvements, and to ensure the property is in compliance with the current loan.
-
-    A loan modification can be a useful tool for those seeking updated terms or an alternative to refinance. If you’re interested in modifying a current loan and have any questions, please feel free to reach out to smacpherson@patellegal.com discuss the process; what to expect; and how we can help.
+    Shareholders should be aware of the duties owed to them when purchasing stock in a company.
+    
+    The following discussion examines the establishment of the fiduciary duty owed to shareholders by the directors of a corporation.
+    
+    What is a Shareholder?
+    shareholderTexas Annotated Code § 1.002(81) provides that a shareholder is a person who is issued shares by a for-profit corporation or is a person who gave shares by a for-profit corporation that are held in a voting trust on the owner of the share’s behalf. A share is a financial security that indicates the holder of the share is a part owner of the issuer of the share. A shareholder is a part owner of the corporation that issued the share.
+    
+    Because shareholders own a portion of the corporate entity, the shareholder is entitled to certain rights under state and (sometimes) federal law. The directors of the corporation and the appointed officers have a set of responsibilities to act in the shareholder’s best interests.
+    
+    What is a Fiduciary Duty?
+    One example of fiduciary duty is the underlying responsibility of the directors and officers of a corporation to act in the best interests of the shareholders. To become a shareholder, the holder of the share typically exchanges something of value to obtain a share of ownership in the company. Once the exchange has been completed, the directors of a corporation must operate the corporation in a way that meets the financial interests of the shareholder. Any deviation from those duties can result in legal action from the shareholders.
+    
+    Understanding the Basic Structure of a Corporation
+    corporationThe vast majority of corporation types are established using the same basic structure, which includes the creation of a Board of Directors, the appointment of corporate officers, and in some cases, the issuance of stock to shareholders. Each portion of the corporate structure creates a foundation for success that allows companies to flourish. However, the only way a company can lawfully do business in the state of Texas (and all states across the country) is to abide by the responsibilities assigned to each party.
+    
+    Most importantly, it is the role of the Board of Directors to make proper decisions that are in the best interest of the corporate entity and its shareholders. Under Texas Annotated Code § 21.401(a), the Board of Directors exercises or authorizes the corporation’s powers and directs the management of its business and affairs.
+    
+    Essentially, the board is tasked with establishing a structure for business operations. This includes, but is not limited to:
+    
+    Empaneling directors to the board
+    Drafting and executing bylaws
+    Hiring corporate officers to manage their corporation’s daily affairs
+    Addressing the corporation’s outstanding liabilities
+    Issuing stock to be purchased by potential shareholders
+    Establishing procedures to wind up and dissolve the corporation
+    Understanding the Duties Owed to Shareholders
+    As discussed above, directors of a corporation owe a fiduciary duty to shareholders to act in their best interests when making decisions that impact the core mission of the corporation, in most cases to maximize shareholder value by engaging in commercial activity. In some instances, decisions made by directors (hiring a Chief Executive Officer, purchasing new equipment, opening up sales in a new market) may harm the corporation.
+    
+    Although these decisions may harm shareholder value, it does not necessarily mean an incorrect business decision breaches the director’s fiduciary duty. Instead, a breach of this duty means the director or directors deviated from protecting and serving the best interests of the shareholder–often for personal gain. Below is a breakdown of the responsibilities prescribed to directors in their role as a fiduciary to shareholders.
+    
+    Duty of Loyalty
+    Core to all fiduciary duties is the duty to be loyal to shareholders. Directors must act in good faith when making decisions that impact the corporation. This means that directors cannot make decisions that promote their own self-interests or that of third parties over the interests of shareholders – known as “self-dealing.”
+    
+    A common loyalty issue is that of usurping corporate opportunities. Directors are often the first to be aware of business opportunities available to the corporation. A director may usurp these opportunities by taking advantage of the opportunity themselves or on behalf of another party. This can lead the corporation to miss a business opportunity and be a detriment to shareholder interests.
+    
+    Duty of Obedience
+    The duty of obedience (also known as the duty to follow the law) requires directors to obey all local, state, and federal laws regarding the corporation’s administration and to conduct its operations lawfully.
+    
+    Although the corporation bears the responsibility for certain civil and criminal acts based on its operations, a director may be found personally liable if that director knowingly committed unlawful acts or had direct knowledge of representatives of the corporation committing such acts. This type of conduct can result in a breach, allowing shareholders to pursue civil damages against the directors and seek their termination from the corporation.
+    
+    Duty of Care
+    Lastly, directors must maintain a duty of care to meet their fiduciary duties to shareholders. All directors are held to a reasonably prudent person standard in performing their duties. This means that a director must act as a reasonably prudent director would act under similar circumstances.
+    
+    Directors may shield themselves from liability by adhering to the business judgment rule. Under the rule, a director may not be found liable for mistakes when using their business judgment, even if their mistakes harmed the corporation. They may shield incompetent, negligent, or misinformed directors.
+    
+    However, if the director’s actions were found to be grossly negligent, fraudulent, illegal, self-dealing, lacking in any judgment, or uninformed with reasonable access to proper information, they may have breached their duty of care.
+    
+    Compliance with Fiduciary Duties
+    Directors are required by law to act in the interest of their shareholders. However, even the most lawful, informed, and prudent director is subject to the same scrutiny as any other director. Good shareholders should be mindful of corporations that bear their financial interests. Thus, below is a list of acts or omissions that should raise a red flag for shareholders:
+    
+    Directors who are unqualified to perform their essential duties
+    Directors who fail to communicate with other directors, officers, and shareholders
+    Directors who often miss or fail to participate in regularly scheduled board meetings
+    Directors who are unaware of changes in corporate policy or governance
+    Directors who fail to supervise subordinates, including appointed officers and other executive-level staff
+    Directors that do not review essential business items like bylaws, policies, new contracts, mergers or acquisitions, executive compensation, budgets, and legal issues
+    Directors that possess a history of deviating from the wishes of shareholders
+    Legal Counsel for Fiduciary Duties Issues
+    Shareholders have a fundamental right to have their investments protected. Thus, a shareholder that has questions about their investment in a corporation or believes a director or an officer of a company holding their investment is not meeting or upholding their fiduciary duty should seek legal counsel.
+    
+    Please get in touch with a Houston commercial litigation attorney at Berg Plummer Johnson & Raval, LLP today to learn more about your rights as a shareholder.
     `
     },
 
-    {
-        TITLE: "SELLING OR TRANSFERRING YOUR INTEREST IN REAL ESTATE SYNDICATIONS OR OTHER INVESTMENTS",
-        LINK: `https://patellegal.com/blog/selling-or-transferring-your-interest-in-real-estate-syndications-or-other-investments/`,
-        CONTENT: `
-        YOU INVESTED IN A PRIVATE OFFERING AND WANT TO SELL YOUR INTEREST – WHAT DO YOU DO?
-
-        For all private offerings, restricted and/or controlled securities are issued, thus inhibiting the ability for investors to sell or transfer their interest. For securities purchased in a Regulation D offering, the interest is considered “restricted” and cannot be freely resold to the public. Thus, investors must identify an exemption from the Security and Exchange Commission’s (“SEC”) registration requirements. Rule 144 serves as one such exemption allowing public resale of restricted and control securities if certain conditions are met. This article aims to educate real estate syndication investors on Rule 144, as well as other similarly situated investors, on how they may sell their interest after investing in a restricted offering.
-        
-        Background on Rule 144
-        
-        Under the Securities Act of 1933 (“Securities Act”), securities are required to be registered with the SEC prior to being issued to the public. However, some securities such as restricted securities and control securities are not required to be issued. Restricted securities are securities acquired in unregistered, private sales from the issuing company or from an affiliate of the issuer. These include private placements, Regulation D offerings, and equity compensation. Control securities are those held by an affiliate of the issuing company such as the manager of a syndication, an executive, or a major shareholder. Because restricted and control securities are not required to be registered, they generally may not be freely resold. Rule 144 functions as an exemption to the general rule provided that the following five conditions are met:
-        
-        Holding Period: The holding period condition applies only to restricted securities and begins on the date the securities were bought and paid for. The length of time restricted securities are required to be held prior to sale is dependent on whether the issuer is considered a “reporting company” or a “non-reporting company.” A reporting company is one subject to the reporting requirements under the Securities and Exchange Act of 1934 while a non-reporting company is not subject to such requirements. Investors in an issuer considered a reporting company are required to hold the interest for a minimum of six months while investors in an issuer considered a non-reporting company are required to hold the interest for a minimum of one year prior to a public sale. Real estate syndication issuers are generally non-reporting companies and investors are thus required to hold their interest for a minimum of one year.
-         
-        
-        Current Public Information: Before any sale of unregistered securities may be made, adequate current information about the issuer must be available. Reporting companies must comply with periodic requirements of the Securities and Exchange Act of 1934 while non-reporting companies must provide company information such as the nature of business, the identity of officers and directors or managers, and financial statements.
-        Trading Volume Formula: For affiliates wishing to sell their interest, the number of equity securities sold within a three-month period cannot exceed 1% of all outstanding shares being sold within the same class. This is typically the formula for real estate syndications. For a class listed on a stock exchange, the trading formula is the greater of the above or 1% or average reported weekly trading volume during the four weeks preceding a Form 144 notice of sale.
-         
-        
-        Ordinary Brokerage Transactions: Brokers may not receive more than a normal commission and neither sellers nor brokers may solicit the purchase of securities. Instead, if the seller is an affiliate, all securities sales but be within routine trading transactions.
-        Filing a Notice of Proposed Sale With the SEC: Affiliates must file a notice with the SEC if the sale involves more than 5,000 shares or the interest is greater than $50,000 in any three month period. The notice filed is on a Form 144 which asks for basic information about the issuer and purchaser, the securities to be sold, and securities sold during the past three months.
-        Determining How Rule 144 Applies to You
-        
-        Affiliate or Non-Affiliate?	Restricted Securities
-        Affiliate: An individual such as an executive officer, director, or large shareholder with the ability to influence or control the issuer company.	·         Affiliates must comply with all Rule 144 conditions prior to any proposed sale. This means that even if all of the requirements are met, a Form 144 notice must sill be filed if the sale involves more than 5,000 shares or is greater than $50,000 in any three month period.
-        Non-Affiliate: An individual without the ability to influence or control the issuer.	·         For non-affiliates, if the interest is held for over one year, the interest may be sold without regard to Rule 144. If the interest with an issuer considered a “reporting company” is held for over six months but less than a year, the interest may be sold if the current public information condition is satisfied.
-         
-        
-        Meeting Rule 144 Conditions Does Not Mean the Interest may be Freely Traded
-        
-        Despite the safe-harbor provided by Rule 144, satisfying the five conditions does not mean the interest may be freely traded. Restricted securities still may not be resold until the issuer consents and the issuer’s counsel provides an opinion letter to remove the certificate’s restrictive legend. This opinion letter covers a three month period and serves to protect the issuer against securities law violations by certifying that certain requirements are met and the issuer is in compliance.
-        
-        Ensuring compliance with Rule 144 and related Securities Act rules is imperative to avoid legal and monetary penalties.
-        
-        By: Kamden Crawford, Securities Attorney
-                
-    `
-    }
 ],
 
 competition = {

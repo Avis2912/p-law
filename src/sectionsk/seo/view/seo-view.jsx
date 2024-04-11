@@ -83,11 +83,11 @@ export default function ProductsView() {
           if (firmDoc.exists()) {
             await setFirmName(firmDoc.data().FIRM_INFO.NAME);
             await setFirmDescription(firmDoc.data().FIRM_INFO.DESCRIPTION);
-            const smallBlogArray = firmDoc.data().BLOG_DATA.SMALL_BLOG || [];
-            const smallBlogString = smallBlogArray.map((item, index) => `{BLOG ${index + 1}}:\n\n${item}\n`).join('\n');
-            await setSmallBlog(smallBlogString);   
-            await setContactUsLink(firmDoc.data().FIRM_INFO.CONTACT_US);         
             const bigBlog = firmDoc.data().BLOG_DATA.BIG_BLOG || [];
+            const smallBlogArray = firmDoc.data().BLOG_DATA.SMALL_BLOG || [];
+            const smallBlogString = smallBlogArray.map(index => `[${bigBlog[index]?.TITLE || ''}]: ${bigBlog[index]?.CONTENT || ''}`).join('\n'); 
+            await setSmallBlog(smallBlogString); 
+            await setContactUsLink(firmDoc.data().FIRM_INFO.CONTACT_US);         
             const internalLinkData = bigBlog.map(blog => `${blog.TITLE}: ${blog.LINK}`).join('\n');
             await setInternalLinks(internalLinkData); 
             if (smallBlogString) {console.log('smallBlogString: ', true) } else {console.log('smallBlogString: ', false);}
