@@ -403,7 +403,7 @@ export default function ProductsView() {
     const youUrl = `https://us-central1-pentra-claude-gcp.cloudfunctions.net/youAPIFunction`;
     const apiKey = '7cc375a9-d226-4d79-b55d-b1286ddb4609<__>1P4FjdETU8N2v5f458P2BaEp-Pu3rUjGEYkI4jh';
     const query = encodeURIComponent(
-    `BE EXTREMELY PRECISE. answer in 3-6 points. PROMPT: ${prompt}
+    `BE EXTREMELY PRECISE. answer in points. PROMPT: ${prompt}
     `);
 
     const options = {
