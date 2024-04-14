@@ -10,7 +10,7 @@ import { getDocs, getDoc, collection, doc, updateDoc, arrayUnion } from 'firebas
 import Iconify from 'src/components/iconify';
 import { db, auth } from 'src/firebase-config/firebase';
 import Button from '@mui/material/Button';
-import { Card, TextField } from '@mui/material';
+import { Card, TextField, ListItem, ListItemText } from '@mui/material';
 import { css, keyframes } from '@emotion/react';
 
 const isImagesOn = true;
@@ -41,11 +41,12 @@ export default function ProductsView() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isElongating, setIsElongating] = useState(false);
 
-  const [isBrowseWeb, setIsBrowseWeb] = useState(false);
+  const [isBrowseWeb, setIsBrowseWeb] = useState(true);
   const [browseText, setBrowseText] = useState("");
   const [selectedModel, setSelectedModel] = useState(1);
   const [wordCount, setWordCount] = useState(0);
   const [contactUsLink, setContactUsLink] = useState(null);
+  const [isSourcesOpen, setIsSourcesOpen] = useState(false);
 
   const [isMimicBlogStyle, setIsMimicBlogStyle] = useState(false);
   const [imageCount, setImageCount] = useState("2 Images");
@@ -55,10 +56,14 @@ export default function ProductsView() {
   const [referenceText, setReferenceText] = useState(null);
   const [isUseInternalLinks, setIsUseInternalLinks] = useState(false);
   const [isMentionCaseLaw, setIsMentionCaseLaw] = useState(false);
+  
+  const [expandedSource, setExpandedSource] = useState(null);
+  const [doneSourcing, setDoneSourcing] = useState(true);
+  const [sources, setSources] = useState([]);
 
   let boxHeight;
   if (isReferenceGiven) { boxHeight = 'calc(80% - 330px)';} 
-  else if (isBrowseWeb) { boxHeight = 'calc(80% - 125px)';} 
+  // else if (isBrowseWeb) { boxHeight = 'calc(80% - 125px)';} 
   else { boxHeight = 'calc(80% - 55px)'; }
   const boxWidth = 'calc(100%)';
 
@@ -108,14 +113,18 @@ export default function ProductsView() {
   const generateBlog = async () => {
 
       setText(`<h1>✨ Generating${dots} </h1>`);
-      setIsGenerating(true);
+      setIsGenerating(true); setBrowseText(blogTitle);
+      if (isBrowseWeb) {setDoneSourcing(false)};
       let messages = [];
 
       let browseTextResponse = "";
 
       if (currentMode === "Generate") {
-        if (isBrowseWeb) {browseTextResponse = await browseWeb(browseText); console.log('browseTextResponse: ', browseTextResponse);};
-        messages.push({
+        if (isBrowseWeb) {
+          browseTextResponse = JSON.stringify((await browseWeb(browseText)).hits.map(({snippet, title, link}) => ({snippet, title, link})));
+          console.log('browseTextResponse: ', browseTextResponse);
+        };
+          messages.push({
           "role": "user", 
           "content":  `
           <instruction>
@@ -192,8 +201,9 @@ export default function ProductsView() {
           BLOG POST: ${text}.
           
           IMPORTANT INSTRUCTIONS:
-          - FORMATTING: Wrap titles in <h1> and <h2> tags. Wrap all paragraphs in <p> tags. Use heading tags and b tags for titles and subtitles. 
+          - FORMATTING: Wrap titles in <h1> and <h2> tags. Wrap all paragraphs and also all individual pointers in <p> tags. Use heading tags for titles, and b tags for sub-titles. 
           - WORD RANGE: this post should be ${wordRange} long.
+          - SPECIFICITY: Be as specific and detailed as possible. Don't be repetitive or ramble.
           - PERSPECTIVE: Don't refer to yourself in the post, but feel free to explain how your firm  can help.
           - IMAGES: blog post should contain ${imageCount}. Please add representations of them in this format: //Image: Chapter 7 Bankruptcy Flowchart//. 
           Add two <br> tags after. Make sure these are evenly spaced out in the post and with specific and relevant descriptions.
@@ -403,7 +413,8 @@ export default function ProductsView() {
     const youUrl = `https://us-central1-pentra-claude-gcp.cloudfunctions.net/youAPIFunction`;
     const apiKey = '7cc375a9-d226-4d79-b55d-b1286ddb4609<__>1P4FjdETU8N2v5f458P2BaEp-Pu3rUjGEYkI4jh';
     const query = encodeURIComponent(
-    `BE EXTREMELY PRECISE. answer in points. PROMPT: ${prompt}
+    `GIVE FACTUAL LEGAL INFORMATION SPECIFICALLY ON: ${blogTitle}.
+     DONT DEVIATE FROM THE PROMPT.
     `);
 
     const options = {
@@ -418,25 +429,11 @@ export default function ProductsView() {
     };
 
     return fetch(youUrl, options)
-      .then(response => response.text())
-      .catch(err => {console.error(err); return err;});
+    .then(response => response.json())
+    .then(data => {console.log(data); setSources(data.hits); setDoneSourcing(true); return data;})
+    .catch(err => {console.error(err); return err;});
   }
 
-  // const loading = keyframes`
-  //   0% {
-  //     background-position: -200% 0;
-  //   }
-  //   100% {
-  //     background-position: 200% 0;
-  //   }
-  // `;
-
-  // const loadingAnimation = {
-  //   animation: '1.5s ease-in-out infinite',
-  //   animationName: `${loading}`,
-  //   background: 'linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%)',
-  //   backgroundSize: '200% 100%',
-  // };
 
   return (
     <Container sx={{backgroundColor: '', height: '100%', paddingBottom: '20px'}}>
@@ -462,8 +459,8 @@ export default function ProductsView() {
           case "600 - 800 Words": setWordRange("800 - 1000 Words"); break;
           case "800 - 1000 Words": setWordRange("1000 - 1200 Words"); break;
           case "1000 - 1200 Words": setWordRange("1200 - 1400 Words"); break;
-          case "1200 - 1400 Words": setWordRange("1400 - 1600 Words"); break;
-          case "1400 - 1600 Words": setWordRange("Upto 200 Words"); break;
+          // case "1200 - 1400 Words": setWordRange("1400 - 1600 Words"); break;
+          case "1200 - 1400 Words": setWordRange("Upto 200 Words"); break;
           default: setWordRange("600 - 800 Words");
         }
       }}
@@ -492,7 +489,7 @@ export default function ProductsView() {
         switch (style) {
           case "Unstyled": setStyle("How-To Guide"); break;
           case "How-To Guide": setStyle("Data-Dense"); break;
-          case "Narrative": setStyle("Opinion"); break;
+          case "Data-Dense": setStyle("Opinion"); break;
           case "Opinion": setStyle("Case Study"); break;
           case "Case Study": setStyle("Case Law Breakdown"); break;
           case "Case Law Breakdown": setStyle("Unstyled"); break;
@@ -502,6 +499,47 @@ export default function ProductsView() {
       sx={(theme) => ({ backgroundColor: theme.palette.primary.green,
       '&:hover': { backgroundColor: theme.palette.primary.green, }, })}>        
       {style} </Button>
+
+      {isBrowseWeb && <Button variant="contained" startIcon={<Iconify icon= {doneSourcing ? "bx:search" : "line-md:downloading-loop"} />}  
+      sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: 'black', },
+      width: '40px', paddingLeft: '28px', minWidth: '10px',})}
+      onClick={() => {if (sources.length !== 0) {setIsSourcesOpen(!isSourcesOpen);}}} />}
+
+      <Card sx={(theme) => ({position: 'absolute', top: '122px', right: '54px', height: '310px', width: '460px', 
+      display: isSourcesOpen ? 'block' : 'none', zIndex: 100, backgroundColor: 'white', padding: '0px', 
+      border: `1.5px solid ${theme.palette.primary.navBg}`, borderRadius: '4px', boxShadow: '', overflow: 'auto'})}>
+        
+      {sources.map((source, index) => (
+        <ListItem 
+          key={index} 
+          sx={{height: expandedSource === index ? 'auto' : '102.5px', borderBottom: sources.length > 3 ? (index !== sources.length - 1 && '1.5px solid darkred') : '1px solid #c2c1c0'
+          ,padding: expandedSource === index && '14.5px', justifyContent: 'space-between', paddingInline: '15.5px'}}>          
+
+          <Stack direction="column" spacing={0.75}>
+          <ListItemText primaryTypographyProps={{ style: { fontSize: '15.75px', fontWeight: '600', 
+          letterSpacing: '-0.15px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', 
+          maxWidth: '325px', } }}>{source.title} </ListItemText>
+
+          <Iconify icon="fluent:link-multiple-24-filled" sx={{width: '19.5px', height: '19.5px', position: 'absolute',
+          right: '49.5px', top: '10.25px', cursor: 'pointer'}}
+          onClick={() => {const url = source.url.startsWith('http://') || source.url.startsWith('https://') ? source.url : `http://${source.url}`; window.open(url, '_blank');}}/>
+
+          <Iconify icon="eva:arrow-down-fill" sx={{width: '29px', height: '29px', position: 'absolute',
+          right: '15px', top: '5.0px', cursor: 'pointer'}}
+          onClick={() => {setExpandedSource(expandedSource === index ? null : index);}}/>
+
+          {expandedSource === index ? (
+              <Typography variant="body2" style={{width: '420px',}}
+              >{source.snippet}</Typography> ) : (
+              <Typography variant="body2" style={{ width: '420px',
+                  overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', 
+                  WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>{source.snippet}
+              </Typography>
+          )}
+          </Stack></ListItem>
+      ))}
+
+      </Card>
 
         {currentMode === "Alter Draft" && <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} 
         sx={{backgroundColor: 'black', '&:hover': { backgroundColor: 'black', },}}
@@ -528,7 +566,7 @@ export default function ProductsView() {
       {currentMode !== "Alter Draft" && <TextField
        value={blogInstructions}
        onChange={(e) => setBlogInstructions(e.target.value)}
-       placeholder='Optional Instructions'
+       placeholder='Instructions (Optional)'
        sx={{width: '60%', transition: 'ease 0.3s'}} />}
        </Stack>
        
@@ -597,7 +635,7 @@ export default function ProductsView() {
         )}
 
 
-        {isBrowseWeb && (<>
+        {/* {isBrowseWeb && (<>
         <Stack direction="row" spacing={2} alignItems="center" mt={2}>
         
         <Button onClick={() => {}}
@@ -613,7 +651,7 @@ export default function ProductsView() {
         placeholder='Personal Injury News in the last 7 days'
         sx={{width: '100%', mt: 0, }} /> 
         </Stack>
-       </>)}
+       </>)} */}
 
         
 

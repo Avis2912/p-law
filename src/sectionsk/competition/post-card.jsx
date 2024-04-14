@@ -143,7 +143,7 @@ export default function PostCard({ competitorName, blogsThisMonth, linkedinData,
           </Box>
         </CardActionArea>
       </Card>
-      <Dialog open={deleteConfirmation} onClose={handleCloseDeleteConfirmation}>
+      {/* <Dialog open={deleteConfirmation} onClose={handleCloseDeleteConfirmation}>
         <DialogContent sx={{ mr: 1.2, mt: 1, }}>
           <Typography fontWeight="500">Are you sure you want to delete this list?
         </Typography>
@@ -157,7 +157,7 @@ export default function PostCard({ competitorName, blogsThisMonth, linkedinData,
           </Button>
           
         </DialogActions>
-      </Dialog>
+      </Dialog> */}
     </Grid>
   );
 }

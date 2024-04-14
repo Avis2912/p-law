@@ -57,6 +57,7 @@ export default function UserPage() {
   const [reviewLink, setReviewLink] = useState(`www.pentra.club/review?firm=w&mtx`);
   const [reviews, setReviews] = useState([]);
   const [firmName, setFirmName] = useState('');
+  const [reviewPlatforms, setReviewPlatforms] = useState(["Google Reviews", "Super Lawyers", "Find Law USA", "Lawyers.com"]);
 
   useEffect(() => {
     const getFirmData = async () => {
@@ -184,53 +185,20 @@ export default function UserPage() {
         direction="column"
         spacing={0}>
 
-        <Card sx ={{ height: '100px', backgroundColor: "white", display: 'flex', justifyContent: 'center',
-      borderRadius: '0px', borderBottomWidth: '3px', borderColor: 'black', alignItems: 'center' }}>
-      <Iconify icon="streamline:business-card-solid" position="absolute" left="30px" width="24px" height="24px"/>
-      <Typography variant="subtitle2" fontSize="19.5px" position="absolute" left="67.5px" 
-      fontFamily='' letterSpacing="-1.00px" fontWeight="400"> Google Reviews </Typography>
-      <TextField label="Firm Review Page" size="small" variant="outlined" sx={{position: "absolute", 
-      right: '147.5px', width: '320px', bottom: '29px', borderRadius: '0px'}}/>
-        <Button variant="contained" startIcon={<Iconify icon="fluent:link-multiple-24-filled" />}
-        sx={(theme)=>({backgroundColor: reviewPlace === 1 ? theme.palette.primary.navBg : theme.palette.primary.main ,
-        position: "absolute", right: '30px', height: '40px'})} onClick={()=>{setReviewPlace(1)}}>
-           Select</Button> </Card>
-
-           <Card sx ={{ height: '100px', backgroundColor: "white", display: 'flex', justifyContent: 'center',
-      borderRadius: '0px', borderBottomWidth: '4px', borderColor: 'black', alignItems: 'center' }}>
-      <Iconify icon="streamline:business-card-solid" position="absolute" left="30px" width="24px" height="24px"/>
-      <Typography variant="subtitle2" fontSize="19.5px" position="absolute" left="67.5px" 
-      fontFamily='' letterSpacing="-1.00px" fontWeight="400"> Super Lawyers </Typography>
-      <TextField label="Firm Review Page" size="small" variant="outlined" sx={{position: "absolute", 
-      right: '147.5px', width: '320px', bottom: '29px', borderRadius: '0px'}}/>
-        <Button variant="contained" startIcon={<Iconify icon="fluent:link-multiple-24-filled" />}
-        sx={(theme)=>({backgroundColor: reviewPlace === 2 ? theme.palette.primary.navBg : theme.palette.primary.main ,
-        position: "absolute", right: '30px', height: '40px'})} onClick={()=>{setReviewPlace(2)}}>
-           Select</Button> </Card>
-
-           <Card sx ={{ height: '100px', backgroundColor: "white", display: 'flex', justifyContent: 'center',
-      borderRadius: '0px', borderBottomWidth: '4px', borderColor: 'black', alignItems: 'center' }}>
-      <Iconify icon="streamline:business-card-solid" position="absolute" left="30px" width="24px" height="24px"/>
-      <Typography variant="subtitle2" fontSize="19.5px" position="absolute" left="67.5px" 
-      fontFamily='' letterSpacing="-1.00px" fontWeight="400"> Find Law USA </Typography>
-      <TextField label="Firm Review Page" size="small" variant="outlined" sx={{position: "absolute", 
-      right: '147.5px', width: '320px', bottom: '29px', borderRadius: '0px'}}/>
-        <Button variant="contained" startIcon={<Iconify icon="fluent:link-multiple-24-filled" />}
-        sx={(theme)=>({backgroundColor: reviewPlace === 3 ? theme.palette.primary.navBg : theme.palette.primary.main ,
-        position: "absolute", right: '30px', height: '40px'})} onClick={()=>{setReviewPlace(3)}}>
-           Select</Button> </Card>
-
-           <Card sx ={{ height: '100px', backgroundColor: "white", display: 'flex', justifyContent: 'center',
-      borderRadius: '0px', borderBottomWidth: '4px', borderColor: 'black', alignItems: 'center' }}>
-      <Iconify icon="streamline:business-card-solid" position="absolute" left="30px" width="24px" height="24px"/>
-      <Typography variant="subtitle2" fontSize="19.25px" position="absolute" left="67.5px" 
-      fontFamily='' letterSpacing="-1.00px" fontWeight="400"> Lawyers.com </Typography>
-      <TextField label="Firm Review Page" size="small" variant="outlined" sx={{position: "absolute", 
-      right: '147.5px', width: '320px', bottom: '29px', borderRadius: '0px'}}/>
-        <Button variant="contained" startIcon={<Iconify icon="fluent:link-multiple-24-filled" />}
-        sx={(theme)=>({backgroundColor: reviewPlace === 4 ? theme.palette.primary.navBg : theme.palette.primary.main ,
-        position: "absolute", right: '30px', height: '40px'})} onClick={()=>{setReviewPlace(4)}}>
-           Select</Button> </Card>
+        {reviewPlatforms.map((platform, index) => (
+          <Card key={index} sx={{ height: '100px', backgroundColor: "white", display: 'flex', justifyContent: 'center',
+            borderRadius: '0px', borderBottomWidth: '3px', borderColor: 'black', alignItems: 'center' }}>
+            <Iconify icon="streamline:business-card-solid" position="absolute" left="30px" width="23.75px" height="23.75px" color="#474444"/>
+            <Typography variant="subtitle2" fontSize="19.3px" position="absolute" left="65.0px" color="#474444"
+            fontFamily='' letterSpacing="-0.925px" fontWeight="600"> {platform} </Typography>
+            <TextField label="Firm Review Page" size="small" variant="outlined" sx={{position: "absolute", 
+            right: '147.5px', width: '320px', bottom: '29px', borderRadius: '0px'}}/>
+            <Button variant="contained" startIcon={<Iconify icon="fluent:link-multiple-24-filled" />}
+            sx={(theme)=>({backgroundColor: reviewPlace === index ? theme.palette.primary.navBg : theme.palette.primary.main ,
+            position: "absolute", right: '30px', height: '40px'})} onClick={()=>{setReviewPlace(index)}}>
+               Select</Button>
+          </Card>
+        ))}
 
       </Stack>
       </Card>

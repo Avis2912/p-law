@@ -75,7 +75,7 @@ export default function ListsView() {
 
   return (
     <div style={{ position: 'relative',   height: '100%',  }}>
-      <div style={{
+      {/* <div style={{
       borderRadius: '8px',
       position: 'absolute',
       top: 0,
@@ -91,13 +91,12 @@ export default function ListsView() {
       marginTop: '70px'
     }}>
       <span style={{
-        fontFamily: "'Old Standard TT', serif",
+        fontFamily: "serif", fontWeight: 100,
         fontSize: '2rem',
-        color: 'black'
       }}>
         Coming Soon
       </span>
-    </div>
+    </div> */}
 
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={3}>

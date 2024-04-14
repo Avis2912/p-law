@@ -78,7 +78,7 @@ export default function BlogView() {
         <instruction> 
         GIVE ME A JSON PARSABLE ARRAY WITH SHORT BUT 12 VERY SPECIFIC BLOG TITLES. 
         
-        Make them very very specific and relevant to ${firmDescriptionInt}, a law firm described as the following: "${firmDescriptionInt}".
+        Make them very, very specific and relevant to ${firmNameInt}, a law firm described as the following: "${firmDescriptionInt}".
 
         - FOLLOW THE TITLING STYLE FROM PREVIOUS TITLES (BUT DONT COPY OUTRIGHT): ${blogTitlesInt}
         - MAKE SURE: ALL 12 TITLES MUST BE DISTINCTLTY DIFFERENT. Use tangentially related topics to go after long tail keywords if required.
@@ -111,7 +111,7 @@ export default function BlogView() {
   
           IMPORTANT INSTRUCTIONS:
           - TOPIC: This post is on ${titleArray[i]}.
-          - FORMATTING: Wrap titles in <h1> and <h2> tags. Wrap all paragraphs in <p> tags. Wrap parts to be BOLDED in <b> tags. 
+          - FORMATTING: Wrap titles in <h1> and <h2> tags. Wrap ALL individual paragraphs and points in <p> tags. Wrap parts to be BOLDED in <b> tags. 
           - WORD RANGE: this post should be 1000 - 1200 WORDS LONG.
           - PERSPECTIVE: DONT EVER REFER TO YOURSELF IN THE POST. ONLY MENTION ${firmNameInt} at the VERY END, when explaining how it can help.
           - IMAGES: blog post should contain 2-3 images. Please add representations of them in this format: //Image: {Image Description}//. 
