@@ -121,7 +121,7 @@ export default function ProductsView() {
 
       if (currentMode === "Generate") {
         if (isBrowseWeb) {
-          browseTextResponse = JSON.stringify((await browseWeb(browseText)).hits.map(({snippet, title, link}) => ({snippet, title, link})));
+          browseTextResponse = JSON.stringify((await browseWeb(browseText)).hits.map(({snippet, title, link}) => ({title, snippet, link})));
           console.log('browseTextResponse: ', browseTextResponse);
         };
           messages.push({
@@ -205,7 +205,7 @@ export default function ProductsView() {
           - WORD RANGE: this post should be ${wordRange} long.
           - SPECIFICITY: Be as specific and detailed as possible. Don't be repetitive or ramble.
           - PERSPECTIVE: Don't refer to yourself in the post, but feel free to explain how your firm  can help.
-          - IMAGES: blog post should contain ${imageCount}. Please add representations of them in this format: //Image: Chapter 7 Bankruptcy Flowchart//. 
+          - IMAGES: blog post should contain ${imageCount}. Please add representations of them in this format: //Image: {Image Description}//. 
           Add two <br> tags after. Make sure these are evenly spaced out in the post and with specific and relevant descriptions.
           - ${style !== "Unstyled" && `STYLE: This blog post should be written in the ${style} style.`}
           - ${isMentionCaseLaw && `CASE LAW: Reference case law in the blog post when necessary.`}
@@ -246,16 +246,17 @@ export default function ProductsView() {
         <instruction>
 
         IMPORTANT INSTRUCTIONS:
-        - FORMATTING: Wrap titles in <h1> and <h2> tags. Wrap all paragraphs in <p> tags. Wrap parts to be BOLDED in <b> tags. 
-        - PERSPECTIVE: Don't refer to yourself in the post. Explain how your firm ${firmName} can help only at the end.
+        - FORMATTING: Wrap titles in <h1> and sub-titles in <h2> tags. Wrap all paragraphs in <p> tags. Wrap sub-sub-titles in b tags. 
+        - PERSPECTIVE: Don't refer to yourself in the post. Explain how your firm ${firmName} can help, but only at the end.
         ${imageCount !== "No Images" && `- IMAGES: blog post should contain ${imageCount}. Please add representations of them in this format: //Image: {Relevant Image Description}//.
-        Make sure these are evenly spaced out in the post.`}
-        - ${style !== "Unstyled" && `STYLE: This blog post MUST be written in the ${style} style. Keep this in mind.`}
+        Make sure these are evenly spaced out in the post, and place them after h tags or in between paragraphs.`}
+        - SPECIFICITY: Be as specific and detailed as possible. Don't be repetitive and ramble.
+        - ${style !== "Unstyled" && `STYLE: This blog post MUST be written in the ${style} style.`}
         - ${isMentionCaseLaw && `CASE LAW: Reference case law in the blog post when necessary.`}
         - ${isReferenceGiven && `USEFUL DATA: Refer to the following text and use as applicable: ${referenceText}`}
         - ${contactUsLink && `CONTACT US LINK AT END: Use this contact us link with <a> tags toward the end if applicable: ${contactUsLink}`}
-        - ${browseTextResponse !== "" && `WEB RESULTS: Consider using the following web information I got from an LLM for the prompt ${browseText}: ${browseTextResponse}`}
         - ${isUseInternalLinks && `LINK TO RELEVANT POSTS: Use <a> tags to add link(s) to relevant blog posts from the firm wherever applicable: ${internalLinks}.`}
+        - ${browseTextResponse !== "" && `WEB RESULTS: Consider using the following web information I got from leading websites: ${browseTextResponse}`}
         - NEVER OUTPUT ANYTHING other than the blog content. DONT START BY DESCRIBING WHAT YOURE OUTPUTING, JUST OUTPUT. DONT OUTPUT INACCURATE INFORMATION.
       
         </instruction>
@@ -450,7 +451,7 @@ export default function ProductsView() {
 
       <Stack direction="row" spacing={2} >
 
-      <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} 
+      <Button variant="contained" startIcon={<Iconify icon="solar:document-text-outline" sx={{height: '17.0px'}} />} 
       onClick={() => {
         switch (wordRange) {
           case "Upto 200 Words": setWordRange("200 - 400 Words"); break;
@@ -468,7 +469,7 @@ export default function ProductsView() {
       '&:hover': { backgroundColor: theme.palette.primary.green, }, })}>
       {wordRange} </Button>
 
-      <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} 
+      <Button variant="contained" startIcon={<Iconify icon="ph:images-bold" />} 
       onClick={() => {
         switch (imageCount) {
           case "2 Images": setImageCount("3 Images"); break;
@@ -484,7 +485,7 @@ export default function ProductsView() {
       '&:hover': { backgroundColor: theme.palette.primary.green, }, })}>
       {imageCount} </Button>
 
-      <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} 
+      <Button variant="contained" startIcon={<Iconify icon="material-symbols:emoji-food-beverage" sx={{height: '18px'}}/>} 
       onClick={() => {
         switch (style) {
           case "Unstyled": setStyle("How-To Guide"); break;
@@ -541,7 +542,7 @@ export default function ProductsView() {
 
       </Card>
 
-        {currentMode === "Alter Draft" && <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} 
+        {currentMode === "Alter Draft" && <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} // iconoir:post
         sx={{backgroundColor: 'black', '&:hover': { backgroundColor: 'black', },}}
         onClick={() => {setCurrentMode("Generate"); setText('');}}>
         Create New Draft </Button>}
