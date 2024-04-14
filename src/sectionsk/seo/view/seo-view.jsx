@@ -279,7 +279,7 @@ export default function ProductsView() {
     `
 
     let gptResponse = (await claudeResponse.text()).replace(/<br><br> /g, '<br><br>');
-    const textWithBreaks0 = await gptResponse.replace(/<br\s*\/?>/gi, '').replace(/<\/p>|<\/h1>|<\/h2>|<\/h3>|\/\/Image:.*?\/\//gi, '$&<br>').replace(/(<image[^>]*>)/gi, '$&<br><br>');
+    const textWithBreaks0 = await gptResponse.replace(/<br\s*\/?>/gi, '').replace(/<\/p>|<\/b>|<\/ul>|<\/ol>|<\/h1>|<\/h2>|<\/h3>|\/\/Image:.*?\/\//gi, '$&<br>').replace(/(<image[^>]*>)/gi, '$&<br><br>');
     
     if (currentMode === "Build Outline") {setCurrentMode('Generate');};
     if (currentMode === "Generate") {setCurrentMode('Alter Draft');};
@@ -506,15 +506,23 @@ export default function ProductsView() {
       width: '40px', paddingLeft: '28px', minWidth: '10px',})}
       onClick={() => {if (sources.length !== 0) {setIsSourcesOpen(!isSourcesOpen);}}} />}
 
-      <Card sx={(theme) => ({position: 'absolute', top: '122px', right: '54px', height: '310px', width: '460px', 
+      <Card sx={(theme) => ({position: 'absolute', top: '122px', right: '54px', height: '362.5px', width: '460px', 
       display: isSourcesOpen ? 'block' : 'none', zIndex: 100, backgroundColor: 'white', padding: '0px', 
-      border: `1.5px solid ${theme.palette.primary.navBg}`, borderRadius: '4px', boxShadow: '', overflow: 'auto'})}>
+      border: `1.5px solid ${theme.palette.primary.navBg}`, borderRadius: '4px', boxShadow: 'none', overflow: 'auto'})}>
         
+      <Card sx={(theme) => ({top: '0px', height: '52.5px', width: '100%', borderRadius: '0px', color: 'white',
+      backgroundColor: theme.palette.primary.navBg, display: 'flex', alignItems: 'center',
+      fontSize: '16px', letterSpacing: '-0.25px', paddingLeft: '12px', fontWeight: '600'})}> 
+      <Iconify icon= "bx:search" sx={{height: '15px', marginRight: '4px'}}/>
+      {doneSourcing ? "Searched for" : "Searching for"} {blogTitle}
+      </Card>
+
       {sources.map((source, index) => (
+
         <ListItem 
           key={index} 
-          sx={{height: expandedSource === index ? 'auto' : '102.5px', borderBottom: sources.length > 3 ? (index !== sources.length - 1 && '1.5px solid darkred') : '1px solid #c2c1c0'
-          ,padding: expandedSource === index && '14.5px', justifyContent: 'space-between', paddingInline: '15.5px'}}>          
+          sx={{height: expandedSource === index ? 'auto' : '102.5px', borderBottom: sources.length > 3 ? (index !== sources.length - 1 && '1.5px solid darkred') : '1px solid #c2c1c0',
+          transition: 'all 0.2s ease', padding: expandedSource === index && '14.5px', justifyContent: 'space-between', paddingInline: '15.5px'}}>          
 
           <Stack direction="column" spacing={0.75}>
           <ListItemText primaryTypographyProps={{ style: { fontSize: '15.75px', fontWeight: '600', 
@@ -525,7 +533,7 @@ export default function ProductsView() {
           right: '49.5px', top: '10.25px', cursor: 'pointer'}}
           onClick={() => {const url = source.url.startsWith('http://') || source.url.startsWith('https://') ? source.url : `http://${source.url}`; window.open(url, '_blank');}}/>
 
-          <Iconify icon="eva:arrow-down-fill" sx={{width: '29px', height: '29px', position: 'absolute',
+          <Iconify icon={expandedSource === index ? "eva:arrow-up-fill" : "eva:arrow-down-fill"} sx={{width: '29px', height: '29px', position: 'absolute',
           right: '15px', top: '5.0px', cursor: 'pointer'}}
           onClick={() => {setExpandedSource(expandedSource === index ? null : index);}}/>
 

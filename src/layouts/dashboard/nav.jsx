@@ -31,7 +31,7 @@ import navConfig from './config-navigation';
 
 export default function Nav({ openNav, onCloseNav }) {
 
-  const [profileSrc, setProfileSrc] = useState('/assets/images/avatars/avatar_4.jpg');
+  const [profileSrc, setProfileSrc] = useState('https://firebasestorage.googleapis.com/v0/b/pentra-beauty.appspot.com/o/Gemini_Generated_Image_w2bk6ew2bk6ew2bk.jpeg?alt=media&token=555ce545-de49-4e1f-becf-9b985933a117');
   const [firmName, setFirmName] = useState('N/A');
 
   useEffect(() => {
