@@ -227,9 +227,6 @@ export default function ProductsView() {
     //     messages,
     //   }), });
 
-      if (currentMode === "Build Outline") {setCurrentMode('Generate');};
-      if (currentMode === "Generate") {setCurrentMode('Alter Draft');};
-
     const claudeResponse = await fetch('https://us-central1-pentra-claude-gcp.cloudfunctions.net/gcp-claudeAPI', {
           method: 'POST',
           headers: {
@@ -283,6 +280,9 @@ export default function ProductsView() {
 
     let gptResponse = (await claudeResponse.text()).replace(/<br><br> /g, '<br><br>');
     const textWithBreaks0 = await gptResponse.replace(/<br\s*\/?>/gi, '').replace(/<\/p>|<\/h1>|<\/h2>|<\/h3>|\/\/Image:.*?\/\//gi, '$&<br>').replace(/(<image[^>]*>)/gi, '$&<br><br>');
+    
+    if (currentMode === "Build Outline") {setCurrentMode('Generate');};
+    if (currentMode === "Generate") {setCurrentMode('Alter Draft');};
     if (currentMode === "Build Outline") {await setIsGenerating(false); await setText(textWithBreaks0); console.log('return'); return;};
 
     // const data = await gptResponse.json();
@@ -501,7 +501,7 @@ export default function ProductsView() {
       '&:hover': { backgroundColor: theme.palette.primary.green, }, })}>        
       {style} </Button>
 
-      {isBrowseWeb && <Button variant="contained" startIcon={<Iconify icon= {doneSourcing ? "bx:search" : "line-md:downloading-loop"} />}  
+      {isBrowseWeb && sources.length !== 0 && <Button variant="contained" startIcon={<Iconify icon= {doneSourcing ? "bx:search" : "line-md:downloading-loop"} />}  
       sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: 'black', },
       width: '40px', paddingLeft: '28px', minWidth: '10px',})}
       onClick={() => {if (sources.length !== 0) {setIsSourcesOpen(!isSourcesOpen);}}} />}
@@ -542,12 +542,12 @@ export default function ProductsView() {
 
       </Card>
 
-        {currentMode === "Alter Draft" && <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} // iconoir:post
+        {currentMode === "Alter Draft" && <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" sx={{height: '20px'}}/>} // iconoir:post
         sx={{backgroundColor: 'black', '&:hover': { backgroundColor: 'black', },}}
         onClick={() => {setCurrentMode("Generate"); setText('');}}>
         Create New Draft </Button>}
 
-        {currentMode === "Build Outline" && <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} 
+        {currentMode === "Build Outline" && <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" sx={{height: '20px'}}/>} 
         sx={(theme) => ({backgroundColor: theme.palette.primary.black, '&:hover': { backgroundColor: theme.palette.primary.black, },})}
         onClick={() => {setCurrentMode("Generate"); setText('');}}>
         Skip Outline </Button>}
