@@ -17,7 +17,9 @@ const isImagesOn = true;
 const modelKeys = {
 1: 'claude-3-haiku-20240307',
 2: 'claude-3-sonnet-20240229',
-3: 'claude-3-opus-20240229'} 
+3: 'claude-3-sonnet-20240229'} 
+// 3: 'claude-3-opus-20240229'} 
+
 
 
 // ----------------------------------------------------------------------
@@ -88,6 +90,7 @@ export default function ProductsView() {
           if (firmDoc.exists()) {
             await setFirmName(firmDoc.data().FIRM_INFO.NAME);
             await setFirmDescription(firmDoc.data().FIRM_INFO.DESCRIPTION);
+            await setSelectedModel(firmDoc.data().FIRM_INFO.MODEL);
             const bigBlog = firmDoc.data().BLOG_DATA.BIG_BLOG || [];
             const smallBlogArray = firmDoc.data().BLOG_DATA.SMALL_BLOG || [];
             const smallBlogString = smallBlogArray.map(index => `[${bigBlog[index]?.TITLE || ''}]: ${bigBlog[index]?.CONTENT || ''}`).join('\n'); 

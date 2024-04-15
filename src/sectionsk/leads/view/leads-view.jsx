@@ -153,7 +153,7 @@ export default function UserPage() {
         <TableContainer sx={{ overflow: 'auto', maxHeight: 'calc(100% - 52px)' }}> {/* Adjust the maxHeight according to your needs */}
             <Table sx={{cursor: 'pointer'}}>
               <TableBody>
-                {leads
+                {[...leads].reverse()
                   // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => (
                     <UserTableRow
@@ -203,32 +203,29 @@ export default function UserPage() {
           {/* CHAT PANEL  */}
 
             {texts.map((text, index) => 
-              Object.entries(text).map(([role, message]) => 
-                <Stack key={index} mb={2} alignItems= {role === 'assistant' ? "flex-end" : "flex-start"}>
-                  <Stack
-                    sx={{
-                      width: 'auto',
-                      height: 'auto',
-                      backgroundColor: role === 'assistant' ? '#a1a1a1' : '#6fa133',
-                      p: 0.9,
-                      pl: 1.7,
-                      pr: 1.7,
-                      borderRadius: '8px',
-                      justifyContent: 'left',
-                      alignItems: 'start',
-                      borderBottomRightRadius: role === 'assistant' ? '0px' : '8px',
-                      borderBottomLeftRadius: role === 'user' ? '0px' : '8px',
-                      maxWidth: '55%',
-                    }}
-                  >
-                    <Typography variant="subtitle3" sx={{ color: 'white', justifyContent: 'left' }}>
-                      {message}
-                    </Typography>
-                  </Stack>
+              <Stack key={index} mb={2} alignItems= {text.role === 'assistant' ? "flex-end" : "flex-start"}>
+                <Stack
+                  sx={{
+                    width: 'auto',
+                    height: 'auto',
+                    backgroundColor: text.role === 'assistant' ? '#a1a1a1' : '#6fa133',
+                    p: 0.9,
+                    pl: 1.7,
+                    pr: 1.7,
+                    borderRadius: '8px',
+                    justifyContent: 'left',
+                    alignItems: 'start',
+                    borderBottomRightRadius: text.role === 'assistant' ? '0px' : '8px',
+                    borderBottomLeftRadius: text.role === 'user' ? '0px' : '8px',
+                    maxWidth: '55%',
+                  }}
+                >
+                  <Typography variant="subtitle3" sx={{ color: 'white', justifyContent: 'left' }}>
+                    {text.content}
+                  </Typography>
                 </Stack>
-              )
+              </Stack>
             )}
-            
 
 
             </Card>

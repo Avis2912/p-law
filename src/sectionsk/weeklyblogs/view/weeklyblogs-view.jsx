@@ -18,7 +18,8 @@ const isImagesOn = true;
 const modelKeys = {
 1: 'claude-3-haiku-20240307',
 2: 'claude-3-sonnet-20240229',
-3: 'claude-3-opus-20240229'} 
+3: 'claude-3-sonnet-20240229'} 
+// 3: 'claude-3-opus-20240229'} 
 
 // ----------------------------------------------------------------------
 
@@ -182,6 +183,7 @@ export default function BlogView() {
             const lastDateParts = firmDoc.data().WEEKLY_BLOGS.LAST_DATE.split('/');
             const lastDate = new Date(`20${lastDateParts[2]}/${lastDateParts[0]}/${lastDateParts[1]}`);
             const diffDays = 7 - Math.ceil((new Date() - lastDate) / (1000 * 60 * 60 * 24));
+            await setContactUsLink(firmDoc.data().FIRM_INFO.MODEL);
             await setContactUsLink(firmDoc.data().FIRM_INFO.CONTACT_US);
             await setWeeklyBlogs(firmDoc.data().WEEKLY_BLOGS.BLOGS || []);
 

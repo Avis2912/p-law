@@ -17,6 +17,8 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const doc = (path) => db.doc(path);
 const collection = (path) => db.collection(path);
+const { getDocs } = require("firebase/firestore");
+const { updateDoc } = require("firebase/firestore");
 
 const brandsData = collection('firms');
 
@@ -58,8 +60,8 @@ const newUser = async (docName, firmInfo, smallBlog, bigBlog, competition) => {
                 SUMMARY: "Was in a car accident and needs help.",
                 DATE_TIME: "04/04/24 | 12:54 PM",
                 CONVERSATION: [
-                    {assistant: `Hello, welcome to ${docName}! How can I help you today?`},
-                    {user: `Hey! Can you guys help me with EB1 Wait Time Expedition?`},
+                    {role: 'assistant', content: `Hello, welcome to ${docName}! How can I help you today?`},
+                    {role: 'user', content: `Hey! Can you guys help me with EB1 Wait Time Expedition?`},
                 ]}, { 
                 NAME: "Sample Sarah",
                 EMAIL: "sarahsample@gmail.com",
@@ -67,8 +69,8 @@ const newUser = async (docName, firmInfo, smallBlog, bigBlog, competition) => {
                 SUMMARY: "Looking for asset protection services.",
                 DATE_TIME: "04/06/24 | 7:54 PM",
                 CONVERSATION: [
-                    {assistant: `Hello, welcome to ${docName}! How can I help you today?`},
-                    {user: `Hey! I am looking for EB5 application help.`},
+                    {role: 'assistant', content: `Hello, welcome to ${docName}! How can I help you today?`},
+                    {role: 'user', content: `Hey! I'm looking for Retail Asset Protection help`},
                 ]}
             ],
 
@@ -117,7 +119,55 @@ const newUser = async (docName, firmInfo, smallBlog, bigBlog, competition) => {
     }
 };
 
+const updateLeads = async () => {
+    const sampleLeads = [{
+        NAME: "Sample John",
+        EMAIL: "johnsample@gmail.com",
+        NUMBER: "542-123-4568",
+        SUMMARY: "Was in a car accident and needs help.",
+        DATE_TIME: "04/04/24 | 12:54 PM",
+        CONVERSATION: [
+            {role: 'assistant', content: `Hey there, thanks for visiting us! How can I help you today?`},
+            {role: 'user', content: `Hey! Can you guys help me with EB1 Wait Time Expedition?`},
+        ]}, { 
+        NAME: "Sample Sarah",
+        EMAIL: "sarahsample@gmail.com",
+        NUMBER: "542-123-4567",
+        SUMMARY: "Looking for asset protection services.",
+        DATE_TIME: "04/06/24 | 7:54 PM",
+        CONVERSATION: [
+            {role: 'assistant', content: `Hello, thanks for visiting us! How can we help you today?`},
+            {role: 'user', content: `Hey! I'm looking for Retail Asset Protection help`},
+        ]}
+    ];
+
+    const CHAT_PROMPT = `Answer as a customer support rep for the firm.`;
+    const CHAT_IMAGE = "https://firebasestorage.googleapis.com/v0/b/pentra-beauty.appspot.com/o/Gemini_Generated_Image_w2bk6ew2bk6ew2bk.jpeg?alt=media&token=555ce545-de49-4e1f-becf-9b985933a117";
+    const CHAT_THEME = "#204760";
+
+    try {
+        const firmsSnapshot = await getDocs(collection('firms'));
+        firmsSnapshot.forEach(async (firmDoc) => {
+            const firmRef = doc('firms/' + firmDoc.id);
+            await updateDoc(firmRef, {
+                // LEADS: sampleLeads
+                CHAT_INFO: {
+                    PROMPT: CHAT_PROMPT,
+                    IMAGE: CHAT_IMAGE,
+                    THEME: CHAT_THEME,
+                }
+            });
+        });
+        console.log("Leads for all firms have been updated successfully.");
+    } catch (error) {
+        console.error("Error updating leads: ", error);
+    }
+};
+
 // uploadSome();
+// updateLeads();
+
+
 newUser(docName = 'Morgan & Weisbrod',
 
 firmInfo = {

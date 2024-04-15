@@ -1,22 +1,22 @@
 require('dotenv').config();
 const Anthropic = require('@anthropic-ai/sdk');
+const fetch = require('node-fetch');
 
 const anthropic = new Anthropic({
     apiKey: `${process.env.VITE_ANTHROPIC_API_KEY}`,
   });
 
 const hi = async () => {
-const gptResponse = await anthropic.messages.create({
-    // model: "claude-3-sonnet-20240229",
-    model: "claude-3-haiku-20240307",
-    system: "copy this style to respond to user: WHATS UP MAN? IM DOING FANTASTIC!!!!",
-    max_tokens: 4024,
-    messages: [{ role: "user", content: "give me 10 example topics for estate law blog posts" }],
-});
+    const gptResponse = await fetch('https://us-central1-pentra-claude-gcp.cloudfunctions.net/gcp-claudeAPI', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ messages: [{role: "user", content: "hey"}], model: 'claude-3-sonnet-20240229' 
+}) });
+
 return gptResponse;
 }
 
-hi().then((data) => {
-    console.log(data.content[0].text);
+hi().then(async (data) => {
+    const text = await data.text();
+    console.log(text);
 });
 
