@@ -504,8 +504,8 @@ export default function ProductsView() {
       '&:hover': { backgroundColor: theme.palette.primary.green, }, })}>        
       {style} </Button>
 
-      {isBrowseWeb && sources.length !== 0 && <Button variant="contained" startIcon={<Iconify icon= {doneSourcing ? "bx:search" : "line-md:downloading-loop"} />}  
-      sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: 'black', },
+      {isBrowseWeb && sources.length !== 0 && <Button variant="contained" startIcon={<Iconify icon= {doneSourcing ? "map:search" : "line-md:downloading-loop"} sx={{height: '18px'}}/>}  
+      sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: theme.palette.primary.navBg, },
       width: '40px', paddingLeft: '28px', minWidth: '10px',})}
       onClick={() => {if (sources.length !== 0) {setIsSourcesOpen(!isSourcesOpen);}}} />}
 
@@ -516,7 +516,7 @@ export default function ProductsView() {
       <Card sx={(theme) => ({top: '0px', height: '52.5px', width: '100%', borderRadius: '0px', color: 'white',
       backgroundColor: theme.palette.primary.navBg, display: 'flex', alignItems: 'center',
       fontSize: '16px', letterSpacing: '-0.25px', paddingLeft: '12px', fontWeight: '600'})}> 
-      <Iconify icon= "bx:search" sx={{height: '15px', marginRight: '4px'}}/>
+      <Iconify icon= "map:search" sx={{height: '14.5px', marginRight: '4px'}}/>
       {doneSourcing ? "Searched for" : "Searching for"} {blogTitle}
       </Card>
 
@@ -578,7 +578,7 @@ export default function ProductsView() {
       {currentMode !== "Alter Draft" && <TextField
        value={blogInstructions}
        onChange={(e) => setBlogInstructions(e.target.value)}
-       placeholder='Instructions (Optional)'
+       placeholder='Optional Instructions / Keywords'
        sx={{width: '60%', transition: 'ease 0.3s'}} />}
        </Stack>
        

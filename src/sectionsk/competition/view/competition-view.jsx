@@ -75,7 +75,7 @@ export default function ListsView() {
 
   return (
     <div style={{ position: 'relative',   height: '100%',  }}>
-      {/* <div style={{
+      <div style={{
       borderRadius: '8px',
       position: 'absolute',
       top: 0,
@@ -83,7 +83,7 @@ export default function ListsView() {
       right: 20,
       bottom: 0,
       background: 'rgba(255, 255, 255, 0.4)',
-      backdropFilter: 'blur(0px)',
+      backdropFilter: 'blur(3px)',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
@@ -96,7 +96,7 @@ export default function ListsView() {
       }}>
         Coming Soon
       </span>
-    </div> */}
+    </div>
 
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={3}>

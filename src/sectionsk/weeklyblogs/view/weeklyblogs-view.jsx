@@ -52,6 +52,7 @@ export default function BlogView() {
   const [bigBlogString, setBigBlogString] = useState([]);
   const [firmName, setFirmName] = useState(null);
   const [firmDescription, setFirmDescription] = useState(null);
+  const [sources, setSources] = useState([]);
 
   // PAGE LOAD FUNCTIONS
 
@@ -98,10 +99,15 @@ export default function BlogView() {
 
     for (let i = 0; i < numberOfBlogs; i += 1) {
 
+      let browseTextResponse = "";
+      // eslint-disable-next-line no-await-in-loop
+      browseTextResponse = JSON.stringify((await browseWeb(titleArray[i])).hits.map(({snippet, title, link}) => ({title, snippet, link})));
+      console.log('browseTextResponse: ', browseTextResponse);
+
       // eslint-disable-next-line no-await-in-loop
       const response = await fetch('https://us-central1-pentra-claude-gcp.cloudfunctions.net/gcp-claudeAPI', {
         method: 'POST',headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ model: modelKeys[selectedModel], 
+        body: JSON.stringify({ model: modelKeys[1], 
         messages: [
           { role: "user", content: `
           
@@ -124,9 +130,15 @@ export default function BlogView() {
 
           </instruction>
 
-          COPY THE WRITING STYLE PERFECTLY FROM ${firmNameInt}'s PREVIOUS BLOGS:
+          ${browseTextResponse !== "" && 
+          `WEB RESULTS: Consider using the following web information I got from an LLM for the prompt ${browseText}:
+          <web-information> ${browseTextResponse} </web-information>`}
 
+          COPY THE WRITING STYLE & TONE PERFECTLY FROM ${firmNameInt}'s PREVIOUS BLOGS:
+
+          <example-blogs>
           ${smallBlogInt}
+          </example-blogs>
           ` }
 
           // TEXT DUMP
@@ -168,6 +180,32 @@ export default function BlogView() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [contactUsLink, internalLinks, bigBlogString, firmName, selectedModel]);
 
+  
+  const browseWeb = (prompt) => {
+
+    const youUrl = `https://us-central1-pentra-claude-gcp.cloudfunctions.net/youAPIFunction`;
+    const apiKey = '7cc375a9-d226-4d79-b55d-b1286ddb4609<__>1P4FjdETU8N2v5f458P2BaEp-Pu3rUjGEYkI4jh';
+    const query = encodeURIComponent(
+    `GIVE FACTUAL LEGAL INFORMATION SPECIFICALLY ON: ${prompt}.
+      DONT DEVIATE FROM THE PROMPT.
+    `);
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        prompt: query,
+      })
+    };
+
+    return fetch(youUrl, options)
+    .then(response => response.json())
+    .then(data => {console.log(data); setSources(data.hits); return data;})
+    .catch(err => {console.error(err); return err;});
+  }
 
 
   useEffect(() => {
@@ -293,31 +331,6 @@ export default function BlogView() {
     return postsWithImages; 
   }
 
-
-  const browseWeb = (prompt) => {
-    const apiKey = `${import.meta.env.VITE_PERPLEXITY_API_KEY}`;
-    const apiUrl = 'https://api.perplexity.ai';
-
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: 'sonar-medium-online',
-        messages: [
-          { role: 'system', content: 'Be precise and detailed. Mention sources and dates everywhere you can. Keep the current date in mind when generating.' },
-          { role: 'user', content: prompt }
-        ]
-      })
-    };
-
-    return fetch(`${apiUrl}/chat/completions`, requestOptions)
-      .then(response => response.json())
-      .then(data => data.choices[0].message.content)
-      .catch(error => console.error(error));
-  }
 
   return (
     <Container>

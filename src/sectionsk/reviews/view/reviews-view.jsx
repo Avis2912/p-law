@@ -14,6 +14,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import Dialog from '@mui/material/Dialog';
 
 import { users } from 'src/_mock/user';
 
@@ -58,6 +59,9 @@ export default function UserPage() {
   const [reviews, setReviews] = useState([]);
   const [firmName, setFirmName] = useState('');
   const [reviewPlatforms, setReviewPlatforms] = useState(["Google Reviews", "Super Lawyers", "Find Law USA", "Lawyers.com"]);
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
 
   useEffect(() => {
     const getFirmData = async () => {
@@ -134,6 +138,14 @@ export default function UserPage() {
     filterName,
   });
 
+  const handleOpen = () => {
+    setIsDialogOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsDialogOpen(false);
+  };
+
   const notFound = !dataFiltered.length && !!filterName;
 
   return (
@@ -145,13 +157,53 @@ export default function UserPage() {
       <Typography sx={{ fontFamily: "DM Serif Display", letterSpacing: '1.05px',  fontWeight: 800, fontSize: '32.75px'}}> 
         Invite Clients To Review</Typography>
       <Stack direction="row" spacing={2}>
-      <Button target="_blank" href="https://tally.so/r/mBxLkR" variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}
-      sx={(theme)=>({backgroundColor: theme.palette.primary.navBg })} >
+      <Button target="_blank" href="https://tally.so/r/mBxLkR" variant="contained" startIcon={<Iconify icon="streamline:business-card-solid" sx={{height: '18.5px'}}/>}
+      sx={(theme)=>({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: theme.palette.primary.navBg, }})} >
        Request Platform</Button> 
-      <Button variant="contained" startIcon={<Iconify icon="carbon:save" />}
+       <Button variant="contained" onClick={() => {setIsDialogOpen(true);}}
+      sx={(theme)=>({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: theme.palette.primary.navBg, },
+      width: 'auto', display: 'flex', justifyContent: 'center', minWidth: '10px',})}>
+        <Iconify icon="tabler:star-filled" sx={{minHeight: '15.0px', minWidth: '15.0px', 
+        color: 'white', marginRight: '8px'}}/>
+        How It Works
+      </Button>
+      
+      {/* <Button variant="contained" startIcon={<Iconify icon="carbon:save" />}
         sx={(theme)=>({backgroundColor: theme.palette.primary.navBg })}>
-        Save Changes</Button>
+        Save Changes</Button> */}
       </Stack> </Stack>
+
+      <Dialog open={isDialogOpen} onClose={handleClose} 
+      PaperProps={{ style: { minHeight: '650px', minWidth: '1000px', display: 'flex', flexDirection: "row" } }}>
+        <Card sx={{ width: '500px', height: '650px', backgroundColor: 'white', borderRadius: '0px',
+        padding: '55px' }}>
+        <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, lineHeight: '55px',
+        letterSpacing: '-0.45px',  fontWeight: 800, fontSize: '40.75px', marginBottom: '25px'}}> 
+        Inviting Clients To Review {firmName}</Typography>
+        <Typography sx={{ fontFamily: "serif", mb: 0, lineHeight: '55px', marginBottom: '35px',
+        letterSpacing: '-0.35px',  fontWeight: 500, fontSize: '24.75px'}}> 
+        1. Send client your Pentra link<br /> 
+        2. We ask them for a quick rating <br /> 
+        3. If it is a strong rating, we invite <br /> 
+        &nbsp;&nbsp;&nbsp;them to leave a full review on <br />
+        &nbsp;&nbsp;&nbsp;your chosen platform <br /> 
+        4. If not, we only have them elaborate <br /> 
+        so you can see what went wrong<br /> 
+        </Typography>
+      {/* <Button variant="contained" onClick={() => {window.open('https://tally.so/r/3jydPx', '_blank')}}
+      sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: theme.palette.primary.navBg, },
+      width: 'auto', display: 'flex', justifyContent: 'center', minWidth: '10px',})}>
+        <Iconify icon="ic:baseline-business" sx={{minHeight: '18px', minWidth: '18px', 
+        color: 'white', marginRight: '8px'}}/>
+        Have Pentra Build One for {firmName}
+      </Button> */}
+        </Card>
+        <Card sx={(theme) => ({ width: '525px', height: '650px', backgroundColor: theme.palette.primary.navBg, 
+        borderRadius: '0px', display: 'flex', justifyContent: 'center', alignItems: 'center' })}>
+          {/* <img src="https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/Screenshot%202024-04-15%20at%2010.48.21%E2%80%AFPM.png?alt=media&token=e1a359e7-f779-4cf3-b0a0-b68d11175f67" 
+          style={{height: '600px', width: '415px', borderRadius: '4px'}} alt=""/> */}
+        </Card>
+      </Dialog>
 
 
     <Stack direction="column" spacing={2.25}>
@@ -167,13 +219,13 @@ export default function UserPage() {
       <TextField size="small" variant="outlined" sx={{ fontSize: '35px',
       right: '0px', width: '325px', bottom: '0px', borderRadius: '0px'}} value={reviewLink}/>
         <Stack direction="row" spacing={2}>
-        <Button variant="contained" startIcon={<Iconify icon="prime:copy" />} onClick={() => navigator.clipboard.writeText(reviewLink)}
-        sx={(theme)=>({backgroundColor: theme.palette.primary.navBg, right: '0px', height: '40px'})}>
-           Copy Link</Button>
+        <Button variant="contained" startIcon={<Iconify icon="prime:copy" />} onClick={() => {navigator.clipboard.writeText(reviewLink); setIsCopied(true);}}
+        sx={(theme)=>({backgroundColor: theme.palette.primary.navBg, right: '0px', height: '40px', '&:hover': {backgroundColor: isCopied ? theme.palette.primary.navBg : `` }})}>
+           {isCopied ? `Link Copied` : `Copy Link`}</Button>
         <Button variant="contained" sx={(theme)=>({backgroundColor: theme.palette.primary.main, right: '0px', height: '40px', maxWidth: '20px',
         justifyContent: 'center', alignItems: 'center', display: 'flex', padding: '0px'})} onClick={()=> window.open(`http://${reviewLink}`, '_blank')}><Iconify icon="mingcute:external-link-line" /></Button>
-        <Button variant="contained" sx={(theme)=>({backgroundColor: theme.palette.primary.main, right: '0px', height: '40px', maxWidth: '20px',
-        justifyContent: 'center', alignItems: 'center', display: 'flex', padding: '0px'})}><Iconify icon="ic:round-info" /></Button>
+        {/* <Button variant="contained" sx={(theme)=>({backgroundColor: theme.palette.primary.main, right: '0px', height: '40px', maxWidth: '20px',
+        justifyContent: 'center', alignItems: 'center', display: 'flex', padding: '0px'})}><Iconify icon="ic:round-info" /></Button> */}
         </Stack></Stack>
        </Card> 
 
@@ -190,12 +242,13 @@ export default function UserPage() {
             borderRadius: '0px', borderBottomWidth: '3px', borderColor: 'black', alignItems: 'center' }}>
             <Iconify icon="streamline:business-card-solid" position="absolute" left="30px" width="23.75px" height="23.75px" color="#474444"/>
             <Typography variant="subtitle2" fontSize="19.3px" position="absolute" left="65.0px" color="#474444"
-            fontFamily='' letterSpacing="-0.925px" fontWeight="600"> {platform} </Typography>
+            fontFamily='' letterSpacing="-1.025px" fontWeight="600"> {platform} </Typography>
             <TextField label="Firm Review Page" size="small" variant="outlined" sx={{position: "absolute", 
-            right: '147.5px', width: '320px', bottom: '29px', borderRadius: '0px'}}/>
+            right: '147.5px', width: '328px', bottom: '29px', borderRadius: '0px'}}/>
             <Button variant="contained" startIcon={<Iconify icon="fluent:link-multiple-24-filled" />}
             sx={(theme)=>({backgroundColor: reviewPlace === index ? theme.palette.primary.navBg : theme.palette.primary.main ,
-            position: "absolute", right: '30px', height: '40px'})} onClick={()=>{setReviewPlace(index)}}>
+            position: "absolute", right: '30px', height: '40px', '&:hover': { backgroundColor: reviewPlace === index ? theme.palette.primary.navBg : `` }})}
+            onClick={()=>{setReviewPlace(index)}}>
                Select</Button>
           </Card>
         ))}
@@ -224,7 +277,8 @@ export default function UserPage() {
       </Select>
 
         <Button variant="contained" startIcon={<Iconify icon="carbon:save" />}
-        sx={(theme)=>({backgroundColor: theme.palette.primary.navBg, position: 'absolute', bottom: '65px' })}>
+        sx={(theme)=>({backgroundColor: theme.palette.primary.navBg, position: 'absolute', bottom: '65px',
+        '&:hover': {backgroundColor: theme.palette.primary.navBg } })}>
         Save Changes</Button>
       </Card>
 

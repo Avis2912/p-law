@@ -9,6 +9,10 @@ import TableBody from '@mui/material/TableBody';
 import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+
+// import Circle from '../sample-circle';
 
 import { users } from 'src/_mock/user';
 import { Box, TextField, Avatar } from '@mui/material';
@@ -43,6 +47,10 @@ export default function UserPage() {
     {assistant: "No User Conversation Created."},
   ]);
 
+  const [firmName, setFirmName] = useState("You");
+  const [isUsingChatbot, setIsUsingChatbot] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   useEffect(() => {
     const getFirmData = async () => {
       try {
@@ -51,7 +59,9 @@ export default function UserPage() {
           const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
           if (firmDoc.exists()) {
             const leadsData = firmDoc.data().LEADS || [];
-            setLeads(leadsData);          
+            setLeads(leadsData);  
+            setFirmName(firmDoc.data().FIRM_INFO.NAME);   
+            setIsUsingChatbot(firmDoc.data().CHAT_INFO.IS_CHAT_ON || false);             
             console.log(leadsData);
           } else {
             console.log('Error: Firm document not found.');
@@ -110,6 +120,14 @@ export default function UserPage() {
     window.location.href=`/influencer?influencer=$`
   }
 
+  const handleOpen = () => {
+    setIsDialogOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsDialogOpen(false);
+  };
+
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
@@ -119,6 +137,55 @@ export default function UserPage() {
         <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, 
         letterSpacing: '1.05px',  fontWeight: 800, fontSize: '32.75px'}}> 
         All Website Leads</Typography>
+
+        <Stack direction="row" spacing={1.5} alignItems="center">
+
+        {!isUsingChatbot && <Button variant="contained" onClick={() => {setIsDialogOpen(true)}}
+      sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: 'black', },
+      width: 'auto', display: 'flex', justifyContent: 'center', minWidth: '10px',})}>
+        <Iconify icon="fluent:chat-32-filled" sx={{minHeight: '18px', minWidth: '18px', 
+        color: 'white', marginRight: '8px'}}/>
+        Chatbot Setup
+      </Button>}
+
+      <div>
+      <Dialog open={isDialogOpen} onClose={handleClose} 
+      PaperProps={{ style: { minHeight: '650px', minWidth: '1000px', display: 'flex', flexDirection: "row" } }}>
+        <Card sx={{ width: '500px', height: '650px', backgroundColor: 'white', borderRadius: '0px',
+        padding: '55px' }}>
+        <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, lineHeight: '55px',
+        letterSpacing: '-0.45px',  fontWeight: 800, fontSize: '40.75px', marginBottom: '25px'}}> 
+        Website Leads & Customer Support</Typography>
+        <Typography sx={{ fontFamily: "serif", mb: 0, lineHeight: '55px', marginBottom: '35px',
+        letterSpacing: '-0.35px',  fontWeight: 500, fontSize: '24.75px'}}> 
+        💬&nbsp;&nbsp;&nbsp;Powered by AI <br /> 
+        🕒&nbsp;&nbsp;&nbsp;24/7 Customer Support <br /> 
+        💡&nbsp;&nbsp;&nbsp;Trained on your blogs <br /> 
+        📧&nbsp;&nbsp;&nbsp;All leads in your email <br /> 
+        ⚡&nbsp;&nbsp;&nbsp;Lightning quick responses <br /> 
+        🛠️&nbsp;&nbsp;&nbsp;Custom-made for your firm <br />
+        </Typography>
+      <Button variant="contained" onClick={() => {window.open('https://tally.so/r/3jydPx', '_blank')}}
+      sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: theme.palette.primary.navBg, },
+      width: 'auto', display: 'flex', justifyContent: 'center', minWidth: '10px',})}>
+        <Iconify icon="ic:baseline-business" sx={{minHeight: '18px', minWidth: '18px', 
+        color: 'white', marginRight: '8px'}}/>
+        Have Pentra Build One for {firmName}
+      </Button>
+        </Card>
+        <Card sx={(theme) => ({ width: '525px', height: '650px', backgroundColor: theme.palette.primary.navBg, 
+        borderRadius: '0px', display: 'flex', justifyContent: 'center', alignItems: 'center' })}>
+          <img src="https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/Screenshot%202024-04-15%20at%2010.48.21%E2%80%AFPM.png?alt=media&token=e1a359e7-f779-4cf3-b0a0-b68d11175f67" 
+          style={{height: '600px', width: '415px', borderRadius: '4px'}} alt=""/>
+        </Card>
+      </Dialog>
+    </div>
+
+        {/* <Button variant="contained"
+      sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: 'black', },
+      height: '36.5px', width: '38.75px', display: 'flex', justifyContent: 'center', minWidth: '10px',})}>
+        <Iconify icon="fluent-emoji:white-question-mark" sx={{minHeight: '18px', minWidth: '18px', color: 'white'}}/>
+      </Button> */}
 
         <Card sx= {{ height: 64.5, width: 'auto', pt: 1.15, pl: 1.7, borderRadius: '11px'  }} justifyContent="left" alignItems="center">
          
@@ -141,6 +208,7 @@ export default function UserPage() {
           </Stack>
           </Stack>
         </Card>
+        </Stack>
 
       </Stack>
 
