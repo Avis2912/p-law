@@ -40,8 +40,9 @@ export default function ProductsView() {
   const [isGenMode, setIsGenMode] = useState(false);
   const [isAlterMode, setIsAlterMode] = useState(false);
   const [currentMode, setCurrentMode] = useState('Build Outline');
-  const [isGenerating, setIsGenerating] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(true);
   const [isElongating, setIsElongating] = useState(false);
+  const [loadIndicator, setLoadIndicator] = useState(['Welcome Back!', -75]);
 
   const [isBrowseWeb, setIsBrowseWeb] = useState(true);
   const [browseText, setBrowseText] = useState("");
@@ -71,13 +72,13 @@ export default function ProductsView() {
 
   const [dots, setDots] = useState('');
   useEffect(() => {
-    const intervalId = isGenerating && setInterval(() => {
-      setDots(prevDots => {
-        const newDots = prevDots.length < 3 ? `${prevDots}.` : '';
-        setText(`<h1>✨ Generating${newDots} </h1>`);
-        return newDots;
-      }); }, 350);
-    return () => intervalId && clearInterval(intervalId);
+    // const intervalId = isGenerating && setInterval(() => {
+    //   setDots(prevDots => {
+    //     const newDots = prevDots.length < 3 ? `${prevDots}.` : '';
+    if (isGenerating) {setText(``)};
+    //     return newDots;
+    //   }); }, 350);
+    // return () => intervalId && clearInterval(intervalId);
   }, [isGenerating]);
 
   useEffect(() => {
@@ -115,7 +116,7 @@ export default function ProductsView() {
 
   const generateBlog = async () => {
 
-      setText(`<h1>✨ Generating${dots} </h1>`);
+      // setText(`<h1>✨ Generating${dots} </h1>`);
       setIsGenerating(true); setBrowseText(blogTitle);
       if (isBrowseWeb) {setDoneSourcing(false)};
       let messages = [];
@@ -124,6 +125,7 @@ export default function ProductsView() {
 
       if (currentMode === "Generate") {
         if (isBrowseWeb) {
+          setLoadIndicator(['Browsing The Web', 30]);
           browseTextResponse = JSON.stringify((await browseWeb(browseText)).hits.map(({snippet, title, link}) => ({title, snippet, link})));
           console.log('browseTextResponse: ', browseTextResponse);
         };
@@ -134,6 +136,7 @@ export default function ProductsView() {
           Write an accurate, specific, ${wordRange} legal blog post based on the following title: ${blogTitle}. 
           ${blogInstructions && `IMPORTANT INSTRUCTIONS (THIS TRUMPS EVERYTHING): ${blogInstructions}`}. 
           ${text !== "" && `Consider using the following outline: ${text}`}. 
+          Please don't start by saying anything else. Output ONLY the blog post.
           </instruction>
           `
         });
@@ -230,6 +233,8 @@ export default function ProductsView() {
     //     messages,
     //   }), });
 
+    const generationText = currentMode === "Build Outline" ? 'Building Outline': 'Generating Blog'; setLoadIndicator([generationText, 55]);
+
     const claudeResponse = await fetch('https://us-central1-pentra-claude-gcp.cloudfunctions.net/gcp-claudeAPI', {
           method: 'POST',
           headers: {
@@ -285,7 +290,6 @@ export default function ProductsView() {
     const textWithBreaks0 = await gptResponse.replace(/<br\s*\/?>/gi, '').replace(/<\/p>|<\/b>|<\/ul>|<\/ol>|<\/h1>|<\/h2>|<\/h3>|\/\/Image:.*?\/\//gi, '$&<br>').replace(/(<image[^>]*>)/gi, '$&<br><br>');
     
     if (currentMode === "Build Outline") {setCurrentMode('Generate');};
-    if (currentMode === "Generate") {setCurrentMode('Alter Draft');};
     if (currentMode === "Build Outline") {await setIsGenerating(false); await setText(textWithBreaks0); console.log('return'); return;};
 
     // const data = await gptResponse.json();
@@ -295,6 +299,7 @@ export default function ProductsView() {
     const lowerRange = wordRange === "Upto 200 Words" ? 0 : parseInt(wordRange.split('-')[0], 10); let counter = 0;
     while (lowerRange > gptResponse.split(' ').length && counter < 3) {
 
+      setLoadIndicator(['Fixing Blog Length', 75]);
       messages = [{"role": "user", "content": gptResponse}]; console.log('RUNNING:', gptResponse.split(' ').length, ' < ', lowerRange, 'count: ', counter);
       // eslint-disable-next-line no-await-in-loop
       const claudeElongationResponse = await fetch('https://us-central1-pentra-claude-gcp.cloudfunctions.net/gcp-claudeAPI', {
@@ -307,11 +312,13 @@ export default function ProductsView() {
     }
 
     let textWithImages = gptResponse.trim();
+    setLoadIndicator(['Adding All Images', 90]);
     if (isImagesOn) {textWithImages = await addImages(gptResponse.trim());}
     const textWithBreaks = await textWithImages.replace(/<br\s*\/?>/gi, '').replace(/<\/p>|<\/h1>|<\/h2>|<\/h3>|\/\/Image:.*?\/\//gi, '$&<br>').replace(/(<image[^>]*>)/gi, '$&<br><br>');
     await setText(textWithBreaks); console.log(textWithBreaks);
 
     if (currentMode === "Generate") await setWordCount(textWithBreaks.split(' ').length);
+    if (currentMode === "Generate") {setCurrentMode('Alter Draft');};
     setIsGenerating(false);
 
     try {
@@ -567,13 +574,28 @@ export default function ProductsView() {
 
       <Stack mb={2} direction="row" alignItems="center" justifyContent="space-between"
       sx={{}} spacing={2}>
-    
+
       <Stack direction="row" spacing={2} sx={{width: 'calc(100% - 150px)'}}>
-      <TextField
-       value={blogTitle}
-       onChange={(e) => setBlogTitle(e.target.value)}
+      
+      <TextField value={blogTitle} onChange={(e) => setBlogTitle(e.target.value)}
        placeholder={currentMode === "Alter Draft" ? 'Make the first two sections shorter & replace mentions of TX with Dallas' : 'Blog Title'}
        sx={{width: currentMode === "Alter Draft" ? '100%' : '40%', transition: 'ease 0.3s'}} />
+
+    
+      {isGenerating && (
+      <Stack direction="column" spacing={1.25} sx={{top: '350px', right: 'calc((100% - 285px)/2 - 160px)', position: 'absolute', 
+      height: 'auto', width: '320px', backgroundColor: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+
+      <Typography sx={{ fontFamily: "DM Serif Display",
+      letterSpacing: '-0.55px',  fontWeight: 500, fontSize: '36.75px'}}>
+        {loadIndicator[0]}
+      </Typography>
+
+      <Card sx={(theme) => ({height: '45px', backgroundColor: 'white', width: '100%', borderRadius: '5.5px',
+      border: `2.50px solid ${theme.palette.primary.navBg}`, background: `linear-gradient(to right, ${theme.palette.primary.navBg} ${loadIndicator[1]}%, white 20%)`,
+      transition: '1s ease all' })} />
+
+      </Stack>)}
 
       {currentMode !== "Alter Draft" && <TextField
        value={blogInstructions}
