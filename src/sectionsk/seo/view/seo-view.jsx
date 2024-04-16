@@ -42,7 +42,7 @@ export default function ProductsView() {
   const [currentMode, setCurrentMode] = useState('Build Outline');
   const [isGenerating, setIsGenerating] = useState(true);
   const [isElongating, setIsElongating] = useState(false);
-  const [loadIndicator, setLoadIndicator] = useState(['Welcome Back!', -75]);
+  const [loadIndicator, setLoadIndicator] = useState(['Welcome Back!', -185]);
 
   const [isBrowseWeb, setIsBrowseWeb] = useState(true);
   const [browseText, setBrowseText] = useState("");
@@ -583,7 +583,7 @@ export default function ProductsView() {
 
     
       {isGenerating && (
-      <Stack direction="column" spacing={1.25} sx={{top: '350px', right: 'calc((100% - 285px)/2 - 160px)', position: 'absolute', 
+      <Stack direction="column" spacing={loadIndicator[0] === "Welcome Back!" ? 0.75 : 1.25} sx={{top: '350px', right: 'calc((100% - 285px)/2 - 160px)', position: 'absolute', 
       height: 'auto', width: '320px', backgroundColor: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
 
       <Typography sx={{ fontFamily: "DM Serif Display",
@@ -591,9 +591,14 @@ export default function ProductsView() {
         {loadIndicator[0]}
       </Typography>
 
-      <Card sx={(theme) => ({height: '45px', backgroundColor: 'white', width: '100%', borderRadius: '5.5px',
-      border: `2.50px solid ${theme.palette.primary.navBg}`, background: `linear-gradient(to right, ${theme.palette.primary.navBg} ${loadIndicator[1]}%, white 20%)`,
-      transition: '1s ease all' })} />
+      {loadIndicator[0] !== "Welcome Back!" && <Card sx={(theme) => ({height: '45px', backgroundColor: 'white', width: '100%', borderRadius: '6px',
+      border: `2.00px solid ${theme.palette.primary.navBg}`, background: `linear-gradient(to right, ${theme.palette.primary.navBg} ${loadIndicator[1]}%, white 20%)`,
+      transition: '1s ease all' })} />}
+
+      {loadIndicator[0] === "Welcome Back!" && <Typography sx={{ fontFamily: "serif", 
+      lineHeight: '32.5px', letterSpacing: '-0.25px',  fontWeight: 200, fontSize: '23.75px', textAlign: 'center'}}>
+        This is the space your new <br />  articles will appear.
+      </Typography>}
 
       </Stack>)}
 
