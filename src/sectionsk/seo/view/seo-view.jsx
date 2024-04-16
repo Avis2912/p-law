@@ -584,7 +584,7 @@ export default function ProductsView() {
     
       {isGenerating && (
       <Stack direction="column" spacing={loadIndicator[0] === "Welcome Back!" ? 0.75 : 1.25} sx={{top: '350px', right: 'calc((100% - 285px)/2 - 160px)', position: 'absolute', 
-      height: 'auto', width: '320px', backgroundColor: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+      height: 'auto', width: '320px', backgroundColor: 'transparent', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
 
       <Typography sx={{ fontFamily: "DM Serif Display",
       letterSpacing: '-0.55px',  fontWeight: 500, fontSize: '36.75px'}}>
@@ -597,7 +597,7 @@ export default function ProductsView() {
 
       {loadIndicator[0] === "Welcome Back!" && <Typography sx={{ fontFamily: "serif", 
       lineHeight: '32.5px', letterSpacing: '-0.25px',  fontWeight: 200, fontSize: '23.75px', textAlign: 'center'}}>
-        This is the space your new <br />  articles will appear.
+        This is the place your new <br />  articles will appear.
       </Typography>}
 
       </Stack>)}
