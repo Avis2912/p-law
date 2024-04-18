@@ -22,7 +22,7 @@ import Iconify from 'src/components/iconify';
 import { db, auth, googleProvider } from 'src/firebase-config/firebase';
 import { createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 
-import { getDoc, doc, setDoc, updateDoc, collection, query, where } from 'firebase/firestore';
+import { getDoc, doc, setDoc, deleteDoc, updateDoc, collection, query, where } from 'firebase/firestore';
 
 
 export default function SignUpView() {
@@ -32,7 +32,7 @@ export default function SignUpView() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const createUserDocument = async (userEmail) => {
+  const createUserDocument = async (userEmail, firmName) => {
     const usersRef = doc(db, 'users', userEmail);
     const usersSnapshot = await getDoc(usersRef);
     const currentDate = new Date();
@@ -41,12 +41,10 @@ export default function SignUpView() {
 
     if (!usersSnapshot.exists()) {
         await setDoc(usersRef, {
-            FIRM: 'testlawyers',
+            FIRM: firmName,
             DATE_SIGNED_UP: formattedDate,
         });
-    } else {
-        await updateDoc(usersRef, {DATE_SIGNED_UP: formattedDate, });   
-    }
+    } 
 }
 
   const GoToLogin = () => {
@@ -64,16 +62,26 @@ export default function SignUpView() {
     router.push('/seo');
   };
 
-  const SignUp = async () => {
-    try {
+const SignUp = async () => {
+  try {
+    const usersRef = doc(db, 'users', email);
+    const usersSnapshot = await getDoc(usersRef);
+
+    if (usersSnapshot.exists()) {
+      const firmName = usersSnapshot.data().FIRM;
+      await deleteDoc(usersRef); 
       await createUserWithEmailAndPassword(auth, email, password);
-      await createUserDocument(email);
-    } catch (err) {
-      alert('Invalid entry. Password must be 6+ characters long.');
-      return;
+      await createUserDocument(email, firmName);
+    } else {
+      await createUserWithEmailAndPassword(auth, email, password);
+      await createUserDocument(email, 'testlawyers');
     }
-    router.push('/seo');
-  };
+  } catch (err) {
+    alert(err);
+    return;
+  }
+  router.push('/seo');
+};
 
   const renderForm = (
     <>
