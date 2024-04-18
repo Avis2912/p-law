@@ -41,7 +41,7 @@ const uploadSome = async () => {
     }
 };
 
-const newUser = async (docName, firmInfo, smallBlog, bigBlog, competition) => {
+const newUser = async (docName, firmInfo, smallBlog, bigBlog, chatInfo, competition) => {
     try {
         const userDocRef = doc(`firms/${docName}`);
         await userDocRef.set({
@@ -53,12 +53,7 @@ const newUser = async (docName, firmInfo, smallBlog, bigBlog, competition) => {
                 BIG_BLOG: bigBlog,
             },
 
-            CHAT_INFO: {
-                PROMPT: `Answer as a customer support rep for the firm.`,
-                IMAGE: "https://firebasestorage.googleapis.com/v0/b/pentra-beauty.appspot.com/o/Gemini_Generated_Image_w2bk6ew2bk6ew2bk.jpeg?alt=media&token=555ce545-de49-4e1f-becf-9b985933a117",
-                THEME: "#204760",
-                IS_CHAT_ON: false,
-            },
+            CHAT_INFO: chatInfo,
 
             LEADS: [{
                 NAME: "Simon Paschal",
@@ -175,406 +170,263 @@ const updateLeads = async () => {
 // updateLeads();
 
 
-newUser(docName = 'Simon | Paschal',
+newUser(docName = 'STR Law Guys',
 
 firmInfo = {
-    CONTACT_US: "https://www.simonpaschal.com/contact-us/",
-    NAME: "Simon | Paschal",
-    LOCATION: "Frisco, TX",
+    CONTACT_US: "https://www.strlawguys.com/contact-us/",
+    NAME: "STR Law Guys",
+    LOCATION: "Mansfield, TX",
     DESCRIPTION: 
-    `Simon | Paschal PLLC is a client-driven law firm specializing in employment law, business law & general counsel. We're dedicated to providing practical, efficient, and cost-effective legal counsel tailored to each client's needs. 
-    We also offer some flat fee services including entity formation, workplace investigations, HR training, and registered agent services.
-
+    `STR LAW GUYS is a legal services provider that specializes in asset protection strategies for short-term rental investors.
+     They offer customized asset protection plans to help investors protect their short-term rental properties and overall net worth.
+     The company aims to provide clarity, peace of mind, and effective legal protection for short-term rental investors through their tailored asset protection solutions.
     `,  
     IMAGE: `
-    https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/decentral%20(29).png?alt=media&token=fec959af-ae17-42fb-be65-11ddb774288a
+    https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/decentral%20(30).png?alt=media&token=7fb86b8f-7aa6-4364-9151-4974e7c4805d
     `,
     MODEL: 2,
     PLAN: "Full Suite",
 },
 
-smallBlog = [0, 1, 2],
+smallBlog = [0, 1],
 
 bigBlog = [
 {
-    TITLE: "Why You Need Employment Contracts for Your Small Business",
-    LINK: `https://www.simonpaschal.com/2024/03/25/employment-contracts-small-business/`,
+    TITLE: "How to Shield Retirement Accounts from Lawsuits",
+    LINK: `https://www.strlawguys.com/how-to-shield-retirement-accounts-from-lawsuits/`,
     CONTENT: `
-    As a small business owner, you have a lot of balls in the air. Bottom line: you want to ensure the success of your company and protect your interests. 
+    Can A Lawyer Take My IRA In A Lawsuit?
 
-    One way to do that is through employment contracts. These legal documents are more important than you might think for setting clear expectations and avoiding legal disputes. Yet, they are often overlooked in small business settings. 
+    You have been served! A process server showed up at your front door and handed you lawsuit papers and now you have to show up to court. Is it possible that they can take your retirement accounts? All of that hard-earned money that you have spent time working for an employer on at your W-2 job. Can they take that away from you or maybe you have an IRA or a 401k? Are there any such thing as exempt assets in a lawsuit or bankruptcy? In short, yes there are, and we are going to cover those exactly today as the subject of this YouTube video.
 
-    Let’s take a look at the importance of employment contracts for your small business.
+    By the way, if you wait around until the end of this video, I will also give you a free eBook: Five strategies to protect your short-term rentals and give you peace of mind.
 
-    What is an Employment Contract?
-    At its core, an employment contract is a legal document that establishes the terms of the relationship between an employer and an employee. 
+    Let us jump into this. Number one, we are going to take a look at the differences between a 401k protection and an IRAs protection under both federal and state law. Let us say you have a 401k. Most 401K plans in the United States are protected under the Employee Retirement Income Securities Act (ERISA). Essentially, this federal law states that it provides substantial protection for all 401K assets in the event that a creditor comes after you or even if you have to file for bankruptcy. So, ERISA generally shields all 401K assets regardless of their value so you have unlimited protection with no cap on the amount of money that you can shield from a lawsuit or from a creditor. I am going to give you an example of that here in just a minute. So complete and total protection under a 401k. Let us talk about IRAs for a minute.
 
-    These terms can cover various aspects such as compensation, job duties, benefits, termination procedures, and intellectual property rights.
 
-    It serves as a roadmap for both parties to start off on the same page.
+    IRA Protections Under Federal And State Laws
 
-    What’s Included in an Employment Contract?
-    A detailed employment contract defines key elements like job duties, compensation packages, work hours, and benefits. 
+    We are going to talk and break it down into two parts: you can talk about the federal side of this for protection and then we are going to talk for a few moments as it relates to state level protection. So, what about IRAs? IRAs are protected under federal bankruptcy laws for the most part. Essentially, the Federal Protection for IRAs and bankruptcy is adjusted every year. It is usually increased for inflation. Right now, we are close to around the 1.4 million mark for IRA accounts. That means you are shielded by the federal government in the event of bankruptcy of about 1.4 million dollars in an IRA account.
 
-    It can also include provisions on non-disclosure agreements, non-compete agreements, and dispute resolution mechanisms that can further protect your business’s interests.
+    What about state level variations? The level of protection for an IRA in each state can vary dramatically. Let me go over a few of the differences. In some states where you receive the highest protection you can have a fully exempt IRA from bankruptcy proceedings. For instance, states like Texas, Florida and Nevada provide you complete and total protection in those States and so you know that even if you have an IRA, maybe you have a SEP IRA account or maybe you have a Roth IRA, those are going to be exempt from collection from a creditor or in a lawsuit. If you have an IRA and you have those state level protections on the other hand you have to be very careful.
 
-    Compensation 
-    Compensation is a significant element that is explicitly detailed in an employment contract. It specifies the agreed upon salary, bonuses, commissions, or any other forms of remuneration. 
+    You have some states that have no specific provisions for IRAs, and, in fact, you can end up being somewhat vulnerable. States like California, New York and Georgia have less protection for you to know that in the event something happens that you are not going to have to worry about that for your IRA. Now we know the protection from a lawsuit for retirement accounts generally we have covered that now for a 401k and an IRA.
 
-    Additionally, an employment contract may outline the frequency and method of payment to ensure transparency and fairness.
+    Self-Directed IRA’s For Real Estate Investments?
 
-    Job Responsibilities 
-    Job duties and responsibilities are clearly defined in the contract to prevent ambiguity and confusion. This helps both employers and employees to have a shared understanding of their roles, tasks, and performance expectations. 
+    But what if you decide to open up a self-directed IRA and now you want to dip that money into a real estate investment? Does IRA money become vulnerable the moment that you choose to invest in real estate? Well, let me just tell you right now, the simple answer to that is yes, it does. It becomes extremely vulnerable, and I want to dip back down to where we were moments ago. Anytime you start talking about possible asset protection threats to an IRA, we have to look at it from two perspectives.
 
-    By explicitly stating the scope of work, an employment contract lays the foundation for effective communication and goal alignment.
+    Number one, we are going to talk about preventing creditors of the IRA owner from collecting against the IRA to satisfy the judgment. Let us talk about this for a second. Here is where an IRA provides an enormous amount of protection. We covered this a little bit already, but I want to go back to this for a minute. Let us say an individual defaults on a personal loan and gets a judgment against them. Something comes up, you just cannot pay it, you default on the loan completely. The creditor may collect from all over the place, from your personal bank accounts, from your brokerage accounts, from literally wages and all other non-exempt assets, but they cannot collect from the individual’s IRA accounts or their 401K accounts or retirement plans even in the case of a bankruptcy.
 
-    Employee Benefits 
-    Benefits, such as health insurance, retirement plans, vacation time, or other perks, can also be included in an employment contract. 
+    This is really important, even in the case of a bankruptcy, a retirement plan is still considered an exempt asset. What I mean by that is that this makes retirement accounts an extremely valuable vehicle to protect your assets. However, understand that is if a judgment is brought against you personally.
 
-    By specifying the various benefits provided by the employer, employees can have peace of mind knowing what they are entitled to.
+    But now let us cover the second issue. What if you have a situation where an IRA can also be protected from claims arising out of investments and activities within the IRA? The most common example of this is when someone chooses to open a self-directed IRA to invest in a short-term rental or invest in a long-term rental or multi-family, some type of real estate investment. Here is the problem, self-directed IRA accounts can create liabilities for the IRA and maybe liabilities for the IRA owner as well.
 
-    Termination 
-    Termination procedures are a crucial element of an employment contract that addresses the conditions and processes under which either party may end the employment relationship. 
+    One example: let us say you have a self-directed IRA, and you own a rental property, and the tenant slips and falls or there is some type of swimming pool accident or something serious happens there. The tenant can then sue the self-directed IRA, consequently those IRA assets, including the property and other assets within that IRA account, can be collected potentially by the creditor. Now, what about the IRA owner’s personal assets, though? Can they collect those? Here is where you have to really be aware of this. So, we know here’s the general rule, if you take an IRA and you begin to invest in short-term rentals, if you don’t have asset protection, not only can they get access to the actual property and any of the value there, but they can actually get into the IRA itself in order to exercise and satisfy that judgment.
 
-    This section can include notice periods, severance packages, or other relevant terms to ensure a fair and orderly separation, should it become necessary.
+    Now, the question though is, can they also get to your personal assets outside of the IRA because you are the one who put the IRA together? That is one of the questions that comes up here. Let us say the plaintiff against the IRA decides they are going to sue the IRA, but also going to also sue the actual individual that set up the IRA personally because there is more damages here than they have in their retirement account to satisfy that judgment.
 
-    Intellectual Property
-    Protection of intellectual property rights is another important component that may be included in an employment contract, particularly for businesses involved in creativity, innovation, or proprietary work. 
+    Let me give you some insight here. Under Internal Revenue Code section 408, the Internal Revenue Service basically and the government code essentially says that an IRA is merely a trust that is created when an individual establishes an IRA by signing IRS Form 5305 with a bank or a qualified custodian. Now, courts have analyzed IRAs as trusts or special deposits held by individuals for their benefit. In other words, listen, the IRA is very much treated similarly to a revocable living trust. Why does that matter? Well, because as we have talked about before on other videos, a revocable living trust by itself provides no asset protection.
 
-    This ensures that any work created during the course of employment belongs to the employer.
+    If you set up an IRA account, you dip it down into investing in short-term rentals or other types of rental real estate, and then you get sued, not only can they sue into the IRA, but if there’s more damages than what your retirement account has, they can actually now sue into your individual assets and your bank accounts and anything else that you own in order to satisfy that judgment. Extremely important to understand that. So, you can face similar risks in the event of a lawsuit because now you have taken an exempt asset, which normally an IRA account would be an exempt asset, you have moved it into a high-risk asset for which you can be personally liable.
 
-    Benefits of Employment Contracts for Small Businesses
-    Employment contracts provide small businesses with numerous benefits, including protecting business interests, preventing disputes, mitigating legal risks, enhancing professionalism, attracting top talent, and fostering a positive work culture.
+    What we recommend at STR Law Guys is that anytime you are going to open up a self-directed IRA, it is really important to explore the option of taking that IRA and encapsulating it in the ownership of an LLC. Now, what happens is you are taking it out of your personal name, you are separating your possible obligation of them being able to sue through the IRA and into your assets, and you are now putting it into an LLC where you separate your ownership from the control of that asset. Very important.
 
-    These contracts help prevent misunderstandings and disputes, thereby shielding the business from potential legal liabilities.
+    An LLC prevents creditors of that LLC from pursuing the LLC owner, which would be the IRA itself, which would then also mean it would help prevent them from pursuing you individually. What do we look at here? Instead of the IRA directly owning a rental property – because this is how most people set it up – they will just take a self-directed IRA, and the IRA owns the rental property. We do not want to do that.
 
-    Templates vs. Customized Employment Contracts
-    Using templates can be convenient and time-saving, especially for small businesses that may not have extensive resources for drafting contracts from scratch. Templates provide a basic framework and can be used as a starting point and guide for drafting a contract.
+    Now, what we would rather do is we have it owned by the LLC. The IRA purchases it, but that IRA is actually held within that LLC, and now the LLC is the one that does all the leasing out to the tenant, whether it’s the short-term rental lease, whether it’s a long-term rental, you name it, whatever it is, whatever high-risk rental activity that’s going on, it’s all going to be done now through the name of the LLC that now provides you individual protection and it also protects your IRA from a potential lawsuit. Really important that you do this so that you protect your retirement accounts when you choose to put them in real estate.
 
-    However, templates may not fully address the unique needs and nuances of your business. Each company has its own set of requirements, industry-specific considerations, and specific circumstances that need to be taken into account. Using a template without customization can potentially leave gaps or overlook important details that are crucial for your business’s operations and protection.
+    To take it further, one of the things that we would recommend at STR Law Guys is to also consider taking that self-directed IRA, and yes, you want it to be owned in an LLC, you place that within an LLC, but now you can actually have that LLC as a single-member owned by a holding company, whether it’s a Wyoming LLC or an Arizona Limited Partnership holding company.
 
-    Customized employment contracts, on the other hand, are tailored to suit your specific requirements, ensuring that your business’s interests are adequately safeguarded.
+    By using a holding company strategy, you gain two more benefits. Number one, you establish privacy. It is going to be difficult for any potential creditor or plaintiff to be able to see who actually owns that retirement account because now you are private based upon the privacy laws that exist in Wyoming and Arizona. But secondly, you get something even more important, which is known as charging order protection. Charging order protection essentially allows you that even if you get sued and you lose the lawsuit, that creditor or plaintiff cannot make you sell that property in order to pay and satisfy that judgment. In other words, you can keep renting out the property, you can keep paying your mortgage, you can even potentially pay yourself a management fee for what you do on it cannot take a distribution, but there is so much flexibility that you have.
 
-    Contact Our Frisco Employment Law Attorneys Today
-    To navigate the complexities of employment contracts effectively, it is best for small business owners to seek professional legal guidance. Consulting an experienced employment law firm, such as Simon | Paschal, can ensure that your contracts comply with all relevant laws and cover essential terms comprehensively.
-
-    We offer personalized and expert guidance on all matters related to employment law. 
-
-    Schedule a consultation today by calling (972) 893-9340 or contact us here!
+    Why does this matter? Look, having been a previous plaintiff’s attorney who is brought these types of lawsuits, it is important to understand how this works. Essentially, you are disincentivizing that attorney from wanting to sue through to the LLC. You are creating an incentive now for them to go down to that insurance to seek an insurance settlement because they know even if they win, they kind of sort of lose. They cannot make you sell the property in order to satisfy that judgment. So, these are just a few of the examples here, and my point is to learn more about this strategy, check out this video where I discuss how to persuade a lawyer not to sue your rental property.
     `,
 },
 {
-    TITLE: "Texas Overtime Laws Explained: Know Your Legal  Obligations",
-    LINK: `https://www.simonpaschal.com/2024/03/25/texas-overtime-laws-explained/`,
+    TITLE: "Don’t Make Critical Mistakes With Short-Term Rental LLCs: Learn the RIGHT Way to Protect Your Properties!",
+    LINK: `https://www.strlawguys.com/dont-make-critical-mistakes-with-short-term-rental-llcs-learn-the-right-way-to-protect-your-properties/`,
     CONTENT: `
-    Still have questions about Texas Overtime Laws?
+Don’t Make Critical Mistakes With Short-Term Rental LLCs: Learn the RIGHT Way to Protect Your Properties!
 
-    We get asked about this a lot, so we want to break it down. 
+Are you making critical mistakes with short-term rental LLCs? Let’s learn how to protect your properties right now.
 
-    This article dives into the intricacies of these laws, emphasizing employer obligations, calculating overtime pay, common violations, seeking legal guidance, and ensuring compliance.
+Hi, I’m Jeff Hampton with Str law guys. Welcome to our YouTube channel. Today, I’m going to talk to you a little bit about LLCs, real estate LLC’s specifically for short-term rentals. Are you using them the right way? Are they actually protecting you? By the way, if you wait around till the end of this video, I’ll also provide you with a free eBook: “Five Strategies to Protect Your Short-Term Rentals and Give You Peace of Mind.”
 
-    In the complex area of employment law, understanding overtime regulations is important for both employers and employees. 
 
-    Let’s take a look!
+Okay, so Point number one, we have to even ask the question, why do we need an LLC anyway? Some people don’t think they need an LLC; they think they have insurance. I think they have plenty of protection. Well, let’s just talk about this. I’m a big believer in layered asset protection Strategies, but before we discuss why an LLC is important to protect your real estate, let’s first examine a layer that you really need. And I’m a big believer in layered asset protection. This is a layer you absolutely need when you’re looking to invest in a short-term rental. And that layer is, you need to make sure you have good, whether it’s long-term rental or short-term rental, you need to have good insurance. And it’s critical when you look at this, when you’re talking about a short-term rental. And I have a different video series covering specifically short-term rental insurance. Okay, but this is really critical. You need to make sure you have good commercial insurance coverage for your short-term rental because if you don’t, a lot of times people come to me with second home policies. They tell me, “Hey, look, this should cover it. I’m not seeing any concerns.” Well, you know your Insurance, your insurance is actually what, 70-80 pages long if you actually look at what you have. And if you go through the entire insurance policy, you’re going to find, and most of the time, there’s a section, always a section at the very bottom that talks about exclusions. And in that exclusion section, it’s really important to make sure that you don’t have a second home renters’ policy or a second home residential policy because the reason why that is, you have to understand, short-term rentals are not only inherently high-risk activities, but they are always labeled commercial activity.
 
-    What are Texas Overtime Laws?
-    Texas overtime laws govern how employers must compensate employees for working beyond a certain number of hours in a workweek. Texas utilizes the same laws as the federal Fair Labor Standards Act (FLSA).
+So, look in your residential policy or your commercial policy, whichever that’s labeled, go in there and look at the very bottom and look at the exclusion section. Do you see something called commercial exclusions? Do you see something called business activity exclusions? If you see anything specific along those lines, I can promise you right now, every single time, an insurance company is going to be labeling a short-term rental as commercial or business activity. If it’s in there, you’re excluded.
 
-    Under Texas and FLSA overtime laws, non-exempt employees must be paid one and a half times their regular rate of pay for each hour worked beyond 40 hours in a workweek. 
+Also, be careful. Very often, they’ll only give you $250,000-$300,000 worth of insurance protection. You need to try, as far as premises liability goes, you need to have at least a million dollars coverage, generally speaking. And you need to make sure you have enough dwelling coverage to replace the entire property in case of fire or some sort of loss. So, it’s a really in-depth analysis you need to do to make sure you have good insurance because that is layer number one anytime, you’re talking about protecting your short-term rental.
 
-    Obligations for Employers
-    Under Texas overtime laws, employers have certain obligations to ensure legal compensation for their employees. 
+Now, why do we need an LLC? Let’s get into that.
 
-    Non-exempt employees, those eligible for overtime pay, must receive one and a half times their regular rate of pay for every hour worked beyond 40 hours in a workweek. 
+Back to what we were talking about originally when you look at an LLC, it’s really important. I’m going to give you a true story. Somebody who essentially, somebody that came to us and decided, “Look, I don’t really think I need any sort of short-term rental protection. I don’t need an LLC at all.” Well, they end up getting into a pretty serious situation at their short-term rental. And as a result of someone being injured there, they get sued.
 
-    Contrary to popular belief, overtime pay is not solely applicable to hourly workers. Salaried employees may also be entitled to overtime pay in some circumstances. 
+Well, after their suit, it appeared, here’s the problem. They had multiple short-term rentals. They look like a big target, right? Why were they a big target? Because they had multiple short-term rentals. They were all in their personal name. Personal injury attorneys start doing pretty serious research as to what type of assets this person has, what’s their net worth look like. And now they look like a pretty juicy target for a personal injury attorney coming at them for a premises liability lawsuit.
 
-    The eligibility for overtime pay is dependent on exempt or non-exempt status, which is determined by the nature of job duties and the form of compensation. 
+So, this is really important. Your goal is to not be an easy target. Truly, your goal is to own nothing but control everything, which is really the entire clarion call for all asset protection. That’s really what you’re trying to go after anytime you’re trying to set up asset protection. Now, you can structure your assets in a manner where the attorney will have a very difficult time finding it or it’ll be completely in total pro, totally private so that you become a much smaller target in the event of a lawsuit.
 
-    It must be noted that a job title alone does not determine eligibility for overtime pay. Therefore, understanding the job duties and salary is critical to determine the eligibility for overtime pay.
+Okay, now let us talk about this. The first thing I want to talk about is base layer LLCs. And what do I mean by that? Well, LLCs as a general rule, when you are putting property, particularly real estate in them, they are much better to use than setting up a corporation as an entity.
 
-    Calculating Overtime Pay
-    Calculating overtime pay correctly is essential to ensure employees receive proper compensation. Let’s break it down real quick:
+Corporations create a higher tax burden as a general rule. If you move around assets in a corporation, that is often labeled a taxable event by the IRS. You end up having to pay way more taxes than is necessary. So, LLCs provide much more flexibility. Many times, you can move those assets around, you can take distributions, and really you don’t end up talking about multiple taxable events.
 
-    If a nonexempt employee in Texas works more than 40 hours in a week, they are generally entitled to receive overtime pay. Overtime pay is one and a half times the employee’s regular rate of pay, which is the average earnings per hour during that workweek. 
-
-    For salaried workers, the regular hourly rate can be calculated by multiplying the monthly salary by 12, dividing by 52 weeks, and then dividing by the number of hours they must work in a week to earn their full salary.
-
-    Calculating overtime pay can be more complex in certain cases, for example, when factoring in certain bonuses. (The Texas Fiscal Management Division provides additional information on these calculations)
-
-    In the private sector, employers are required to provide overtime pay for extra hours worked. However, some employees of Texas state agencies may have the option to receive compensatory time off at a rate of 1.5 hours for every hour of overtime worked. This alternative must be in compliance with state laws and regulations.
-
-    Still have questions, reach out!
-
-    Common Violations & Consequences
-    ​​Common violations of overtime laws by employers include misclassifying employees as exempt when they are actually non-exempt, failing to pay overtime for hours worked over 40 in a workweek, and not properly calculating the regular rate of pay for overtime purposes. 
-
-    Employers who do not adhere to overtime laws may face consequences such as lawsuits or legal actions from employees, investigations by the Department of Labor, the payment of back wages and liquidated damages, fines, and potential reputational damage. 
-
-    Compliance for Employers
-    To avoid potential legal issues, it is important for employers to ensure compliance with Texas overtime laws. Conducting regular audits of wage and hour practices can help identify any shortcomings and make necessary adjustments. 
-
-    It’s also important for employers to maintain accurate records of employee hours worked, which can serve as evidence of compliance if an issue arises.
-
-    Contact Our Frisco Employment Law Attorneys Today
-    For any questions or concerns regarding overtime laws or other employment-related issues, reach out to the Frisco Employment Law Attorneys at Simon | Paschal PLLC. 
-
-    Schedule a consultation today by calling (972) 893-9340 or contact us here!
+Now, LLCs provide, generally speaking, what is the purpose? It is a limited liability company. They help you provide a separation from a business asset and a personal asset. You want to keep business assets separate from personal assets so that in the event of a lawsuit, you do not want a business lawsuit coming up taking your personal assets.
     `
 },
 
 {
-    TITLE: "Understanding WARN Act in Texas: A Comprehensive Guide for Employers",
-    LINK: "https://www.simonpaschal.com/2024/03/15/warn-act-in-texas/",
+    TITLE: "What Grant Cardone Gets Wrong About Airbnb",
+    LINK: "https://www.strlawguys.com/what-grant-cardone-gets-wrong-about-airbnb/",
 
     CONTENT: `
-    As an employer in Texas it’s important to understand the federal Worker Adjustment and Retraining Notification (WARN) Act and how it pertains to layoff decisions. 
+    What?! No, man? Come on, Grant? Grant Cardone has made untold millions investing in multifamily real estate investing, but when it comes to Airbnb investing, he has it dead wrong. Grant believes it’s more profitable to be in long-term multifamily investing, not so fast. Short term rentals take up too much time, according to Grant. He’s afraid of regulations shutting him down. My clients and I make massive cash flow investing in short term rentals without doing it full time. Here are four of Grants beliefs that you need to ignore to get our kind of results.
 
-    While other states may have their own WARN Acts, Texas follows the federal regulations. 
+    #1: Multifamily is more profitable. 
     
-    What does this mean? Let’s take a look.
+    Potential Investor (to Grant):  What do you think about Airbnb?
     
-    What is the WARN Act?
-    First, let’s understand what the WARN Act is all about. The (WARN) Act is a federal law enacted to protect employees during specific job loss situations. 
+    Grant:  Airbnb? I like it. I mean, I like Airbnb. I just don’t like it as a long-term plan. I want a longer renter?
     
-    Its primary goal is to provide advance notice to employees and local government authorities in the event of plant closures or mass layoffs. 
+    Although Grant is right that there will always be demand for long term rentals, the growth rate for rentals has declined for the first time in years. The margins of long term rentals are already tight and now they’re getting squeezed even more by the increase in apartment supply. I feel like I see a new apartment building going up every week. However, generally speaking, if you have a top 10% airbnb property you have an enormous advantage over a long term rental. If your investment property has the amenities that guests want and you can master the marketing of your short term rental, you can make anywhere from three to four times the cash flow of any long term or multifamily investment.  Notice the caveats that I gave you. You have to buy right, you have to build right, and you have to manage right in order to have a top Airbnb property. Do not just go buy some property in Orlando, FL near Disney World and expect to make a fortune. You need to intimately know your market. What are the top amenities required in order to be a top 10% property? In other words, do you need a pool? Do you need a hot tub? Do you need bunk beds? Do you need pool tables? What specifically do you need?  By the way, how close are you to the traffic drivers in that mark? If people are coming to Orlando, they’re coming there because they want to go to Disney World, and I would much rather pay more to be two miles from Disney World than to be 20 miles away. You don’t have to spend three to four times more in order to achieve the three to four times cash flow, but you do have to be willing to investigate and invest in being a top property.
     
-    These notifications ensure that affected employees have ample time to prepare for the transition and seek alternative employment opportunities.
     
-    Obligations for Employers
-    As an employer, it is crucial to understand your obligations under the WARN Act. For example, if you are a covered employer you must provide notice to affected employees at least 60 days before any planned plant closures or mass layoffs. 
+    Point #2 You have to take too many calls and deal with too many people.
     
-    This notice must also be given to the appropriate state or local government officials. 
+    If you set things up right, you almost never have to deal with phone calls. I own short term rentals and almost all of my communication is done through technology. For example, all the day-to-day messaging that’s needed in order for a guest to check in, check out, be aware of the house rules, and other communication can be done through software like Owner Rez, Hospitable, or Guesty. What if a guest is being rowdy and being too loud in the property? You can use technology like “Noise Aware” so that you’re aware of anything taking place within the property that could cause a concern. How do you know if the guest is bringing the right number of people? What if they are having a party? That’s when you use technology like “Ring” doorbells and other types of technology in order to maintain, and know if the people that are showing up are the same people who rented.
     
-    It’s important to note that failure to comply with the WARN Act can result in legal consequences, including potential lawsuits and financial penalties.
-    
-    Key Provisions of the WARN Act
-    The WARN Act applies to businesses that meet specific criteria. Generally, covered employers are those with 100 or more full-time employees, or those with 100 or more employees working a combined total of 4,000 hours or more per week. 
-    
-    In other words, if you run a small company and have fewer than 100 employees, the WARN Act likely will not apply to you, but you should confirm with a Texas employment lawyer.
-    
-    Each situation should be assessed individually to determine if compliance is required. Notably, even temporary layoffs or furloughs may trigger the need for notice under certain circumstances. 
-    
-    Consequences of Non-Compliance
-    Non-compliance can result in severe consequences, including back pay and benefits owed to affected employees. 
-    
-    If you’re considering a mass layoff or plant closure, keep in mind that while the federal WARN Act won’t stop you from implementing these changes, it does require you to give employees sufficient notice. Again, the notice period is generally 60 days, and if you have unionized employees, you’ll also need to notify their union representative within the same time frame. 
-    
-    Additionally, employers may be subject to civil penalties imposed by the government. To protect your business interests, it is highly recommended to seek guidance from an experienced employment law attorney who can navigate the complexities of the WARN Act and ensure compliance.
-    
-    Contact Our Frisco Employment Law Attorneys Today
-    Understanding the WARN Act is important  for employers  in Texas. By complying with this federal law, employers can avoid legal complications and maintain a positive relationship with their employees. 
-    
-    If you still have questions or have any employment law inquiries, don’t hesitate to reach out to the Frisco Employment Law Attorneys at Simon | Paschal PLLC. 
-    
-    Schedule a consultation today by calling (972) 893-9340 or contact us here!
+    Finally, how do you know if there’s something major that happens? Let’s say that some sort of appliance breaks down, or there’s some issue that needs to be dealt with directly. That’s when you establish a relationship with a local “boots on the ground” person who is available and you pay them a portion of the stay in order for them to be able to go out there and take care of the problem. I found a team of rockstar cleaners that take care of the property before and after every stay.  I have an onsite person who lives nearby and acts as the “boots on the ground” to make sure and takes care of any issues that need one-on-one attention. I know this is starting to sound expensive, but when you buy right and you manage it right, these costs are very manageable. This leads to more five star reviews and being able to raise those rates.  If you don’t want to leave money on the table, use “Price Labs” or “Wheelhouse” this is a type of software that allows you to mimic a hotel. You can literally determine what the supply and demand is for your neighborhood. You can squeeze every bit of the dollar available, for the person looking to come stay, where your property is located. Plus come on man, Grant doesn’t go answer phone calls for his long term rentals. He hires people to take care of that stuff and you can do the same thing with all that extra cash flow with your short term rentals. At the end of the day you can always find a Co-host, or a property management company, that can take it from start to finish if you don’t want to be involved at all.
+
+    Point #3 Cities will shut you down
+
+    [etc...]
     `,
 },
 
-{
-    TITLE: "FMLA Lawyer: Navigating Family and Medical Leave Act with Ease",
-    LINK: "https://www.simonpaschal.com/2024/03/15/fmla-lawyer/",
+// {
+//     TITLE: "FMLA Lawyer: Navigating Family and Medical Leave Act with Ease",
+//     LINK: "https://www.simonpaschal.com/2024/03/15/fmla-lawyer/",
 
-    CONTENT: `
-    Are you struggling to make sense of the complexities surrounding the Family and Medical Leave Act (FMLA)? 
+//     CONTENT: `
+//     Are you struggling to make sense of the complexities surrounding the Family and Medical Leave Act (FMLA)? 
 
-    If so, you are not alone. Navigating the FMLA can be a daunting task for both employees and employers. Depending on the location, size and type of business there are a lot of things to consider. 
+//     If so, you are not alone. Navigating the FMLA can be a daunting task for both employees and employers. Depending on the location, size and type of business there are a lot of things to consider. 
 
-    While at the end of the day it’s always best to get guidance from an employment lawyer to help you navigate this area of law with ease, here are some basic information to help you along the way.  
+//     While at the end of the day it’s always best to get guidance from an employment lawyer to help you navigate this area of law with ease, here are some basic information to help you along the way.  
 
-    What is the Family and Medical Leave Act?
-    The Family and Medical Leave Act is a federal law designed to provide eligible employees with job-protected unpaid leave for certain family and medical reasons. This law seeks to maintain a balance between the demands of the workplace and the needs of employees and their families.
+//     What is the Family and Medical Leave Act?
+//     The Family and Medical Leave Act is a federal law designed to provide eligible employees with job-protected unpaid leave for certain family and medical reasons. This law seeks to maintain a balance between the demands of the workplace and the needs of employees and their families.
 
-    FMLA applies to private employers with 50 or more employees within 75 miles of the worksite, as well as certain public employers. 
+//     FMLA applies to private employers with 50 or more employees within 75 miles of the worksite, as well as certain public employers. 
 
-    This means that if you meet the eligibility criteria, you have the right to take unpaid leave for specific qualifying reasons without the fear of losing your job.
+//     This means that if you meet the eligibility criteria, you have the right to take unpaid leave for specific qualifying reasons without the fear of losing your job.
 
-    Eligibility and Coverage
-    To be eligible for FMLA, certain requirements must be met. These include working for a covered employer and meeting specific criteria regarding hours worked and length of employment.
+//     Eligibility and Coverage
+//     To be eligible for FMLA, certain requirements must be met. These include working for a covered employer and meeting specific criteria regarding hours worked and length of employment.
 
-    FMLA covers various reasons for taking leave, such as the birth or adoption of a child, caring for a family member with a serious health condition, or if you have a serious health condition that prevents you from performing your job duties.
+//     FMLA covers various reasons for taking leave, such as the birth or adoption of a child, caring for a family member with a serious health condition, or if you have a serious health condition that prevents you from performing your job duties.
 
-    It’s important to note that there are unique provisions and exemptions that may apply to different situations. That’s why consulting an FMLA lawyer is crucial to understanding your specific circumstances.
+//     It’s important to note that there are unique provisions and exemptions that may apply to different situations. That’s why consulting an FMLA lawyer is crucial to understanding your specific circumstances.
 
-    FMLA Eligibility: Understanding Employee Benefits and Leave Options
-    Employees who qualify for FMLA are entitled to various benefits and leave options. Here are the eligibility criteria and the types of leave that employees can receive:
+//     FMLA Eligibility: Understanding Employee Benefits and Leave Options
+//     Employees who qualify for FMLA are entitled to various benefits and leave options. Here are the eligibility criteria and the types of leave that employees can receive:
 
-    FMLA Leave Eligibility
-    12 Weeks of Leave: In a 12-month period, eligible employees can take up to 12 weeks of unpaid leave for the following reasons:
-    The birth of a child and caring for the newborn within one year of birth
-    The placement of a child for adoption or foster care
-    Caring for a spouse, child, or parent with a serious health condition
-    Having a serious health condition that prevents them from performing their job
-    Qualifying exigencies arising from the military service of the employee’s spouse, child, or parent
-    OR
+//     FMLA Leave Eligibility
+//     12 Weeks of Leave: In a 12-month period, eligible employees can take up to 12 weeks of unpaid leave for the following reasons:
+//     The birth of a child and caring for the newborn within one year of birth
+//     The placement of a child for adoption or foster care
+//     Caring for a spouse, child, or parent with a serious health condition
+//     Having a serious health condition that prevents them from performing their job
+//     Qualifying exigencies arising from the military service of the employee’s spouse, child, or parent
+//     OR
 
-    26 Weeks of Leave: Eligible employees can take up to 26 weeks of unpaid leave during a 12-month period to care for a service member if they are the service member’s spouse, 
-    Employer Obligations
-    Under FMLA, employers have obligations to their employees. They are required to provide notice to employees of their FMLA rights and responsibilities. This includes informing employees of their eligibility for FMLA leave and providing them with the necessary forms and information.
+//     26 Weeks of Leave: Eligible employees can take up to 26 weeks of unpaid leave during a 12-month period to care for a service member if they are the service member’s spouse, 
+//     Employer Obligations
+//     Under FMLA, employers have obligations to their employees. They are required to provide notice to employees of their FMLA rights and responsibilities. This includes informing employees of their eligibility for FMLA leave and providing them with the necessary forms and information.
 
-    Employers also have a responsibility to maintain accurate records of employee absences and other relevant information related to FMLA. This helps ensure compliance with the law and protects the rights of employees.
+//     Employers also have a responsibility to maintain accurate records of employee absences and other relevant information related to FMLA. This helps ensure compliance with the law and protects the rights of employees.
 
-    Contact Our Frisco Employment Law Attorneys Today
-    If you have any questions or concerns about FMLA or your company’s obligations under the law, the Frisco employment lawyers at Simon Paschal PLLC are here to help. 
+//     Contact Our Frisco Employment Law Attorneys Today
+//     If you have any questions or concerns about FMLA or your company’s obligations under the law, the Frisco employment lawyers at Simon Paschal PLLC are here to help. 
 
-    To schedule a consultation with our office, call (972) 893-9340 or contact us here!    
-        `
-},
-
-{
-    TITLE: "The Benefits of LLC Formation For Your Texas Business",
-    LINK: "https://www.simonpaschal.com/2024/01/22/the-benefits-of-llc-formation-for-your-texas-business/",
-
-    CONTENT: `
-    Understanding employment law is important for both employers and employees in creating a fair and safe workplace. These laws, also known as labor laws, protect the rights of workers while also ensuring the success of businesses. 
-
-    While some common labor laws are well-known, such as minimum wage and anti-discrimination laws, there are several things about employment laws in Texas that may surprise you – especially as it relates to your growing SMB. 
-    
-    Here are nine things you may not know:
-    
-    1. There is a difference between an employee and a contractor.
-    The classification of a worker as an employee or an independent contractor depends on several factors. The classification is not based on preference so don’t fall for a worker asking or evening begging to be paid as a 1099 contractor.  If the classification is wrong, the employer will be on the hook often for unpaid overtime and employment taxes.  he DOL just published a new independent contractor test so make sure to look at whether your workforce is properly classified.  Get all the details here.
-    
-    Employees are entitled to certain benefits and protections, while contractors are not. 
-    
-    Factors to consider include the level of control, type of work performed, and whether the work is advertised as a separate business.
-    
-    Note: Read the latest in our CLIENT ALERT: DOL Publishes New Independent Contractor Test
-    
-    2. Family and Medical Leave Act (FMLA) has specific requirements.
-    FMLA grants employees the right to take medical leave for certain situations, but it must be applied for and has specific time limitations and conditions. 
-    
-    Many employers misapply the FMLA in their workplace because they do not fully understand its eligibility requirements.  
-    
-    The key with the FMLA is it only applies to employers with 50 or more employees.  So if you are a small business, you likely have no legal requirement to provide medical or maternity/paternity leave.  
-    
-    Are your employees eligible?  Learn everything you need to know about FMLA right here.
-    
-    3. Employers cannot deduct money from paychecks for reasonable mistakes.
-    Employers cannot deduct money from an employee’s paycheck to offset reasonable mistakes unless there is evidence of intentional or grossly negligent behavior.
-    
-    This means that simple errors or honest mistakes made by employees should not result in financial penalties directly deducted from their wages.
-    
-    Employers must be able to demonstrate that the employee deliberately or recklessly caused significant harm or financial loss in order to justify such deductions.
-    
-    If an employee deliberately or recklessly caused financial harm (including stealing money), employers still need a signed wage deduction authorization in order to deduct from the employee’s wages.  
-    
-    4. Off-work conduct can impact employment.
-    Employers may consider off-work conduct, especially on social media, when it affects the company’s reputation or violates legal protections. 
-    
-    However, employers must be cautious when considering off-work conduct, such as social media activity, that could impact their company’s reputation, make the company liable or violate legal protections. 
-    
-    To ensure they do not infringe on employees’ legal rights, it is advisable for employers to consult with an employment lawyer. They can provide guidance on navigating these complex issues effectively and within the confines of the law. 
-    
-    5. A hostile work environment has a specific legal definition.
-    Not every unpleasant workplace qualifies as a hostile work environment. To meet the legal definition, the behavior must be pervasive, abusive, and make it impossible for the employee to do their job. 
-    
-    Offensive jokes, insults, and physical assaults may create a hostile work environment, but isolated incidents may not meet this criteria.
-    
-    Read: How to Respond to an Employment Discrimination Complaint
-    
-    6. Workers have a right to refuse unsafe work.
-    In the state of Texas, workers are granted the essential right to refuse work if they believe they are being asked to perform in an unsafe workplace environment. 
-    
-    This vital protection empowers employees to prioritize their well-being and serves as a fundamental aspect of workplace safety. As stated by occupational health and safety regulations, it is the responsibility of employers to diligently provide a secure work environment.
-    
-    Employers must ensure compliance with and adherence to these regulations by implementing appropriate safety measures, conducting regular inspections, and addressing any potential hazards promptly. 
-    
-    7. Being part of a protected group does not guarantee job security.
-    While employees who belong to a protected group are given important legal protections against discrimination, it is a common misconception that they cannot be fired. In reality, employers can terminate employment if the employee is failing to perform their job duties satisfactorily, regardless of their membership in a protected group. However, it is critical to note that it is illegal for employers to take any corrective action that is based on unlawful discrimination.
-    
-    This means that employers cannot use an employee’s protected characteristics, such as their race, gender, sexual orientation, or disability, as a basis for any adverse employment action, including termination. 
-    
-    8.Being fired may not always be illegal.
-    As an at-will employment state, Texas grants employers the authority to terminate employees at their discretion, without the need for a specific reason or advanced notice. This flexible employment arrangement allows employers the freedom to make staffing decisions based on their business needs. 
-    
-    However, it is important for employers to be aware that there are still legal limitations in place, such as prohibitions on termination based on discriminatory factors or in violation of any existing employment contracts or agreements.
-    
-    9. Lunch breaks and work breaks are not required by law in Texas.
-    While not required by law, many employers in Texas do provide unpaid lunch breaks and paid short breaks. Employers are, however, required to provide adequate restroom breaks and accommodate breastfeeding mothers and workers with disabilities.
-    
-    Understanding these lesser-known aspects of employment law in Texas can help both employers and employees navigate the complexities of the workplace with confidence.
-    
-    The Wrap – What you didn’t know about employment law
-    In summary, employment law can seem complex, but it’s important for small and medium-sized businesses to understand the basics. 
-    
-    From at-will employment to protected characteristics, there are many factors to consider when managing a workforce. 
-    
-    If you have questions or need expert guidance on employment and business legal matters, don’t hesitate to reach out to the Frisco employment lawyers at Simon | Paschal PLLC.
-        `
-    },
-
-{
-    TITLE: "9 Things You Didn’t Know About Employment Law (SMB Edition)",
-    LINK: "https://www.simonpaschal.com/2024/02/07/didnt-know-about-employment-law/",
-
-    CONTENT: `
-    One Of The Most Popular Entity Options That Offers Significant Advantages Is A Limited Liability Company (LLC).  Let’s Take A Look At The Benefits Of LLC Formation, Including Asset Protection, Tax Advantages, And Enhanced Credibility. 
-    As a small business owner, it’s important to choose the right legal structure for your company. One of the most popular options that offers significant advantages is forming a Limited Liability Company (LLC). 
-    
-    At Simon | Paschal, we’ve formed numerous LLCs so far this year- and it’s only January!
-    
-    Let’s take a look at the benefits of LLC formation, including asset protection, tax advantages, and enhanced credibility. 
-    
-    Understanding these benefits will help you make an informed decision for the growth and success of your business.
-    
-    Understanding LLC Formation
-    First, let’s define what an LLC is. A Limited Liability Company is a legal entity that combines the benefits of both a corporation and a partnership. 
-    
-    It provides limited liability protection to its owners, known as members, while offering the flexibility and tax advantages of a partnership. 
-    
-    This hybrid business structure has become increasingly popular, especially among small businesses, due to its simplicity and versatility.
-    
-    LLC and Other Business Entities
-    When comparing LLCs to other business structures, such as sole proprietorships or partnerships, the advantages become even more clear.
-    
-    Unlike a sole proprietorship, where the owner is personally liable for all business debts and obligations, an LLC shields personal assets from business liabilities. 
-    
-    Plus, if the LLC were to face legal action or debt collection, members are generally not held personally responsible beyond their initial investment. 
-    
-    This protection is a vital consideration, particularly for entrepreneurs who want  to separate their personal and business finances.
-    
-    Asset Protection and Limited Liability
-    One of the key benefits of forming an LLC is the protection it provides to your personal assets as a small business owner. By establishing an LLC, you create a legal separation between your personal finances and your business activities. 
-    
-    This means that if your business were to face a lawsuit or incur significant debts, your personal assets such as your home, car, and personal savings would generally be shielded from any claims or seizure.
-    
-    Imagine you run a small catering business, and due to a mishap at an event, a client decides to sue you for damages. Without the protection of an LLC, your personal savings, home, and other assets could be at risk. 
-    
-    However, by forming an LLC, your personal assets are generally protected, ensuring that your hard-earned savings and personal belongings remain separate from any business-related liabilities. 
-    
-    Tax Advantages and Simplified Accounting
-    Apart from asset protection, LLCs offer significant tax advantages and simplified accounting procedures. LLCs are known for their flexibility when it comes to taxation. 
-    
-    By default, LLCs are treated as pass-through entities, meaning that the income generated by the LLC is passed through to the individual members, who then report it on their personal tax returns. This eliminates the need for double taxation, as is often the case with corporations.
-    
-    However, LLCs also have the option to elect to be taxed as an S Corporation. This choice allows the LLC to be treated as a separate entity for tax purposes, similar to a corporation, while still maintaining the benefits of the LLC structure. This can be advantageous for businesses that generate significant profits, as it may result in potential tax savings.
-    
-    From an accounting perspective, LLCs also offer simplified record-keeping requirements. Unlike corporations, LLCs do not have the same level of formalities, such as annual shareholder meetings or complex reporting obligations. 
-    
-    This streamlined approach saves time and resources, ensuring that you can focus on the day-to-day operations of your business instead of wrestling with cumbersome administrative tasks.
-    
-    Credibility and Professionalism
-    In today’s competitive business landscape, credibility is becoming more and more important. One of the often-overlooked benefits of forming an LLC is the professionalism and legitimacy it adds to your business. 
-    
-    By establishing an LLC, you signal to potential clients, partners, and investors that you are serious about your company and willing to take the necessary steps to protect your business and personal assets.
-    
-    When compared to sole proprietorships or partnerships, an LLC conveys a higher level of professionalism. 
-    
-    Clients and partners are more likely to trust businesses structured as LLCs due to the liability protection and the greater legal framework in place. 
-    
-    The Wrap Up – LLC’s in Texas
-    In summary, the benefits of LLC formation for your business in Texas cannot be overstated. The asset protection, tax advantages, and increased credibility offered by an LLC make it an attractive option for small business owners. 
-    
-    By forming an LLC, you can safeguard your personal assets, take advantage of favorable tax treatment, simplify your accounting practices, and present your business as a professional and legitimate entity.
-    
-    At Simon | Paschal PLLC, we understand the importance and complexities of LLC formation. We  can guide you through the process, ensuring that your business is set up for success now, and into the future. 
-    
-    Contact us and call (972) 893-9340 or fill out the online form to schedule a consultation with our office.
-        `
-    },
+//     To schedule a consultation with our office, call (972) 893-9340 or contact us here!    
+//         `
+// },
 
 ],
+
+chatInfo = {
+    PROMPT: `
+    4. Make sure to always follow this conversation flow:
+    - First, greet user and ask them if they're an existing client.
+      IF (EXISTING_CLIENT) THEN { - Then ask them for their full name and situation. }
+      IF (NOT_EXISTING_CLIENT) THEN {
+    - First ask them for their full name incase you get disconnected.
+    - Then say last thing & ask them for phone number similarly.
+    - Then ask about the person's situation.
+    - Follow this up with short, relevant probing questions, etc. 
+    Also MAKE SURE to give the user a relevant youtube LINK whenever you can. These links are provided below.
+    Provide them in the format: <a href="{LINK}" target="_blank"> {TITLE} </a>.
+    - When you're sure the main conversation is over, ask for location and email.
+      }
+    </instruction>
+
+    <youtube-links>
+
+    Limited Partnership: The Holding Company Strategy That Gives You Short-Term Rental Protection!: https://youtu.be/VNCpoXF2Cb0
+
+    Living Trusts 101: Everything You Need To Know For Rental Property Owners! (2023): https://youtu.be/9uJ6eI9tWBY
+
+    Critical Mistakes With Short Term Rental LLCs: Learn The Right Way To Protect Your Properties (2023): https://youtu.be/QX_zfVkXkqA
+
+    Short-Term Rental Insurance: Does A 2nd Homeowner’s Policy Protect You? (2023): https://youtu.be/fHsCF0XWPFk
+
+    Revocable Or Irrevocable Trusts? Which Is Right For You? (2023): https://youtu.be/yjabLjADdAA
+
+    Co-Hosting Short Term Rentals: How to Protect Yourself and Maximize Profits (2023): https://youtu.be/OzR8iFbb4Zs
+
+    Wyoming LLC – Do They Protect Your Real Estate Assets? (2023): https://youtu.be/x3Zx2OALKL0
+
+    How to Shield Retirement Accounts from Lawsuits: https://youtu.be/290WlSAQqXI
+
+    How We Shield Short-Term Rentals from Lawsuits: https://youtu.be/nlt3MgNCslM
+
+    How Land Trusts Could Save You MILLIONS: https://youtu.be/gvwbuBprIHY
+
+    LAWYER Explains: Good Better & Best Approach for Asset Protection: https://youtu.be/0phz3_Hm-w8
+
+    LAWYER EXPLAINS: 13 Myths About Real Estate LLCs: https://youtu.be/dSDWiskSA18
+
+    LAWYER: 10 Asset Protection Myths Holding You Back: https://youtu.be/jNEwxz989Y8
+
+    LAWYER: This Investor Got BAD Advice & What To Do Instead: https://youtu.be/cdNm3enzIzo
+
+    </youtube-links>
+
+   <blog-content>
+    {
+        TITLE: "How to Shield Retirement Accounts from Lawsuits",
+        LINK: 'https://www.strlawguys.com/how-to-shield-retirement-accounts-from-lawsuits/',
+        CONTENT: This detailed post explains how 401(k) accounts have unlimited federal protection from creditors under ERISA, while IRAs have a federal bankruptcy exemption limit around $1.4 million that is adjusted yearly for inflation. It warns that investing self-directed IRA funds directly into real estate can expose those assets to liability from lawsuits or tenant incidents. The author recommends holding the IRA assets in an LLC to maintain protection, and using a holding company structure for additional privacy and charging order protection benefits.
+    },
+    {
+        TITLE: "Don't Make Critical Mistakes With Short-Term Rental LLCs: Learn the RIGHT Way to Protect Your Properties!",
+        LINK: 'https://www.strlawguys.com/dont-make-critical-mistakes-with-short-term-rental-llcs-learn-the-right-way-to-protect-your-properties/',
+        CONTENT: This post stresses the importance of having proper commercial insurance coverage for short-term rentals, as residential policies often exclude commercial activities. It explains why forming an LLC is crucial for separating personal and business assets, protecting the owner from premises liability lawsuits. The author advocates using LLCs over corporations for real estate due to the tax advantages and flexibility of moving assets without triggering taxable events.
+    },
+    {
+        TITLE: "What Grant Cardone Gets Wrong About Airbnb",
+        LINK: "https://www.strlawguys.com/what-grant-cardone-gets-wrong-about-airbnb/",
+        CONTENT: Challenging Grant Cardone's views, this article argues that top-tier, well-managed Airbnb properties can generate 3-4 times the cash flow of long-term multifamily rentals. It suggests using technology to automate guest communication, monitoring, and dynamic pricing. The post addresses concerns about regulations by emphasizing proper market research. It also recommends having a local team or co-host to handle on-site issues, while the owner can be hands-off.
+    },
+    
+    </blog-content>
+    `,
+    IMAGE: "https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/image_2024-04-06_013307713.png?alt=media&token=bd6e6f2a-15d3-427f-bf4e-3506005391f8",
+    THEME: "#a34040",
+    IS_CHAT_ON: true,
+},
 
 competition = {
     LAST_DATE: "03/31/24",
@@ -591,3 +443,16 @@ competition = {
     }
 },
 );
+
+//  4. Make sure to always follow this conversation flow:
+//    - First, greet user and ask them if they're an existing client.
+//      IF (EXISTING_CLIENT) THEN { - Then ask them for their full name and situation. }
+//      IF (NOT_EXISTING_CLIENT) THEN {
+//    - First ask them for their full name incase you get disconnected.
+//    - Then say last thing & ask them for phone number similarly.
+//    - Then ask about the person's situation.
+//    - Follow this up with short, relevant probing questions like "How have your injuries affected your ability to work?", "Have you visited your doctor in the last 12 months?", "Would you mind elaborating?", etc.
+//    - When you're sure the main conversation is over, ask for location and email.
+//      }
+//    </instruction>
+//   <blog-content></blog-content>

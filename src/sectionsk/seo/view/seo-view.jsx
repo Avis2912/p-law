@@ -26,9 +26,7 @@ const modelKeys = {
 
 export default function ProductsView() {
 
-  const [text, setText] = 
-  useState(`<h1>Welcome Back!</h1> Let's draft a new legal blog post. <br>This is where your content shows up.`);
-  // useState(`<h1>✨ Generating... </h1>`);
+  const [text, setText] = useState(``);
 
   const [blogTitle, setBlogTitle] = useState('');
   const [blogInstructions, setBlogInstructions] = useState(null);
@@ -45,6 +43,7 @@ export default function ProductsView() {
   const [loadIndicator, setLoadIndicator] = useState(['Welcome Back!', -185]);
 
   const [isBrowseWeb, setIsBrowseWeb] = useState(true);
+  const [isAdvancedBrowseWeb, setIsAdvancedBrowseWeb] = useState(false);
   const [browseText, setBrowseText] = useState("");
   const [selectedModel, setSelectedModel] = useState(1);
   const [wordCount, setWordCount] = useState(0);
@@ -65,7 +64,7 @@ export default function ProductsView() {
   const [sources, setSources] = useState([]);
 
   let boxHeight;
-  if (isReferenceGiven) { boxHeight = 'calc(80% - 330px)';} 
+  if (isReferenceGiven) { boxHeight = 'calc(80% - 200px)';} 
   // else if (isBrowseWeb) { boxHeight = 'calc(80% - 125px)';} 
   else { boxHeight = 'calc(80% - 55px)'; }
   const boxWidth = 'calc(100%)';
@@ -124,10 +123,10 @@ export default function ProductsView() {
       let browseTextResponse = "";
 
       if (currentMode === "Generate") {
-        if (isBrowseWeb) {
+        if (isBrowseWeb || isAdvancedBrowseWeb) {
           setLoadIndicator(['Browsing The Web', 30]);
-          browseTextResponse = JSON.stringify((await browseWeb(browseText)).hits.map(({snippet, title, link}) => ({title, snippet, link})));
-          console.log('browseTextResponse: ', browseTextResponse);
+          if (isAdvancedBrowseWeb) {browseTextResponse = await browseWeb(browseText); console.log('BROWSE RESPONSE:', browseTextResponse);}
+          else {browseTextResponse = JSON.stringify((await browseWeb(browseText)).hits.map(({snippet, title, link}) => ({title, snippet, link})))};
         };
           messages.push({
           "role": "user", 
@@ -392,41 +391,12 @@ export default function ProductsView() {
   }
 
 
-  const browseWeb = (prompt) => {
-    // const apiKey = `${import.meta.env.VITE_PERPLEXITY_API_KEY}`;
-    // const apiUrl = 'https://api.perplexity.ai';
-
-    // const requestOptions = {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     'Authorization': `Bearer ${apiKey}`,
-    //   },
-    //   body: JSON.stringify({
-    //     model: 'sonar-medium-online',
-    //     messages: [
-    //       { role: 'system', content: `` },
-    //       { role: 'user', content: 
-    //       `Be precise and detailed. Mention sources and dates everywhere you can. 
-    //       Keep the current date in mind when generating. 
-    //       Remember that this is for a law firm. Now respond to user query.
-          
-    //       USER QUERY: ${prompt}` }
-    //     ]
-    //   })
-    // };
-
-    // return fetch(`${apiUrl}/chat/completions`, requestOptions)
-    //   .then(response => response.json())
-    //   .then(data => data.choices[0].message.content)
-    //   .catch(error => console.error(error));
+  const browseWeb = async (prompt) => {
 
     const youUrl = `https://us-central1-pentra-claude-gcp.cloudfunctions.net/youAPIFunction`;
     const apiKey = '7cc375a9-d226-4d79-b55d-b1286ddb4609<__>1P4FjdETU8N2v5f458P2BaEp-Pu3rUjGEYkI4jh';
-    const query = encodeURIComponent(
-    `GIVE FACTUAL LEGAL INFORMATION SPECIFICALLY ON: ${blogTitle}.
-     DONT DEVIATE FROM THE PROMPT.
-    `);
+    const query = encodeURIComponent(`GIVE FACTUAL LEGAL INFORMATION SPECIFICALLY ON: ${blogTitle}.`);
+    let claudeKeyPoints = "";
 
     const options = {
       method: 'POST',
@@ -439,11 +409,56 @@ export default function ProductsView() {
       })
     };
 
+  if (isAdvancedBrowseWeb) {
+    setLoadIndicator(['Researching Deep', 45]); 
+    const results = []; 
+
+    try {
+    const youResponse = await fetch(youUrl, options);
+    const data = await youResponse.json(); console.log(data); 
+    setSources(data.hits); setDoneSourcing(true);
+
+      for (let i = 0; i < 2; i += 1) {
+        console.log('RUN ', i, data.hits[i]);
+        const url = data.hits[i].url; const title = data.hits[i].title;
+
+        try {
+          // eslint-disable-next-line no-await-in-loop
+          const response = await fetch('https://api.firecrawl.dev/v0/scrape', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json', 
+            'Authorization': 'Bearer fc-62533a96243b43b597852174840099a3'},
+            body: JSON.stringify({ url })
+          });
+          // eslint-disable-next-line no-await-in-loop
+          const data0 = await response.json();
+          const content = data0.data.content;
+          const startIndex = content.indexOf('==================');
+          if (startIndex !== -1) {
+            const words = content.slice(startIndex).split(' ');
+            const slicedWords = words.slice(0, 4000);
+            const result = {LINK: url, TITLE: title, CONTENT: slicedWords.join(' ')};
+            results.push(result);
+            console.log(result);
+          }
+        } catch (err) {console.error(err);}
+      }} catch (err) {console.error(err);}
+
+    claudeKeyPoints = await fetch('https://us-central1-pentra-claude-gcp.cloudfunctions.net/gcp-claudeAPI', {
+    method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ 
+    model: modelKeys[1], messages: [{role: "user", content: `Give me 9-12 detailed key points for the web results
+    given below, SPECIFICALLY in the context of ${blogTitle}. DONT DEVIATE. DATA: ${JSON.stringify(results)} `}],})});
+
+
+    } else {
+
     return fetch(youUrl, options)
     .then(response => response.json())
     .then(data => {console.log(data); setSources(data.hits); setDoneSourcing(true); return data;})
     .catch(err => {console.error(err); return err;});
-  }
+    
+  } return (claudeKeyPoints.text());
+}
 
 
   return (
@@ -495,6 +510,13 @@ export default function ProductsView() {
       '&:hover': { backgroundColor: theme.palette.primary.green, }, })}>
       {imageCount} </Button>
 
+      <Button variant="contained"
+      sx={(theme) => ({backgroundColor: theme.palette.primary.green, '&:hover': { backgroundColor: theme.palette.primary.green, },
+      width: '40px', display: 'flex', justifyContent: 'center', alignItems: 'center', minWidth: '10px',})}
+      onClick={() => {setIsBrowseWeb(!isBrowseWeb);}}>
+        <Iconify icon= {isBrowseWeb ? "mdi:web" : "mdi:web-cancel"} sx={{minHeight: '18.25px', minWidth: '18.25px'}}/>
+      </Button>
+
       <Button variant="contained" startIcon={<Iconify icon="material-symbols:emoji-food-beverage" sx={{height: '18px'}}/>} 
       onClick={() => {
         switch (style) {
@@ -538,6 +560,10 @@ export default function ProductsView() {
           <ListItemText primaryTypographyProps={{ style: { fontSize: '15.75px', fontWeight: '600', 
           letterSpacing: '-0.15px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', 
           maxWidth: '325px', } }}>{source.title} </ListItemText>
+
+          <Iconify icon={(index === 0 || index === 1) ? "noto:star" : ""} sx={{width: '19.5px',
+          height: '19.5px', position: 'absolute', right: '80px', top: '8.75px', cursor: 'pointer'}}
+          onClick={() => {setExpandedSource(expandedSource === index ? null : index);}}/>
 
           <Iconify icon="fluent:link-multiple-24-filled" sx={{width: '19.5px', height: '19.5px', position: 'absolute',
           right: '49.5px', top: '10.25px', cursor: 'pointer'}}
@@ -583,7 +609,7 @@ export default function ProductsView() {
 
     
       {isGenerating && (
-      <Stack direction="column" spacing={loadIndicator[0] === "Welcome Back!" ? 0.75 : 1.25} sx={{top: '350px', right: 'calc((100% - 285px)/2 - 160px)', position: 'absolute', 
+      <Stack direction="column" spacing={loadIndicator[0] === "Welcome Back!" ? 0.5 : 1.25} sx={{top: '350px', right: 'calc((100% - 285px)/2 - 160px)', position: 'absolute', 
       height: 'auto', width: '320px', backgroundColor: 'transparent', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
 
       <Typography sx={{ fontFamily: "DM Serif Display",
@@ -595,7 +621,7 @@ export default function ProductsView() {
       border: `2.00px solid ${theme.palette.primary.navBg}`, background: `linear-gradient(to right, ${theme.palette.primary.navBg} ${loadIndicator[1]}%, white 20%)`,
       transition: '1s ease all' })} />}
 
-      {loadIndicator[0] === "Welcome Back!" && <Typography sx={{ fontFamily: "serif", 
+      {loadIndicator[0] === "Welcome Back!" && !isReferenceGiven && <Typography sx={{ fontFamily: "serif", 
       lineHeight: '32.5px', letterSpacing: '-0.25px',  fontWeight: 200, fontSize: '23.75px', textAlign: 'center'}}>
         This is the place your new <br />  articles will appear.
       </Typography>}
@@ -625,7 +651,7 @@ export default function ProductsView() {
           marginBottom: '58px', 
           border: '0px solid #ccc',
           borderRadius: '0px', 
-          backgroundColor: isGenerating ? '#fffefa' : 'white',
+          backgroundColor: isGenerating ? 'white' : 'white',
           opacity: '1',
           transition: 'ease-in-out 0.3s',
           // ...loadingAnimation
@@ -644,9 +670,11 @@ export default function ProductsView() {
         <Button variant="contained" sx={(theme) => ({backgroundColor: theme.palette.primary.black, '&:hover': { backgroundColor: theme.palette.primary.black, }, cursor: 'default'})}>
         Power Tools <Iconify icon="eva:arrow-right-fill" /></Button>
                   
-        <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => {setIsBrowseWeb(!isBrowseWeb); setIsReferenceGiven(false);}}
-        sx={(theme) => ({backgroundColor: isBrowseWeb ? theme.palette.primary.green : 'grey', '&:hover': { backgroundColor: theme.palette.primary.green, },})}>
-        Browse Web </Button>
+        <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => {setIsAdvancedBrowseWeb(!isAdvancedBrowseWeb); setIsReferenceGiven(false);}}
+        sx={(theme) => ({backgroundColor: isAdvancedBrowseWeb ? theme.palette.primary.green : 'grey', '&:hover': { backgroundColor: theme.palette.primary.green, border: "2.5px solid darkgreen" },
+        maxHeight: '36.0px',
+        border: isAdvancedBrowseWeb ? "2.5px solid darkgreen" : '2.5px solid grey'})}>
+        Do Deep Research </Button>
 
         <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => {setIsMimicBlogStyle(!isMimicBlogStyle)}}
         sx={(theme) => ({backgroundColor: isMimicBlogStyle ? theme.palette.primary.green : 'grey', '&:hover': { backgroundColor: theme.palette.primary.green, },})}>
@@ -654,11 +682,11 @@ export default function ProductsView() {
 
         <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => {setIsMentionCaseLaw(!isMentionCaseLaw)}}
         sx={(theme) => ({backgroundColor: isMentionCaseLaw ? theme.palette.primary.green : 'grey', '&:hover': { backgroundColor: theme.palette.primary.green, },})}>
-        Mention Case Law </Button>
+        Mention Cases </Button>
 
           <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => {setIsReferenceGiven(!isReferenceGiven); setIsBrowseWeb(false);}}
         sx={(theme) => ({backgroundColor: isReferenceGiven ? theme.palette.primary.green : 'grey', '&:hover': { backgroundColor: theme.palette.primary.green, },})}>
-        Use New Data </Button>
+        New Data </Button>
 
           <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => {setIsUseInternalLinks(!isUseInternalLinks)}}
         sx={(theme) => ({backgroundColor: isUseInternalLinks ? theme.palette.primary.green : 'grey', '&:hover': { backgroundColor: theme.palette.primary.green, },})}>
@@ -668,31 +696,10 @@ export default function ProductsView() {
 
         {isReferenceGiven && (
         <textarea value={referenceText} onChange={(e) => setReferenceText(e.target.value)} 
-        style={{width: '100%', height: '225px', marginTop: '18px', border: '0.1px solid',
+        style={{width: '100%', height: '125px', marginTop: '18px', border: '0.1px solid',
         borderRadius: '0px', padding: '15px', fontSize: '15px', fontFamily: 'Arial',}} 
         placeholder='Feed any text here you would like the AI model to use. It helps to explain how youd like it to use it in the blog description.'/>
-        )}
-
-
-        {/* {isBrowseWeb && (<>
-        <Stack direction="row" spacing={2} alignItems="center" mt={2}>
-        
-        <Button onClick={() => {}}
-        variant="contained" color="inherit" 
-        sx={{height: '54px', width: '150px', cursor: 'default'}}>
-          Search For 
-          <Iconify icon="eva:arrow-right-fill" />
-        </Button>
-
-        <TextField
-        value={browseText}
-        onChange={(e) => setBrowseText(e.target.value)}
-        placeholder='Personal Injury News in the last 7 days'
-        sx={{width: '100%', mt: 0, }} /> 
-        </Stack>
-       </>)} */}
-
-        
+        )}    
 
     
     </Container>
