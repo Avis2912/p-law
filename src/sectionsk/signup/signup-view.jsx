@@ -35,19 +35,18 @@ export default function SignUpView() {
   const createUserDocument = async (userEmail) => {
     const usersRef = doc(db, 'users', userEmail);
     const usersSnapshot = await getDoc(usersRef);
+    const currentDate = new Date();
+    const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'short' })}`;
+
 
     if (!usersSnapshot.exists()) {
-        const currentDate = new Date();
-        const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'short' })}`;
-
         await setDoc(usersRef, {
             FIRM: 'testlawyers',
             DATE_SIGNED_UP: formattedDate,
         });
     } else {
-        const userData = usersSnapshot.data();
-        if (!userData.FIRM) {await updateDoc(usersRef, {FIRM: 'testlawyers', });   
-    }}
+        await updateDoc(usersRef, {DATE_SIGNED_UP: formattedDate, });   
+    }
 }
 
   const GoToLogin = () => {
