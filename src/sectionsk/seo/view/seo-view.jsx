@@ -418,7 +418,7 @@ export default function ProductsView() {
     const data = await youResponse.json(); console.log(data); 
     setSources(data.hits); setDoneSourcing(true);
 
-      for (let i = 0; i < 2; i += 1) {
+      for (let i = 0; i < 3; i += 1) {
         console.log('RUN ', i, data.hits[i]);
         const url = data.hits[i].url; const title = data.hits[i].title;
 
@@ -446,7 +446,7 @@ export default function ProductsView() {
 
     claudeKeyPoints = await fetch('https://us-central1-pentra-claude-gcp.cloudfunctions.net/gcp-claudeAPI', {
     method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ 
-    model: modelKeys[1], messages: [{role: "user", content: `Give me 9-12 detailed key points for the web results
+    model: modelKeys[1], messages: [{role: "user", content: `Give me 10-14 comprehensive and detailed key points for the web results
     given below, SPECIFICALLY in the context of ${blogTitle}. DONT DEVIATE. DATA: ${JSON.stringify(results)} `}],})});
 
 
