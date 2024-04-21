@@ -53,6 +53,7 @@ export default function Header({ onOpenNav }) {
         zIndex: theme.zIndex.appBar + 1,
         ...bgBlur({
           color: theme.palette.background.default,
+          blur: 0,
         }),
         transition: theme.transitions.create(['height'], {
           duration: theme.transitions.duration.shorter,

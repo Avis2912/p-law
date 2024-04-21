@@ -21,18 +21,17 @@ import { users } from 'src/_mock/user';
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 
-
+import Confetti from 'react-confetti';
 import { products } from 'src/_mock/products';
 
 
-
+import { encode } from 'draft-js/lib/DraftOffsetKey';
 import TableNoData from '../table-no-data';
 import UserTableRow from '../user-table-row';
 import UserTableHead from '../user-table-head';
 import TableEmptyRows from '../table-empty-rows';
 import UserTableToolbar from '../user-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
-
 
 // ----------------------------------------------------------------------
 
@@ -46,6 +45,7 @@ export default function UserPage() {
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [confetti, setConfetti] = useState(false);
 
   const [engagement, setEngagement] = useState([]);
   const [locations, setLocations] = useState([]);
@@ -54,14 +54,18 @@ export default function UserPage() {
   const [styles, setStyles] = useState([]);
   
   const [starsNeeded, setStarsNeeded] = useState(5);
-  const [reviewPlace, setReviewPlace] = useState(1);
-  const [reviewLink, setReviewLink] = useState(`www.pentra.club/review?firm=w&mtx`);
-  const [reviews, setReviews] = useState([]);
-  const [firmName, setFirmName] = useState('');
-  const [reviewPlatforms, setReviewPlatforms] = useState(["Google Reviews", "Super Lawyers", "Find Law USA", "Lawyers.com"]);
+  const [reviewLink, setReviewLink] = useState(``);
 
+  const [newReviews, setNewReviews] = useState([]);
+  const [links, setLinks] = useState({1: '', 2: '', 3: '', 4: ''});
+  const [selectedPlatform, setSelectedPlatform] = useState(1);
+
+  const [firmName, setFirmName] = useState('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+
+  const reviewPlatforms = ['Google Reviews', 'Super Lawyers', 'Lawyers.com', 'Find Law USA'];
+
 
   useEffect(() => {
     const getFirmData = async () => {
@@ -70,8 +74,12 @@ export default function UserPage() {
         if (userDoc.exists()) {
           const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
           if (firmDoc.exists()) {
-            await setReviews(firmDoc.data().REVIEWS);
+            await setLinks(firmDoc.data().REVIEWS.LINKS); console.log(firmDoc.data().REVIEWS.LINKS);
+            await setSelectedPlatform(firmDoc.data().REVIEWS.SELECTION);
+            await setStarsNeeded(firmDoc.data().REVIEWS.THRESHOLD);
+            await setNewReviews(firmDoc.data().REVIEWS.NEW_REVIEWS);
             await setFirmName(firmDoc.data().FIRM_INFO.NAME);
+            await setReviewLink(`www.pentra.club/review?firm=${encodeURIComponent(firmDoc.data().FIRM_INFO.NAME)}`);
           } else {
             console.log('Error: Firm document not found.');
           }}
@@ -81,6 +89,30 @@ export default function UserPage() {
     };
     getFirmData();
   }, []);
+
+  const saveChanges = async () => {
+    try {
+      const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
+      if (userDoc.exists()) {
+        const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
+        const firmRef = doc(db, 'firms', firmDoc.id);
+        if (firmDoc.exists()) {
+          console.log('UPDATED1');
+          await updateDoc(firmRef, {
+            'REVIEWS.LINKS': links,
+            'REVIEWS.SELECTION': selectedPlatform,
+            'REVIEWS.THRESHOLD': starsNeeded,
+          });
+        console.log('UPDATED');
+        setConfetti(true); setTimeout(() => setConfetti(false),5000); 
+        } else {
+        console.log('Error: Firm document not found.');
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
 
   const handleSort = (event, id) => {
@@ -118,39 +150,24 @@ export default function UserPage() {
     setSelected(newSelected);
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  const handleChangePage = (event, newPage) => {setPage(newPage);};
 
   const handleChangeRowsPerPage = (event) => {
-    setPage(0);
-    setRowsPerPage(parseInt(event.target.value, 10));
-  };
-
-  const handleFilterByName = (event) => {
-    setPage(0);
-    setFilterName(event.target.value);
+    setPage(0); setRowsPerPage(parseInt(event.target.value, 10));
   };
 
   const dataFiltered = applyFilter({
-    inputData: users,
-    comparator: getComparator(order, orderBy),
-    filterName,
+    inputData: users, comparator: getComparator(order, orderBy), filterName,
   });
 
-  const handleOpen = () => {
-    setIsDialogOpen(true);
-  };
-
-  const handleClose = () => {
-    setIsDialogOpen(false);
-  };
+  const handleOpen = () => {setIsDialogOpen(true);};
+  const handleClose = () => {setIsDialogOpen(false);};
 
   const notFound = !dataFiltered.length && !!filterName;
 
   return (
     <>
-      <Container>
+    <Container>
 
     <Stack sx={{ mb: 3.25 }} justifyContent="space-between" direction="row" alignItems="center">
       <style>@import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap);</style>
@@ -167,10 +184,7 @@ export default function UserPage() {
         color: 'white', marginRight: '8px'}}/>
         How It Works
       </Button>
-      
-      {/* <Button variant="contained" startIcon={<Iconify icon="carbon:save" />}
-        sx={(theme)=>({backgroundColor: theme.palette.primary.navBg })}>
-        Save Changes</Button> */}
+      {confetti && <Confetti />}
       </Stack> </Stack>
 
       <Dialog open={isDialogOpen} onClose={handleClose} 
@@ -188,15 +202,8 @@ export default function UserPage() {
         &nbsp;&nbsp;&nbsp;them to leave a full review on <br />
         &nbsp;&nbsp;&nbsp;your chosen platform <br /> 
         4. If not, we only have them elaborate <br /> 
-        so you can see what went wrong<br /> 
+        &nbsp;&nbsp;&nbsp;so you can see what went wrong<br /> 
         </Typography>
-      {/* <Button variant="contained" onClick={() => {window.open('https://tally.so/r/3jydPx', '_blank')}}
-      sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: theme.palette.primary.navBg, },
-      width: 'auto', display: 'flex', justifyContent: 'center', minWidth: '10px',})}>
-        <Iconify icon="ic:baseline-business" sx={{minHeight: '18px', minWidth: '18px', 
-        color: 'white', marginRight: '8px'}}/>
-        Have Pentra Build One for {firmName}
-      </Button> */}
         </Card>
         <Card sx={(theme) => ({ width: '525px', height: '650px', backgroundColor: theme.palette.primary.navBg, 
         borderRadius: '0px', display: 'flex', justifyContent: 'center', alignItems: 'center' })}>
@@ -217,7 +224,7 @@ export default function UserPage() {
         <Typography variant="subtitle3" fontSize="24.25px" position="" left="67.5px" 
       letterSpacing="0.45px" fontWeight="400" fontFamily="DM Serif Display">🎉 Shareable Link</Typography>
       <TextField size="small" variant="outlined" sx={{ fontSize: '35px',
-      right: '0px', width: '325px', bottom: '0px', borderRadius: '0px'}} value={reviewLink}/>
+      right: '0px', width: '390px', bottom: '0px', borderRadius: '0px'}} value={reviewLink}/>
         <Stack direction="row" spacing={2}>
         <Button variant="contained" startIcon={<Iconify icon="prime:copy" />} onClick={() => {navigator.clipboard.writeText(reviewLink); setIsCopied(true);}}
         sx={(theme)=>({backgroundColor: theme.palette.primary.navBg, right: '0px', height: '40px', '&:hover': {backgroundColor: isCopied ? theme.palette.primary.navBg : `` }})}>
@@ -227,7 +234,7 @@ export default function UserPage() {
         {/* <Button variant="contained" sx={(theme)=>({backgroundColor: theme.palette.primary.main, right: '0px', height: '40px', maxWidth: '20px',
         justifyContent: 'center', alignItems: 'center', display: 'flex', padding: '0px'})}><Iconify icon="ic:round-info" /></Button> */}
         </Stack></Stack>
-       </Card> 
+    </Card> 
 
 
     <Stack direction="row" spacing={2.25}>
@@ -243,12 +250,13 @@ export default function UserPage() {
             <Iconify icon="streamline:business-card-solid" position="absolute" left="30px" width="23.75px" height="23.75px" color="#474444"/>
             <Typography variant="subtitle2" fontSize="19.3px" position="absolute" left="65.0px" color="#474444"
             fontFamily='' letterSpacing="-1.025px" fontWeight="600"> {platform} </Typography>
-            <TextField label="Firm Review Page" size="small" variant="outlined" sx={{position: "absolute", 
-            right: '147.5px', width: '328px', bottom: '29px', borderRadius: '0px'}}/>
+            <TextField value={links[index+1]} label="Firm Review Page" size="small" variant="outlined" sx={{position: "absolute", 
+            right: '147.5px', width: '328px', bottom: '29px', borderRadius: '0px'}}
+            onChange={(e) => {const newLinks = {...links}; newLinks[index+1] = e.target.value; setLinks(newLinks);}}/>
             <Button variant="contained" startIcon={<Iconify icon="fluent:link-multiple-24-filled" />}
-            sx={(theme)=>({backgroundColor: reviewPlace === index ? theme.palette.primary.navBg : theme.palette.primary.main ,
-            position: "absolute", right: '30px', height: '40px', '&:hover': { backgroundColor: reviewPlace === index ? theme.palette.primary.navBg : `` }})}
-            onClick={()=>{setReviewPlace(index)}}>
+            sx={(theme)=>({backgroundColor: selectedPlatform === index + 1 ? theme.palette.primary.navBg : theme.palette.primary.main ,
+            position: "absolute", right: '30px', height: '40px', '&:hover': { backgroundColor: selectedPlatform === index+1 ? theme.palette.primary.navBg : `` }})}
+            onClick={()=>{setSelectedPlatform(index+1)}}>
                Select</Button>
           </Card>
         ))}
@@ -278,7 +286,8 @@ export default function UserPage() {
 
         <Button variant="contained" startIcon={<Iconify icon="carbon:save" />}
         sx={(theme)=>({backgroundColor: theme.palette.primary.navBg, position: 'absolute', bottom: '65px',
-        '&:hover': {backgroundColor: theme.palette.primary.navBg } })}>
+        '&:hover': {backgroundColor: theme.palette.primary.navBg } })}
+        onClick={saveChanges}>
         Save Changes</Button>
       </Card>
 

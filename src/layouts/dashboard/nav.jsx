@@ -18,6 +18,7 @@ import { usePathname } from 'src/routes/hooks';
 import { RouterLink } from 'src/routes/components';
 
 import { useResponsive } from 'src/hooks/use-responsive';
+import { useLocation } from 'react-router-dom';
 
 // import { account } from 'src/_mock/account';
 
@@ -33,6 +34,7 @@ export default function Nav({ openNav, onCloseNav }) {
 
   const [profileSrc, setProfileSrc] = useState('https://firebasestorage.googleapis.com/v0/b/pentra-beauty.appspot.com/o/Gemini_Generated_Image_w2bk6ew2bk6ew2bk.jpeg?alt=media&token=555ce545-de49-4e1f-becf-9b985933a117');
   const [firmName, setFirmName] = useState('N/A');
+  const location = useLocation();
 
   useEffect(() => {
     const getFirmData = async () => {
@@ -158,6 +160,7 @@ export default function Nav({ openNav, onCloseNav }) {
   );
 
   return (
+    location.pathname !== '/review' && (
     <Box
       sx={{
         flexShrink: { lg: 0 },
@@ -192,7 +195,7 @@ export default function Nav({ openNav, onCloseNav }) {
         </Drawer>
       )}
     </Box>
-  );
+  ));
 }
 
 Nav.propTypes = {

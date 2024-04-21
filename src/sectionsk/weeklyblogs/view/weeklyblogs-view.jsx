@@ -117,7 +117,7 @@ export default function BlogView() {
           <instruction>
   
           IMPORTANT INSTRUCTIONS:
-          - TOPIC: This post is on ${titleArray[i]}.
+          - TOPIC: This post is on ${titleArray[i]}. Use exactly this title.
           - FORMATTING: Wrap titles in <h1> and <h2> tags. Wrap ALL individual paragraphs and points in <p> tags. Wrap parts to be BOLDED in <b> tags. 
           - WORD RANGE: this post should be 1000 - 1200 WORDS LONG.
           - PERSPECTIVE: DONT EVER REFER TO YOURSELF IN THE POST. ONLY MENTION ${firmNameInt} at the VERY END, when explaining how it can help.

@@ -1,11 +1,13 @@
 import { useEffect, useState, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
+
 import PropTypes from 'prop-types';
 import { getDownloadURL, ref, getStorage } from 'firebase/storage';
 
 import { db, auth } from 'src/firebase-config/firebase';
 import { getDocs, getDoc, collection, doc, updateDoc } from 'firebase/firestore';
 
-import Box from '@mui/material/Box';
+import Box from '@mui/material/Box'
 import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
 import Popover from '@mui/material/Popover';
@@ -39,8 +41,9 @@ const MENU_OPTIONS = [
 
 export default function AccountPopover() {
 
-  const [profileSrc, setProfileSrc] = useState('/assets/images/avatars/avatar_4.jpg');
+  const [profileSrc, setProfileSrc] = useState('https://firebasestorage.googleapis.com/v0/b/pentra-beauty.appspot.com/o/Gemini_Generated_Image_w2bk6ew2bk6ew2bk.jpeg?alt=media&token=555ce545-de49-4e1f-becf-9b985933a117');
   const [firmName, setFirmName] = useState('N/A');
+  const location = useLocation();
 
   useEffect(() => {
     const firmDatabase = collection(db, 'firms');
@@ -97,7 +100,8 @@ export default function AccountPopover() {
   };
  
   return (
-    <>
+    location.pathname !== '/review' && (
+      <>
       <IconButton
         onClick={handleOpen}
         sx={{
@@ -167,6 +171,7 @@ export default function AccountPopover() {
           Logout
         </MenuItem>
       </Popover>
-    </>
-  );
+    </>   
+    )
+  )
 }

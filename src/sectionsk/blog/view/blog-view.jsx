@@ -127,13 +127,10 @@ export default function ProductsView() {
           "role": "user", 
           "content":  `
 
-
           <instruction>
           Write a blog post based on the following topic: ${blogDescription}. 
           ${blogKeywords && `Keywords: ${blogKeywords}`}. ${text !== "" && `Consider using the following outline: ${text}`}. 
           </instruction>
-
-
 
           `
         });

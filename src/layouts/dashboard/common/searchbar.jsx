@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import Slide from '@mui/material/Slide';
 import Input from '@mui/material/Input';
@@ -18,9 +19,6 @@ const HEADER_MOBILE = 64;
 const HEADER_DESKTOP = 62;
 
 const StyledSearchbar = styled('div')(({ theme }) => ({
-  ...bgBlur({
-    color: theme.palette.background.default,
-  }),
   top: 0,
   left: 0,
   zIndex: 99,
@@ -41,6 +39,7 @@ const StyledSearchbar = styled('div')(({ theme }) => ({
 
 export default function Searchbar() {
   const [open, setOpen] = useState(false);
+  const location = useLocation();
 
   const handleOpen = () => {
     setOpen(!open);
@@ -51,6 +50,7 @@ export default function Searchbar() {
   };
 
   return (
+    location.pathname !== '/review' && (
     <ClickAwayListener onClickAway={handleClose}>
       <div>
         {/* {!open && (
@@ -83,5 +83,5 @@ export default function Searchbar() {
         </Slide>
       </div>
     </ClickAwayListener>
-  );
+  ));
 }

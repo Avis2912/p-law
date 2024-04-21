@@ -105,12 +105,15 @@ const newUser = async (docName, firmInfo, smallBlog, bigBlog, chatInfo, competit
 
             REVIEWS: {
                 LINKS: {
-                    "Google": "https://www.google.com",
-                    "Yelp": "https://www.yelp.com",
-                    "Facebook": "https://www.facebook.com",
-                },
-                SELECTION: {"Google": "https://www.google.com/reviews"},
+                1: '',
+                2: '',
+                3: '',
+                4: '',
             },
+            SELECTION: 1,
+            THRESHOLD: 4,
+            NEW_REVIEWS: []
+        },
 
             GEN_POSTS: [],
 
@@ -153,24 +156,35 @@ const updateLeads = async () => {
             const firmRef = doc('firms/' + firmDoc.id);
             await updateDoc(firmRef, {
                 // LEADS: sampleLeads
-                CHAT_INFO: {
-                    PROMPT: CHAT_PROMPT,
-                    IMAGE: CHAT_IMAGE,
-                    THEME: CHAT_THEME,
-                }
+                // CHAT_INFO: {
+                //     PROMPT: CHAT_PROMPT,
+                //     IMAGE: CHAT_IMAGE,
+                //     THEME: CHAT_THEME,
+                // }
+                REVIEWS: {
+                    LINKS: {
+                    1: '',
+                    2: '',
+                    3: '',
+                    4: '',
+                },
+                SELECTION: 1,
+                THRESHOLD: 4,
+                NEW_REVIEWS: []
+            }
             });
         });
-        console.log("Leads for all firms have been updated successfully.");
+        console.log("All firms have been updated successfully.");
     } catch (error) {
-        console.error("Error updating leads: ", error);
+        console.error("Error updating: ", error);
     }
 };
 
 // uploadSome();
-// updateLeads();
+updateLeads();
 
 
-newUser(docName = 'STR Law Guys',
+newUserb(docName = 'STR Law Guys',
 
 firmInfo = {
     CONTACT_US: "https://www.strlawguys.com/contact-us/",

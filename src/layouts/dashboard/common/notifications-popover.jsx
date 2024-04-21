@@ -2,6 +2,7 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { set, sub } from 'date-fns';
 import { faker } from '@faker-js/faker';
+import { useLocation } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
@@ -80,6 +81,8 @@ export default function NotificationsPopover() {
 
   const [open, setOpen] = useState(null);
 
+  const location = useLocation();
+
   const handleOpen = (event) => {
     // setOpen(event.currentTarget);
   };
@@ -98,6 +101,7 @@ export default function NotificationsPopover() {
   };
 
   return (
+    location.pathname !== '/review' && (
     <>
       <IconButton color={open ? 'primary' : 'default'} onClick={handleOpen}>
         <Badge badgeContent={totalUnRead} color="error">
@@ -175,7 +179,7 @@ export default function NotificationsPopover() {
         </Box> */}
       </Popover>
     </>
-  );
+  ));
 }
 
 // ----------------------------------------------------------------------

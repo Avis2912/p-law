@@ -6,6 +6,7 @@ import DashboardLayout from 'src/layouts/dashboard';
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const PostsPage = lazy(() => import('src/pages/posts'));
 export const CompetitionPage = lazy(() => import('src/pages/competition'));
+export const ReviewPage = lazy(() => import('src/pages/review'));
 export const ReviewsPage = lazy(() => import('src/pages/reviews'));
 export const LoginPage = lazy(() => import('src/pages/login'));
 export const SignUpPage = lazy(() => import('src/pages/signup'));
@@ -20,8 +21,6 @@ export const ListNamesPage = lazy(() => import('src/pages/listnames'));
 export const NewCampaignPage = lazy(() => import('src/pages/newcampaign'));
 export const UpdateCampaignPage = lazy(() => import('src/pages/updatecampaign'));
 export const CampaignPage = lazy(() => import('src/pages/campaignpage'));
-
-
 
 // ----------------------------------------------------------------------
 
@@ -39,6 +38,7 @@ export default function Router() {
         { element: <SeoPage />, index: true },
         { path: '/', element: <SeoPage /> },
         { path: 'home', element: <IndexPage /> },
+        { path: 'review', element: <ReviewPage /> },
         { path: 'reviews', element: <ReviewsPage /> },
         { path: 'seo', element: <SeoPage /> },
         { path: 'blog', element: <BlogPage /> },

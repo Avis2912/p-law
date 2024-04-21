@@ -51,7 +51,7 @@ export default function BlogView() {
 
   const writeWeeklyPosts = useCallback(async () => {
     
-    let tempPosts = []; const platforms = ["LinkedIn", "LinkedIn", "Facebook", "Facebook", "Instagram", "Instagram"]; 
+    let tempPosts = []; const platforms = ["LinkedIn", "LinkedIn", "Facebook", "Instagram"]; 
     let isError = false; let firmNameInt; let firmDescriptionInt;
     const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
     if (userDoc.exists()) {const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
