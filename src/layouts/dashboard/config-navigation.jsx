@@ -12,7 +12,7 @@ const navConfig = [
   //   path: '/',
   //   icon: icon('ic_analytics'),
   // },
-  {
+  { 
     title: 'Blog Creator',
     path: '/seo',
     icon: icon('ic_blog'),
@@ -25,6 +25,11 @@ const navConfig = [
   {
     title: 'Social Posts',
     path: '/posts',
+    icon: icon('ic_blog'),
+  },
+  {
+    title: 'Keyword Search',
+    path: '/keywords',
     icon: icon('ic_blog'),
   },
   {

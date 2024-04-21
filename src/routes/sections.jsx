@@ -6,6 +6,7 @@ import DashboardLayout from 'src/layouts/dashboard';
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const PostsPage = lazy(() => import('src/pages/posts'));
 export const CompetitionPage = lazy(() => import('src/pages/competition'));
+export const KeywordsPage = lazy(() => import('src/pages/keywords'));
 export const ReviewPage = lazy(() => import('src/pages/review'));
 export const ReviewsPage = lazy(() => import('src/pages/reviews'));
 export const LoginPage = lazy(() => import('src/pages/login'));
@@ -40,6 +41,7 @@ export default function Router() {
         { path: 'home', element: <IndexPage /> },
         { path: 'review', element: <ReviewPage /> },
         { path: 'reviews', element: <ReviewsPage /> },
+        { path: 'keywords', element: <KeywordsPage /> },
         { path: 'seo', element: <SeoPage /> },
         { path: 'blog', element: <BlogPage /> },
         { path: 'weeklyblogs', element: <WeeklyBlogsPage /> },
