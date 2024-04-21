@@ -16,12 +16,8 @@ export const BlogPage = lazy(() => import('src/pages/blog'));
 export const WeeklyBlogsPage = lazy(() => import('src/pages/weeklyblogs'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 export const AccountPage = lazy(() => import('src/pages/account'));
-export const InfluencerPage = lazy(() => import('src/pages/influencer'));
 export const LeadsPage = lazy(() => import('src/pages/leads'));
-export const ListNamesPage = lazy(() => import('src/pages/listnames'));
-export const NewCampaignPage = lazy(() => import('src/pages/newcampaign'));
-export const UpdateCampaignPage = lazy(() => import('src/pages/updatecampaign'));
-export const CampaignPage = lazy(() => import('src/pages/campaignpage'));
+
 
 // ----------------------------------------------------------------------
 
@@ -47,13 +43,8 @@ export default function Router() {
         { path: 'weeklyblogs', element: <WeeklyBlogsPage /> },
         { path: 'posts', element: <PostsPage /> },
         { path: 'competition', element: <CompetitionPage /> },
-        { path: 'listnames', element: <ListNamesPage /> },
         { path: 'leads', element: <LeadsPage /> },
         { path: 'account', element: <AccountPage /> },
-        { path: 'influencer', element: <InfluencerPage /> },
-        { path: 'newcampaign', element: <NewCampaignPage /> },
-        { path: 'campaignpage', element: <CampaignPage /> },
-        { path: 'updatecampaign', element: <UpdateCampaignPage /> },
 
       ],
     },
