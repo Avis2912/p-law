@@ -147,7 +147,7 @@ export default function Nav({ openNav, onCloseNav }) {
         },
       }}
     >
-      <Logo sx={{ mt: 3, ml: 3.25 }} />
+      <Logo sx={{ mt: 3, ml: 3.25, userSelect: 'none'}} />
 
       {renderAccount}
 

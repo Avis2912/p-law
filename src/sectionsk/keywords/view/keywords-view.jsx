@@ -51,66 +51,7 @@ export default function BlogView() {
 
   const writeWeeklyPosts = useCallback(async () => {
     
-    let tempPosts = []; const platforms = ["LinkedIn", "LinkedIn", "Facebook", "Instagram"]; 
-    let isError = false; let firmNameInt; let firmDescriptionInt;
-    const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
-    if (userDoc.exists()) {const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
-    if (firmDoc.exists()) {firmNameInt = firmDoc.data().FIRM_INFO.NAME; firmDescriptionInt = firmDoc.data().FIRM_INFO.DESCRIPTION; }};
-    
-    for (let i = 0; i < 6; i += 1) {
-      const tempPlatform = platforms[i];
-
-      // eslint-disable-next-line no-await-in-loop
-      const response = await fetch('https://us-central1-pentra-claude-gcp.cloudfunctions.net/gcp-claudeAPI', {
-        method: 'POST',headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ model: modelKeys[selectedModel], 
-        messages: [
-          { role: "user", content: `<role> You are Pentra AI, an attorney at ${firmNameInt}.
-          ${firmName} Description: ${firmDescriptionInt}. </role> 
-          
-          <instruction>
-          YOUR GOAL: Write 3 FULL EDUCATIONAL ${tempPlatform} posts from the perspective of ${firmName}. Don't be generic and corporate but be approachable and genuinely informative. Don't be lazy.
-          
-          IMPORTANT INSTRUCTIONS:
-          - RESPONSE FORMAT: Always respond with a JSON-parsable array of 3 hashmaps, 
-          EXAMPLE OUTPUT: "[{"platform": "${tempPlatform}", "content": "*Post Content*"}, {"platform": "${genPostPlatform}", "content": "*Post Content*"}, {"platform": "${genPostPlatform}", "content": "*Post Content*"}]". 
-          ONLY OUTPUT THE ARRAY. NOTHING ELSE.
-          - Wrap titles in <h2> tags. Wrap EVERY paragraph in <p> tags.
-          - Be truly informative about a relevant legal topic, use points if necessary, and mention the firm at the end if relevant. Add just a few hashtags at the end.
-          - PARAGRAPH COUNT: these posts should be informative 5-6 paragraphs long for LinkedIn, 4-5 for Facebook, and just 1 for Instagram.
-          - IMAGES: post should contain 1 image, placed after the h2 post title. Please add it in this format: //Image: {short image description}//.
-          - Array should be in proper format: [{}, {}, {}]. </instruction>
-
-          Pull from in the following blog posts only if useful information is contained:
-
-          ${bigBlogString}
-          ` }
-        ] })
-      });
-
-      // eslint-disable-next-line no-await-in-loop
-      let gptResponse = (await response.text()); console.log(gptResponse);
-      // eslint-disable-next-line no-await-in-loop
-      gptResponse = gptResponse.replace(/<br\s*\/?>/gi, '').replace(/<\/p>|<\/h1>|<\/h2>|<\/h3>|\/\/Image:.*?\/\//gi, '$&<br>').replace(/(<image[^>]*>|\/\/Image:.*?\/\/)/gi, '$&<br>');
-      // eslint-disable-next-line no-control-regex
-      const sanitizedResponse = gptResponse.replace(/[\u0000-\u001F\u007F-\u009F]/g, ''); let textWithoutImages;
-      try { textWithoutImages = JSON.parse(sanitizedResponse) } catch (err) {isError = true; console.log(err)};
-      console.log(textWithoutImages); let textWithImages = textWithoutImages;
-      // eslint-disable-next-line no-await-in-loop
-      if (isImagesOn) {textWithImages = await addImages(textWithoutImages);}
-      // eslint-disable-next-line no-await-in-loop
-      tempPosts = tempPosts.concat(textWithImages); console.log(`TEMP POSTS (${tempPlatform} DONE): `, tempPosts);
-    };
-
-    try {
-      if (userDoc.exists()) { const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
-        if (firmDoc.exists()) {
-          const currentDate = new Date();
-          const formattedDate = `${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear().toString().slice(-2)}`;
-          await updateDoc(doc(db, 'firms', userDoc.data().FIRM), { 'WEEKLY_POSTS.POSTS': tempPosts, 'WEEKLY_POSTS.LAST_DATE': isError ? "3/3/3" : formattedDate });
-        }
-      }} catch (err) {console.log(err)};
-  }, [bigBlogString, firmName, genPostPlatform, selectedModel]);
+  }, []);
 
 
 
@@ -119,25 +60,11 @@ export default function BlogView() {
     if (isUpdateTime) {setWeeklyPosts([]); return;}; 
 
     if (genPostPlatform) {
-      if (genPostPlatform === "LinkedIn") {
         setWeeklyPosts([
           { platform: "LinkedIn", content: "" },
           { platform: "LinkedIn", content: "" },
           { platform: "LinkedIn", content: "" }, 
         ]);
-      } else if (genPostPlatform === "Facebook") {
-        setWeeklyPosts([
-          { platform: "Facebook", content: "" },
-          { platform: "Facebook", content: "" },
-          { platform: "Facebook", content: "" }, 
-        ]);
-      } else if (genPostPlatform === "Instagram") {
-        setWeeklyPosts([
-          { platform: "Instagram", content: "" },
-          { platform: "Instagram", content: "" },
-          { platform: "Instagram", content: "" }, 
-        ]);
-      }
     }
     
     const getFirmData = async () => {
@@ -189,167 +116,6 @@ export default function BlogView() {
     else {setGenPostPlatform("LinkedIn")};
   }
 
-  const generatePosts = async () => {
-    setIsGenerating(true);
-      const messages = [];
-
-      let firmNameInt; let firmDescriptionInt;
-      const userDocInt = await getDoc(doc(db, 'users', auth.currentUser.email));
-      if (userDocInt.exists()) {const firmDoc = await getDoc(doc(db, 'firms', userDocInt.data().FIRM));
-      if (firmDoc.exists()) {firmNameInt = firmDoc.data().FIRM_INFO.NAME; firmDescriptionInt = firmDoc.data().FIRM_INFO.DESCRIPTION; }};
-
-      let browseTextResponse = "";
-
-      if (isUseNews) {browseTextResponse = await browseWeb(browseText); console.log('PERPLEXITY: ', browseTextResponse);};
-      messages.push({
-        "role": "user", 
-        "content":  `<instruction> You are Pentra AI, a lawyer working at ${firmNameInt}, described as ${firmDescriptionInt}.  
-        YOUR GOAL: Write 3 informative posts for ${genPostPlatform} ${postDescription !== "" && `based roughly on the following topic: ${postDescription}.`}. 
-        
-        IMPORTANT INSTRUCTIONS:
-        - RESPONSE FORMAT: Always respond with a JSON-parsable array of 3 hashmaps, 
-        EXAMPLE OUTPUT: "[{"platform": "${genPostPlatform}", "content": "*Post Content*"}, {"platform": "${genPostPlatform}", "content": "*Post Content*"}, {"platform": "${genPostPlatform}", "content": "*Post Content*"}]". 
-        ONLY OUTPUT THE ARRAY. NOTHING ELSE. Make sure to put quotes at the ends of the content string.
-        - Wrap titles in <h2> tags. Dont use ANY new lines but add one <br> tags after EVERY paragraph and h1/h2 tag.
-        - PARAGRAPH COUNT: these posts should be ${wordRange} paragraphs long. 
-        - IMAGES: post should contain 1 image, placed after the h2 post title. Please add it in this format: //Image: {relevant description}//.
-        - ${browseTextResponse !== "" && `WEB RESULTS: Consider using the following web information I got from an LLM for the prompt ${browseText}: ${browseTextResponse}`}
-        - ${postKeywords !== "" && `KEYWORDS: Use the following keywords in your posts: ${postKeywords}.`}
-        - ${style !== "Unstyled" && `STYLE: This post should SPECIFICALLY be written in the ${style} style.`}
-        - DONT ADD ANY SPACE BETWEEN THE JSON AND ARRAY BRACKETS. It should be proper [{}, {}, {}].
-        </instruction>
-
-        - ${isUseBlog && `BLOGS: Use the following blogs from the firm to source content from: ${bigBlogString}.`}
-
-        `
-      });
-      
-    const response = await fetch('https://us-central1-pentra-claude-gcp.cloudfunctions.net/gcp-claudeAPI', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ messages, blogDescription: postDescription, blogKeywords: postKeywords,
-      model: modelKeys[selectedModel] })
-    });
-
-    const gptResponse = (await response.text()); console.log(gptResponse);
-
-    const textWithoutImages = JSON.parse(gptResponse.trim().replace(/^```|```$/g, '').replace(/json/g, '')); console.log(textWithoutImages);
-    let textWithImages = textWithoutImages;
-    if (isImagesOn) {textWithImages = await addImages(textWithoutImages);}
-    await setGeneratedPosts(textWithImages);
-    await setWeeklyPosts(textWithImages);   
-    console.log(weeklyPosts);
-    setIsGenerating(false);
-
-    try {
-      const firmDatabase = collection(db, 'firms');
-      const data = await getDocs(firmDatabase);
-      const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
-      const firmDoc = data.docs.find((docc) => docc.id === userDoc.data().FIRM);
-      if (firmDoc) {  
-        const firmDocRef = doc(db, 'firms', firmDoc.id);
-        const currentDate = new Date(); const formattedDate = `${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear().toString().substr(-2)} | ${currentDate.getHours() % 12 || 12}:${currentDate.getMinutes()} ${currentDate.getHours() >= 12 ? 'PM' : 'AM'}`;
-        const genPosts = firmDoc.data().GEN_POSTS || [];
-        const newPost = { [formattedDate]: textWithImages }; genPosts.unshift(newPost);
-        await updateDoc(firmDocRef, { GEN_POSTS: genPosts });
-    }} catch (err) {console.log('ERRORRRRRR', err);}
-    
-  }
-
-  const addImages = async (posts) => {
-    const regex = /\/\/Image: (.*?)\/\//g;
-
-    const fetchImage = async (description) => {
-      const subscriptionKey = `${import.meta.env.VITE_BING_API_KEY}`;
-      const host = 'api.bing.microsoft.com';
-      const path = '/v7.0/images/search';
-      const url = `https://${host}${path}?q=${encodeURIComponent(description)}`;
-
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Ocp-Apim-Subscription-Key': subscriptionKey,
-        },
-      });
-
-      const data = await response.json();
-
-      if (data.value && data.value.length > 0) {
-        const firstImageResult = data.value[0];
-        return `<image src="${firstImageResult.thumbnailUrl}" alt="${description}" />`;
-      }
-      return null;
-    };
-
-    const postsWithImages = [];
-    console.log('IN FUNC')
-
-    try {
-      for (let i = 0; i < posts.length; i += 3) {
-        console.log('IMAGE API CALLED');
-        const batch = posts.slice(i, i + 3);
-        // eslint-disable-next-line no-await-in-loop
-        const batchPostsWithImages = await Promise.all(batch.map(async (post) => {
-          let imagefullText = post.content;
-          const matches = [...imagefullText.matchAll(regex)];
-          const descriptions = matches.map(match => match[1]);
-          const imageTags = await Promise.all(descriptions.map(fetchImage));
-
-          matches.forEach((match, index) => {
-            if (imageTags[index]) {
-              imagefullText = imagefullText.replace(match[0], imageTags[index]);
-            }
-          });
-
-          console.log('IMAGE TAGS: ', imageTags, 'IMGFULL: ', imagefullText);
-
-
-          return {
-            ...post,
-            content: imagefullText,
-          };
-        }));
-
-        postsWithImages.push(...batchPostsWithImages);
-        console.log('BPWI:', postsWithImages);
-
-        if (i + 3 < posts.length) {
-          // eslint-disable-next-line no-await-in-loop
-          await new Promise(resolve => setTimeout(resolve, 2000));
-        }
-      }
-    } catch (error) {
-      console.error('An error occurred:', error);
-    }
-
-    return postsWithImages; 
-  }
-
-
-  const browseWeb = (prompt) => {
-    const apiKey = `${import.meta.env.VITE_PERPLEXITY_API_KEY}`;
-    const apiUrl = 'https://api.perplexity.ai';
-
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: 'sonar-medium-online',
-        messages: [
-          { role: 'system', content: 'Be precise and detailed. Mention sources and dates everywhere you can. Keep the current date in mind when generating.' },
-          { role: 'user', content: prompt }
-        ]
-      })
-    };
-
-    return fetch(`${apiUrl}/chat/completions`, requestOptions)
-      .then(response => response.json())
-      .then(data => data.choices[0].message.content)
-      .catch(error => console.error(error));
-  }
 
   return (
     <Container>
@@ -426,11 +192,17 @@ export default function BlogView() {
           {!isUpdateTime ? `${timeToUpdate} Days Left` : 'Update In Progress'}
         </Button>
         </>)}
-        
-        <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => handleClickRoute()}
+
+        <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => {}}
         sx={(theme) => ({backgroundColor: theme.palette.primary.black})}>
-          {isNewPost ? 'Close Creator' : 'Add New Keywords'}
+          {isNewPost ? 'Back To All Keywords' : 'Add Keywords'}
         </Button>
+
+        {!isNewPost && <Button variant="contained" color="inherit" startIcon={<Iconify icon="bx:search" />} onClick={() => {}}
+        sx={(theme) => ({backgroundColor: theme.palette.primary.black})}>
+          Search Keywords
+        </Button>}
+
       </Stack></Stack>
 
       {isNewPost ? <>
@@ -451,7 +223,7 @@ export default function BlogView() {
        sx={{width: '30%'}} />
        </Stack>
        
-        <Button onClick={() => {generatePosts()}}
+        <Button onClick={() => {}}
         variant="contained" color="inherit" 
         sx={{height: '54px', width: '150px'}}>
           Generate ✨
