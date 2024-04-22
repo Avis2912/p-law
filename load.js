@@ -47,6 +47,7 @@ const newUser = async (docName, firmInfo, smallBlog, bigBlog, chatInfo, competit
         await userDocRef.set({
 
             FIRM_INFO: firmInfo,
+            KEYWORDS: keywords,
 
             BLOG_DATA: {
                 SMALL_BLOG: smallBlog,
@@ -201,6 +202,8 @@ firmInfo = {
     MODEL: 2,
     PLAN: "Full Suite",
 },
+
+keywords = ["Asset Protection", "Short-Term Rentals", "Real Estate", "Investment", "Legal Services"],
 
 smallBlog = [0, 1],
 

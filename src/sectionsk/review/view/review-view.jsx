@@ -8,7 +8,7 @@ import Table from '@mui/material/Table';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
-import TableBody from '@mui/material/TableBody';
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
@@ -71,10 +71,12 @@ export default function UserPage() {
       try {
         const firmDoc = await getDoc(doc(db, 'firms', firmParam));
         if (firmDoc.exists()) {
+          
+          console.log(firmDoc.data().FIRM_INFO.IMAGE);
           await setFirmName(firmDoc.data().FIRM_INFO.NAME);
           await setReviewLink(firmDoc.data().REVIEWS.LINKS[firmDoc.data().REVIEWS.SELECTION]);
           await setChatTheme(firmDoc.data().CHAT_INFO.THEME);
-          setTimeout(async () => {await setFirmImage(firmDoc.data().FIRM_INFO.IMAGE);}, 0);
+          await setFirmImage(firmDoc.data().FIRM_INFO.IMAGE);;
           
       } else {console.log('Error: Firm document not found.');}
       } catch (err) {
@@ -171,7 +173,13 @@ export default function UserPage() {
       <Card sx={{height: '285px', minWidth: '285px', backgroundColor: 'white', borderRadius: '50%',
       top: '0px', left: '0', position: 'relative', zIndex: '1251', backgroundImage: `url(${firmImage})`,
       border: `10px solid ${chatTheme}`, backgroundSize: 'cover', backgroundPosition: 'center',
-      maxHeight: '285px', maxWidth: '285px'}} />}
+      maxHeight: '285px', maxWidth: '285px', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+        <Box component="img"
+        src={firmImage}
+        sx={{width: '105%',height: '105%',
+        objectFit: 'cover',borderRadius: '50%',}}/> </Card>}
+
+
 
       <Typography sx={{ fontFamily: "DM Serif Display", letterSpacing: '-0.75px', userSelect: 'none',
         minWidth: '0px', fontWeight: 500, fontSize: matches ? '45px' : '67.75px', textAlign: matches ? 'center' : 'left', 
