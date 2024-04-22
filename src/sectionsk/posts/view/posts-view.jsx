@@ -35,6 +35,7 @@ export default function BlogView() {
   const [imageSettings, setImageSettings] = useState('Brand & Web');
   const [style, setStyle] = useState('Unstyled');
   const [wordRange, setWordRange] = useState('2');
+  const [isUseCreativeCommons, setIsUseCreativeCommons] = useState(false);
 
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedPosts, setGeneratedPosts] = useState([]);
@@ -110,6 +111,7 @@ export default function BlogView() {
           await updateDoc(doc(db, 'firms', userDoc.data().FIRM), { 'WEEKLY_POSTS.POSTS': tempPosts, 'WEEKLY_POSTS.LAST_DATE': isError ? "3/3/3" : formattedDate });
         }
       }} catch (err) {console.log(err)};
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bigBlogString, firmName, genPostPlatform, selectedModel]);
 
 
@@ -182,7 +184,6 @@ export default function BlogView() {
     
   
   
-  
   const handleClickRoute = () => {
     setIsNewPost(!isNewPost);
     if (genPostPlatform) {setGenPostPlatform(null)} 
@@ -233,7 +234,9 @@ export default function BlogView() {
 
     const gptResponse = (await response.text()); console.log(gptResponse);
 
-    const textWithoutImages = JSON.parse(gptResponse.trim().replace(/^```|```$/g, '').replace(/json/g, '')); console.log(textWithoutImages);
+    let textWithoutImages;
+    try {textWithoutImages = JSON.parse(gptResponse.trim().replace(/^```|```$/g, '').replace(/json/g, ''));
+    } catch (error) {const gptResponseRepeat = await response.text(); textWithoutImages = JSON.parse(gptResponseRepeat.trim().replace(/^```|```$/g, '').replace(/json/g, ''));}    
     let textWithImages = textWithoutImages;
     if (isImagesOn) {textWithImages = await addImages(textWithoutImages);}
     await setGeneratedPosts(textWithImages);
@@ -260,25 +263,39 @@ export default function BlogView() {
     const regex = /\/\/Image: (.*?)\/\//g;
 
     const fetchImage = async (description) => {
-      const subscriptionKey = `${import.meta.env.VITE_BING_API_KEY}`;
-      const host = 'api.bing.microsoft.com';
-      const path = '/v7.0/images/search';
-      const url = `https://${host}${path}?q=${encodeURIComponent(description)}`;
+      
+      let resultImg = null; 
+      const url = "https://api.dataforseo.com/v3/serp/google/images/live/advanced";
+      const payload = JSON.stringify([{
+          keyword: `${description}`,
+          location_code: 2826,
+          language_code: "en",
+          device: "desktop",
+          os: "windows",
+          depth: 100,
+          search_param: isUseCreativeCommons ? "&tbs=sur:cl" : ``,
+      }]);
 
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Ocp-Apim-Subscription-Key': subscriptionKey,
-        },
-      });
+      const headers = {
+          'Authorization': 'Basic ZW1pckB0cnVzdGx5LmNsdWI6MTM3YTRjZDdhNDI5OTA0Yg==',
+          'Content-Type': 'application/json'
+      };
 
-      const data = await response.json();
+      await fetch(url, { method: 'POST', headers, body: payload })
+      .then(response => response.json())
+      .then(data => {console.log(data.tasks[0].result[0].items[0].source_url); resultImg = `<image src="${data.tasks[0].result[0].items[0].source_url}" alt="${description}" />`;})
+      .catch(error => console.error('Error:', error));
 
-      if (data.value && data.value.length > 0) {
-        const firstImageResult = data.value[0];
-        return `<image src="${firstImageResult.thumbnailUrl}" alt="${description}" />`;
-      }
-      return null;
+      return resultImg;
+
+      // const subscriptionKey = `${import.meta.env.VITE_BING_API_KEY}`; const host = 'api.bing.microsoft.com';
+      // const path = '/v7.0/images/search'; const url = `https://${host}${path}?q=${encodeURIComponent(description)}`;
+      // const response = await fetch(url, {
+      //   method: 'GET', headers: {'Ocp-Apim-Subscription-Key': subscriptionKey,},});
+      // const data = await response.json();
+      // if (data.value && data.value.length > 0) {
+      //   const firstImageResult = data.value[0];
+      //   return `<image src="${firstImageResult.thumbnailUrl}" alt="${description}" />`; }
     };
 
     const postsWithImages = [];

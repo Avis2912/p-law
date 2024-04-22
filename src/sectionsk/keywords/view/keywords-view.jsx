@@ -1,412 +1,520 @@
-import { db, auth } from 'src/firebase-config/firebase';
-import { useState, useEffect } from 'react';
-import { getDocs, getDoc, collection, doc, updateDoc } from 'firebase/firestore';
-
-import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
-import Table from '@mui/material/Table';
-import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 import Container from '@mui/material/Container';
-import TableBody from '@mui/material/TableBody';
+import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
-import TableContainer from '@mui/material/TableContainer';
-import TablePagination from '@mui/material/TablePagination';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import Dialog from '@mui/material/Dialog';
 
-import { users } from 'src/_mock/user';
+import { db, auth } from 'src/firebase-config/firebase';
+import { useState, useEffect, useCallback } from 'react';
+import { getDocs, getDoc, collection, doc, updateDoc } from 'firebase/firestore';
+import { getDownloadURL, ref, getStorage } from 'firebase/storage'; // Import necessary Firebase Storage functions
 
 import Iconify from 'src/components/iconify';
-import Scrollbar from 'src/components/scrollbar';
+import PostCard from '../post-card';
 
-import Confetti from 'react-confetti';
-import { products } from 'src/_mock/products';
-
-
-import { encode } from 'draft-js/lib/DraftOffsetKey';
-import TableNoData from '../table-no-data';
-import UserTableRow from '../user-table-row';
-import UserTableHead from '../user-table-head';
-import TableEmptyRows from '../table-empty-rows';
-import UserTableToolbar from '../user-table-toolbar';
-import { emptyRows, applyFilter, getComparator } from '../utils';
+const isImagesOn = true;
+const modelKeys = {
+1: 'claude-3-haiku-20240307',
+2: 'claude-3-sonnet-20240229',
+3: 'claude-3-sonnet-20240229'} 
+// 3: 'claude-3-opus-20240229'} 
 
 // ----------------------------------------------------------------------
 
-export default function UserPage() {
+export default function BlogView() {
 
-  const isReviewsDone = false;
-  
-  const [page, setPage] = useState(0);
-  const [order, setOrder] = useState('asc');
-  const [selected, setSelected] = useState([]);
-  const [orderBy, setOrderBy] = useState('name');
-  const [filterName, setFilterName] = useState('');
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [confetti, setConfetti] = useState(false);
+  const [postDescription, setPostDescription] = useState('');
+  const [postKeywords, setPostKeywords] = useState('');
+  const [browseText, setBrowseText] = useState('');
 
-  const [engagement, setEngagement] = useState([]);
-  const [locations, setLocations] = useState([]);
-  const [platforms, setPlatforms] = useState([]);
-  const [followers, setFollowers] = useState([]);
-  const [styles, setStyles] = useState([]);
-  
-  const [starsNeeded, setStarsNeeded] = useState(5);
-  const [reviewLink, setReviewLink] = useState(``);
+  const [isNewPost, setIsNewPost] = useState(false);
+  const [isUseNews, setIsUseNews] = useState(false);
+  const [isUseBlog, setIsUseBlog] = useState(false);
+  const [genPostPlatform, setGenPostPlatform] = useState(null);
+  const [imageSettings, setImageSettings] = useState('Brand & Web');
+  const [style, setStyle] = useState('Unstyled');
+  const [wordRange, setWordRange] = useState('2');
 
-  const [newReviews, setNewReviews] = useState([]);
-  const [links, setLinks] = useState({1: '', 2: '', 3: '', 4: ''});
-  const [selectedPlatform, setSelectedPlatform] = useState(1);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generatedPosts, setGeneratedPosts] = useState([]);
+  const [timeToUpdate, setTimeToUpdate] = useState("");
+  const [isUpdateTime, setIsUpdateTime] = useState(false);
 
-  const [firmName, setFirmName] = useState('');
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [isCopied, setIsCopied] = useState(false);
+  const [selectedModel, setSelectedModel] = useState(1);
+  const [weeklyPosts, setWeeklyPosts] = useState([]);
+  const [bigBlogString, setBigBlogString] = useState([]);
+  const [firmName, setFirmName] = useState(null);
+  const [firmDescription, setFirmDescription] = useState(null);
 
-  const reviewPlatforms = ['Google Reviews', 'Super Lawyers', 'Lawyers.com', 'Find Law USA'];
+  // PAGE LOAD FUNCTIONS
+
+  const writeWeeklyPosts = useCallback(async () => {
+    
+    let tempPosts = []; const platforms = ["LinkedIn", "LinkedIn", "Facebook", "Instagram"]; 
+    let isError = false; let firmNameInt; let firmDescriptionInt;
+    const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
+    if (userDoc.exists()) {const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
+    if (firmDoc.exists()) {firmNameInt = firmDoc.data().FIRM_INFO.NAME; firmDescriptionInt = firmDoc.data().FIRM_INFO.DESCRIPTION; }};
+    
+    for (let i = 0; i < 6; i += 1) {
+      const tempPlatform = platforms[i];
+
+      // eslint-disable-next-line no-await-in-loop
+      const response = await fetch('https://us-central1-pentra-claude-gcp.cloudfunctions.net/gcp-claudeAPI', {
+        method: 'POST',headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ model: modelKeys[selectedModel], 
+        messages: [
+          { role: "user", content: `<role> You are Pentra AI, an attorney at ${firmNameInt}.
+          ${firmName} Description: ${firmDescriptionInt}. </role> 
+          
+          <instruction>
+          YOUR GOAL: Write 3 FULL EDUCATIONAL ${tempPlatform} posts from the perspective of ${firmName}. Don't be generic and corporate but be approachable and genuinely informative. Don't be lazy.
+          
+          IMPORTANT INSTRUCTIONS:
+          - RESPONSE FORMAT: Always respond with a JSON-parsable array of 3 hashmaps, 
+          EXAMPLE OUTPUT: "[{"platform": "${tempPlatform}", "content": "*Post Content*"}, {"platform": "${genPostPlatform}", "content": "*Post Content*"}, {"platform": "${genPostPlatform}", "content": "*Post Content*"}]". 
+          ONLY OUTPUT THE ARRAY. NOTHING ELSE.
+          - Wrap titles in <h2> tags. Wrap EVERY paragraph in <p> tags.
+          - Be truly informative about a relevant legal topic, use points if necessary, and mention the firm at the end if relevant. Add just a few hashtags at the end.
+          - PARAGRAPH COUNT: these posts should be informative 5-6 paragraphs long for LinkedIn, 4-5 for Facebook, and just 1 for Instagram.
+          - IMAGES: post should contain 1 image, placed after the h2 post title. Please add it in this format: //Image: {short image description}//.
+          - Array should be in proper format: [{}, {}, {}]. </instruction>
+
+          Pull from in the following blog posts only if useful information is contained:
+
+          ${bigBlogString}
+          ` }
+        ] })
+      });
+
+      // eslint-disable-next-line no-await-in-loop
+      let gptResponse = (await response.text()); console.log(gptResponse);
+      // eslint-disable-next-line no-await-in-loop
+      gptResponse = gptResponse.replace(/<br\s*\/?>/gi, '').replace(/<\/p>|<\/h1>|<\/h2>|<\/h3>|\/\/Image:.*?\/\//gi, '$&<br>').replace(/(<image[^>]*>|\/\/Image:.*?\/\/)/gi, '$&<br>');
+      // eslint-disable-next-line no-control-regex
+      const sanitizedResponse = gptResponse.replace(/[\u0000-\u001F\u007F-\u009F]/g, ''); let textWithoutImages;
+      try { textWithoutImages = JSON.parse(sanitizedResponse) } catch (err) {isError = true; console.log(err)};
+      console.log(textWithoutImages); let textWithImages = textWithoutImages;
+      // eslint-disable-next-line no-await-in-loop
+      if (isImagesOn) {textWithImages = await addImages(textWithoutImages);}
+      // eslint-disable-next-line no-await-in-loop
+      tempPosts = tempPosts.concat(textWithImages); console.log(`TEMP POSTS (${tempPlatform} DONE): `, tempPosts);
+    };
+
+    try {
+      if (userDoc.exists()) { const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
+        if (firmDoc.exists()) {
+          const currentDate = new Date();
+          const formattedDate = `${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear().toString().slice(-2)}`;
+          await updateDoc(doc(db, 'firms', userDoc.data().FIRM), { 'WEEKLY_POSTS.POSTS': tempPosts, 'WEEKLY_POSTS.LAST_DATE': isError ? "3/3/3" : formattedDate });
+        }
+      }} catch (err) {console.log(err)};
+  }, [bigBlogString, firmName, genPostPlatform, selectedModel]);
+
 
 
   useEffect(() => {
+
+    if (isUpdateTime) {setWeeklyPosts([]); return;}; 
+
+    if (genPostPlatform) {
+      if (genPostPlatform === "LinkedIn") {
+        setWeeklyPosts([
+          { platform: "LinkedIn", content: "" },
+          { platform: "LinkedIn", content: "" },
+          { platform: "LinkedIn", content: "" }, 
+        ]);
+      } else if (genPostPlatform === "Facebook") {
+        setWeeklyPosts([
+          { platform: "Facebook", content: "" },
+          { platform: "Facebook", content: "" },
+          { platform: "Facebook", content: "" }, 
+        ]);
+      } else if (genPostPlatform === "Instagram") {
+        setWeeklyPosts([
+          { platform: "Instagram", content: "" },
+          { platform: "Instagram", content: "" },
+          { platform: "Instagram", content: "" }, 
+        ]);
+      }
+    }
+    
     const getFirmData = async () => {
       try {
-        const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
+        const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email)); 
         if (userDoc.exists()) {
           const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
           if (firmDoc.exists()) {
-            await setLinks(firmDoc.data().REVIEWS.LINKS); console.log(firmDoc.data().REVIEWS.LINKS);
-            await setSelectedPlatform(firmDoc.data().REVIEWS.SELECTION);
-            await setStarsNeeded(firmDoc.data().REVIEWS.THRESHOLD);
-            await setNewReviews(firmDoc.data().REVIEWS.NEW_REVIEWS);
-            await setFirmName(firmDoc.data().FIRM_INFO.NAME);
-            await setReviewLink(`www.pentra.club/review?firm=${encodeURIComponent(firmDoc.data().FIRM_INFO.NAME)}`);
-          } else {
-            console.log('Error: Firm document not found.');
+            const lastDateParts = firmDoc.data().WEEKLY_POSTS.LAST_DATE.split('/');
+            const lastDate = new Date(`20${lastDateParts[2]}/${lastDateParts[0]}/${lastDateParts[1]}`);
+            const diffDays = 7 - Math.ceil((new Date() - lastDate) / (1000 * 60 * 60 * 24));
+            await setSelectedModel(firmDoc.data().FIRM_INFO.MODEL);
+            if (firmDoc.data().WEEKLY_POSTS.LAST_DATE === "") {setIsUpdateTime(true); return;}
+            await setWeeklyPosts(firmDoc.data().WEEKLY_POSTS.POSTS || []);
+            if (diffDays >= 1) { await setTimeToUpdate(diffDays); } else { setIsUpdateTime(true); writeWeeklyPosts(); console.log('WRITING POSTS'); setWeeklyPosts([]); 
+              await updateDoc(doc(db, 'firms', userDoc.data().FIRM), { 'WEEKLY_POSTS.LAST_DATE': "" }); }
+            
+            // GET BIG BLOG DATA
+
+            const bigBlog = firmDoc.data().BLOG_DATA.BIG_BLOG;
+            const selectedBlogs = [];
+            const numBlogsToSelect = Math.min(4, bigBlog.length);
+            for (let i = 0; i < numBlogsToSelect; i += 1) {
+              const randomIndex = Math.floor(Math.random() * bigBlog.length);
+              selectedBlogs.push(bigBlog[randomIndex]);
+              bigBlog.splice(randomIndex, 1);
+            }
+            const bigBlogData = selectedBlogs.map(blog => `${blog.TITLE}: ${blog.CONTENT}`).join('\n\n');
+            setBigBlogString(bigBlogData);
+            // console.log(bigBlogData);
+
+            console.log(firmDoc.data().WEEKLY_POSTS.POSTS);
           }}
       } catch (err) {
         console.log(err);
       }
     };
-    getFirmData();
-  }, []);
 
-  const saveChanges = async () => {
+    if (!genPostPlatform) {getFirmData()};
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isNewPost, genPostPlatform]);
+    
+  
+  
+  
+  const handleClickRoute = () => {
+    setIsNewPost(!isNewPost);
+    if (genPostPlatform) {setGenPostPlatform(null)} 
+    else {setGenPostPlatform("LinkedIn")};
+  }
+
+  const generatePosts = async () => {
+    setIsGenerating(true);
+      const messages = [];
+
+      let firmNameInt; let firmDescriptionInt;
+      const userDocInt = await getDoc(doc(db, 'users', auth.currentUser.email));
+      if (userDocInt.exists()) {const firmDoc = await getDoc(doc(db, 'firms', userDocInt.data().FIRM));
+      if (firmDoc.exists()) {firmNameInt = firmDoc.data().FIRM_INFO.NAME; firmDescriptionInt = firmDoc.data().FIRM_INFO.DESCRIPTION; }};
+
+      let browseTextResponse = "";
+
+      if (isUseNews) {browseTextResponse = await browseWeb(browseText); console.log('PERPLEXITY: ', browseTextResponse);};
+      messages.push({
+        "role": "user", 
+        "content":  `<instruction> You are Pentra AI, a lawyer working at ${firmNameInt}, described as ${firmDescriptionInt}.  
+        YOUR GOAL: Write 3 informative posts for ${genPostPlatform} ${postDescription !== "" && `based roughly on the following topic: ${postDescription}.`}. 
+        
+        IMPORTANT INSTRUCTIONS:
+        - RESPONSE FORMAT: Always respond with a JSON-parsable array of 3 hashmaps, 
+        EXAMPLE OUTPUT: "[{"platform": "${genPostPlatform}", "content": "*Post Content*"}, {"platform": "${genPostPlatform}", "content": "*Post Content*"}, {"platform": "${genPostPlatform}", "content": "*Post Content*"}]". 
+        ONLY OUTPUT THE ARRAY. NOTHING ELSE. Make sure to put quotes at the ends of the content string.
+        - Wrap titles in <h2> tags. Dont use ANY new lines but add one <br> tags after EVERY paragraph and h1/h2 tag.
+        - PARAGRAPH COUNT: these posts should be ${wordRange} paragraphs long. 
+        - IMAGES: post should contain 1 image, placed after the h2 post title. Please add it in this format: //Image: {relevant description}//.
+        - ${browseTextResponse !== "" && `WEB RESULTS: Consider using the following web information I got from an LLM for the prompt ${browseText}: ${browseTextResponse}`}
+        - ${postKeywords !== "" && `KEYWORDS: Use the following keywords in your posts: ${postKeywords}.`}
+        - ${style !== "Unstyled" && `STYLE: This post should SPECIFICALLY be written in the ${style} style.`}
+        - DONT ADD ANY SPACE BETWEEN THE JSON AND ARRAY BRACKETS. It should be proper [{}, {}, {}].
+        </instruction>
+
+        - ${isUseBlog && `BLOGS: Use the following blogs from the firm to source content from: ${bigBlogString}.`}
+
+        `
+      });
+      
+    const response = await fetch('https://us-central1-pentra-claude-gcp.cloudfunctions.net/gcp-claudeAPI', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ messages, blogDescription: postDescription, blogKeywords: postKeywords,
+      model: modelKeys[selectedModel] })
+    });
+
+    const gptResponse = (await response.text()); console.log(gptResponse);
+
+    const textWithoutImages = JSON.parse(gptResponse.trim().replace(/^```|```$/g, '').replace(/json/g, '')); console.log(textWithoutImages);
+    let textWithImages = textWithoutImages;
+    if (isImagesOn) {textWithImages = await addImages(textWithoutImages);}
+    await setGeneratedPosts(textWithImages);
+    await setWeeklyPosts(textWithImages);   
+    console.log(weeklyPosts);
+    setIsGenerating(false);
+
     try {
+      const firmDatabase = collection(db, 'firms');
+      const data = await getDocs(firmDatabase);
       const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
-      if (userDoc.exists()) {
-        const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
-        const firmRef = doc(db, 'firms', firmDoc.id);
-        if (firmDoc.exists()) {
-          console.log('UPDATED1');
-          await updateDoc(firmRef, {
-            'REVIEWS.LINKS': links,
-            'REVIEWS.SELECTION': selectedPlatform,
-            'REVIEWS.THRESHOLD': starsNeeded,
+      const firmDoc = data.docs.find((docc) => docc.id === userDoc.data().FIRM);
+      if (firmDoc) {  
+        const firmDocRef = doc(db, 'firms', firmDoc.id);
+        const currentDate = new Date(); const formattedDate = `${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear().toString().substr(-2)} | ${currentDate.getHours() % 12 || 12}:${currentDate.getMinutes()} ${currentDate.getHours() >= 12 ? 'PM' : 'AM'}`;
+        const genPosts = firmDoc.data().GEN_POSTS || [];
+        const newPost = { [formattedDate]: textWithImages }; genPosts.unshift(newPost);
+        await updateDoc(firmDocRef, { GEN_POSTS: genPosts });
+    }} catch (err) {console.log('ERRORRRRRR', err);}
+    
+  }
+
+  const addImages = async (posts) => {
+    const regex = /\/\/Image: (.*?)\/\//g;
+
+    const fetchImage = async (description) => {
+      const subscriptionKey = `${import.meta.env.VITE_BING_API_KEY}`;
+      const host = 'api.bing.microsoft.com';
+      const path = '/v7.0/images/search';
+      const url = `https://${host}${path}?q=${encodeURIComponent(description)}`;
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Ocp-Apim-Subscription-Key': subscriptionKey,
+        },
+      });
+
+      const data = await response.json();
+
+      if (data.value && data.value.length > 0) {
+        const firstImageResult = data.value[0];
+        return `<image src="${firstImageResult.thumbnailUrl}" alt="${description}" />`;
+      }
+      return null;
+    };
+
+    const postsWithImages = [];
+    console.log('IN FUNC')
+
+    try {
+      for (let i = 0; i < posts.length; i += 3) {
+        console.log('IMAGE API CALLED');
+        const batch = posts.slice(i, i + 3);
+        // eslint-disable-next-line no-await-in-loop
+        const batchPostsWithImages = await Promise.all(batch.map(async (post) => {
+          let imagefullText = post.content;
+          const matches = [...imagefullText.matchAll(regex)];
+          const descriptions = matches.map(match => match[1]);
+          const imageTags = await Promise.all(descriptions.map(fetchImage));
+
+          matches.forEach((match, index) => {
+            if (imageTags[index]) {
+              imagefullText = imagefullText.replace(match[0], imageTags[index]);
+            }
           });
-        console.log('UPDATED');
-        setConfetti(true); setTimeout(() => setConfetti(false),5000); 
-        } else {
-        console.log('Error: Firm document not found.');
+
+          console.log('IMAGE TAGS: ', imageTags, 'IMGFULL: ', imagefullText);
+
+
+          return {
+            ...post,
+            content: imagefullText,
+          };
+        }));
+
+        postsWithImages.push(...batchPostsWithImages);
+        console.log('BPWI:', postsWithImages);
+
+        if (i + 3 < posts.length) {
+          // eslint-disable-next-line no-await-in-loop
+          await new Promise(resolve => setTimeout(resolve, 2000));
         }
       }
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.error('An error occurred:', error);
     }
-  };
+
+    return postsWithImages; 
+  }
 
 
-  const handleSort = (event, id) => {
-    const isAsc = orderBy === id && order === 'asc';
-    if (id !== '') {
-      setOrder(isAsc ? 'desc' : 'asc');
-      setOrderBy(id);
-    }
-  };
+  const browseWeb = (prompt) => {
+    const apiKey = `${import.meta.env.VITE_PERPLEXITY_API_KEY}`;
+    const apiUrl = 'https://api.perplexity.ai';
 
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = users.map((n) => n.name);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: 'sonar-medium-online',
+        messages: [
+          { role: 'system', content: 'Be precise and detailed. Mention sources and dates everywhere you can. Keep the current date in mind when generating.' },
+          { role: 'user', content: prompt }
+        ]
+      })
+    };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
-
-  const handleChangePage = (event, newPage) => {setPage(newPage);};
-
-  const handleChangeRowsPerPage = (event) => {
-    setPage(0); setRowsPerPage(parseInt(event.target.value, 10));
-  };
-
-  const dataFiltered = applyFilter({
-    inputData: users, comparator: getComparator(order, orderBy), filterName,
-  });
-
-  const handleOpen = () => {setIsDialogOpen(true);};
-  const handleClose = () => {setIsDialogOpen(false);};
-
-  const notFound = !dataFiltered.length && !!filterName;
+    return fetch(`${apiUrl}/chat/completions`, requestOptions)
+      .then(response => response.json())
+      .then(data => data.choices[0].message.content)
+      .catch(error => console.error(error));
+  }
 
   return (
-    <>
     <Container>
+      <style>
+        @import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap);
+      </style>
 
-    <Stack sx={{ mb: 3.25 }} justifyContent="space-between" direction="row" alignItems="center">
-      <style>@import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap);</style>
-      <Typography sx={{ fontFamily: "DM Serif Display", letterSpacing: '1.05px',  fontWeight: 800, fontSize: '32.75px'}}> 
-        SEO Keyword Research</Typography>
-      <Stack direction="row" spacing={2}>
-      <Button target="_blank" href="https://tally.so/r/mBxLkR" variant="contained" startIcon={<Iconify icon="streamline:business-card-solid" sx={{height: '18.5px'}}/>}
-      sx={(theme)=>({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: theme.palette.primary.navBg, }})} >
-       Request Platform</Button> 
-       <Button variant="contained" onClick={() => {setIsDialogOpen(true);}}
-      sx={(theme)=>({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: theme.palette.primary.navBg, },
-      width: 'auto', display: 'flex', justifyContent: 'center', minWidth: '10px',})}>
-        <Iconify icon="tabler:star-filled" sx={{minHeight: '15.0px', minWidth: '15.0px', 
-        color: 'white', marginRight: '8px'}}/>
-        How It Works
-      </Button>
-      {confetti && <Confetti />}
-      </Stack> </Stack>
+      {isUpdateTime && <>
+      <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, position: 'absolute', 
+      top: '325px', left: 'calc(50% + 185px)', transform: 'translateX(-50%)', letterSpacing: '1.05px',  
+      fontWeight: 800, fontSize: '60.75px'}}> 
+        🧱 Writing Posts...
+      </Typography>
+      <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, position: 'absolute', 
+      top: '407.5px', left: 'calc(50% + 185px)', transform: 'translateX(-50%)', letterSpacing: '-0.05px',  fontWeight: 500, fontSize: '25.75px'}}> 
+        {`Return in ~5 minutes and they'll be ready!`}
+      </Typography> </>}
 
-      <Dialog open={isDialogOpen} onClose={handleClose} 
-      PaperProps={{ style: { minHeight: '650px', minWidth: '1000px', display: 'flex', flexDirection: "row" } }}>
-        <Card sx={{ width: '500px', height: '650px', backgroundColor: 'white', borderRadius: '0px',
-        padding: '55px' }}>
-        <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, lineHeight: '55px',
-        letterSpacing: '-0.45px',  fontWeight: 800, fontSize: '40.75px', marginBottom: '25px'}}> 
-        Inviting Clients To Review {firmName}</Typography>
-        <Typography sx={{ fontFamily: "serif", mb: 0, lineHeight: '55px', marginBottom: '35px',
-        letterSpacing: '-0.35px',  fontWeight: 500, fontSize: '24.75px'}}> 
-        1. Send client your Pentra link<br /> 
-        2. We ask them for a quick rating <br /> 
-        3. If it is a strong rating, we invite <br /> 
-        &nbsp;&nbsp;&nbsp;them to leave a full review on <br />
-        &nbsp;&nbsp;&nbsp;your chosen platform <br /> 
-        4. If not, we only have them elaborate <br /> 
-        &nbsp;&nbsp;&nbsp;so you can see what went wrong<br /> 
-        </Typography>
-        </Card>
-        <Card sx={(theme) => ({ width: '525px', height: '650px', backgroundColor: theme.palette.primary.navBg, 
-        borderRadius: '0px', display: 'flex', justifyContent: 'center', alignItems: 'center' })}>
-          {/* <img src="https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/Screenshot%202024-04-15%20at%2010.48.21%E2%80%AFPM.png?alt=media&token=e1a359e7-f779-4cf3-b0a0-b68d11175f67" 
-          style={{height: '600px', width: '415px', borderRadius: '4px'}} alt=""/> */}
-        </Card>
-      </Dialog>
-
-
-    <Stack direction="column" spacing={2.25}>
-
-
-    <Card sx ={(theme) => ({ height: '110px', width: '100%', borderRadius: '11px', 
-    border: `4px solid ${theme.palette.primary.main}`})}>
-        <Stack direction="row" sx ={{ justifyContent: 'center', alignItems: 'center', height: '100%',
-      width: '100%', }} spacing={2}>
-
-        <Typography variant="subtitle3" fontSize="24.25px" position="" left="67.5px" 
-      letterSpacing="0.45px" fontWeight="400" fontFamily="DM Serif Display">🎉 Shareable Link</Typography>
-      <TextField size="small" variant="outlined" sx={{ fontSize: '35px',
-      right: '0px', width: '390px', bottom: '0px', borderRadius: '0px'}} value={reviewLink}/>
-        <Stack direction="row" spacing={2}>
-        <Button variant="contained" startIcon={<Iconify icon="prime:copy" />} onClick={() => {navigator.clipboard.writeText(reviewLink); setIsCopied(true);}}
-        sx={(theme)=>({backgroundColor: theme.palette.primary.navBg, right: '0px', height: '40px', '&:hover': {backgroundColor: isCopied ? theme.palette.primary.navBg : `` }})}>
-           {isCopied ? `Link Copied` : `Copy Link`}</Button>
-        <Button variant="contained" sx={(theme)=>({backgroundColor: theme.palette.primary.main, right: '0px', height: '40px', maxWidth: '20px',
-        justifyContent: 'center', alignItems: 'center', display: 'flex', padding: '0px'})} onClick={()=> window.open(`http://${reviewLink}`, '_blank')}><Iconify icon="mingcute:external-link-line" /></Button>
-        {/* <Button variant="contained" sx={(theme)=>({backgroundColor: theme.palette.primary.main, right: '0px', height: '40px', maxWidth: '20px',
-        justifyContent: 'center', alignItems: 'center', display: 'flex', padding: '0px'})}><Iconify icon="ic:round-info" /></Button> */}
-        </Stack></Stack>
-    </Card> 
-
-
-    <Stack direction="row" spacing={2.25}>
-     <Card sx ={(theme) => ({ height: 'auto', width: '70%', borderRadius: '11px',
-     border: `4px solid ${theme.palette.primary.lighter}`,  })}>
-      <Stack
-        direction="column"
-        spacing={0}>
-
-        {reviewPlatforms.map((platform, index) => (
-          <Card key={index} sx={{ height: '100px', backgroundColor: "white", display: 'flex', justifyContent: 'center',
-            borderRadius: '0px', borderBottomWidth: '3px', borderColor: 'black', alignItems: 'center' }}>
-            <Iconify icon="streamline:business-card-solid" position="absolute" left="30px" width="23.75px" height="23.75px" color="#474444"/>
-            <Typography variant="subtitle2" fontSize="19.3px" position="absolute" left="65.0px" color="#474444"
-            fontFamily='' letterSpacing="-1.025px" fontWeight="600"> {platform} </Typography>
-            <TextField value={links[index+1]} label="Firm Review Page" size="small" variant="outlined" sx={{position: "absolute", 
-            right: '147.5px', width: '328px', bottom: '29px', borderRadius: '0px'}}
-            onChange={(e) => {const newLinks = {...links}; newLinks[index+1] = e.target.value; setLinks(newLinks);}}/>
-            <Button variant="contained" startIcon={<Iconify icon="fluent:link-multiple-24-filled" />}
-            sx={(theme)=>({backgroundColor: selectedPlatform === index + 1 ? theme.palette.primary.navBg : theme.palette.primary.main ,
-            position: "absolute", right: '30px', height: '40px', '&:hover': { backgroundColor: selectedPlatform === index+1 ? theme.palette.primary.navBg : `` }})}
-            onClick={()=>{setSelectedPlatform(index+1)}}>
-               Select</Button>
-          </Card>
-        ))}
-
-      </Stack>
-      </Card>
-      
-      
-      <Card sx ={(theme) => ({ border: `4px solid ${theme.palette.primary.lighter}`, height: 'auto', width: '30%', 
-      display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: '11px',})}>
-      <Typography sx={{ fontFamily: "DM Serif Display", letterSpacing: '-0.75px',  fontWeight: 500, fontSize: '32.75px', textAlign: 'center',
-      position: "absolute", top: "70px", width: "200px"}}> 
-                {"Invite To Leave Review "}
-        <span style={{ fontStyle: 'italic', fontWeight: '200' }}> Only If </span></Typography>
-
-      <Select
-        value={starsNeeded}
-        onChange={(event) => setStarsNeeded(event.target.value)}
-        sx={{position: 'absolute', bottom: '120px', height: '38px', width: '150px'}}
-      >
-        <MenuItem value={5}>⭐⭐⭐⭐⭐</MenuItem>
-        <MenuItem value={4}>⭐⭐⭐⭐ +</MenuItem>
-        <MenuItem value={3}>⭐⭐⭐ +</MenuItem>
-        <MenuItem value={2}>⭐⭐ +</MenuItem>
-        <MenuItem value={1}>⭐ +</MenuItem>
-      </Select>
-
-        <Button variant="contained" startIcon={<Iconify icon="carbon:save" />}
-        sx={(theme)=>({backgroundColor: theme.palette.primary.navBg, position: 'absolute', bottom: '65px',
-        '&:hover': {backgroundColor: theme.palette.primary.navBg } })}
-        onClick={saveChanges}>
-        Save Changes</Button>
-      </Card>
-
-      
-
-      </Stack> </Stack>    
-    </Container >
-
-    {isReviewsDone && <Container sx={{ mt: 2.5 }}>
-      {/* <Stack direction="row" alignItems="center" justifyContent="space-between" mb={3}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
         <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, 
-        letterSpacing: '1.05px',  fontWeight: 800, fontSize: '32.75px'}}> 
-        Reviews Thus far</Typography>
-      </Stack> */}
+      letterSpacing: '1.05px',  fontWeight: 800, fontSize: '32.75px'}}>         
+        {isNewPost ? 'Add New Keywords' : 'Keywords Being Tracked'}
+        </Typography>
+        
+        <Stack direction="row" spacing={2}>
+        {isNewPost && (<>
 
-      <div style={{ position: 'relative' }}>
-      <div style={{
-      borderRadius: '50px',
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      background: 'rgba(255, 255, 255, 0.7)',
-      backdropFilter: 'blur(3px)',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      zIndex: 10
-    }}>
-      <span style={{
-        fontFamily: "'Old Standard TT', serif",
-        fontSize: '2rem',
-        color: 'black'
-      }}>
-        Coming Soon
-      </span>
-    </div>
+        <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} 
+      onClick={() => {
+        switch (wordRange) {
+          case "2": setWordRange("3"); break;
+          case "3": setWordRange("4"); break;
+          case "4": setWordRange("5"); break;
+          case "5": setWordRange("5+"); break;
+          case "5+": setWordRange("1"); break;
+          case "1": setWordRange("2"); break;
+          default: setWordRange("2");
+        }
+      }}
+      sx={(theme) => ({backgroundColor: theme.palette.primary.green, '&:hover': { backgroundColor: theme.palette.primary.green, },})}>
+      {wordRange} Paragraphs </Button>
 
-      <Card>
-      
-      {/* <Stack sx={{ py: 2.5, px: 2.5 }}direction="row" spacing={1.6} alignItems="center">
-        <ProductSearch posts={products} />
-      
-        <ProductSort onChange={values => setLocations(values)} values={[]}/>
-<FollowerSort onChange={values => setFollowers(values)} values={[]}/>
-<PlatformSort onChange={values => setPlatforms(values)} values = {[]}/>
-<EngagementSort onChange={values => setEngagement(values)} values={[]}/>
-<StyleSort onChange={values => setStyles(values)} values={[]}/>
+        <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} 
+      onClick={() => {
+        switch (style) {
+          case "Unstyled": setStyle("How-To Guide"); break;
+          case "How-To Guide": setStyle("Narrative"); break;
+          case "Narrative": setStyle("Pointers"); break;
+          case "Pointers": setStyle("Case Study"); break;
+          case "Case Study": setStyle("Comparision"); break;
+          case "Comparision": setStyle("Case Law Breakdown"); break;
+          case "Case Law Breakdown": setStyle("Unstyled"); break;
+          default: setStyle("Unstyled");
+        }
+      }}
+        sx={(theme) => ({backgroundColor: theme.palette.primary.green, '&:hover': { backgroundColor: theme.palette.primary.green, },})}>
+        {style} </Button>
 
-          <Button variant="contained" color="inherit" >
-          Search: 258 results
-          </Button>
-          
+        <Button variant="contained" sx={(theme) => ({backgroundColor: theme.palette.primary.green, '&:hover': { backgroundColor: theme.palette.primary.green, }})} startIcon={<Iconify icon="eva:plus-fill" />} 
+        onClick={() => {
+          switch (genPostPlatform) {
+          case "LinkedIn": setGenPostPlatform("Facebook"); break;
+          case "Facebook": setGenPostPlatform("Instagram"); break;
+          case "Instagram": setGenPostPlatform("LinkedIn"); break;
+          default: setGenPostPlatform("LinkedIn");
+        }}}>
+          {genPostPlatform}
+        </Button>
+        </>)}
 
-        </Stack> */}
+       {!isNewPost && (<>
+        <Button variant="contained" onClick={() => {}}
+        sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, cursor: 'default', fontWeight: '600'})}>
+          {!isUpdateTime ? `${timeToUpdate} Days Left` : 'Update In Progress'}
+        </Button>
+        </>)}
+        
+        <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => handleClickRoute()}
+        sx={(theme) => ({backgroundColor: theme.palette.primary.black})}>
+          {isNewPost ? 'Close Creator' : 'Add New Keywords'}
+        </Button>
+      </Stack></Stack>
 
-        <Scrollbar>
-          <TableContainer sx={{ overflow: 'unset' }}>
-            <Table sx={{ minWidth: 800 }}>
-              <UserTableHead
-                order={order}
-                orderBy={orderBy}
-                rowCount={users.length}
-                numSelected={selected.length}
-                onRequestSort={handleSort}
-                onSelectAllClick={handleSelectAllClick}
-                headLabel={[
-                  { id: 'IG_handle', label: 'Instagram Handle', align: 'left' },
-                  { id: 'followers', label: 'Followers' },
-                  { id: 'platforms', label: 'Platforms' },
-                  { id: 'country', label: 'Country', align: 'center' },
-                  { id: 'engagement', label: 'Engagement' },
-                  { id: 'engagement', label: 'Views' },
-                  { id: 'email', label: 'Email' },
-                  { id: '', label: '' },
-                ]}
-              />
-              <TableBody>
-                {dataFiltered
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => (
-                    <UserTableRow
-                      key={row.id}
-                      IG_handle={row.IG_handle}
-                      platforms={`${row?.platforms[0] === true && "IG"}${row?.platforms[1] === true ? " TT" : ""}${row?.platforms[2] === true ? " YT" : ""}`}
-                      engagement={row.engagement}
-                      followers={row.followers}
-                      avatarUrl={row.avatarUrl}
-                      country={row.country}
-                      email={row.email}
-                      selected={selected.indexOf(row.name) !== -1}
-                      handleClick={(event) => handleClick(event, row.name)}
-                    />
-                  ))}
+      {isNewPost ? <>
+      <Stack mb={3} direction="row" alignItems="center" justifyContent="space-between"
+      sx={{}} spacing={2}>
+    
+      <Stack direction="row" spacing={2} sx={{width: 'calc(100% - 150px)'}}>
+      <TextField
+       value={postDescription}
+       onChange={(e) => setPostDescription(e.target.value)}
+       placeholder='Post Description'
+       sx={{width: '70%'}} />
 
-                <TableEmptyRows
-                  height={77}
-                  emptyRows={emptyRows(page, rowsPerPage, users.length)}
-                />
+      <TextField
+       value={postKeywords}
+       onChange={(e) => setPostKeywords(e.target.value)}
+       placeholder='Post Keywords'
+       sx={{width: '30%'}} />
+       </Stack>
+       
+        <Button onClick={() => {generatePosts()}}
+        variant="contained" color="inherit" 
+        sx={{height: '54px', width: '150px'}}>
+          Generate ✨
+        </Button>
+        </Stack>
+        </> : null}
 
-                {notFound && <TableNoData query={filterName} />}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Scrollbar>
+        {isUseNews && (<>
+        <Stack direction="row" spacing={2} alignItems="center" mt={0} mb={2}>
+        
+        <Button onClick={() => {}}
+        variant="contained" color="inherit" 
+        sx={{height: '54px', width: '150px', cursor: 'default'}}>
+          Search For 
+          <Iconify icon="eva:arrow-right-fill" />
+        </Button>
 
-        <TablePagination
-          page={page}
-          component="div"
-          count={users.length}
-          rowsPerPage={rowsPerPage}
-          onPageChange={handleChangePage}
-          rowsPerPageOptions={[5, 10, 25]}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Card>
-      </div>
-    </Container>}
-    </>
+        <TextField
+        value={browseText}
+        onChange={(e) => setBrowseText(e.target.value)}
+        placeholder='Personal Injury News in the last 7 days'
+        sx={{width: '100%', mt: 0, }} /> 
+        </Stack>
+       </>)}
+
+      <Grid container spacing={3} sx={{width: '100%'}}>
+        {weeklyPosts.map(({ platform, content }, index) => (
+          <PostCard key={index} platform={platform} content={content} index={index} isGen={isGenerating} />
+        ))}
+      </Grid>
+
+      {isNewPost && (<>
+      <Stack direction="row" spacing={2} mt={3}>
+
+        <Button variant="contained" sx={(theme) => ({backgroundColor: theme.palette.primary.black, '&:hover': { backgroundColor: theme.palette.primary.black, }, cursor: 'default'})}>
+        Power Tools <Iconify icon="eva:arrow-right-fill" /></Button>
+
+        <Button variant="contained" sx={(theme) => ({backgroundColor: imageSettings !== "No" ? theme.palette.primary.green : 'grey', '&:hover': { backgroundColor: theme.palette.primary.green, }})} startIcon={<Iconify icon="eva:plus-fill" />} 
+        onClick={() => {
+          switch (imageSettings) {
+          case "Brand & Web": setImageSettings("Brand"); break;
+          case "Brand": setImageSettings("Web"); break;
+          case "Web": setImageSettings("No"); break;
+          case "No": setImageSettings("Brand & Web"); break;
+          default: setImageSettings("Brand & Web");
+        }}}>
+          Use {imageSettings} Images
+        </Button>
+
+        <Button variant="contained" sx={(theme) => ({backgroundColor: isUseNews ? theme.palette.primary.green : 'grey', '&:hover': { backgroundColor: theme.palette.primary.green, }})} startIcon={<Iconify icon="eva:plus-fill" />} 
+        onClick={() => setIsUseNews(!isUseNews)}>
+          Use News
+        </Button>
+
+        <Button variant="contained" sx={(theme) => ({backgroundColor: isUseBlog ? theme.palette.primary.green :'grey', '&:hover': { backgroundColor: theme.palette.primary.green, }})} startIcon={<Iconify icon="eva:plus-fill" />} 
+        onClick={() => setIsUseBlog(!isUseBlog)}>
+          Use Blogs
+        </Button>
+
+
+      </Stack> 
+
+      </>)}
+    </Container>
   );
 }

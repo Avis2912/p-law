@@ -46,6 +46,7 @@ export default function BlogView() {
   const [timeToUpdate, setTimeToUpdate] = useState("");
   const [isUpdateTime, setIsUpdateTime] = useState(false);
   const [isFeedbackMode, setIsFeedbackMode] = useState(false);
+  const [isUseCreativeCommons, setIsUseCreativeCommons] = useState(false);
 
   const [selectedModel, setSelectedModel] = useState(1);
   const [weeklyBlogs, setWeeklyBlogs] = useState([]);
@@ -266,25 +267,26 @@ export default function BlogView() {
     const regex = /\/\/Image: (.*?)\/\//g;
 
     const fetchImage = async (description) => {
-      const subscriptionKey = `${import.meta.env.VITE_BING_API_KEY}`;
-      const host = 'api.bing.microsoft.com';
-      const path = '/v7.0/images/search';
-      const url = `https://${host}${path}?q=${encodeURIComponent(description)}`;
+      let resultImg = null; 
+      const url = "https://api.dataforseo.com/v3/serp/google/images/live/advanced";
+      const payload = JSON.stringify([{
+          keyword: `${description}`,
+          location_code: 2826, language_code: "en",
+          device: "desktop", os: "windows", depth: 100,
+          search_param: isUseCreativeCommons ? "&tbs=sur:cl" : ``,
+      }]);
 
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Ocp-Apim-Subscription-Key': subscriptionKey,
-        },
-      });
+      const headers = {
+          'Authorization': 'Basic ZW1pckB0cnVzdGx5LmNsdWI6MTM3YTRjZDdhNDI5OTA0Yg==',
+          'Content-Type': 'application/json'
+      };
 
-      const data = await response.json();
+      await fetch(url, { method: 'POST', headers, body: payload })
+      .then(response => response.json())
+      .then(data => {console.log(data.tasks[0].result[0].items[0].source_url); resultImg = `<img src="${data.tasks[0].result[0].items[0].source_url}" alt="${description}" style="max-width: 600px;" />`;})
+      .catch(error => console.error('Error:', error));
 
-      if (data.value && data.value.length > 0) {
-        const firstImageResult = data.value[0];
-        return `<image src="${firstImageResult.thumbnailUrl}" alt="${description}" />`;
-      }
-      return null;
+      return resultImg;
     };
 
     const postsWithImages = [];
