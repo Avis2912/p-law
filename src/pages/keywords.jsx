@@ -21,7 +21,7 @@ export default function UserPage() {
   return (
     <>
       <Helmet>
-        <title> User </title>
+        <title> Keywords | Pentra </title>
       </Helmet>
 
       <UserView />

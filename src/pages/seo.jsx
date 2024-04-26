@@ -38,7 +38,7 @@ export default function SeoPage() {
   return (
     <>
       <Helmet>
-        <title> SEO | Pentra </title>
+        <title>Creator | Pentra</title>
       </Helmet>
 
       <CreatorsView />

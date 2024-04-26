@@ -605,8 +605,8 @@ export default function ProductsView() {
       <Stack direction="row" spacing={2} sx={{width: 'calc(100% - 150px)'}}>
       
       <TextField value={blogTitle} onChange={(e) => setBlogTitle(e.target.value)}
-       placeholder={currentMode === "Alter Draft" ? 'Make the first two sections shorter & replace mentions of TX with Dallas' : 'Blog Title'}
-       sx={{width: currentMode === "Alter Draft" ? '100%' : '40%', transition: 'ease 0.3s'}} />
+       placeholder={currentMode === "Alter Draft" ? 'Make the first two sections shorter & replace mentions of TX with Dallas' : 'Blog Post Title'}
+       sx={{width: currentMode === "Alter Draft" ? '100%' : '61%', transition: 'ease 0.3s'}} />
 
     
       {isGenerating && (

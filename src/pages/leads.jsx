@@ -21,7 +21,7 @@ export default function ConversationsPage() {
   return (
     <>
       <Helmet>
-        <title> Conversations </title>
+        <title> Leads | Pentra </title>
       </Helmet>
 
       <ConversationsView />

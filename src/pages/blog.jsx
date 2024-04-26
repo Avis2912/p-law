@@ -40,7 +40,7 @@ export default function SeoPage() {
     <>
     {/* <Router> */}
       <Helmet>
-        <title> Blog Post | Pentra </title>
+        <title>Blog Post | Pentra</title>
       </Helmet>
 
       <CreatorsView />

@@ -21,7 +21,7 @@ export default function BlogPage() {
   return (
     <>
       <Helmet>
-        <title> Weekly Drafts </title>
+        <title>Drafts | Pentra </title>
       </Helmet>
 
       <BlogView />

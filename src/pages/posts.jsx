@@ -21,7 +21,7 @@ export default function BlogPage() {
   return (
     <>
       <Helmet>
-        <title> Posts </title>
+        <title>Social Posts | Pentra</title>
       </Helmet>
 
       <BlogView />
