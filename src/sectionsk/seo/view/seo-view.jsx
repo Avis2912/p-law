@@ -562,7 +562,7 @@ export default function ProductsView() {
           letterSpacing: '-0.15px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', 
           maxWidth: '325px', } }}>{source.title} </ListItemText>
 
-          <Iconify icon={(index === 0 || index === 1) ? "noto:star" : ""} sx={{width: '19.5px',
+          <Iconify icon={(index === 0 || index === 1 || index === 2) ? "noto:star" : ""} sx={{width: '19.5px',
           height: '19.5px', position: 'absolute', right: '80px', top: '8.75px', cursor: 'pointer'}}
           onClick={() => {setExpandedSource(expandedSource === index ? null : index);}}/>
 
@@ -610,7 +610,7 @@ export default function ProductsView() {
 
     
       {isGenerating && (
-      <Stack direction="column" spacing={loadIndicator[0] === "Welcome Back!" ? 0.5 : 1.25} sx={{top: '350px', right: 'calc((100% - 285px)/2 - 160px)', position: 'absolute', 
+      <Stack direction="column" spacing={loadIndicator[0] === "Welcome Back!" ? 0.5 : 1.25} sx={{top: '382.5px', right: 'calc((100% - 285px)/2 - 160px)', position: 'absolute', 
       height: 'auto', width: '320px', backgroundColor: 'transparent', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
 
       <Typography sx={{ fontFamily: "DM Serif Display",

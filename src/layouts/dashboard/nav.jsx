@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { getDownloadURL, ref, getStorage } from 'firebase/storage';
 
@@ -13,6 +13,7 @@ import Avatar from '@mui/material/Avatar';
 import { alpha } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import ListItemButton from '@mui/material/ListItemButton';
+import Divider from '@mui/material/Divider';
 
 import { usePathname } from 'src/routes/hooks';
 import { RouterLink } from 'src/routes/components';
@@ -100,11 +101,23 @@ export default function Nav({ openNav, onCloseNav }) {
   );
 
   const renderMenu = (
-    <Stack component="nav" spacing={1} sx={{ px: 2 }}>
-      {navConfig.map((item) => (
-        <NavItem key={item.title} item={item} />
-      ))}
-    </Stack>
+<Stack component="nav" spacing={1} sx={{ px: 2 }}>
+  {navConfig.map((item, index) => (
+<React.Fragment key={item.title}>
+  <NavItem item={item} sx={index === 3 ? { marginBottom: '50px' } : {}} />
+      {/* {index === 3 && 
+        <Divider sx={{ 
+          width: '30%', 
+          marginLeft: '280px', 
+          position: 'absolute',
+          borderColor: 'grey', 
+          top: '388px',
+          left: '34.0px',
+        }} 
+        />} */}
+    </React.Fragment>
+  ))}
+</Stack>
   );
 
   const renderUpgrade = (

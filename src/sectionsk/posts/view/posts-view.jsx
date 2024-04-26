@@ -46,7 +46,8 @@ export default function BlogView() {
   const [weeklyPosts, setWeeklyPosts] = useState([]);
   const [bigBlogString, setBigBlogString] = useState([]);
   const [firmName, setFirmName] = useState(null);
-  const [firmDescription, setFirmDescription] = useState(null);
+
+  const updateDays = 7;
 
   // PAGE LOAD FUNCTIONS
 
@@ -150,7 +151,7 @@ export default function BlogView() {
           if (firmDoc.exists()) {
             const lastDateParts = firmDoc.data().WEEKLY_POSTS.LAST_DATE.split('/');
             const lastDate = new Date(`20${lastDateParts[2]}/${lastDateParts[0]}/${lastDateParts[1]}`);
-            const diffDays = 7 - Math.ceil((new Date() - lastDate) / (1000 * 60 * 60 * 24));
+            const diffDays = updateDays - Math.ceil((new Date() - lastDate) / (1000 * 60 * 60 * 24));
             await setSelectedModel(firmDoc.data().FIRM_INFO.MODEL);
             if (firmDoc.data().WEEKLY_POSTS.LAST_DATE === "") {setIsUpdateTime(true); return;}
             await setWeeklyPosts(firmDoc.data().WEEKLY_POSTS.POSTS || []);

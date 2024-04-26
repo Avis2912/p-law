@@ -84,7 +84,7 @@ export default function PostCard({ platform, content, index, isGen }) {
       backgroundPosition: 'center',  }} />
 
       <Card sx={{position: 'absolute', width: '90%', height: '125px', backgroundColor: 'transparent',
-      top:'210px', borderRadius: '2px' }}> 
+      top:'210px', borderRadius: '2px', boxShadow: 'none', }}> 
 
       <Typography sx={{ fontFamily: 'DM Serif Display', letterSpacing: '-0.5', fontWeight: '500', fontSize: "26px",
       lineHeight: '30px', overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>

@@ -127,6 +127,7 @@ const newUser = async (docName, firmInfo, smallBlog, bigBlog, chatInfo, competit
 
 const updateLeads = async () => {
     const sampleLeads = [{
+        ID: 10000000,
         NAME: "Sample John",
         EMAIL: "johnsample@gmail.com",
         NUMBER: "542-123-4568",
@@ -136,6 +137,7 @@ const updateLeads = async () => {
             {role: 'assistant', content: `Hey there, thanks for visiting us! How can I help you today?`},
             {role: 'user', content: `Hey! Can you guys help me with EB1 Wait Time Expedition?`},
         ]}, { 
+        ID: 10000001,
         NAME: "Sample Sarah",
         EMAIL: "sarahsample@gmail.com",
         NUMBER: "542-123-4567",
@@ -156,24 +158,74 @@ const updateLeads = async () => {
         firmsSnapshot.forEach(async (firmDoc) => {
             const firmRef = doc('firms/' + firmDoc.id);
             await updateDoc(firmRef, {
-                // LEADS: sampleLeads
-                // CHAT_INFO: {
-                //     PROMPT: CHAT_PROMPT,
-                //     IMAGE: CHAT_IMAGE,
-                //     THEME: CHAT_THEME,
-                // }
-                REVIEWS: {
-                    LINKS: {
-                    1: '',
-                    2: '',
-                    3: '',
-                    4: '',
-                },
-                SELECTION: 1,
-                THRESHOLD: 4,
-                NEW_REVIEWS: []
-            }
-            });
+            // LEADS: sampleLeads,
+            // CHAT_INFO: {
+            //     PROMPT: CHAT_PROMPT,
+            //     IMAGE: CHAT_IMAGE,
+            //     THEME: CHAT_THEME,
+            // }
+        //     COMPETITION: {
+        //         LAST_DATE: '04/25/24',
+        //         COMPETITION: [{
+        //         NAME: 'Sample Lawyers',
+        //         SITE: 'bergplummer.com',
+        //         BLOG_PAGE: 'bergplummer.com/blog',
+        //         TRAFFIC: [1200, 1400, 1300, 1500],
+        //         RANKING_FOR: ['Dallas asset protection', 'Asset protection firms near me', 'Estate protection attorneys'],
+        //         RECENT_BLOGS: [
+        //           { TITLE: 'How to Protect Short-Term Tental Assets', DATE: '09/12/21', LINK: 'test.com' },
+        //           { TITLE: 'Effective Real Estate Investment Strategies', DATE: '09/15/21', LINK: 'example1.com' },
+        //           { TITLE: 'Understanding The Best Legal Services for Financial Planning', DATE: '09/18/21', LINK: 'example2.com' },
+        //           { TITLE: 'The Importance of Insurance in Retirement Planning', DATE: '09/21/21', LINK: 'example3.com' },
+        //         ],
+        //         JOBS: [
+        //           { TITLE: 'Lawyer', POSTED: 'A Month Ago', LINK: 'hi.com' },
+        //         ],
+        //         ORG: {
+        //           LINKEDIN: 'https://www.linkedin.com/',
+        //           FACEBOOK: 'N/A',
+        //         }
+        //       },
+        //       {
+        //         NAME: 'Sample Lawyers',
+        //         SITE: 'injuryattorneyofdallas.com',
+        //         BLOG_PAGE: 'injuryattorneyofdallas.com/blog',
+        //         TRAFFIC: [2650, 2550, 2700, 2650],
+        //         RANKING_FOR: ['Texas rental attorneys', 'Real estate lawyers close by', 'Asset protection attorneys'],
+        //         RECENT_BLOGS: [
+        //           { TITLE: 'How to Protect Short-Term Tental Assets', DATE: '09/12/21', LINK: 'test.com' },
+        //           { TITLE: 'Effective Real Estate Investment Strategies', DATE: '09/15/21', LINK: 'example1.com' },
+        //           { TITLE: 'Understanding The Best Legal Services for Financial Planning', DATE: '09/18/21', LINK: 'example2.com' },
+        //           { TITLE: 'The Importance of Insurance in Retirement Planning', DATE: '09/21/21', LINK: 'example3.com' },
+        //         ],
+        //         JOBS: [
+        //           { TITLE: 'Lawyer', POSTED: 'A Month Ago', LINK: 'hi.com' },
+        //         ],
+        //         ORG: {
+        //           LINKEDIN: 'https://www.linkedin.com/',
+        //           FACEBOOK: 'N/A',
+        //         }
+        //       },
+        //     ]
+        // }
+        WEEKLY_KEYWORDS: {
+            LAST_DATE: '04/25/24',
+            KEYWORDS: [
+                {keyword: "Asset Protection", data: [12100, 12100, 12100, 9900]},
+                {keyword: "Short-Term Rentals", data: [27100, 74000, 27100, 33100]},
+                {keyword: "Real Estate Investment", data: [90500, 110000, 110000, 110000]},
+                {keyword: "Legal Services", data: [18100, 22200, 18100, 33100]},
+                {keyword: "Financial Planning", data: [27100, 40500, 40500, 33100]},
+                {keyword: "Tax Services", data: [14800, 49500, 40500, 40500]},
+                {keyword: "Insurance", data: [550000, 673000, 673000, 673000]},
+                {keyword: "Retirement Planning", data: [90500, 135000, 165000, 165000]},
+                {keyword: "Estate Planning", data: [33100, 49500, 49500, 40500]},
+                {keyword: "Wealth Management", data: [27100, 40500, 40500, 60500]},
+                {keyword: "Investment Advice", data: [3600, 6600, 8100, 6600]},
+                {keyword: "Business Consulting", data: [22200, 27100, 27100, 27100]},
+            ]
+        }
+    });
         });
         console.log("All firms have been updated successfully.");
     } catch (error) {
@@ -184,8 +236,10 @@ const updateLeads = async () => {
 // uploadSome();
 updateLeads();
 
+let newUserMoment = false;
 
-newUserb(docName = 'STR Law Guys',
+if (newUserMoment) {
+newUser(docName = 'STR Law Guys',
 
 firmInfo = {
     CONTACT_US: "https://www.strlawguys.com/contact-us/",
@@ -203,7 +257,20 @@ firmInfo = {
     PLAN: "Full Suite",
 },
 
-keywords = ["Asset Protection", "Short-Term Rentals", "Real Estate", "Investment", "Legal Services"],
+keywords = [
+    {keyword: "Asset Protection", data: [4200, 5500, 1300, 6500]},
+    {keyword: "Short-Term Rentals", data: [4200, 5500, 1300, 6500]},
+    {keyword: "Real Estate Investment", data: [4200, 5500, 1300, 6500]},
+    {keyword: "Legal Services", data: [4200, 5500, 1300, 6500]},
+    {keyword: "Financial Planning", data: [4200, 5500, 1300, 6500]},
+    {keyword: "Tax Services", data: [4200, 5500, 1300, 6500]},
+    {keyword: "Insurance", data: [4200, 5500, 1300, 6500]},
+    {keyword: "Retirement Planning", data: [4200, 5500, 1300, 6500]},
+    {keyword: "Estate Planning", data: [4200, 5500, 1300, 6500]},
+    {keyword: "Wealth Management", data: [4200, 5500, 1300, 6500]},
+    {keyword: "Investment Advice", data: [4200, 5500, 1300, 6500]},
+    {keyword: "Business Consulting", data: [4200, 5500, 1300, 6500]},
+],
 
 smallBlog = [0, 1],
 
@@ -447,19 +514,48 @@ chatInfo = {
 
 competition = {
     LAST_DATE: "03/31/24",
-    MartinLawyers: {
-        TRAFFIC: {"April": 32000, "March": 30000, "February": 28000},
-        BLOGS_THIS_MONTH: {
-            'Title 1 || 31/03/24': 'https://www.martinlawyers.com/blog/title-1'
-        },
-        LINKEDIN_DATA: {
-            EMPLOYEE_DISTRIBUTION: {},
-            EMPLOYEE_GROWTH: [],
-            JOB_OPENINGS: [{}],
+    COMPETITION: [{
+        NAME: 'Sample Lawyers',
+        SITE: 'bergplummer.com',
+        BLOG_PAGE: 'bergplummer.com/blog',
+        TRAFFIC: [1200, 1400, 1300, 1500],
+        RANKING_FOR: ['Dallas asset protection', 'Asset protection firms near me', 'Estate protection attorneys'],
+        RECENT_BLOGS: [
+          { TITLE: 'How to Protect Short-Term Tental Assets', DATE: '09/12/21', LINK: 'test.com' },
+          { TITLE: 'Effective Real Estate Investment Strategies', DATE: '09/15/21', LINK: 'example1.com' },
+          { TITLE: 'Understanding The Best Legal Services for Financial Planning', DATE: '09/18/21', LINK: 'example2.com' },
+          { TITLE: 'The Importance of Insurance in Retirement Planning', DATE: '09/21/21', LINK: 'example3.com' },
+        ],
+        JOBS: [
+          { TITLE: 'Lawyer', POSTED: 'A Month Ago', LINK: 'hi.com' },
+        ],
+        ORG: {
+          LINKEDIN: 'https://www.linkedin.com/',
+          FACEBOOK: 'N/A',
         }
-    }
+      },
+      {
+        NAME: 'Sample Lawyers',
+        SITE: 'injuryattorneyofdallas.com',
+        BLOG_PAGE: 'injuryattorneyofdallas.com/blog',
+        TRAFFIC: [2650, 2550, 2700, 2650],
+        RANKING_FOR: ['Texas rental attorneys', 'Real estate lawyers close by', 'Asset protection attorneys'],
+        RECENT_BLOGS: [
+          { TITLE: 'How to Protect Short-Term Tental Assets', DATE: '09/12/21', LINK: 'test.com' },
+          { TITLE: 'Effective Real Estate Investment Strategies', DATE: '09/15/21', LINK: 'example1.com' },
+          { TITLE: 'Understanding The Best Legal Services for Financial Planning', DATE: '09/18/21', LINK: 'example2.com' },
+          { TITLE: 'The Importance of Insurance in Retirement Planning', DATE: '09/21/21', LINK: 'example3.com' },
+        ],
+        JOBS: [
+          { TITLE: 'Lawyer', POSTED: 'A Month Ago', LINK: 'hi.com' },
+        ],
+        ORG: {
+          LINKEDIN: 'https://www.linkedin.com/',
+          FACEBOOK: 'N/A',
+        }
+      }]
 },
-);
+); } else {console.log('skipped new user')};
 
 //  4. Make sure to always follow this conversation flow:
 //    - First, greet user and ask them if they're an existing client.

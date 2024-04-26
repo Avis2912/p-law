@@ -25,17 +25,19 @@ import { useEffect, useState } from 'react';
 import { getDocs, collection, doc, updateDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, getStorage } from 'firebase/storage'; // Import necessary Firebase Storage functions
 import zIndex from '@mui/material/styles/zIndex';
+import { format, subMonths } from 'date-fns';
 
 
 // ----------------------------------------------------------------------
 
-export default function PostCard({ platform, content, index, isGen }) {
+export default function PostCard({ keyword, data, index, isGen }) {
 
-  const data = [
-    { month: 'January', value: 5000 },
-    { month: 'February', value: 6000 },
-    { month: 'March', value: 5500 },
-    { month: 'April', value: 6580 },
+  const currentMonth = new Date();
+  const monthlyData = [
+    { month: format(subMonths(currentMonth, 3), 'MMMM'), value: data[0] },
+    { month: format(subMonths(currentMonth, 2), 'MMMM'), value: data[1] },
+    { month: format(subMonths(currentMonth, 1), 'MMMM'), value: data[2] },
+    { month: format(currentMonth, 'MMMM'), value: data[3] },
   ];
 
   const cardColor = '#0072b1';
@@ -51,7 +53,7 @@ const options = {
     hover: { size: 7 }
   },
   xaxis: {
-    categories: data.map(item => item.month),
+    categories: monthlyData.map(item => item.month),
     labels: { show: false },
     axisBorder: { show: false },
     axisTicks: { show: false },
@@ -78,7 +80,7 @@ const options = {
   const series = [
     {
       name: 'hits',
-      data: data.map(item => item.value)
+      data: monthlyData.map(item => item.value)
     }
   ];
 
@@ -115,40 +117,55 @@ const options = {
 
   return (
     <Grid xs={12} sm={latestPostLarge ? 12 : 6} md={latestPostLarge ? 3 : 4}>
+      <style>@import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap);</style>
           
       {/* <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'center',}}
       open={open} autoHideDuration={3000} onClose={handleCloseAlert} 
       message={<span style={{ width: '80px', height: '50px' }}>Copied!</span>}
       style={{ marginTop: '0px', zIndex: 9999999 }} /> */}
 
-      <Card sx = {{ height: 225, borderRadius: '8px', border: '2.5px solid', borderColor: cardColor }} onClick={() => handleClick()}>
+      <Card sx = {{ height: 222.5, borderRadius: '8px', border: '2.5px solid', borderColor: cardColor }} onClick={() => handleClick()}>
         
-      <Stack sx={{width: '100%', zIndex: 1, height: 50, backgroundColor: cardColor, 
+      <Stack sx={{width: '100%', zIndex: 1, height: 44.25, backgroundColor: cardColor, 
       justifyContent: "space-between", userSelect: 'none', position: 'absolute'}}>
         <Stack direction="row" spacing={2}>
-        <Typography sx={{color: 'white', p: 1.2, pt: 1.3, pl: 1.75, fontSize: '18px', fontWeight: '800',
+        <Typography sx={{color: 'white', p: 1.2, pt: 1.0, pl: 1.75, fontSize: '18px', fontWeight: '800',
         fontFamily: 'sans-serif', display: 'flex', alignItems: 'center',}} >
         <span style={{overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-          width: '30ch', display: 'inline-block',}}>
-          Keyword Example
+          width: '30ch', display: 'inline-block', fontFamily: 'DM Serif Display', letterSpacing: '0.35px'}}>
+          {keyword}
         </span>
         </Typography> 
         </Stack>
         {/* <Iconify icon="mdi:linkedin" sx={{mr: 0.45, mb: 0.15, height: '26px', width: '26px'}}/> */}
-        {/* <Iconify icon="uil:image-download"
-          sx={{right: '44.5px', top: '10.5px', height: '26px', width: '26px', position: 'absolute', color: 'white', cursor: 'pointer', opacity: '0.9'}}
-          onClick={async () => {setIsCopied(true); copyText(content);}}/>
-        <Iconify icon={isCopied ? "mingcute:clipboard-fill" : "mingcute:clipboard-line"} 
+        <Iconify icon="uil:trash" sx={{right: '11.5px', top: '9.85px', height: '22px', width: '22px', position: 'absolute', color: 'white', cursor: 'pointer', opacity: '0.9'}}
+          onClick={async () => {}}/>
+        {/* <Iconify icon={isCopied ? "mingcute:clipboard-fill" : "mingcute:clipboard-line"} 
           sx={{right: '13px', top: '11.5px', height: '26px', width: '26px', position: 'absolute', color: 'white', cursor: 'pointer', opacity: '0.9'}}
           onClick={async () => {setIsCopied(true); copyText(content);}}/> */}
+
+      </Stack>
+
+      <Stack sx={{width: '100%', zIndex: 0, height: 42.5, backgroundColor: 'white', borderTop: '0.0px solid grey', borderColor: 'grey',
+      justifyContent: "space-between", userSelect: 'none', position: 'absolute', top: '44px'}}>
+        <Stack direction="row" spacing={2}>
+        <Typography sx={{color: 'grey', p: 1.2, pt: 1.1, pl: 1.75, fontSize: '18px', fontWeight: '1000',
+        fontFamily: 'sans-serif', display: 'flex', alignItems: 'center', textAlign: 'left'}} >
+        <span style={{overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontStyle: '',
+          width: '30ch', display: 'inline-block', fontFamily: 'DM Serif Display', letterSpacing: '0.35px'}}>
+        {`${data[3] >= 10000 ? `${(data[3] / 1000).toFixed(1)}k` : data[3]} hits`}
+        </span>
+        </Typography> 
+        </Stack>
+        {/* <Iconify icon="mdi:linkedin" sx={{mr: 0.45, mb: 0.15, height: '26px', width: '26px'}}/> */}
 
       </Stack>
 
       <Stack sx={{width: '100%', zIndex: 125, height: 23.5, backgroundColor: 'white', bottom: '0px',
       justifyContent: "space-between", userSelect: 'none', position: 'absolute'}} />
 
-      <Chart options={options} series={series} type="area" width={300} height={186} 
-      style={{backgroundColor: 'white', marginTop: '25px',}} />
+      <Chart options={options} series={series} type="area" width={300} height={171} 
+      style={{backgroundColor: 'white', marginTop: '40.5px',}} />
 
 
           
@@ -158,8 +175,8 @@ const options = {
 }
 
 PostCard.propTypes = {
-  content: PropTypes.object,
-  platform: PropTypes.object,
+  keyword: PropTypes.object,
+  data: PropTypes.object,
   index: PropTypes.number,
   isGen: PropTypes.bool,
 };

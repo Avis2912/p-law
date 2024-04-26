@@ -4,6 +4,9 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import Card from '@mui/material/Card';
+
 
 import { db, auth } from 'src/firebase-config/firebase';
 import { getDocs, getDoc, addDoc, collection, doc, updateDoc } from 'firebase/firestore';
@@ -22,6 +25,9 @@ export default function ListsView() {
 
   const [competition, setCompetition] = useState([]);
 
+  const [indexedBlogs, setIndexedBlogs] = useState([]);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const updateDays = 30;
 
   useEffect(() => {
     const firmDatabase = collection(db, 'firms');
@@ -31,11 +37,12 @@ export default function ListsView() {
         if (userDoc.exists()) {
           const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
           if (firmDoc.exists()) {
-            await setCompetition(firmDoc.data().COMPETITION || []); console.log(firmDoc.data().COMPETITION);
-            const lastDateParts = firmDoc.data().WEEKLY_POSTS.LAST_DATE.split('/');
+            await setCompetition(firmDoc.data().COMPETITION.COMPETITION || []);
+            const lastDateParts = firmDoc.data().COMPETITION.LAST_DATE.split('/');
             const lastDate = new Date(`20${lastDateParts[2]}/${lastDateParts[0]}/${lastDateParts[1]}`);
-            const diffDays = 7 - Math.ceil((new Date() - lastDate) / (1000 * 60 * 60 * 24));
-            if (diffDays >= 1) {await setTimeToUpdate(diffDays)} else {setIsUpdateTime(true);}  
+            const diffDays = updateDays - Math.ceil((new Date() - lastDate) / (1000 * 60 * 60 * 24));
+            if (diffDays >= 1) {await setTimeToUpdate(diffDays)} else {setIsUpdateTime(true);} 
+            await setIndexedBlogs(firmDoc.data().BLOG_DATA.BIG_BLOG || []); 
           } else {
             alert('Error: Firm document not found.');
           }
@@ -53,12 +60,10 @@ export default function ListsView() {
   const today = new Date();
   const formattedDate = `${today.getDate()} ${today.toLocaleString('default', { month: 'short' })}`;
 
-  const handleNewCompetitionClick = () => {
-
-  };
+  const handleOpen = () => {setIsDialogOpen(true);};
+  const handleClose = () => {setIsDialogOpen(false);};
 
   const handleAddNewCompetitionClick = async () => {
-    
     // const newListData = { listName: newList, date: formattedDate, listMembers: [1, 7, 5] };
     // try {
     //   const userDocRef = doc(db, 'brands', auth.currentUser.email);
@@ -75,39 +80,35 @@ export default function ListsView() {
 
   return (
     <div style={{ position: 'relative',   height: '100%',  }}>
-      <div style={{
-      borderRadius: '8px',
-      position: 'absolute',
-      top: 0,
-      left: 20,
-      right: 20,
-      bottom: 0,
-      background: 'rgba(255, 255, 255, 0.4)',
-      backdropFilter: 'blur(3px)',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      zIndex: 10,
-      marginTop: '70px'
-    }}>
-      <span style={{
-        fontFamily: "serif", fontWeight: 100,
-        fontSize: '2rem',
-      }}>
+      {/* <div style={{ borderRadius: '8px', position: 'absolute',
+      top: 0, left: 20, right: 20, bottom: 0, background: 'rgba(255, 255, 255, 0.4)',
+      backdropFilter: 'blur(3px)', display: 'flex', justifyContent: 'center',
+      alignItems: 'center', zIndex: 10, marginTop: '70px' }}>
+      <span style={{ fontFamily: "serif", fontWeight: 100,
+        fontSize: '2rem', }}>
         Coming Soon
       </span>
-    </div>
+    </div> */}
 
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={3}>
         <style>
           @import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap);
         </style>
-        <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, 
+        <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, userSelect: 'none', 
         letterSpacing: '1.05px',  fontWeight: 800, fontSize: '32.75px'}}> 
-        Competition & Analysis</Typography>
+        Competition Analysis</Typography>
         <Stack spacing={2} mb={0} direction="row" alignItems="center" justifyContent="space-between">
           <Stack direction="row" spacing={2}>
+
+            {!false && <Button variant="contained" onClick={() => {handleOpen()}}
+            sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: theme.palette.primary.navBg, },
+            width: 'auto', display: 'flex', justifyContent: 'center', minWidth: '10px',})}>
+            <Iconify icon="teenyicons:tick-circle-solid" sx={{height: '16px', width: '16px', 
+              color: 'white', marginRight: '8px'}}/>
+              Coming Soon
+            </Button>}
+
             {isAddingCompetitor && (
               <>
                 <Button
@@ -134,10 +135,10 @@ export default function ListsView() {
           <Button
             variant="contained"
             startIcon={<Iconify icon="eva:plus-fill" />}
-            onClick={handleNewCompetitionClick}
+            onClick={handleAddNewCompetitionClick}
             sx={{ backgroundColor: 'black', ':hover': { backgroundColor: 'black' } }}
           >
-            Add New Competitor
+            Add New
           </Button>
         </Stack>
       </Stack>
@@ -148,12 +149,15 @@ export default function ListsView() {
               <PostCard 
                 key={index} 
                 traffic={value.TRAFFIC} 
-                linkedinData={value.LINKEDIN_DATA} 
-                date={value.LAST_DATE} 
-                blogsThisMonth={value.BLOGS_THIS_MONTH} 
-                competitorName={key} 
+                linkedinData={value.ORG} 
+                orgData={value.ORG}
+                jobData={value.JOBS}
+                indexedBlogs={value.RECENT_BLOGS}
+                rankingFor={value.RANKING_FOR} 
+                competitorName={value.NAME} 
+                siteLink={value.SITE}
                 listId={index} 
-                index={index} 
+                index2={index} 
               />
             );
           }
@@ -161,6 +165,30 @@ export default function ListsView() {
         })}
       </Grid>
     </Container>
+
+    <Dialog open={isDialogOpen} onClose={handleClose} 
+      PaperProps={{ style: { minHeight: '350px', minWidth: '500px', display: 'flex', flexDirection: "row" } }}>
+        <Card sx={{ width: '100%', height: '100%', backgroundColor: 'white', borderRadius: '0px',
+        padding: '55px' }}>
+        <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, lineHeight: '55px',
+        letterSpacing: '-0.05px',  fontWeight: 800, fontSize: '40.75px', marginBottom: '25px'}}> 
+        This Will Need A Plan</Typography>
+        <Typography sx={{ fontFamily: "serif", mb: 0, lineHeight: '55px', marginBottom: '35px',
+        letterSpacing: '0.25px',  fontWeight: 500, fontSize: '24.75px'}}> 
+        Competition Analysis is <i>incredibly</i> expensive<br /> 
+        for Pentra to perform! Consequently, we are <br /> 
+        able to offer it only on a paid plan. If things <br /> 
+        change, you&apos;ll be the first to find out. <br /> 
+        </Typography>
+        <Button variant="contained" onClick={() => {}}
+      sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: theme.palette.primary.navBg, },
+      width: 'auto', display: 'flex', justifyContent: 'center', minWidth: '10px', cursor: 'default'})}>
+        <Iconify icon="ic:email" sx={{minHeight: '18px', minWidth: '18px', 
+        color: 'white', marginRight: '8px'}}/>
+        Reach out to us at pentra.hub@gmail.com
+      </Button>
+        </Card>
+      </Dialog>
     </div>
   );
 }

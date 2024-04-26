@@ -193,7 +193,7 @@ export default function UserPage() {
         padding: '55px' }}>
         <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, lineHeight: '55px',
         letterSpacing: '-0.45px',  fontWeight: 800, fontSize: '40.75px', marginBottom: '25px'}}> 
-        Inviting Clients To Review {firmName}</Typography>
+        Inviting Clients To Review You</Typography>
         <Typography sx={{ fontFamily: "serif", mb: 0, lineHeight: '55px', marginBottom: '35px',
         letterSpacing: '-0.35px',  fontWeight: 500, fontSize: '24.75px'}}> 
         1. Send client your Pentra link<br /> 

@@ -4,6 +4,8 @@ import TextField from '@mui/material/TextField';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
+import Dialog from '@mui/material/Dialog';
+import Card from '@mui/material/Card';
 
 import { db, auth } from 'src/firebase-config/firebase';
 import { useState, useEffect, useCallback } from 'react';
@@ -37,35 +39,65 @@ export default function BlogView() {
   const [wordRange, setWordRange] = useState('2');
 
   const [isGenerating, setIsGenerating] = useState(false);
-  const [generatedPosts, setGeneratedPosts] = useState([]);
   const [timeToUpdate, setTimeToUpdate] = useState("");
   const [isUpdateTime, setIsUpdateTime] = useState(false);
-
-  const [selectedModel, setSelectedModel] = useState(1);
-  const [weeklyPosts, setWeeklyPosts] = useState([]);
-  const [bigBlogString, setBigBlogString] = useState([]);
+  
+  const [weeklyKeywords, setWeeklyKeywords] = useState([]);
   const [firmName, setFirmName] = useState(null);
   const [firmDescription, setFirmDescription] = useState(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  // PAGE LOAD FUNCTIONS
+  const updateDays = 14;
 
-  const writeWeeklyPosts = useCallback(async () => {
+  const handleOpen = () => {setIsDialogOpen(true);};
+  const handleClose = () => {setIsDialogOpen(false);};
+
+  const writeWeeklyKeywords = useCallback(async (key="") => {
+
+    let actualKeywords;
+    if (key === "") {actualKeywords = weeklyKeywords.map(kw => kw.keyword).join(', ');}
+    else {actualKeywords = key;}
+
+    const url = "https://api.dataforseo.com/v3/keywords_data/google_ads/search_volume/live";
+    const payload = JSON.stringify([{
+        date_from: "2023-12-24",
+        search_partners: true,
+        keywords: actualKeywords,
+        location_code: 2840,
+        sort_by: "search_volume"
+    }]);
     
-  }, []);
+    const headers = {
+        'Authorization': 'Basic bG9naW46cGFzc3dvcmQ=',
+        'Content-Type': 'application/json'
+    };
 
+    await fetch(url, { method: 'POST', headers, body: payload })
+    .then(response => response.json())
+    .then(async data => {
+      const formattedData = data.result.map(item => ({
+        keyword: item.keyword,
+        data: item.monthly_searches.map(search => search.search_volume)
+      }));
+      setWeeklyKeywords(formattedData);
+      console.log(formattedData);
+
+      const currentDate = new Date(); const formattedDate = `${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear().toString().slice(-2)}`;
+      const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email)); 
+      const docRef = doc(db, 'firms', userDoc.data().FIRM);
+      await updateDoc(docRef, {
+        "WEEKLY_KEYWORDS.KEYWORDS": formattedData,
+        "WEEKLY_KEYWORDS.LAST_DATE": formattedDate
+      });
+
+    }).catch(error => console.error('Error:', error));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
 
   useEffect(() => {
 
-    if (isUpdateTime) {setWeeklyPosts([]); return;}; 
-
-    if (genPostPlatform) {
-        setWeeklyPosts([
-          { platform: "LinkedIn", content: "" },
-          { platform: "LinkedIn", content: "" },
-          { platform: "LinkedIn", content: "" }, 
-        ]);
-    }
+    if (isUpdateTime) {setWeeklyKeywords([]); return;}; 
     
     const getFirmData = async () => {
       try {
@@ -75,11 +107,12 @@ export default function BlogView() {
           if (firmDoc.exists()) {
             const lastDateParts = firmDoc.data().WEEKLY_POSTS.LAST_DATE.split('/');
             const lastDate = new Date(`20${lastDateParts[2]}/${lastDateParts[0]}/${lastDateParts[1]}`);
-            const diffDays = 7 - Math.ceil((new Date() - lastDate) / (1000 * 60 * 60 * 24));
-            await setSelectedModel(firmDoc.data().FIRM_INFO.MODEL);
+            const diffDays = updateDays - Math.ceil((new Date() - lastDate) / (1000 * 60 * 60 * 24));
             if (firmDoc.data().WEEKLY_POSTS.LAST_DATE === "") {setIsUpdateTime(true); return;}
-            await setWeeklyPosts(firmDoc.data().WEEKLY_POSTS.POSTS || []);
-            if (diffDays >= 1) { await setTimeToUpdate(diffDays); } else { setIsUpdateTime(true); writeWeeklyPosts(); console.log('WRITING POSTS'); setWeeklyPosts([]); 
+            if (typeof firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS === 'string') {writeWeeklyKeywords(firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS);}
+            else {await setWeeklyKeywords(firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS || []);
+            }
+            if (diffDays >= 1) { await setTimeToUpdate(diffDays); } else { setIsUpdateTime(true); writeWeeklyKeywords(); console.log('WRITING KEYWORDS'); setWeeklyKeywords([]); 
               await updateDoc(doc(db, 'firms', userDoc.data().FIRM), { 'WEEKLY_POSTS.LAST_DATE': "" }); }
             
             // GET BIG BLOG DATA
@@ -93,8 +126,6 @@ export default function BlogView() {
               bigBlog.splice(randomIndex, 1);
             }
             const bigBlogData = selectedBlogs.map(blog => `${blog.TITLE}: ${blog.CONTENT}`).join('\n\n');
-            setBigBlogString(bigBlogData);
-            // console.log(bigBlogData);
 
             console.log(firmDoc.data().WEEKLY_POSTS.POSTS);
           }}
@@ -115,6 +146,8 @@ export default function BlogView() {
     if (genPostPlatform) {setGenPostPlatform(null)} 
     else {setGenPostPlatform("LinkedIn")};
   }
+
+  console.log(weeklyKeywords);
 
 
   return (
@@ -186,21 +219,29 @@ export default function BlogView() {
         </Button>
         </>)}
 
-       {!isNewPost && (<>
+        {!false && <Button variant="contained" onClick={() => {handleOpen()}}
+      sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: theme.palette.primary.navBg, },
+      width: 'auto', display: 'flex', justifyContent: 'center', minWidth: '10px',})}>
+        <Iconify icon="teenyicons:tick-circle-solid" sx={{height: '16px', width: '16px', 
+        color: 'white', marginRight: '8px'}}/>
+        Activate Keywords
+      </Button>}
+
+       {/* {!isNewPost && (<>
         <Button variant="contained" onClick={() => {}}
         sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, cursor: 'default', fontWeight: '600'})}>
           {!isUpdateTime ? `${timeToUpdate} Days Left` : 'Update In Progress'}
         </Button>
-        </>)}
+        </>)} */}
 
         <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => {}}
         sx={(theme) => ({backgroundColor: theme.palette.primary.black})}>
-          {isNewPost ? 'Back To All Keywords' : 'Add Keywords'}
+          {isNewPost ? 'Back To All Keywords' : 'Add New'}
         </Button>
 
         {!isNewPost && <Button variant="contained" color="inherit" startIcon={<Iconify icon="bx:search" />} onClick={() => {}}
         sx={(theme) => ({backgroundColor: theme.palette.primary.black})}>
-          Search Keywords
+          Search
         </Button>}
 
       </Stack></Stack>
@@ -250,8 +291,8 @@ export default function BlogView() {
        </>)}
 
       <Grid container spacing={3} sx={{width: '100%'}}>
-        {weeklyPosts.map(({ platform, content }, index) => (
-          <PostCard key={index} platform={platform} content={content} index={index} isGen={isGenerating} />
+        {weeklyKeywords.map(({ keyword, data }, index) => (
+          <PostCard key={index} data={data} keyword={keyword} index={index} isGen={isGenerating} />
         ))}
       </Grid>
 
@@ -287,6 +328,29 @@ export default function BlogView() {
       </Stack> 
 
       </>)}
+      <Dialog open={isDialogOpen} onClose={handleClose} 
+      PaperProps={{ style: { minHeight: '350px', minWidth: '500px', display: 'flex', flexDirection: "row" } }}>
+        <Card sx={{ width: '100%', height: '100%', backgroundColor: 'white', borderRadius: '0px',
+        padding: '55px' }}>
+        <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, lineHeight: '55px',
+        letterSpacing: '-0.45px',  fontWeight: 800, fontSize: '40.75px', marginBottom: '25px'}}> 
+        Please Move To A Plan</Typography>
+        <Typography sx={{ fontFamily: "serif", mb: 0, lineHeight: '55px', marginBottom: '33.5px',
+        letterSpacing: '0.25px',  fontWeight: 500, fontSize: '24.75px'}}> 
+        Keyword Research is <i>incredibly</i> expensive<br /> 
+        for Pentra to perform! Consequently, we are <br /> 
+        able to offer it only on a paid plan. If things <br /> 
+        change, you&apos;ll be the first to find out. <br /> 
+        </Typography>
+        <Button variant="contained" onClick={() => {}}
+      sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: theme.palette.primary.navBg, },
+      width: 'auto', display: 'flex', justifyContent: 'center', minWidth: '10px', cursor: 'default'})}>
+        <Iconify icon="ic:email" sx={{minHeight: '18px', minWidth: '18px', 
+        color: 'white', marginRight: '8px'}}/>
+        Reach out to us at pentra.hub@gmail.com
+      </Button>
+        </Card>
+      </Dialog>
     </Container>
   );
 }
