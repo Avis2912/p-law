@@ -38,9 +38,9 @@ export default function BlogView() {
   const [style, setStyle] = useState('Unstyled');
   const [wordRange, setWordRange] = useState('2');
 
-  const [isGenerating, setIsGenerating] = useState(false);
   const [timeToUpdate, setTimeToUpdate] = useState("");
   const [isUpdateTime, setIsUpdateTime] = useState(false);
+  const [planName, setPlanName] = useState('');
   
   const [weeklyKeywords, setWeeklyKeywords] = useState([]);
   const [firmName, setFirmName] = useState(null);
@@ -68,7 +68,7 @@ export default function BlogView() {
     }]);
     
     const headers = {
-        'Authorization': 'Basic bG9naW46cGFzc3dvcmQ=',
+        'Authorization': 'Basic YXZpcm94NEBnbWFpbC5jb206NTEwNjUzYzA0ODkyNjBmYg==',
         'Content-Type': 'application/json'
     };
 
@@ -108,6 +108,7 @@ export default function BlogView() {
             const lastDateParts = firmDoc.data().WEEKLY_POSTS.LAST_DATE.split('/');
             const lastDate = new Date(`20${lastDateParts[2]}/${lastDateParts[0]}/${lastDateParts[1]}`);
             const diffDays = updateDays - Math.ceil((new Date() - lastDate) / (1000 * 60 * 60 * 24));
+            setPlanName(firmDoc.data().SETTINGS.PLAN);
             if (firmDoc.data().WEEKLY_POSTS.LAST_DATE === "") {setIsUpdateTime(true); return;}
             if (typeof firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS === 'string') {writeWeeklyKeywords(firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS);}
             else {await setWeeklyKeywords(firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS || []);
@@ -137,8 +138,6 @@ export default function BlogView() {
     if (!genPostPlatform) {getFirmData()};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isNewPost, genPostPlatform]);
-    
-  
   
   
   const handleClickRoute = () => {
@@ -219,7 +218,7 @@ export default function BlogView() {
         </Button>
         </>)}
 
-        {!false && <Button variant="contained" onClick={() => {handleOpen()}}
+        {planName === 'Trial Plan' && <Button variant="contained" onClick={() => {handleOpen()}}
       sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: theme.palette.primary.navBg, },
       width: 'auto', display: 'flex', justifyContent: 'center', minWidth: '10px',})}>
         <Iconify icon="teenyicons:tick-circle-solid" sx={{height: '16px', width: '16px', 
@@ -292,7 +291,7 @@ export default function BlogView() {
 
       <Grid container spacing={3} sx={{width: '100%'}}>
         {weeklyKeywords.map(({ keyword, data }, index) => (
-          <PostCard key={index} data={data} keyword={keyword} index={index} isGen={isGenerating} />
+          <PostCard key={index} data={data} keyword={keyword} index={index} setWeeklyKeywords={setWeeklyKeywords} />
         ))}
       </Grid>
 

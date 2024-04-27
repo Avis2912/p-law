@@ -62,13 +62,13 @@ export default function BlogView() {
     
     
     let tempPosts = []; const numberOfBlogs = 6; 
-    let isError = false; let firmNameInt; let firmDescriptionInt; let internalLinksInt; let contactUsLinkInt; let smallBlogInt; let blogTitlesInt; 
+    let isError = false; let firmNameInt; let firmDescriptionInt; let internalLinksInt; let contactUsLinkInt; let smallBlogInt; let blogTitlesInt; let imagesSettingsInt;
     const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email)); 
     if (userDoc.exists()) {const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM)); 
     if (firmDoc.exists()) {firmNameInt = firmDoc.data().FIRM_INFO.NAME; firmDescriptionInt = firmDoc.data().FIRM_INFO.DESCRIPTION; 
       const linksArray = firmDoc.data().BLOG_DATA.BIG_BLOG.map(blog => blog.LINK); 
       const blogTitlesArray = firmDoc.data().BLOG_DATA.BIG_BLOG.map(blog => blog.TITLE); blogTitlesInt = blogTitlesArray.join(", ");
-      internalLinksInt = JSON.stringify(firmDoc.data().BLOG_DATA.BIG_BLOG.map(blog => ({title: blog.TITLE, link: blog.LINK}))); 
+      internalLinksInt = JSON.stringify(firmDoc.data().BLOG_DATA.BIG_BLOG.map(blog => ({title: blog.TITLE, link: blog.LINK}))); imagesSettingsInt = firmDoc.data().SETTINGS.IMAGES;
       contactUsLinkInt = firmDoc.data().FIRM_INFO.CONTACT_US; console.log('contact us link: ', contactUsLinkInt); console.log('internal links: ', internalLinksInt); 
       const bigBlog = firmDoc.data().BLOG_DATA.BIG_BLOG; const smallBlogArray = firmDoc.data().BLOG_DATA.SMALL_BLOG || [];
       smallBlogInt = smallBlogArray.map(index => `[${bigBlog[index]?.TITLE || ''}]: ${bigBlog[index]?.CONTENT || ''}`).join('\n'); 
@@ -166,7 +166,7 @@ export default function BlogView() {
       try { textWithoutImages = [{content: sanitizedResponse}] } catch (err) {isError = true; console.log(err)};
       console.log(textWithoutImages); let textWithImages = textWithoutImages;
       // eslint-disable-next-line no-await-in-loop
-      if (isImagesOn) {textWithImages = await addImages(textWithoutImages);}
+      if (isImagesOn) {textWithImages = await addImages(textWithoutImages, imagesSettingsInt);}
       // eslint-disable-next-line no-await-in-loop
       tempPosts = tempPosts.concat(textWithImages); console.log(`TEMP BLOGS ${i} DONE): `, tempPosts); 
     };
@@ -264,7 +264,7 @@ export default function BlogView() {
   }
 
 
-  const addImages = async (posts) => {
+  const addImages = async (posts, imagesSettings='All') => {
     const regex = /\/\/Image: (.*?)\/\//g;
 
     const fetchImage = async (description) => {
@@ -274,11 +274,11 @@ export default function BlogView() {
           keyword: `${description}`,
           location_code: 2826, language_code: "en",
           device: "desktop", os: "windows", depth: 100,
-          search_param: isUseCreativeCommons ? "&tbs=sur:cl" : ``,
+          search_param: imageSettings === 'Free' ? "&tbs=sur:cl" : ``,
       }]);
 
       const headers = {
-          'Authorization': 'Basic ZW1pckB0cnVzdGx5LmNsdWI6MTM3YTRjZDdhNDI5OTA0Yg==',
+          'Authorization': 'Basic YXZpcm94NEBnbWFpbC5jb206NTEwNjUzYzA0ODkyNjBmYg==',
           'Content-Type': 'application/json'
       };
 

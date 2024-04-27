@@ -10,6 +10,7 @@ import { posts } from 'src/_mock/lists';
 import Card from '@mui/material/Card';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box'
+import Dialog from '@mui/material/Dialog';
 
 import { db, auth } from 'src/firebase-config/firebase';
 import { getDocs, getDoc, collection, doc, updateDoc } from 'firebase/firestore';
@@ -31,7 +32,8 @@ export default function AccountView() {
 
   const [profileSrc, setProfileSrc] = useState(null); // state for profile image
   const fileInputRef = useRef(); // reference to the file input
-
+  const [isDialogOpen, setIsDialogOpen] = useState(false); 
+  const [isDialogOpen2, setIsDialogOpen2] = useState(false); 
   const [brand, setBrand] = useState();
 
   const [userName, setUserName] = useState(brand ? brand.user_name : null);
@@ -41,7 +43,9 @@ export default function AccountView() {
 
   const [userData, setUserData] = useState([]);
   const [selectedModel, setSelectedModel] = useState(2);
+  const [imagesSettings, setImagesSettings] = useState('All');
   const [imagePfp, setImagePfp] = useState('');
+  const [planName, setPlanName] = useState('');
 
   const storage = getStorage();
   const navigate = useNavigate(); 
@@ -54,7 +58,9 @@ export default function AccountView() {
           const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
           if (firmDoc.exists()) {
             await setUserData(firmDoc.data().FIRM_INFO || []);
-            await setSelectedModel(firmDoc.data().FIRM_INFO.MODEL || 2);
+            await setFirmDescription(firmDoc.data().FIRM_INFO.DESCRIPTION || '');
+            await setSelectedModel(firmDoc.data().SETTINGS.MODEL || 2);
+            await setPlanName(firmDoc.data().SETTINGS.PLAN || '');
             await setImagePfp(firmDoc.data().FIRM_INFO.IMAGE || '');
             await setIndexedBlogs(firmDoc.data().BLOG_DATA.BIG_BLOG || {});
           } else {
@@ -117,24 +123,30 @@ const uploadProfilePicture = async () => {
 const saveChanges = async () => {
   try {
 
-    const userDocRef = doc(db, 'firms', 'testlawyers');
+    const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
+    const firmDocRef = doc(db, 'firms', userDoc.data().FIRM); 
     const updateData = {
-      'FIRM_INFO.MODEL': selectedModel
-    };    
+      'SETTINGS.MODEL': selectedModel,
+      'SETTINGS.IMAGES': imagesSettings,
+      'FIRM_INFO.DESCRIPTION': firmDescription,
+    };
 
+    await updateDoc(firmDocRef, updateData); 
     navigate('/');
-    await updateDoc(userDocRef, updateData);
 
   } catch (err) {console.error("Error updating document:", err);}
 }
 
-const handleImageChange = (event) => {
-  if (event.target.files && event.target.files[0]) {
-    const reader = new FileReader();
-    reader.onload = (e) => setProfileSrc(e.target.result);
-    reader.readAsDataURL(event.target.files[0]);
-  }
-};
+  const handleClose = () => {setIsDialogOpen(false);};
+  const handleClose2 = () => {setIsDialogOpen2(false);};
+
+  const handleImageChange = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (e) => setProfileSrc(e.target.result);
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  };
 
   const handleUploadClick = () => {
     fileInputRef.current.click();
@@ -164,10 +176,10 @@ const handleImageChange = (event) => {
       
       <Stack className='divider' direction="row" spacing={2}>
           
-      <Card sx={{ height: 565, width: '35%', display: 'flex', 
+      <Card sx={{ height: 615, width: '35%', display: 'flex', 
       flexDirection: 'column', alignItems: 'center', borderRadius: '11px' }}>
         
-      <Card sx={{ height: 210, width: 210, mt: 7.75, boxShadow: 'none' }}>
+      <Card sx={{ height: 210, width: 210, mt: 9.525, boxShadow: 'none' }}>
             
       <input type="file"
       ref={fileInputRef}
@@ -223,7 +235,7 @@ const handleImageChange = (event) => {
       />
 
     <TextField
-      sx={{ width: '45%', mt: 2, textAlign: 'center', fontFamily: 'Old Standard TT' }}
+      sx={{ width: '45%', mt: 2, mb: 2, textAlign: 'center', fontFamily: 'Old Standard TT' }}
       id="standard-multiline-flexible"
       label=""
       multiline
@@ -234,26 +246,32 @@ const handleImageChange = (event) => {
       onChange={(e) => setBrandName(e.target.value)}
       value={userData.LOCATION} />
 
+      {/* <Button variant="contained" color="primary" onClick={() => alert("please Email us at pentra.legal@gmail.com! We'll get back to you ASAP.")}
+      sx={(theme) => ({backgroundColor: theme.palette.primary.navBg})}>
+      Use Free Use Images
+      </Button> */}
+
       <Typography fontSize="19px" fontWeight={100} mt={3} mb={1.75} fontFamily="DM Serif Display">
         Current Pentra Plan
       </Typography>
 
 
-      <Button variant="contained" color="primary" onClick={() => alert("please Email us at pentra.legal@gmail.com! We'll get back to you ASAP.")}
+      <Button variant="contained" color="primary" onClick={() => setIsDialogOpen2(true)}
       sx={(theme) => ({backgroundColor: theme.palette.primary.navBg})}>
-      {userData.PLAN} | Change Plan
+      {planName} | Change Plan
       </Button>
+
 
     </Card>
 
-    <Card sx={{ height: 565, width: '65%', borderRadius: '11px' }}>
+    <Card sx={{ height: 615, width: '65%', borderRadius: '11px' }}>
 
       <style>
         @import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap);
       </style>
 
       <Typography fontSize="24px" letterSpacing={0.25}
-      fontWeight={100} mt={4} mx={5} mb={2}
+      fontWeight={100} mt={4.5} mx={5} mb={2}
       fontFamily="DM Serif Display">
       Firm Description
       </Typography>
@@ -265,7 +283,7 @@ const handleImageChange = (event) => {
       multiline
       minRows={3} maxRows={3}
       onChange={(e) => setFirmDescription(e.target.value)}
-      defaultValue={userData.DESCRIPTION} />
+      defaultValue={firmDescription} />
 
       <Typography fontSize="24px" letterSpacing={0.25}
       fontWeight={100} mt={3} mx={5} mb={2}
@@ -273,7 +291,7 @@ const handleImageChange = (event) => {
       Indexed Blogs
       </Typography>
 
-      <List sx={{ width: '100%', height: 194, maxWidth: 575,
+      <List sx={{ width: '100%', height: '170px', maxWidth: '575px',
         bgcolor: 'white', overflow: 'auto', border: '0.1px solid #c2c1c0',
         marginLeft: '38px',borderRadius: '7px',
         paddingTop: '0px', paddingBottom: '0px',}}>
@@ -305,7 +323,31 @@ const handleImageChange = (event) => {
 
       </Stack> */}
 
+
       <Stack direction="row" spacing={2} mb={2.5} mt={4.5} pl={5} justifyContent="space-between" alignItems="center" >
+
+      <Typography fontSize="24px" letterSpacing={0.25}
+      fontWeight={100} mt={3.25} mx={5} mb={2} 
+      fontFamily="DM Serif Display">
+      Image Options
+      </Typography>
+
+      <Stack direction="row" pr={4} spacing={2} justifyContent="left" alignItems="center" >
+        <Button variant="contained" 
+          onClick={() => {setImagesSettings('Free')}}
+          sx={(theme) => ({backgroundColor: imagesSettings === 'Free' ? theme.palette.primary.navBg : '#DD8390'})}>
+          Use Free Use Images Only
+        </Button>
+
+        <Button variant="contained" 
+          onClick={() => setImagesSettings('All')}
+          sx={(theme) => ({backgroundColor: imagesSettings === 'All' ? theme.palette.primary.navBg : '#DD8390'})}>
+          Use Any Web Images
+        </Button>
+      </Stack></Stack>
+
+
+      <Stack direction="row" spacing={2} mb={2.5} mt={3} pl={5} justifyContent="space-between" alignItems="center" >
 
       <Typography fontSize="24px" letterSpacing={0.25}
       fontWeight={100} mt={3} mx={5} mb={2} 
@@ -314,28 +356,22 @@ const handleImageChange = (event) => {
       </Typography>
 
       <Stack direction="row" pr={4} spacing={2} justifyContent="left" alignItems="center" >
-        <Button 
-          variant="contained" 
+        <Button variant="contained" 
           onClick={() => {setSelectedModel(1);}}
           sx={(theme) => ({backgroundColor: selectedModel === 1 ? theme.palette.primary.navBg : '#DD8390'
-        , '&hover': {backgroundColor: 'yellow'}})}
-        >
+        , '&hover': {backgroundColor: 'yellow'}})}>
           Pentra Light 
         </Button>
 
-        <Button 
-          variant="contained" 
+        <Button variant="contained" 
           onClick={() => {setSelectedModel(2);}}
-          sx={(theme) => ({backgroundColor: selectedModel === 2 ? theme.palette.primary.navBg : '#DD8390'})}
-        >
+          sx={(theme) => ({backgroundColor: selectedModel === 2 ? theme.palette.primary.navBg : '#DD8390'})}>
           Pentra Balanced 
         </Button>
 
-        <Button 
-          variant="contained" 
-          onClick={() => {setSelectedModel(3);}}
-          sx={(theme) => ({backgroundColor: selectedModel === 3 ? theme.palette.primary.navBg : '#DD8390'})}
-        >
+        <Button variant="contained" 
+          onClick={() => planName !== 'Trial Plan' && setSelectedModel(3) || setIsDialogOpen(true)}
+          sx={(theme) => ({backgroundColor: selectedModel === 3 ? theme.palette.primary.navBg : '#DD8390'})}>
           Pentra Ultra 
         </Button>
       </Stack></Stack>
@@ -357,6 +393,55 @@ const handleImageChange = (event) => {
       defaultValue={brand ? brand.messages.default : null} /> */}
 
       </Card>
+
+
+      <Dialog open={isDialogOpen} onClose={handleClose} 
+      PaperProps={{ style: { minHeight: '350px', minWidth: '500px', display: 'flex', flexDirection: "row" } }}>
+        <Card sx={{ width: '100%', height: '100%', backgroundColor: 'white', borderRadius: '0px',
+        padding: '55px' }}>
+        <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, lineHeight: '55px',
+        letterSpacing: '-0.45px',  fontWeight: 800, fontSize: '40.75px', marginBottom: '25px'}}> 
+        Please Move To A Plan</Typography>
+        <Typography sx={{ fontFamily: "serif", mb: 0, lineHeight: '55px', marginBottom: '33.5px',
+        letterSpacing: '0.25px',  fontWeight: 500, fontSize: '24.75px'}}> 
+        The Pentra Ultra model is incredibly <br /> 
+        expensive for us to run. Consequently, we  <br /> 
+        are able to offer it only on a paid plan.
+        </Typography>
+        <Button variant="contained" onClick={() => {}}
+      sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: theme.palette.primary.navBg, },
+      width: 'auto', display: 'flex', justifyContent: 'center', minWidth: '10px', cursor: 'default'})}>
+        <Iconify icon="ic:email" sx={{minHeight: '18px', minWidth: '18px', 
+        color: 'white', marginRight: '8px'}}/>
+        Reach out to us at pentra.hub@gmail.com
+      </Button>
+        </Card>
+      </Dialog>
+
+      <Dialog open={isDialogOpen2} onClose={handleClose2} 
+      PaperProps={{ style: { minHeight: '350px', minWidth: '500px', display: 'flex', flexDirection: "row" } }}>
+        <Card sx={{ width: '100%', height: '100%', backgroundColor: 'white', borderRadius: '0px',
+        padding: '55px' }}>
+        <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, lineHeight: '55px',
+        letterSpacing: '-0.45px',  fontWeight: 800, fontSize: '40.75px', marginBottom: '25px'}}> 
+        Pentra Full Suite</Typography>
+        <Typography sx={{ fontFamily: "serif", mb: 0, lineHeight: '55px', marginBottom: '33.5px',
+        letterSpacing: '0.25px',  fontWeight: 500, fontSize: '24.75px'}}> 
+        Please email us with a request for a plan. <br /> 
+        We&apos;re quick to respond and will send you  <br /> 
+        options that best fit {userData.NAME}.<br /> 
+        </Typography>
+        <Button variant="contained" onClick={() => {}}
+      sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: theme.palette.primary.navBg, },
+      width: 'auto', display: 'flex', justifyContent: 'center', minWidth: '10px', cursor: 'default'})}>
+        <Iconify icon="ic:email" sx={{minHeight: '18px', minWidth: '18px', 
+        color: 'white', marginRight: '8px'}}/>
+        Reach out to us at pentra.hub@gmail.com
+      </Button>
+        </Card>
+      </Dialog>
+
+
 
       </Stack>
     </Container>

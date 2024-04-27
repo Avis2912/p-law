@@ -75,6 +75,7 @@ export default function UserPage() {
           console.log(firmDoc.data().FIRM_INFO.IMAGE);
           await setFirmName(firmDoc.data().FIRM_INFO.NAME);
           await setReviewLink(firmDoc.data().REVIEWS.LINKS[firmDoc.data().REVIEWS.SELECTION]);
+          await setStarsRequired(firmDoc.data().REVIEWS.THRESHOLD);
           await setChatTheme(firmDoc.data().CHAT_INFO.THEME);
           await setFirmImage(firmDoc.data().FIRM_INFO.IMAGE);;
           

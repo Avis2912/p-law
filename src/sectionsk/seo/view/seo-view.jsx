@@ -17,9 +17,7 @@ const isImagesOn = true;
 const modelKeys = {
 1: 'claude-3-haiku-20240307',
 2: 'claude-3-sonnet-20240229',
-3: 'claude-3-sonnet-20240229'} 
-// 3: 'claude-3-opus-20240229'} 
-
+3: 'claude-3-opus-20240229'} 
 
 
 // ----------------------------------------------------------------------
@@ -37,7 +35,7 @@ export default function ProductsView() {
 
   const [isGenMode, setIsGenMode] = useState(false);
   const [isAlterMode, setIsAlterMode] = useState(false);
-  const [currentMode, setCurrentMode] = useState('Build Outline');
+  const [currentMode, setCurrentMode] = useState('Generate');
   const [isGenerating, setIsGenerating] = useState(true);
   const [isElongating, setIsElongating] = useState(false);
   const [loadIndicator, setLoadIndicator] = useState(['Welcome Back!', -185]);
@@ -45,7 +43,7 @@ export default function ProductsView() {
   const [isBrowseWeb, setIsBrowseWeb] = useState(true);
   const [isAdvancedBrowseWeb, setIsAdvancedBrowseWeb] = useState(false);
   const [browseText, setBrowseText] = useState("");
-  const [selectedModel, setSelectedModel] = useState(1);
+  const [selectedModel, setSelectedModel] = useState(2);
   const [wordCount, setWordCount] = useState(0);
   const [contactUsLink, setContactUsLink] = useState(null);
   const [isSourcesOpen, setIsSourcesOpen] = useState(false);
@@ -58,7 +56,7 @@ export default function ProductsView() {
   const [referenceText, setReferenceText] = useState(null);
   const [isUseInternalLinks, setIsUseInternalLinks] = useState(false);
   const [isMentionCaseLaw, setIsMentionCaseLaw] = useState(false);
-  const [isUseCreativeCommons, setIsUseCreativeCommons] = useState(false);
+  const [imagesSettings, setImagesSettings] = useState("All");
 
   const [expandedSource, setExpandedSource] = useState(null);
   const [doneSourcing, setDoneSourcing] = useState(true);
@@ -91,7 +89,8 @@ export default function ProductsView() {
           if (firmDoc.exists()) {
             await setFirmName(firmDoc.data().FIRM_INFO.NAME);
             await setFirmDescription(firmDoc.data().FIRM_INFO.DESCRIPTION);
-            await setSelectedModel(firmDoc.data().FIRM_INFO.MODEL);
+            await setSelectedModel(firmDoc.data().SETTINGS.MODEL);
+            await setImagesSettings(firmDoc.data().SETTINGS.IMAGES);
             const bigBlog = firmDoc.data().BLOG_DATA.BIG_BLOG || [];
             const smallBlogArray = firmDoc.data().BLOG_DATA.SMALL_BLOG || [];
             const smallBlogString = smallBlogArray.map(index => `[${bigBlog[index]?.TITLE || ''}]: ${bigBlog[index]?.CONTENT || ''}`).join('\n'); 
@@ -207,7 +206,7 @@ export default function ProductsView() {
           BLOG POST: ${text}.
           
           IMPORTANT INSTRUCTIONS:
-          - FORMATTING: Wrap titles in <h1> and <h2> tags. Wrap all paragraphs and also all individual pointers in <p> tags. Use heading tags for titles, and b tags for sub-titles. 
+          - FORMATTING: Wrap titles in <h1> and <h2> tags. Wrap all paragraphs and also all individual pointers in <p> tags. Use b tags only in same-line text.
           - WORD RANGE: this post should be ${wordRange} long.
           - SPECIFICITY: Be as specific and detailed as possible. Don't be repetitive or ramble.
           - PERSPECTIVE: Don't refer to yourself in the post, but feel free to explain how your firm  can help.
@@ -222,18 +221,11 @@ export default function ProductsView() {
         });
       }
 
-    //   const gptResponse = await fetch('https://api.openai.com/v1/chat/completions', {
-    //     method: 'POST',
-    //     headers: {
-    //     'Authorization': `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,  
-    //     'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({
-    //     model: "gpt-3.5-turbo-0125",
-    //     messages,
-    //   }), });
+    //  const gptResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+    //  method: 'POST', headers: { 'Authorization': `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`, 'Content-Type': 'application/json', },
+    //  body: JSON.stringify({ model: "gpt-3.5-turbo-0125", messages, }), });
 
-    const generationText = currentMode === "Build Outline" ? 'Building Outline': 'Generating Blog'; setLoadIndicator([generationText, 55]);
+    const generationText = currentMode === "Build Outline" ? 'Building Outline': 'Generating Article'; setLoadIndicator([generationText, 60]);
 
     const claudeResponse = await fetch('https://us-central1-pentra-claude-gcp.cloudfunctions.net/gcp-claudeAPI', {
           method: 'POST',
@@ -251,7 +243,7 @@ export default function ProductsView() {
         <instruction>
 
         IMPORTANT INSTRUCTIONS:
-        - FORMATTING: Wrap titles in <h1> and sub-titles in <h2> tags. Wrap all paragraphs in <p> tags. Wrap sub-sub-titles in b tags. 
+        - FORMATTING: Wrap titles in <h1> and sub-titles in <h2> tags. Wrap all paragraphs (and everything else that should have a line after) in <p> tags. Use b tags only in same-line text or 'title: paragraph'.
         - PERSPECTIVE: Don't refer to yourself in the post. Explain how your firm ${firmName} can help, but only at the end.
         ${imageCount !== "No Images" && `- IMAGES: blog post should contain ${imageCount}. Please add representations of them in this format: //Image: {Relevant Image Description}//.
         Make sure these are evenly spaced out in the post, and place them after h tags or in between paragraphs.`}
@@ -278,7 +270,7 @@ export default function ProductsView() {
     <instruction>
     - YOUR GOAL IS TO COPY THE USER-GIVEN DRAFT AND ELONGATE IT TO MAKE IT ${wordRange} LONG. 
     Right now it's falling a little short.
-    - COPY THE TEXT'S CURRENT FORMAT EXACTLY: Wrap titles in <h1> and <h2> tags. Wrap all paragraphs in <p> tags. Wrap parts to be BOLDED in <b> tags.
+    - COPY THE TEXT'S CURRENT FORMAT EXACTLY: Wrap titles in <h1> and <h2> tags. Wrap all paragraphs in <p> tags. 
     - EXCEPTION: Just make sure the final how we can help / contact us paragraph remains at the end of your output.
     - STYLE & TONE: Keep the voice and tone of the text exactly the same when elongating it.
     - IMAGES: KEEP ALL IMAGES as they are. You're allowed to add one new one in your elongation in the same format.
@@ -287,8 +279,7 @@ export default function ProductsView() {
     `
 
     let gptResponse = (await claudeResponse.text()).replace(/<br><br> /g, '<br><br>');
-    const textWithBreaks0 = await gptResponse.replace(/<br\s*\/?>/gi, '').replace(/<\/p>|<\/b>|<\/ul>|<\/ol>|<\/h1>|<\/h2>|<\/h3>|\/\/Image:.*?\/\//gi, '$&<br>').replace(/(<image[^>]*>)/gi, '$&<br><br>');
-    
+    const textWithBreaks0 = await gptResponse.replace(/<br\s*\/?>/gi, '').replace(/<\/p>|<\/b>|<\/ul>|<\/h1>|<\/h2>|<\/h3>|\/\/Image:.*?\/\//gi, '$&<br>').replace(/<\/ol>/gi, '$&<br><br>').replace(/(<image[^>]*>)/gi, '$&<br><br>');    
     if (currentMode === "Build Outline") {setCurrentMode('Generate');};
     if (currentMode === "Build Outline") {await setIsGenerating(false); await setText(textWithBreaks0); console.log('return'); return;};
 
@@ -299,7 +290,7 @@ export default function ProductsView() {
     const lowerRange = wordRange === "Upto 200 Words" ? 0 : parseInt(wordRange.split('-')[0], 10); let counter = 0;
     while (lowerRange > gptResponse.split(' ').length && counter < 3) {
 
-      setLoadIndicator(['Fixing Blog Length', 75]);
+      setLoadIndicator(['Improving Article', 75]);
       messages = [{"role": "user", "content": gptResponse}]; console.log('RUNNING:', gptResponse.split(' ').length, ' < ', lowerRange, 'count: ', counter);
       // eslint-disable-next-line no-await-in-loop
       const claudeElongationResponse = await fetch('https://us-central1-pentra-claude-gcp.cloudfunctions.net/gcp-claudeAPI', {
@@ -314,7 +305,7 @@ export default function ProductsView() {
     let textWithImages = gptResponse.trim();
     setLoadIndicator(['Adding All Images', 90]);
     if (isImagesOn) {textWithImages = await addImages(gptResponse.trim());}
-    const textWithBreaks = await textWithImages.replace(/<br\s*\/?>/gi, '').replace(/<\/p>|<\/h1>|<\/h2>|<\/h3>|\/\/Image:.*?\/\//gi, '$&<br>').replace(/(<image[^>]*>)/gi, '$&<br><br>');
+    const textWithBreaks = await textWithImages.replace(/<br\s*\/?>/gi, '').replace(/<\/p>|<\/h1>|<\/h2>|<\/h3>|\/\/Image:.*?\/\//gi, '$&<br>').replace(/<\/ol>/gi, '$&<br><br>').replace(/(<img[^>]*>)/gi, '$&<br><br>');
     await setText(textWithBreaks); console.log(textWithBreaks);
 
     if (currentMode === "Generate") await setWordCount(textWithBreaks.split(' ').length);
@@ -352,11 +343,11 @@ export default function ProductsView() {
           keyword: `${description}`,
           location_code: 2826, language_code: "en",
           device: "desktop", os: "windows", depth: 100,
-          search_param: isUseCreativeCommons ? "&tbs=sur:cl" : ``,
+          search_param: imagesSettings === 'Free' ? "&tbs=sur:cl" : ``,
       }]);
 
       const headers = {
-          'Authorization': 'Basic ZW1pckB0cnVzdGx5LmNsdWI6MTM3YTRjZDdhNDI5OTA0Yg==',
+          'Authorization': 'Basic YXZpcm94NEBnbWFpbC5jb206NTEwNjUzYzA0ODkyNjBmYg==',
           'Content-Type': 'application/json'
       };
 
@@ -411,7 +402,7 @@ export default function ProductsView() {
     };
 
   if (isAdvancedBrowseWeb) {
-    setLoadIndicator(['Researching Deep', 45]); 
+    setLoadIndicator(['Deeply Researching', 37.5]); 
     const results = []; 
 
     try {
@@ -444,6 +435,8 @@ export default function ProductsView() {
           }
         } catch (err) {console.error(err);}
       }} catch (err) {console.error(err);}
+
+    setLoadIndicator(['Synthesizing Info', 45]); 
 
     claudeKeyPoints = await fetch('https://us-central1-pentra-claude-gcp.cloudfunctions.net/gcp-claudeAPI', {
     method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ 
@@ -562,7 +555,7 @@ export default function ProductsView() {
           letterSpacing: '-0.15px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', 
           maxWidth: '325px', } }}>{source.title} </ListItemText>
 
-          <Iconify icon={(index === 0 || index === 1 || index === 2) ? "noto:star" : ""} sx={{width: '19.5px',
+          <Iconify icon={(isAdvancedBrowseWeb && (index === 0 || index === 1 || index === 2)) ? "noto:star" : ""} sx={{width: '19.5px',
           height: '19.5px', position: 'absolute', right: '80px', top: '8.75px', cursor: 'pointer'}}
           onClick={() => {setExpandedSource(expandedSource === index ? null : index);}}/>
 
@@ -587,10 +580,10 @@ export default function ProductsView() {
 
       </Card>
 
-        {currentMode === "Alter Draft" && <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" sx={{height: '20px'}}/>} // iconoir:post
+        {currentMode === "Alter Draft" && <Button variant="contained" startIcon={<Iconify icon="mingcute:quill-pen-fill" sx={{height: '20px'}}/>} // iconoir:post
         sx={{backgroundColor: 'black', '&:hover': { backgroundColor: 'black', },}}
         onClick={() => {setCurrentMode("Generate"); setText('');}}>
-        Create New Draft </Button>}
+        New Article </Button>}
 
         {currentMode === "Build Outline" && <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" sx={{height: '20px'}}/>} 
         sx={(theme) => ({backgroundColor: theme.palette.primary.black, '&:hover': { backgroundColor: theme.palette.primary.black, },})}

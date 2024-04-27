@@ -22,15 +22,17 @@ import SvgColor from 'src/components/svg-color';
 import shadows from '@mui/material/styles/shadows';
 // import { CardActionArea } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { getDocs, collection, doc, updateDoc } from 'firebase/firestore';
-import { getDownloadURL, ref, getStorage } from 'firebase/storage'; // Import necessary Firebase Storage functions
+
+import { db, auth } from 'src/firebase-config/firebase';
+import { getDocs, getDoc, collection, doc, updateDoc } from 'firebase/firestore';
+
 import zIndex from '@mui/material/styles/zIndex';
 import { format, subMonths } from 'date-fns';
 
 
 // ----------------------------------------------------------------------
 
-export default function PostCard({ keyword, data, index, isGen }) {
+export default function PostCard({ keyword, data, index, setWeeklyKeywords }) {
 
   const currentMonth = new Date();
   const monthlyData = [
@@ -84,29 +86,15 @@ const options = {
     }
   ];
 
-  const [isCopied, setIsCopied] = useState(false);
-  const [imgUrl, setImgUrl] = useState(null);
-
-  const copyText = async (text) => {
-    const imgRegex = /<image[^>]*src=['"]([^'"]*)['"][^>]*>/gi; const match = imgRegex.exec(text);
-    if (match) {const imgLink = match[1]; await setImgUrl(imgLink);} 
-    const postableText = text.replace(/<\/?h[1-3]>|<\/?b>|<image[^>]*>/gi, '').replace(/<br\s*\/?>/gi, '\n');
-    await navigator.clipboard.writeText(postableText);
-    downloadPic(imgUrl);
-  };
-
-  const downloadPic = async (url) => {
-    const response = await fetch(url);
-    const blob = await response.blob();
-    const blobUrl = URL.createObjectURL(blob);
-    
-    const link = document.createElement('a');
-    link.href = blobUrl;
-    link.download = 'image.jpg'; // or any other filename you want
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
+  const deleteKeyword = async () => {
+    const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email)); 
+    const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
+    if (firmDoc.exists()) {
+      const firmData = firmDoc.data();
+      const newKeywords = firmData.WEEKLY_KEYWORDS.KEYWORDS.filter(kw => kw.keyword !== keyword); setWeeklyKeywords(newKeywords);
+      await updateDoc(doc(db, 'firms', userDoc.data().FIRM), { 'WEEKLY_KEYWORDS.KEYWORDS': newKeywords });
+    }
+  }
 
   const latestPostLarge = index === -10;
   const latestPost = index === -10 || index === -20;
@@ -139,7 +127,7 @@ const options = {
         </Stack>
         {/* <Iconify icon="mdi:linkedin" sx={{mr: 0.45, mb: 0.15, height: '26px', width: '26px'}}/> */}
         <Iconify icon="uil:trash" sx={{right: '11.5px', top: '9.85px', height: '22px', width: '22px', position: 'absolute', color: 'white', cursor: 'pointer', opacity: '0.9'}}
-          onClick={async () => {}}/>
+          onClick={async () => {deleteKeyword()}}/>
         {/* <Iconify icon={isCopied ? "mingcute:clipboard-fill" : "mingcute:clipboard-line"} 
           sx={{right: '13px', top: '11.5px', height: '26px', width: '26px', position: 'absolute', color: 'white', cursor: 'pointer', opacity: '0.9'}}
           onClick={async () => {setIsCopied(true); copyText(content);}}/> */}
@@ -175,8 +163,8 @@ const options = {
 }
 
 PostCard.propTypes = {
-  keyword: PropTypes.object,
+  keyword: PropTypes.any,
   data: PropTypes.object,
   index: PropTypes.number,
-  isGen: PropTypes.bool,
+  setWeeklyKeywords: PropTypes.func,
 };

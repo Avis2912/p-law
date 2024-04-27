@@ -17,8 +17,7 @@ const isImagesOn = true;
 const modelKeys = {
 1: 'claude-3-haiku-20240307',
 2: 'claude-3-sonnet-20240229',
-3: 'claude-3-sonnet-20240229'} 
-// 3: 'claude-3-opus-20240229'} 
+3: 'claude-3-opus-20240229'} 
 
 // ----------------------------------------------------------------------
 
@@ -42,7 +41,7 @@ export default function BlogView() {
   const [timeToUpdate, setTimeToUpdate] = useState("");
   const [isUpdateTime, setIsUpdateTime] = useState(false);
 
-  const [selectedModel, setSelectedModel] = useState(1);
+  const [selectedModel, setSelectedModel] = useState(2);
   const [weeklyPosts, setWeeklyPosts] = useState([]);
   const [bigBlogString, setBigBlogString] = useState([]);
   const [firmName, setFirmName] = useState(null);
@@ -54,10 +53,10 @@ export default function BlogView() {
   const writeWeeklyPosts = useCallback(async () => {
     
     let tempPosts = []; const platforms = ["LinkedIn", "LinkedIn", "Facebook", "Instagram"]; 
-    let isError = false; let firmNameInt; let firmDescriptionInt;
+    let isError = false; let firmNameInt; let firmDescriptionInt; let imagesSettingsInt;
     const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
     if (userDoc.exists()) {const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
-    if (firmDoc.exists()) {firmNameInt = firmDoc.data().FIRM_INFO.NAME; firmDescriptionInt = firmDoc.data().FIRM_INFO.DESCRIPTION; }};
+    if (firmDoc.exists()) {firmNameInt = firmDoc.data().FIRM_INFO.NAME; firmDescriptionInt = firmDoc.data().FIRM_INFO.DESCRIPTION; imagesSettingsInt = firmDoc.data().SETTINGS.IMAGES;}};
     
     for (let i = 0; i < 6; i += 1) {
       const tempPlatform = platforms[i];
@@ -99,7 +98,7 @@ export default function BlogView() {
       try { textWithoutImages = JSON.parse(sanitizedResponse) } catch (err) {isError = true; console.log(err)};
       console.log(textWithoutImages); let textWithImages = textWithoutImages;
       // eslint-disable-next-line no-await-in-loop
-      if (isImagesOn) {textWithImages = await addImages(textWithoutImages);}
+      if (isImagesOn) {textWithImages = await addImages(textWithoutImages, imagesSettingsInt);}
       // eslint-disable-next-line no-await-in-loop
       tempPosts = tempPosts.concat(textWithImages); console.log(`TEMP POSTS (${tempPlatform} DONE): `, tempPosts);
     };
@@ -152,7 +151,7 @@ export default function BlogView() {
             const lastDateParts = firmDoc.data().WEEKLY_POSTS.LAST_DATE.split('/');
             const lastDate = new Date(`20${lastDateParts[2]}/${lastDateParts[0]}/${lastDateParts[1]}`);
             const diffDays = updateDays - Math.ceil((new Date() - lastDate) / (1000 * 60 * 60 * 24));
-            await setSelectedModel(firmDoc.data().FIRM_INFO.MODEL);
+            await setSelectedModel(firmDoc.data().SETTINGS.MODEL);
             if (firmDoc.data().WEEKLY_POSTS.LAST_DATE === "") {setIsUpdateTime(true); return;}
             await setWeeklyPosts(firmDoc.data().WEEKLY_POSTS.POSTS || []);
             if (diffDays >= 1) { await setTimeToUpdate(diffDays); } else { setIsUpdateTime(true); writeWeeklyPosts(); console.log('WRITING POSTS'); setWeeklyPosts([]); 
@@ -195,10 +194,10 @@ export default function BlogView() {
     setIsGenerating(true);
       const messages = [];
 
-      let firmNameInt; let firmDescriptionInt;
+      let firmNameInt; let firmDescriptionInt; let imagesSettingsInt;
       const userDocInt = await getDoc(doc(db, 'users', auth.currentUser.email));
       if (userDocInt.exists()) {const firmDoc = await getDoc(doc(db, 'firms', userDocInt.data().FIRM));
-      if (firmDoc.exists()) {firmNameInt = firmDoc.data().FIRM_INFO.NAME; firmDescriptionInt = firmDoc.data().FIRM_INFO.DESCRIPTION; }};
+      if (firmDoc.exists()) {firmNameInt = firmDoc.data().FIRM_INFO.NAME; firmDescriptionInt = firmDoc.data().FIRM_INFO.DESCRIPTION; imagesSettingsInt = firmDoc.data().SETTINGS.IMAGES;}};
 
       let browseTextResponse = "";
 
@@ -212,7 +211,7 @@ export default function BlogView() {
         - RESPONSE FORMAT: Always respond with a JSON-parsable array of 3 hashmaps, 
         EXAMPLE OUTPUT: "[{"platform": "${genPostPlatform}", "content": "*Post Content*"}, {"platform": "${genPostPlatform}", "content": "*Post Content*"}, {"platform": "${genPostPlatform}", "content": "*Post Content*"}]". 
         ONLY OUTPUT THE ARRAY. NOTHING ELSE. Make sure to put quotes at the ends of the content string.
-        - Wrap titles in <h2> tags. Dont use ANY new lines but add one <br> tags after EVERY paragraph and h1/h2 tag.
+        - Wrap titles in <h2> tags. Wrap EVERY paragraph in <p> tags.
         - PARAGRAPH COUNT: these posts should be ${wordRange} paragraphs long. 
         - IMAGES: post should contain 1 image, placed after the h2 post title. Please add it in this format: //Image: {relevant description}//.
         - ${browseTextResponse !== "" && `WEB RESULTS: Consider using the following web information I got from an LLM for the prompt ${browseText}: ${browseTextResponse}`}
@@ -233,13 +232,15 @@ export default function BlogView() {
       model: modelKeys[selectedModel] })
     });
 
-    const gptResponse = (await response.text()); console.log(gptResponse);
+    let gptResponse = (await response.text()); console.log(gptResponse);
+
+    gptResponse = gptResponse.replace(/<br\s*\/?>/gi, '').replace(/<\/p>|<\/h1>|<\/h2>|<\/h3>|\/\/Image:.*?\/\//gi, '$&<br>').replace(/(<image[^>]*>|\/\/Image:.*?\/\/)/gi, '$&<br>');
 
     let textWithoutImages;
     try {textWithoutImages = JSON.parse(gptResponse.trim().replace(/^```|```$/g, '').replace(/json/g, ''));
     } catch (error) {const gptResponseRepeat = await response.text(); textWithoutImages = JSON.parse(gptResponseRepeat.trim().replace(/^```|```$/g, '').replace(/json/g, ''));}    
     let textWithImages = textWithoutImages;
-    if (isImagesOn) {textWithImages = await addImages(textWithoutImages);}
+    if (isImagesOn) {textWithImages = await addImages(textWithoutImages, imagesSettingsInt);}
     await setGeneratedPosts(textWithImages);
     await setWeeklyPosts(textWithImages);   
     console.log(weeklyPosts);
@@ -260,7 +261,7 @@ export default function BlogView() {
     
   }
 
-  const addImages = async (posts) => {
+  const addImages = async (posts, imagesSettings='All') => {
     const regex = /\/\/Image: (.*?)\/\//g;
 
     const fetchImage = async (description) => {
@@ -274,11 +275,11 @@ export default function BlogView() {
           device: "desktop",
           os: "windows",
           depth: 100,
-          search_param: isUseCreativeCommons ? "&tbs=sur:cl" : ``,
+          search_param: imagesSettings === 'Free' ? "&tbs=sur:cl" : ``,
       }]);
 
       const headers = {
-          'Authorization': 'Basic ZW1pckB0cnVzdGx5LmNsdWI6MTM3YTRjZDdhNDI5OTA0Yg==',
+          'Authorization': 'Basic YXZpcm94NEBnbWFpbC5jb206NTEwNjUzYzA0ODkyNjBmYg==',
           'Content-Type': 'application/json'
       };
 
@@ -311,7 +312,7 @@ export default function BlogView() {
           let imagefullText = post.content;
           const matches = [...imagefullText.matchAll(regex)];
           const descriptions = matches.map(match => match[1]);
-          const imageTags = await Promise.all(descriptions.map(fetchImage));
+          const imageTags = await Promise.all(descriptions.map((desc, it) => new Promise(resolve => setTimeout(() => resolve(fetchImage(desc)), it * 200))));
 
           matches.forEach((match, index) => {
             if (imageTags[index]) {

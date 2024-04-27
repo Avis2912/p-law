@@ -208,22 +208,27 @@ const updateLeads = async () => {
         //       },
         //     ]
         // }
-        WEEKLY_KEYWORDS: {
-            LAST_DATE: '04/25/24',
-            KEYWORDS: [
-                {keyword: "Asset Protection", data: [12100, 12100, 12100, 9900]},
-                {keyword: "Short-Term Rentals", data: [27100, 74000, 27100, 33100]},
-                {keyword: "Real Estate Investment", data: [90500, 110000, 110000, 110000]},
-                {keyword: "Legal Services", data: [18100, 22200, 18100, 33100]},
-                {keyword: "Financial Planning", data: [27100, 40500, 40500, 33100]},
-                {keyword: "Tax Services", data: [14800, 49500, 40500, 40500]},
-                {keyword: "Insurance", data: [550000, 673000, 673000, 673000]},
-                {keyword: "Retirement Planning", data: [90500, 135000, 165000, 165000]},
-                {keyword: "Estate Planning", data: [33100, 49500, 49500, 40500]},
-                {keyword: "Wealth Management", data: [27100, 40500, 40500, 60500]},
-                {keyword: "Investment Advice", data: [3600, 6600, 8100, 6600]},
-                {keyword: "Business Consulting", data: [22200, 27100, 27100, 27100]},
-            ]
+        // WEEKLY_KEYWORDS: {
+        //     LAST_DATE: '04/25/24',
+        //     KEYWORDS: [
+        //         {keyword: "Asset Protection", data: [12100, 12100, 12100, 9900]},
+        //         {keyword: "Short-Term Rentals", data: [27100, 74000, 27100, 33100]},
+        //         {keyword: "Real Estate Investment", data: [90500, 110000, 110000, 110000]},
+        //         {keyword: "Legal Services", data: [18100, 22200, 18100, 33100]},
+        //         {keyword: "Financial Planning", data: [27100, 40500, 40500, 33100]},
+        //         {keyword: "Tax Services", data: [14800, 49500, 40500, 40500]},
+        //         {keyword: "Insurance", data: [550000, 673000, 673000, 673000]},
+        //         {keyword: "Retirement Planning", data: [90500, 135000, 165000, 165000]},
+        //         {keyword: "Estate Planning", data: [33100, 49500, 49500, 40500]},
+        //         {keyword: "Wealth Management", data: [27100, 40500, 40500, 60500]},
+        //         {keyword: "Investment Advice", data: [3600, 6600, 8100, 6600]},
+        //         {keyword: "Business Consulting", data: [22200, 27100, 27100, 27100]},
+        //     ]
+        // },
+        SETTINGS: {
+            MODEL: 2,
+            PLAN: "Trial Plan",
+            IMAGES: "All",
         }
     });
         });

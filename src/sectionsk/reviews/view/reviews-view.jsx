@@ -207,8 +207,8 @@ export default function UserPage() {
         </Card>
         <Card sx={(theme) => ({ width: '525px', height: '650px', backgroundColor: theme.palette.primary.navBg, 
         borderRadius: '0px', display: 'flex', justifyContent: 'center', alignItems: 'center' })}>
-          {/* <img src="https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/Screenshot%202024-04-15%20at%2010.48.21%E2%80%AFPM.png?alt=media&token=e1a359e7-f779-4cf3-b0a0-b68d11175f67" 
-          style={{height: '600px', width: '415px', borderRadius: '4px'}} alt=""/> */}
+          <img src="https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/Screenshot%202024-04-26%20at%202.32.38%E2%80%AFPM.png?alt=media&token=0b6b571f-e8bb-49be-be60-a4d32e79814c" 
+          style={{height: '600px', width: '465px', borderRadius: '4px'}} alt=""/>
         </Card>
       </Dialog>
 

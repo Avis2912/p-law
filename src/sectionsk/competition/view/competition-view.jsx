@@ -27,6 +27,7 @@ export default function ListsView() {
 
   const [indexedBlogs, setIndexedBlogs] = useState([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [planName, setPlanName] = useState('');
   const updateDays = 30;
 
   useEffect(() => {
@@ -37,6 +38,7 @@ export default function ListsView() {
         if (userDoc.exists()) {
           const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
           if (firmDoc.exists()) {
+            await setPlanName(firmDoc.data().SETTINGS.PLAN);
             await setCompetition(firmDoc.data().COMPETITION.COMPETITION || []);
             const lastDateParts = firmDoc.data().COMPETITION.LAST_DATE.split('/');
             const lastDate = new Date(`20${lastDateParts[2]}/${lastDateParts[0]}/${lastDateParts[1]}`);
@@ -101,7 +103,7 @@ export default function ListsView() {
         <Stack spacing={2} mb={0} direction="row" alignItems="center" justifyContent="space-between">
           <Stack direction="row" spacing={2}>
 
-            {!false && <Button variant="contained" onClick={() => {handleOpen()}}
+            {planName === 'Trial Plan' && <Button variant="contained" onClick={() => {handleOpen()}}
             sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: theme.palette.primary.navBg, },
             width: 'auto', display: 'flex', justifyContent: 'center', minWidth: '10px',})}>
             <Iconify icon="teenyicons:tick-circle-solid" sx={{height: '16px', width: '16px', 
