@@ -324,7 +324,7 @@ const saveChanges = async () => {
       </Stack> */}
 
 
-      <Stack direction="row" spacing={2} mb={2.5} mt={4.5} pl={5} justifyContent="space-between" alignItems="center" >
+      <Stack direction="row" spacing={2} mb={2.5} mt={5} pl={5} justifyContent="space-between" alignItems="center" >
 
       <Typography fontSize="24px" letterSpacing={0.25}
       fontWeight={100} mt={3.25} mx={5} mb={2} 
@@ -347,7 +347,7 @@ const saveChanges = async () => {
       </Stack></Stack>
 
 
-      <Stack direction="row" spacing={2} mb={2.5} mt={3} pl={5} justifyContent="space-between" alignItems="center" >
+      <Stack direction="row" spacing={2} mb={2.5} mt={2.75} pl={5} justifyContent="space-between" alignItems="center" >
 
       <Typography fontSize="24px" letterSpacing={0.25}
       fontWeight={100} mt={3} mx={5} mb={2} 

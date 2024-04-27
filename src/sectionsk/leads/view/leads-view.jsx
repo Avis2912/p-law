@@ -78,7 +78,7 @@ export default function UserPage() {
     console.log(isChatOpen);
   }, [isChatOpen]);
 
-  const handleRowClick = async (event, number, row, avatarUrl) => {
+  const handleRowClick = async (event, number, id, row) => {
     let newIsChatOpen;
     if (!activeUser) {await setIsChatOpen(true); newIsChatOpen = true}
     else if (activeUser.NUMBER === number) {setIsChatOpen(false); newIsChatOpen = false}
@@ -87,7 +87,7 @@ export default function UserPage() {
     if (!newIsChatOpen) {setActiveUser(null); return};
 
     const leadsArray = leads; 
-    const leadItem = leadsArray.find(lead => lead.NUMBER === number);
+    const leadItem = leadsArray.find(lead => lead.ID === id);
     const leadsData = leadItem.CONVERSATION ? leadItem.CONVERSATION : [{assistant: "No Conversation Data Created"}];
     await setTexts(leadsData);
     const leadItemWithAvatar = {...leadItem, avatarUrl: `https://ui-avatars.com/api/?name=${row.NAME}`};
@@ -218,8 +218,8 @@ export default function UserPage() {
         
 
         <Scrollbar>
-        <TableContainer sx={{ overflow: 'auto', maxHeight: 'calc(100% - 52px)' }}> {/* Adjust the maxHeight according to your needs */}
-            <Table sx={{cursor: 'pointer'}}>
+        <TableContainer sx={{ maxHeight: 'calc(100% - 52px)' }}>
+           <Table sx={{cursor: 'pointer',}}>
               <TableBody>
                 {[...leads].reverse()
                   // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -235,7 +235,7 @@ export default function UserPage() {
                       avatarUrl={`https://ui-avatars.com/api/?name=${row.NAME}`}                      
                       selected={selected.indexOf(row.name) !== -1}
                       handleClick={(event) => {
-                        handleRowClick(event, row.NUMBER, row);
+                        handleRowClick(event, row.NUMBER, row.ID, row);
                       }}
                       sx={{cursor: 'pointer'}}
                     />
@@ -266,7 +266,7 @@ export default function UserPage() {
 
       <Card sx={{ borderRadius: '11px', height: 575, width: isChatOpen ? 'calc(100% - 385px)' : '0%', transition: 'ease 0.3s' }}>
  
-          <Card sx = {{ width: '100%', height: 575, p: 2.5}}>
+          <Card sx = {{ width: '100%', height: 575, p: 2.5, overflow: 'scroll'}}>
 
           {/* CHAT PANEL  */}
 

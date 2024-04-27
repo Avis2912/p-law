@@ -55,8 +55,14 @@ const newUser = async (docName, firmInfo, smallBlog, bigBlog, chatInfo, competit
             },
 
             CHAT_INFO: chatInfo,
+            SETTINGS: {
+                MODEL: 2,
+                PLAN: "Trial Plan",
+                IMAGES: "All",
+            },
 
             LEADS: [{
+                ID: 10000000,
                 NAME: "Simon Paschal",
                 EMAIL: "johnsample@gmail.com",
                 NUMBER: "542-123-4568",
@@ -66,6 +72,7 @@ const newUser = async (docName, firmInfo, smallBlog, bigBlog, chatInfo, competit
                     {role: 'assistant', content: `Hello, welcome to ${docName}! How can I help you today?`},
                     {role: 'user', content: `Hey! Can you guys help me with EB1 Wait Time Expedition?`},
                 ]}, { 
+                ID: 10000001,
                 NAME: "Sample Sarah",
                 EMAIL: "sarahsample@gmail.com",
                 NUMBER: "542-123-4567",
@@ -158,7 +165,7 @@ const updateLeads = async () => {
         firmsSnapshot.forEach(async (firmDoc) => {
             const firmRef = doc('firms/' + firmDoc.id);
             await updateDoc(firmRef, {
-            // LEADS: sampleLeads,
+            LEADS: sampleLeads,
             // CHAT_INFO: {
             //     PROMPT: CHAT_PROMPT,
             //     IMAGE: CHAT_IMAGE,
@@ -225,11 +232,11 @@ const updateLeads = async () => {
         //         {keyword: "Business Consulting", data: [22200, 27100, 27100, 27100]},
         //     ]
         // },
-        SETTINGS: {
-            MODEL: 2,
-            PLAN: "Trial Plan",
-            IMAGES: "All",
-        }
+        // SETTINGS: {
+        //     MODEL: 2,
+        //     PLAN: "Trial Plan",
+        //     IMAGES: "All",
+        // }
     });
         });
         console.log("All firms have been updated successfully.");

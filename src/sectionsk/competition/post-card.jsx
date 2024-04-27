@@ -124,17 +124,17 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
           Web Traffic This Month
         </Button>
 
+        <Stack spacing={1.55} direction="row" sx={{display: 'flex', alignItems: 'center',}}>
+
         <Button onClick={() => {setSelectedOption(2)}} variant="contained" color="inherit" 
-        sx={(theme) => ({fontSize: '16.5px', height: '47.5px', width: '280px',
+        sx={(theme) => ({fontSize: '16.5px', height: '47.5px', width: '133px',
         color: selectedOption === 2 ? 'white' : theme.palette.primary.navBg, 
         backgroundColor: selectedOption === 2 ? theme.palette.primary.navBg : theme.palette.primary.lighter,
         '&:hover': {color: 'white', backgroundColor: theme.palette.primary.navBg, boxShadow: 'none'},
         letterSpacing: '-0.5px', borderRadius: '5.5px', boxShadow: 'none'})}>
         <Iconify icon="cib:blogger-b" sx={{mr: '5px', height: '17.75px', width: '17.75px'}} />
-          Blog Posts This Month 
+          Ads
         </Button>
-
-        <Stack spacing={1.55} direction="row" sx={{display: 'flex', alignItems: 'center',}}>
 
         <Button onClick={() => {setSelectedOption(3)}} variant="contained" color="inherit" 
         sx={(theme) => ({fontSize: '16.5px', height: '47.5px', width: '133px',
@@ -142,14 +142,28 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
         backgroundColor: selectedOption === 3 ? theme.palette.primary.navBg : theme.palette.primary.lighter,
         '&:hover': {color: 'white', backgroundColor: theme.palette.primary.navBg, boxShadow: 'none'},
         letterSpacing: '-0.5px', borderRadius: '5.5px', boxShadow: 'none'})}>
-        <Iconify icon="majesticons:suitcase" sx={{mr: '5px', height: '20.25px', width: '20.25px'}} />
-          Jobs
+        <Iconify icon="cib:blogger-b" sx={{mr: '5px', height: '17.75px', width: '17.75px'}} />
+          Blogs
         </Button>
+
+        </Stack>
+
+        <Stack spacing={1.55} direction="row" sx={{display: 'flex', alignItems: 'center',}}>
 
         <Button onClick={() => {setSelectedOption(4)}} variant="contained" color="inherit" 
         sx={(theme) => ({fontSize: '16.5px', height: '47.5px', width: '133px',
         color: selectedOption === 4 ? 'white' : theme.palette.primary.navBg, 
         backgroundColor: selectedOption === 4 ? theme.palette.primary.navBg : theme.palette.primary.lighter,
+        '&:hover': {color: 'white', backgroundColor: theme.palette.primary.navBg, boxShadow: 'none'},
+        letterSpacing: '-0.5px', borderRadius: '5.5px', boxShadow: 'none'})}>
+        <Iconify icon="majesticons:suitcase" sx={{mr: '5px', height: '20.25px', width: '20.25px'}} />
+          Jobs
+        </Button>
+
+        <Button onClick={() => {setSelectedOption(5)}} variant="contained" color="inherit" 
+        sx={(theme) => ({fontSize: '16.5px', height: '47.5px', width: '133px',
+        color: selectedOption === 5 ? 'white' : theme.palette.primary.navBg, 
+        backgroundColor: selectedOption === 5 ? theme.palette.primary.navBg : theme.palette.primary.lighter,
         '&:hover': {color: 'white', backgroundColor: theme.palette.primary.navBg, boxShadow: 'none'},
         letterSpacing: '-0.5px', borderRadius: '5.5px', boxShadow: 'none'})}>
         <Iconify icon="bxs:business" sx={{mr: '5px', height: '19px', width: '19px'}} />
@@ -207,7 +221,7 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
       
       </>}
 
-      {selectedOption === 2 && <>
+      {selectedOption === 3 && <>
       
       <Card sx={(theme)=>({ height: '240px', width: '195px', borderRadius: '5.5px',
       top: '20px', left: '330px', p: '23px', pt: '18px', position: 'absolute', 
@@ -269,7 +283,7 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
 
       </List></>}
 
-      {(selectedOption === 3 || selectedOption === 4) && <><Card sx={(theme) => ({ height: '240px', width: '680px', borderRadius: '5.5px',
+      {(selectedOption === 2|| selectedOption === 4 || selectedOption === 5) && <><Card sx={(theme) => ({ height: '240px', width: '680px', borderRadius: '5.5px',
       top: '20px', left: '330px', p: '23px', pt: '18px', position: 'absolute', 
       backgroundColor: 'white', border: `2.75px solid ${theme.palette.primary.navBg}`,
       display: 'flex', justifyContent: 'center', alignItems: 'center'})}>

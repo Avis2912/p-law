@@ -4,6 +4,8 @@ import TextField from '@mui/material/TextField';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
+import Dialog from '@mui/material/Dialog';
+import Card from '@mui/material/Card';
 
 import { db, auth } from 'src/firebase-config/firebase';
 import { useState, useEffect, useCallback } from 'react';
@@ -45,6 +47,7 @@ export default function BlogView() {
   const [weeklyPosts, setWeeklyPosts] = useState([]);
   const [bigBlogString, setBigBlogString] = useState([]);
   const [firmName, setFirmName] = useState(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const updateDays = 7;
 
@@ -261,6 +264,14 @@ export default function BlogView() {
     
   }
 
+  const handleOpen = () => {
+    setIsDialogOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsDialogOpen(false);
+  };
+
   const addImages = async (posts, imagesSettings='All') => {
     const regex = /\/\/Image: (.*?)\/\//g;
 
@@ -439,10 +450,16 @@ export default function BlogView() {
         </Button>
         </>)}
 
+
        {!isNewPost && (<>
-        <Button variant="contained" onClick={() => {}}
+        <Button variant="contained" onClick={() => {}} 
         sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, cursor: 'default', fontWeight: '600'})}>
           {!isUpdateTime ? `${timeToUpdate} Days Left` : 'Update In Progress'}
+        </Button>
+
+        <Button variant="contained" onClick={() => {handleOpen()}} startIcon={<Iconify icon="tabler:clock-filled" />}
+        sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, cursor: 'pointer', fontWeight: '600', ':hover&': {backgroundColor: theme.palette.primary.navBg}})}>
+          Soon
         </Button>
         </>)}
         
@@ -534,6 +551,39 @@ export default function BlogView() {
       </Stack> 
 
       </>)}
+      
+      <Dialog open={isDialogOpen} onClose={handleClose} 
+      PaperProps={{ style: { minHeight: '650px', minWidth: '1000px', display: 'flex', flexDirection: "row" } }}>
+        <Card sx={{ width: '500px', height: '650px', backgroundColor: 'white', borderRadius: '0px',
+        padding: '55px' }}>
+        <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, lineHeight: '55px',
+        letterSpacing: '-0.45px',  fontWeight: 800, fontSize: '40.75px', marginBottom: '25px'}}> 
+        Branded Images Formatted By Us</Typography>
+        <Typography sx={{ fontFamily: "serif", mb: 0, lineHeight: '55px', marginBottom: '35px',
+        letterSpacing: '-0.35px',  fontWeight: 500, fontSize: '24.75px'}}> 
+        💬&nbsp;&nbsp;&nbsp;Powered by AI <br /> 
+        🕒&nbsp;&nbsp;&nbsp;Consistent Images <br /> 
+        💡&nbsp;&nbsp;&nbsp;Trained on your blogs <br /> 
+        📧&nbsp;&nbsp;&nbsp;Social-media ready <br /> 
+        ⚡&nbsp;&nbsp;&nbsp;Lightning quick responses <br /> 
+        🛠️&nbsp;&nbsp;&nbsp;Custom-made for your firm <br />
+        </Typography>
+      <Button variant="contained" onClick={() => {window.open('https://tally.so/r/3jydPx', '_blank')}}
+      sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: theme.palette.primary.navBg, },
+      width: 'auto', display: 'flex', justifyContent: 'center', minWidth: '10px',})}>
+        <Iconify icon="ic:baseline-business" sx={{minHeight: '18px', minWidth: '18px', 
+        color: 'white', marginRight: '8px'}}/>
+        Coming Very Soon!
+      </Button>
+        </Card>
+        <Card sx={(theme) => ({ width: '525px', height: '650px', backgroundColor: theme.palette.primary.navBg, 
+        borderRadius: '0px', display: 'flex', justifyContent: 'center', alignItems: 'center' })}>
+          <img src="https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/Screenshot%202024-04-27%20at%203.28.50%E2%80%AFAM.png?alt=media&token=3e419fa6-c956-44a6-b7ed-b0fb9b16a0c1" 
+          style={{height: '600px', width: '415px', borderRadius: '4px'}} alt=""/>
+        </Card>
+      </Dialog>
     </Container>
+
+    
   );
 }
