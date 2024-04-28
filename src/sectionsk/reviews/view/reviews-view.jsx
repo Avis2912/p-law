@@ -248,8 +248,8 @@ export default function UserPage() {
           <Card key={index} sx={{ height: '100px', backgroundColor: "white", display: 'flex', justifyContent: 'center',
             borderRadius: '0px', borderBottomWidth: '3px', borderColor: 'black', alignItems: 'center' }}>
             <Iconify icon="streamline:business-card-solid" position="absolute" left="30px" width="23.75px" height="23.75px" color="#474444"/>
-            <Typography variant="subtitle2" fontSize="19.3px" position="absolute" left="65.0px" color="#474444"
-            fontFamily='' letterSpacing="-1.025px" fontWeight="600"> {platform} </Typography>
+            <Typography variant="subtitle2" fontSize="19px" position="absolute" left="65.0px" color="#474444"
+            fontFamily='' letterSpacing="-0.425px" fontWeight="400"> {platform} </Typography>
             <TextField value={links[index+1]} label="Firm Review Page" size="small" variant="outlined" sx={{position: "absolute", 
             right: '147.5px', width: '328px', bottom: '29px', borderRadius: '0px'}}
             onChange={(e) => {const newLinks = {...links}; newLinks[index+1] = e.target.value; setLinks(newLinks);}}/>
