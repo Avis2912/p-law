@@ -474,7 +474,7 @@ export default function BlogView() {
         </>)}
 
         {isNewPost && (<>
-        <Button variant="contained" onClick={() => {handleTemplatesOpen()}} startIcon={<Iconify icon="tabler:clock-filled" />}
+        <Button variant="contained" onClick={() => {handleOpen()}} startIcon={<Iconify icon="tabler:clock-filled" />}
         sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, cursor: 'pointer', fontWeight: '600', ':hover&': {backgroundColor: theme.palette.primary.navBg}})}>
           Soon
         </Button> </>)}
