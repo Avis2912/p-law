@@ -474,7 +474,7 @@ export default function BlogView() {
         </>)}
 
         {isNewPost && (<>
-        <Button variant="contained" onClick={() => {handleOpen()}} startIcon={<Iconify icon="tabler:clock-filled" />}
+        <Button variant="contained" onClick={() => {handleTemplatesOpen()}} startIcon={<Iconify icon="tabler:clock-filled" />}
         sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, cursor: 'pointer', fontWeight: '600', ':hover&': {backgroundColor: theme.palette.primary.navBg}})}>
           Soon
         </Button> </>)}
@@ -583,8 +583,8 @@ export default function BlogView() {
         </Card>
         <Button variant="contained" onClick={() => {handleTemplatesClose()}}
       sx={(theme) => ({backgroundColor: theme.palette.primary.lighter, '&:hover': { backgroundColor: theme.palette.primary.lighter, boxShadow: 'none', }, boxShadow: 'none', fontWeight: '800', letterSpacing: '-0.35px', 
-      p: '10px', paddingInline: '20px', color: 'black', bottom: '32.5px', right: '32.5px', width: 'auto', display: 'flex', justifyContent: 'center', minWidth: '10px', position: 'absolute', })}>
-        <Iconify icon="ic:baseline-business" sx={{minHeight: '18px', minWidth: '18px', color: 'black', marginRight: '8px'}}/>
+      fontSize: '14.5px', p: '10px', borderRadius: '7px', paddingInline: '20px', color: 'black', bottom: '32.5px', right: '32.5px', width: 'auto', display: 'flex', justifyContent: 'center', minWidth: '10px', position: 'absolute', })}>
+        <Iconify icon="charm:cross" sx={{minHeight: '18px', minWidth: '18px', color: 'black', marginRight: '5px'}}/>
         Make Posts
       </Button>
       </Dialog>

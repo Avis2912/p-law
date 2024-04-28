@@ -342,7 +342,7 @@ const saveChanges = async () => {
         <Button variant="contained" 
           onClick={() => setImagesSettings('All')}
           sx={(theme) => ({backgroundColor: imagesSettings === 'All' ? theme.palette.primary.navBg : '#DD8390'})}>
-          Use Any Web Images
+          Use All Web Images
         </Button>
       </Stack></Stack>
 
