@@ -41,13 +41,13 @@ const uploadSome = async () => {
     }
 };
 
-const newUser = async (docName, firmInfo, smallBlog, bigBlog, chatInfo, competition) => {
+const newUser = async (docName, firmInfo, keywords, smallBlog, bigBlog, chatInfo, competition) => {
     try {
         const userDocRef = doc(`firms/${docName}`);
         await userDocRef.set({
 
             FIRM_INFO: firmInfo,
-            KEYWORDS: keywords,
+            WEEKLY_KEYWORDS: keywords,
 
             BLOG_DATA: {
                 SMALL_BLOG: smallBlog,
@@ -246,209 +246,203 @@ const updateLeads = async () => {
 };
 
 // uploadSome();
-updateLeads();
+// updateLeads();
 
 let newUserMoment = false;
 
 if (newUserMoment) {
-newUser(docName = 'STR Law Guys',
+newUser(docName = 'Vote NO @TDA',
 
 firmInfo = {
-    CONTACT_US: "https://www.strlawguys.com/contact-us/",
-    NAME: "STR Law Guys",
-    LOCATION: "Mansfield, TX",
+    CONTACT_US: "https://www.taxpayerdeceptionact.com",
+    NAME: "Vote NO @TDA",
+    LOCATION: "Los Angeles, CA",
     DESCRIPTION: 
-    `STR LAW GUYS is a legal services provider that specializes in asset protection strategies for short-term rental investors.
-     They offer customized asset protection plans to help investors protect their short-term rental properties and overall net worth.
-     The company aims to provide clarity, peace of mind, and effective legal protection for short-term rental investors through their tailored asset protection solutions.
+    `The Taxpayer Deception Act is a misleading ballot measure in California that aims to make it harder for voters to pass measures their communities need and prevent local
+    voters from passing advisory measures dictating how they want their tax dollars spent. The initiative would change the rule for enacting a tax increase from the current law,
+    which requires a two-thirds vote of each legislative chamber or passage by a majority of voters, to two-thirds of each chamber and a majority of voters.
+    It would also redefine numerous governmental fees as taxes subject to the new rule and retroactively invalidate any revenue measures passed since January 1, 2022, unless they're re-ratified in 2025.
+
     `,  
     IMAGE: `
-    https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/decentral%20(30).png?alt=media&token=7fb86b8f-7aa6-4364-9151-4974e7c4805d
+    https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/decentral%20(31).png?alt=media&token=595741cc-0495-4f2f-8ce1-a604be49c34f
     `,
     MODEL: 2,
-    PLAN: "Full Suite",
+    PLAN: "Trial Plan",
 },
 
-keywords = [
-    {keyword: "Asset Protection", data: [4200, 5500, 1300, 6500]},
-    {keyword: "Short-Term Rentals", data: [4200, 5500, 1300, 6500]},
-    {keyword: "Real Estate Investment", data: [4200, 5500, 1300, 6500]},
-    {keyword: "Legal Services", data: [4200, 5500, 1300, 6500]},
-    {keyword: "Financial Planning", data: [4200, 5500, 1300, 6500]},
-    {keyword: "Tax Services", data: [4200, 5500, 1300, 6500]},
-    {keyword: "Insurance", data: [4200, 5500, 1300, 6500]},
-    {keyword: "Retirement Planning", data: [4200, 5500, 1300, 6500]},
-    {keyword: "Estate Planning", data: [4200, 5500, 1300, 6500]},
-    {keyword: "Wealth Management", data: [4200, 5500, 1300, 6500]},
-    {keyword: "Investment Advice", data: [4200, 5500, 1300, 6500]},
-    {keyword: "Business Consulting", data: [4200, 5500, 1300, 6500]},
-],
+keywords = {
+    KEYWORDS: "CA Taxpayer Deception Act, California Tax Regulations, Supermajority Voting Requirements, LA Legislative Approval, Majority Voter Approval Requirement, Revenue Measure Invalidation, Ratification Deadline 2025, CA Local Tax Measures, LA Advisory Measures, Government Fees Redefined, Local Control CA, Voter Mandates CA",
+    LAST_DATE: "04/28/24",
+},
 
-smallBlog = [0, 1],
+smallBlog = [0, 1, 2],
 
 bigBlog = [
 {
-    TITLE: "How to Shield Retirement Accounts from Lawsuits",
-    LINK: `https://www.strlawguys.com/how-to-shield-retirement-accounts-from-lawsuits/`,
+    TITLE: "Vote NO @TDA Homepage",
+    LINK: `https://www.taxpayerdeceptionact.com`,
     CONTENT: `
-    Can A Lawyer Take My IRA In A Lawsuit?
+    Limits Voters' Rights,
+Cuts Essential Services
 
-    You have been served! A process server showed up at your front door and handed you lawsuit papers and now you have to show up to court. Is it possible that they can take your retirement accounts? All of that hard-earned money that you have spent time working for an employer on at your W-2 job. Can they take that away from you or maybe you have an IRA or a 401k? Are there any such thing as exempt assets in a lawsuit or bankruptcy? In short, yes there are, and we are going to cover those exactly today as the subject of this YouTube video.
+Email
 
-    By the way, if you wait around until the end of this video, I will also give you a free eBook: Five strategies to protect your short-term rentals and give you peace of mind.
+Phone
 
-    Let us jump into this. Number one, we are going to take a look at the differences between a 401k protection and an IRAs protection under both federal and state law. Let us say you have a 401k. Most 401K plans in the United States are protected under the Employee Retirement Income Securities Act (ERISA). Essentially, this federal law states that it provides substantial protection for all 401K assets in the event that a creditor comes after you or even if you have to file for bankruptcy. So, ERISA generally shields all 401K assets regardless of their value so you have unlimited protection with no cap on the amount of money that you can shield from a lawsuit or from a creditor. I am going to give you an example of that here in just a minute. So complete and total protection under a 401k. Let us talk about IRAs for a minute.
+ZIP Code
 
+By providing your email you agree to receive communications from the Alliance for a Better California. Message frequency varies.
 
-    IRA Protections Under Federal And State Laws
+Who's Behind The Taxpayer Deception Act?
 
-    We are going to talk and break it down into two parts: you can talk about the federal side of this for protection and then we are going to talk for a few moments as it relates to state level protection. So, what about IRAs? IRAs are protected under federal bankruptcy laws for the most part. Essentially, the Federal Protection for IRAs and bankruptcy is adjusted every year. It is usually increased for inflation. Right now, we are close to around the 1.4 million mark for IRA accounts. That means you are shielded by the federal government in the event of bankruptcy of about 1.4 million dollars in an IRA account.
+The primary funders are multi-billion-dollar wealthy developers and landlords using industry front groups called the California Business Roundtable (CBRT) and the California Business Properties Association.
 
-    What about state level variations? The level of protection for an IRA in each state can vary dramatically. Let me go over a few of the differences. In some states where you receive the highest protection you can have a fully exempt IRA from bankruptcy proceedings. For instance, states like Texas, Florida and Nevada provide you complete and total protection in those States and so you know that even if you have an IRA, maybe you have a SEP IRA account or maybe you have a Roth IRA, those are going to be exempt from collection from a creditor or in a lawsuit. If you have an IRA and you have those state level protections on the other hand you have to be very careful.
+Say NO to these wealthy developers and landlords and add your name or organization to our coalition today!
 
-    You have some states that have no specific provisions for IRAs, and, in fact, you can end up being somewhat vulnerable. States like California, New York and Georgia have less protection for you to know that in the event something happens that you are not going to have to worry about that for your IRA. Now we know the protection from a lawsuit for retirement accounts generally we have covered that now for a 401k and an IRA.
+THE TAXPAYER DECEPTION ACT Is DANGEROUS
 
-    Self-Directed IRA’s For Real Estate Investments?
+Photo of Endorser
+Attacks Voters' Rights
 
-    But what if you decide to open up a self-directed IRA and now you want to dip that money into a real estate investment? Does IRA money become vulnerable the moment that you choose to invest in real estate? Well, let me just tell you right now, the simple answer to that is yes, it does. It becomes extremely vulnerable, and I want to dip back down to where we were moments ago. Anytime you start talking about possible asset protection threats to an IRA, we have to look at it from two perspectives.
+The Taxpayer Deception Act takes away the rights of local voters by making it harder for voters to pass measures their communities need, and by preventing local voters from passing advisory measures dictating how we want our tax dollars spent.
 
-    Number one, we are going to talk about preventing creditors of the IRA owner from collecting against the IRA to satisfy the judgment. Let us talk about this for a second. Here is where an IRA provides an enormous amount of protection. We covered this a little bit already, but I want to go back to this for a minute. Let us say an individual defaults on a personal loan and gets a judgment against them. Something comes up, you just cannot pay it, you default on the loan completely. The creditor may collect from all over the place, from your personal bank accounts, from your brokerage accounts, from literally wages and all other non-exempt assets, but they cannot collect from the individual’s IRA accounts or their 401K accounts or retirement plans even in the case of a bankruptcy.
+Cuts billions from State & Local Services
 
-    This is really important, even in the case of a bankruptcy, a retirement plan is still considered an exempt asset. What I mean by that is that this makes retirement accounts an extremely valuable vehicle to protect your assets. However, understand that is if a judgment is brought against you personally.
+According to the independent Legislative Analyst’s Office, this measure will force deep cuts to local public schools, public safety, programs to prevent homelessness, parks, libraries, and all local services.
 
-    But now let us cover the second issue. What if you have a situation where an IRA can also be protected from claims arising out of investments and activities within the IRA? The most common example of this is when someone chooses to open a self-directed IRA to invest in a short-term rental or invest in a long-term rental or multi-family, some type of real estate investment. Here is the problem, self-directed IRA accounts can create liabilities for the IRA and maybe liabilities for the IRA owner as well.
+Photo of Endorser
+Allows Big Real Estate to Avoid their Fair share
 
-    One example: let us say you have a self-directed IRA, and you own a rental property, and the tenant slips and falls or there is some type of swimming pool accident or something serious happens there. The tenant can then sue the self-directed IRA, consequently those IRA assets, including the property and other assets within that IRA account, can be collected potentially by the creditor. Now, what about the IRA owner’s personal assets, though? Can they collect those? Here is where you have to really be aware of this. So, we know here’s the general rule, if you take an IRA and you begin to invest in short-term rentals, if you don’t have asset protection, not only can they get access to the actual property and any of the value there, but they can actually get into the IRA itself in order to exercise and satisfy that judgment.
-
-    Now, the question though is, can they also get to your personal assets outside of the IRA because you are the one who put the IRA together? That is one of the questions that comes up here. Let us say the plaintiff against the IRA decides they are going to sue the IRA, but also going to also sue the actual individual that set up the IRA personally because there is more damages here than they have in their retirement account to satisfy that judgment.
-
-    Let me give you some insight here. Under Internal Revenue Code section 408, the Internal Revenue Service basically and the government code essentially says that an IRA is merely a trust that is created when an individual establishes an IRA by signing IRS Form 5305 with a bank or a qualified custodian. Now, courts have analyzed IRAs as trusts or special deposits held by individuals for their benefit. In other words, listen, the IRA is very much treated similarly to a revocable living trust. Why does that matter? Well, because as we have talked about before on other videos, a revocable living trust by itself provides no asset protection.
-
-    If you set up an IRA account, you dip it down into investing in short-term rentals or other types of rental real estate, and then you get sued, not only can they sue into the IRA, but if there’s more damages than what your retirement account has, they can actually now sue into your individual assets and your bank accounts and anything else that you own in order to satisfy that judgment. Extremely important to understand that. So, you can face similar risks in the event of a lawsuit because now you have taken an exempt asset, which normally an IRA account would be an exempt asset, you have moved it into a high-risk asset for which you can be personally liable.
-
-    What we recommend at STR Law Guys is that anytime you are going to open up a self-directed IRA, it is really important to explore the option of taking that IRA and encapsulating it in the ownership of an LLC. Now, what happens is you are taking it out of your personal name, you are separating your possible obligation of them being able to sue through the IRA and into your assets, and you are now putting it into an LLC where you separate your ownership from the control of that asset. Very important.
-
-    An LLC prevents creditors of that LLC from pursuing the LLC owner, which would be the IRA itself, which would then also mean it would help prevent them from pursuing you individually. What do we look at here? Instead of the IRA directly owning a rental property – because this is how most people set it up – they will just take a self-directed IRA, and the IRA owns the rental property. We do not want to do that.
-
-    Now, what we would rather do is we have it owned by the LLC. The IRA purchases it, but that IRA is actually held within that LLC, and now the LLC is the one that does all the leasing out to the tenant, whether it’s the short-term rental lease, whether it’s a long-term rental, you name it, whatever it is, whatever high-risk rental activity that’s going on, it’s all going to be done now through the name of the LLC that now provides you individual protection and it also protects your IRA from a potential lawsuit. Really important that you do this so that you protect your retirement accounts when you choose to put them in real estate.
-
-    To take it further, one of the things that we would recommend at STR Law Guys is to also consider taking that self-directed IRA, and yes, you want it to be owned in an LLC, you place that within an LLC, but now you can actually have that LLC as a single-member owned by a holding company, whether it’s a Wyoming LLC or an Arizona Limited Partnership holding company.
-
-    By using a holding company strategy, you gain two more benefits. Number one, you establish privacy. It is going to be difficult for any potential creditor or plaintiff to be able to see who actually owns that retirement account because now you are private based upon the privacy laws that exist in Wyoming and Arizona. But secondly, you get something even more important, which is known as charging order protection. Charging order protection essentially allows you that even if you get sued and you lose the lawsuit, that creditor or plaintiff cannot make you sell that property in order to pay and satisfy that judgment. In other words, you can keep renting out the property, you can keep paying your mortgage, you can even potentially pay yourself a management fee for what you do on it cannot take a distribution, but there is so much flexibility that you have.
-
-    Why does this matter? Look, having been a previous plaintiff’s attorney who is brought these types of lawsuits, it is important to understand how this works. Essentially, you are disincentivizing that attorney from wanting to sue through to the LLC. You are creating an incentive now for them to go down to that insurance to seek an insurance settlement because they know even if they win, they kind of sort of lose. They cannot make you sell the property in order to satisfy that judgment. So, these are just a few of the examples here, and my point is to learn more about this strategy, check out this video where I discuss how to persuade a lawyer not to sue your rental property.
+This ballot measure is a deceptive trick funded with millions of dollars from wealthy real estate developers and landlords. They want us to think this measure would help the average taxpayer, but these corporate special interests wrote this measure to create new loopholes that lower their taxes, help them avoid paying their fair share, and increase the tax burden on working families and small businesses.
     `,
 },
 {
-    TITLE: "Don’t Make Critical Mistakes With Short-Term Rental LLCs: Learn the RIGHT Way to Protect Your Properties!",
-    LINK: `https://www.strlawguys.com/dont-make-critical-mistakes-with-short-term-rental-llcs-learn-the-right-way-to-protect-your-properties/`,
+    TITLE: "Broad Coalition Representing Millions Sounds the Alarm on Dangerous Taxpayer Deception",
+    LINK: `https://www.taxpayerdeceptionact.com/news?id=d31efd4b-3f70-43ed-8da9-7311362b3251`,
     CONTENT: `
-Don’t Make Critical Mistakes With Short-Term Rental LLCs: Learn the RIGHT Way to Protect Your Properties!
-
-Are you making critical mistakes with short-term rental LLCs? Let’s learn how to protect your properties right now.
-
-Hi, I’m Jeff Hampton with Str law guys. Welcome to our YouTube channel. Today, I’m going to talk to you a little bit about LLCs, real estate LLC’s specifically for short-term rentals. Are you using them the right way? Are they actually protecting you? By the way, if you wait around till the end of this video, I’ll also provide you with a free eBook: “Five Strategies to Protect Your Short-Term Rentals and Give You Peace of Mind.”
-
-
-Okay, so Point number one, we have to even ask the question, why do we need an LLC anyway? Some people don’t think they need an LLC; they think they have insurance. I think they have plenty of protection. Well, let’s just talk about this. I’m a big believer in layered asset protection Strategies, but before we discuss why an LLC is important to protect your real estate, let’s first examine a layer that you really need. And I’m a big believer in layered asset protection. This is a layer you absolutely need when you’re looking to invest in a short-term rental. And that layer is, you need to make sure you have good, whether it’s long-term rental or short-term rental, you need to have good insurance. And it’s critical when you look at this, when you’re talking about a short-term rental. And I have a different video series covering specifically short-term rental insurance. Okay, but this is really critical. You need to make sure you have good commercial insurance coverage for your short-term rental because if you don’t, a lot of times people come to me with second home policies. They tell me, “Hey, look, this should cover it. I’m not seeing any concerns.” Well, you know your Insurance, your insurance is actually what, 70-80 pages long if you actually look at what you have. And if you go through the entire insurance policy, you’re going to find, and most of the time, there’s a section, always a section at the very bottom that talks about exclusions. And in that exclusion section, it’s really important to make sure that you don’t have a second home renters’ policy or a second home residential policy because the reason why that is, you have to understand, short-term rentals are not only inherently high-risk activities, but they are always labeled commercial activity.
-
-So, look in your residential policy or your commercial policy, whichever that’s labeled, go in there and look at the very bottom and look at the exclusion section. Do you see something called commercial exclusions? Do you see something called business activity exclusions? If you see anything specific along those lines, I can promise you right now, every single time, an insurance company is going to be labeling a short-term rental as commercial or business activity. If it’s in there, you’re excluded.
-
-Also, be careful. Very often, they’ll only give you $250,000-$300,000 worth of insurance protection. You need to try, as far as premises liability goes, you need to have at least a million dollars coverage, generally speaking. And you need to make sure you have enough dwelling coverage to replace the entire property in case of fire or some sort of loss. So, it’s a really in-depth analysis you need to do to make sure you have good insurance because that is layer number one anytime, you’re talking about protecting your short-term rental.
-
-Now, why do we need an LLC? Let’s get into that.
-
-Back to what we were talking about originally when you look at an LLC, it’s really important. I’m going to give you a true story. Somebody who essentially, somebody that came to us and decided, “Look, I don’t really think I need any sort of short-term rental protection. I don’t need an LLC at all.” Well, they end up getting into a pretty serious situation at their short-term rental. And as a result of someone being injured there, they get sued.
-
-Well, after their suit, it appeared, here’s the problem. They had multiple short-term rentals. They look like a big target, right? Why were they a big target? Because they had multiple short-term rentals. They were all in their personal name. Personal injury attorneys start doing pretty serious research as to what type of assets this person has, what’s their net worth look like. And now they look like a pretty juicy target for a personal injury attorney coming at them for a premises liability lawsuit.
-
-So, this is really important. Your goal is to not be an easy target. Truly, your goal is to own nothing but control everything, which is really the entire clarion call for all asset protection. That’s really what you’re trying to go after anytime you’re trying to set up asset protection. Now, you can structure your assets in a manner where the attorney will have a very difficult time finding it or it’ll be completely in total pro, totally private so that you become a much smaller target in the event of a lawsuit.
-
-Okay, now let us talk about this. The first thing I want to talk about is base layer LLCs. And what do I mean by that? Well, LLCs as a general rule, when you are putting property, particularly real estate in them, they are much better to use than setting up a corporation as an entity.
-
-Corporations create a higher tax burden as a general rule. If you move around assets in a corporation, that is often labeled a taxable event by the IRS. You end up having to pay way more taxes than is necessary. So, LLCs provide much more flexibility. Many times, you can move those assets around, you can take distributions, and really you don’t end up talking about multiple taxable events.
-
-Now, LLCs provide, generally speaking, what is the purpose? It is a limited liability company. They help you provide a separation from a business asset and a personal asset. You want to keep business assets separate from personal assets so that in the event of a lawsuit, you do not want a business lawsuit coming up taking your personal assets.
+    MAR
+    13
+    2024
+    PRESS RELEASE
+    Broad Coalition Representing Millions Sounds the Alarm on Dangerous Taxpayer Deception
+    
+    Measure Limits Voter Rights, Puts Schools, Emergency & Disaster Response, Homelessness Services at Risk
+    
+    Sacramento, CA – Counties, cities, special districts, labor groups and community organizations representing millions of Californians across the state are calling out the California Business Roundtable’s deceptively titled “Taxpayer Protection and Government Accountability Act,” slated for the November 2024 ballot. 
+    
+    Under the guise of reform, the measure – more accurately described as the Taxpayer Deception Act – limits the ability for voters and state and local governments to fund services by making it harder to raise revenue and pass future ballot measures. It is also retroactive to January 1, 2022, invalidating more than 100 voter-approved ballot measures and new laws. 
+    
+    “California’s counties are strongly opposed to this dangerous initiative, which will jeopardize the core services our communities rely upon,” said Graham Knaus, Chief Executive Officer, California State Association of Counties. “Funded by a handful of corporate special interests, the measure would undermine voter rights by invalidating measures passed by local voters, imperil core government services for decades, and lead to endless lawsuits that will cost taxpayers.”
+    
+    “The Taxpayer Deception Act would be a devastating blow to California workers,” Executive Officer, Jay Bradshaw of the Nor Cal Carpenters Union. “Not only would it crater local and state budgets for the upkeep and construction of our roads, freeways and bridges – it would rob hundreds of thousands of workers of the good-paying jobs that keep a roof over their head and keep our economy strong. It will also put-up roadblocks to delivering the housing that all of our communities desperately need. Voters should not be fooled by this deceptive measure, and we urge Californians to vote NO in November.”
+    
+    “Working Californians are already struggling to make ends meet when paying their rent, at the gas pumps, or buying groceries. The disturbing truth about the reckless Taxpayer Deception Act is that it leaves these struggling Californians without access to critical safety net services including paid family leave, and access to housing that is affordable,” said Sabrina Smith, CEO, California Calls. “By retroactively nullifying more than 130 voter-approved laws, this measure unwinds decades of progress California has made towards equity, opportunity and prosperity for all – which is why each of our 31 grassroots, community based organizations across the state stand together in proud opposition.”
+    
+    “This dangerous initiative funded by wealthy corporations essentially means 'lights out at city hall' for our cities,” said League of California Cities Executive Director and CEO Carolyn Coleman. “Preventing and reducing homelessness, planning for more housing, picking up the trash, paving streets and roads, and guaranteeing that someone will be there when you dial 911 — this is what’s at stake for residents if this measure passes.”
+    
+    "Initiative 1935, the ‘Taxpayer Deception Act,’ is irresponsible and unconstitutional,” said Neil McCormick, Chief Executive Officer, California Special Districts Association. “It retroactively invalidates decisions our communities have already approved, stops critical infrastructure projects in their tracks, and threatens the health, safety, and well-being of hardworking families. Local leaders representing communities of all sizes throughout the state stand united against this corporate attack on voters, and its threat to the water, fire protection, healthcare, sanitation, parks and other fundamental local services people need."
+    
+    The Taxpayer Deception Act was placed on the ballot by the California Business Roundtable and California Business Properties Association and is primarily funded by multi-billion-dollar real estate interests and landlords who want to overturn the will of the voters to avoid paying their fair share.  
+    
+    THE TAXPAYER DECEPTION ACT THREATENS VITAL PUBLIC SERVICES, UNDERMINES THE DEMOCRATIC PROCESS & CREATES CHAOS BY:
+    
+    Cutting billions from state and local governments and forcing cuts to safety net services.
+    
+    Overturning funding for paid family leave, disability insurance, gun violence prevention, and climate programs.
+    
+    Threatening the safety of roads, freeways, and bridges by permanently eliminating billions in road repair and infrastructure funding.
+    
+    Allowing just 1/3 of voters to make local funding decisions and block ballot measures over the will of the majority.
+    
+    Exacerbating deficits and worsening unbalanced budgets.
     `
 },
 
 {
-    TITLE: "What Grant Cardone Gets Wrong About Airbnb",
-    LINK: "https://www.strlawguys.com/what-grant-cardone-gets-wrong-about-airbnb/",
+    TITLE: "CalPERS, Nation’s Largest Pension Fund Officially Opposes “Reckless” Taxpayer Deception Act",
+    LINK: "https://www.taxpayerdeceptionact.com/news?id=12d81640-4aa7-49be-ad87-2fe316a4b03b",
 
     CONTENT: `
-    What?! No, man? Come on, Grant? Grant Cardone has made untold millions investing in multifamily real estate investing, but when it comes to Airbnb investing, he has it dead wrong. Grant believes it’s more profitable to be in long-term multifamily investing, not so fast. Short term rentals take up too much time, according to Grant. He’s afraid of regulations shutting him down. My clients and I make massive cash flow investing in short term rentals without doing it full time. Here are four of Grants beliefs that you need to ignore to get our kind of results.
+MAR
+20
+2024
+PRESS RELEASE
+CalPERS, Nation’s Largest Pension Fund,
+Officially Opposes “Reckless” Taxpayer Deception Act 
 
-    #1: Multifamily is more profitable. 
-    
-    Potential Investor (to Grant):  What do you think about Airbnb?
-    
-    Grant:  Airbnb? I like it. I mean, I like Airbnb. I just don’t like it as a long-term plan. I want a longer renter?
-    
-    Although Grant is right that there will always be demand for long term rentals, the growth rate for rentals has declined for the first time in years. The margins of long term rentals are already tight and now they’re getting squeezed even more by the increase in apartment supply. I feel like I see a new apartment building going up every week. However, generally speaking, if you have a top 10% airbnb property you have an enormous advantage over a long term rental. If your investment property has the amenities that guests want and you can master the marketing of your short term rental, you can make anywhere from three to four times the cash flow of any long term or multifamily investment.  Notice the caveats that I gave you. You have to buy right, you have to build right, and you have to manage right in order to have a top Airbnb property. Do not just go buy some property in Orlando, FL near Disney World and expect to make a fortune. You need to intimately know your market. What are the top amenities required in order to be a top 10% property? In other words, do you need a pool? Do you need a hot tub? Do you need bunk beds? Do you need pool tables? What specifically do you need?  By the way, how close are you to the traffic drivers in that mark? If people are coming to Orlando, they’re coming there because they want to go to Disney World, and I would much rather pay more to be two miles from Disney World than to be 20 miles away. You don’t have to spend three to four times more in order to achieve the three to four times cash flow, but you do have to be willing to investigate and invest in being a top property.
-    
-    
-    Point #2 You have to take too many calls and deal with too many people.
-    
-    If you set things up right, you almost never have to deal with phone calls. I own short term rentals and almost all of my communication is done through technology. For example, all the day-to-day messaging that’s needed in order for a guest to check in, check out, be aware of the house rules, and other communication can be done through software like Owner Rez, Hospitable, or Guesty. What if a guest is being rowdy and being too loud in the property? You can use technology like “Noise Aware” so that you’re aware of anything taking place within the property that could cause a concern. How do you know if the guest is bringing the right number of people? What if they are having a party? That’s when you use technology like “Ring” doorbells and other types of technology in order to maintain, and know if the people that are showing up are the same people who rented.
-    
-    Finally, how do you know if there’s something major that happens? Let’s say that some sort of appliance breaks down, or there’s some issue that needs to be dealt with directly. That’s when you establish a relationship with a local “boots on the ground” person who is available and you pay them a portion of the stay in order for them to be able to go out there and take care of the problem. I found a team of rockstar cleaners that take care of the property before and after every stay.  I have an onsite person who lives nearby and acts as the “boots on the ground” to make sure and takes care of any issues that need one-on-one attention. I know this is starting to sound expensive, but when you buy right and you manage it right, these costs are very manageable. This leads to more five star reviews and being able to raise those rates.  If you don’t want to leave money on the table, use “Price Labs” or “Wheelhouse” this is a type of software that allows you to mimic a hotel. You can literally determine what the supply and demand is for your neighborhood. You can squeeze every bit of the dollar available, for the person looking to come stay, where your property is located. Plus come on man, Grant doesn’t go answer phone calls for his long term rentals. He hires people to take care of that stuff and you can do the same thing with all that extra cash flow with your short term rentals. At the end of the day you can always find a Co-host, or a property management company, that can take it from start to finish if you don’t want to be involved at all.
+Sacramento, CA – The California Public Employee Retirement System (CalPERS) Board officially voted on Wednesday to oppose the Taxpayer Deception Act, a misguided ballot measure placed on the November 2024 ballot by corporations and big real estate companies through the California Business Roundtable (CBRT) and California Business Properties Association.
 
-    Point #3 Cities will shut you down
+ Under the guise of reform, the Taxpayer Deception Act limits the ability for voters and state and local governments to fund services by making it harder to raise revenue and pass future ballot measures. It’s also retroactive to January 1, 2022, invalidating more than 100 ballot measures and new laws. By gutting state and local government budgets, the measure threatens the  guarantee of a dignified retirement and healthcare security for millions of Californians who dedicated their lives to public service.
 
-    [etc...]
+ CalPERS’ clear opposition to this initiative comes as a major blow to the California Business Roundtable (CBRT), whose member corporations benefit from a healthy chunk of the pension fund’s investments: nearly $12 billion. CBRT is made up of some two-dozen powerful corporations and multi-billion-dollar real estate interests in which CalPERS invests retirees’ life savings, these include Blackstone, Kilroy Realty, Hudson Pacific Properties, PepsiCo, Chevron, and Wells Fargo.
+
+ “It’s shocking and appalling that the same multi-billion-dollar real estate interests seeking to invest CalPERS members’ money are trying to defund those same members’ pensions,” said Theresa Taylor, CalPERS Board President. “As a CalPERS Board member and member of SEIU Local 1000, my life’s work is to protect retirement security for state and local government workers.”
+
+ “No one who has dedicated their lives to public service should be worried about being able to retire in dignity, but that’s exactly the situation the Taxpayer Deception Act would create by putting the hard-earned retirement dollars of firefighters and nurses at risk,”  said David Miller, Chair, CalPERS Investment Committee. “Additionally, the measure would eviscerate funding for schools, crippling access to quality education for generations to come and threatening every opportunity our kids have to succeed.”
+
+ “The Taxpayer Deception Act could pull the rug out from underneath millions of public servants who have worked their whole lives to retire with dignity,” said Fiona Ma, California State Treasurer and CalPERS Board member. “This measure’s cynical attack on California would come at a cost workers can’t afford to pay.”
+
+ “Having worked in education for many years, I know firsthand how much Public School Employees count on a secure retirement through their golden years,” said Kevin Palkki, CalPERS Board member. “Not only does the Taxpayer Deception Act threaten state and local government funding for emergency response and badly needed social safety net programs to address homelessness — it puts millions of public servants at risk of a well-deserved retirement.” 
+
+“The Taxpayer Deception Act would rob the same workers who power California’s biggest economies and world-class cities of a chance to enjoy their golden years with dignity,” said Ramón Rubalcava, Chair, CalPERS Health and Benefits Committee. “A strong public retirement system is a promise California has kept for generations, but this reckless measure puts the futures of countless hardworking people at risk. It’s just wrong for California.”
+
+ “The Taxpayer Deception Act invalidates more than 100 ballot measures and new laws already passed by voters, devastating local and state government funding for everything from paid family leave to emergency response to homelessness services,” said Yvonne Walker, CalPERS Board member. “Every single Californian will feel the aftershock of this disastrous ballot measure.”
+
+ “A serious threat to pension and retirement funds at the state and local level will be on the November ballot, in the form of the Taxpayer Deception Act,” said Mulissa Willette, CalPERS Board Member. “As written, this careless initiative jeopardizes our ability to meet pension obligations – breaking the promise of a dignified retirement and badly-needed healthcare benefits for millions of current and future retirees.”
     `,
 },
 
-// {
-//     TITLE: "FMLA Lawyer: Navigating Family and Medical Leave Act with Ease",
-//     LINK: "https://www.simonpaschal.com/2024/03/15/fmla-lawyer/",
+{
+    TITLE: "Coalition Vows to Protect Voters & Vital Local Services from Deceptive Corporate Ballot Measure",
+    LINK: "https://www.taxpayerdeceptionact.com/news?id=28294790-a540-416f-8e44-98327788586d",
 
-//     CONTENT: `
-//     Are you struggling to make sense of the complexities surrounding the Family and Medical Leave Act (FMLA)? 
-
-//     If so, you are not alone. Navigating the FMLA can be a daunting task for both employees and employers. Depending on the location, size and type of business there are a lot of things to consider. 
-
-//     While at the end of the day it’s always best to get guidance from an employment lawyer to help you navigate this area of law with ease, here are some basic information to help you along the way.  
-
-//     What is the Family and Medical Leave Act?
-//     The Family and Medical Leave Act is a federal law designed to provide eligible employees with job-protected unpaid leave for certain family and medical reasons. This law seeks to maintain a balance between the demands of the workplace and the needs of employees and their families.
-
-//     FMLA applies to private employers with 50 or more employees within 75 miles of the worksite, as well as certain public employers. 
-
-//     This means that if you meet the eligibility criteria, you have the right to take unpaid leave for specific qualifying reasons without the fear of losing your job.
-
-//     Eligibility and Coverage
-//     To be eligible for FMLA, certain requirements must be met. These include working for a covered employer and meeting specific criteria regarding hours worked and length of employment.
-
-//     FMLA covers various reasons for taking leave, such as the birth or adoption of a child, caring for a family member with a serious health condition, or if you have a serious health condition that prevents you from performing your job duties.
-
-//     It’s important to note that there are unique provisions and exemptions that may apply to different situations. That’s why consulting an FMLA lawyer is crucial to understanding your specific circumstances.
-
-//     FMLA Eligibility: Understanding Employee Benefits and Leave Options
-//     Employees who qualify for FMLA are entitled to various benefits and leave options. Here are the eligibility criteria and the types of leave that employees can receive:
-
-//     FMLA Leave Eligibility
-//     12 Weeks of Leave: In a 12-month period, eligible employees can take up to 12 weeks of unpaid leave for the following reasons:
-//     The birth of a child and caring for the newborn within one year of birth
-//     The placement of a child for adoption or foster care
-//     Caring for a spouse, child, or parent with a serious health condition
-//     Having a serious health condition that prevents them from performing their job
-//     Qualifying exigencies arising from the military service of the employee’s spouse, child, or parent
-//     OR
-
-//     26 Weeks of Leave: Eligible employees can take up to 26 weeks of unpaid leave during a 12-month period to care for a service member if they are the service member’s spouse, 
-//     Employer Obligations
-//     Under FMLA, employers have obligations to their employees. They are required to provide notice to employees of their FMLA rights and responsibilities. This includes informing employees of their eligibility for FMLA leave and providing them with the necessary forms and information.
-
-//     Employers also have a responsibility to maintain accurate records of employee absences and other relevant information related to FMLA. This helps ensure compliance with the law and protects the rights of employees.
-
-//     Contact Our Frisco Employment Law Attorneys Today
-//     If you have any questions or concerns about FMLA or your company’s obligations under the law, the Frisco employment lawyers at Simon Paschal PLLC are here to help. 
-
-//     To schedule a consultation with our office, call (972) 893-9340 or contact us here!    
-//         `
-// },
+    CONTENT: `
+    FEB
+    1
+    2023
+    PRESS RELEASE
+    Coalition Vows to Protect Voters & Vital Local Services from Deceptive Corporate Ballot Measure
+    
+    Put your press release text hCalifornia Business Roundtable initiative steals voters’ power to determine local priorities, lets corporations evade accountability
+    
+    Latest poll showed overwhelming opposition from voters
+    
+    Sacramento, CA – Today the Alliance for a Better California, League of California Cities, California State Association of Counties, California Special Districts Association, California Alliance for Jobs and the Contract Cities Association joined together to announce strong opposition to the deceptive ballot measure sponsored by the California Business Roundtable (CBRT), the lobbying arm of the largest and wealthiest corporations in California. 
+    
+    The coalition of public safety, education, labor, local government and infrastructure groups are vocalizing their opposition as the California Secretary of State’s office announced that the initiative has qualified for the November 2024 ballot. 
+    
+    “Educators, nurses and firefighters won’t allow extreme, irresponsible corporations to threaten our democracy - there’s just too much at stake, from the quality of our children’s education to the air they breathe,” said the Alliance for a Better California, an organization that includes SEIU California, the California Teachers’ Association, California Professional Firefighters, California Federation of Teachers, California School Employees Association, California Faculty Association, California Labor Federation and the American Federation of State County and Municipal Employees. 
+    
+    “This deceptive initiative eliminates corporate accountability for the damage they do to our environment, strips voters of the power to set funding priorities for our communities, and drains billions in funding from our schools, public safety, and homelessness response to name just a few. We are going to fight with everything we’ve got to protect our democracy and our children’s future,” the Alliance continued.
+    
+    “This is the third attempt by deep-pocketed special interest groups to advance an initiative that undermines the rights of local voters to decide what their communities need and jeopardizes the ability of local governments to deliver essential services,” said League of California Cities Executive Director and CEO Carolyn Coleman. “It was a bad idea in 2018, it was a bad idea again in 2022. And it will still be a bad idea in 2024.”
+    
+    “Counties continue to oppose this deceptive initiative because it undermines the abilities of voters and locally elected officials to provide critical services. This measure obliterates the constitutional authority of locally elected local governments to determine the right balance between revenue and the degree of local services needed by their communities,” said Graham Knaus, CEO, California State Association of Counties.
+    
+    “At this critical time in California’s history, our communities cannot afford to do even less than the status quo. Sadly, this initiative would lock us into a race-to-the-bottom. Overcoming challenges like drought, flooding, and wildfire will require all of us to work together and consider the real costs of undermining our future. When we think of the kind of communities we want to leave our children and grandchildren, we are not content to settle for the ‘minimum amount necessary’ and we are not willing to limit their voice at the ballot box,” said Neil McCormick, Chief Executive Officer, California Special Districts Association.
+    
+    "The so-called Taxpayer Protection Act will damage our ability to fund and construct the infrastructure projects that support California's economy. Passage of this measure will mean less safe roads, more congestion and fewer family supporting jobs across the state,” said Michael Quigley, Executive Director, California Alliance for Jobs.
+    
+    “If passed, this measure could cause irreparable harm to a city’s ability to provide essential services to its residents. This measure is a wolf in sheep’s clothing,” said Marcel Rodarte, Executive Director, California Contract Cities Association.
+    
+    The CBRT measure would create major new loopholes that allow wealthy corporations to avoid paying their fair share for the impacts they have on our communities, while allowing corporations to evade enforcement when they violate environmental, health, safety, and other state and local laws. It would also significantly restrict the ability of local voters, local governments, and state elected officials to fund critical services like public schools, fire and emergency response, public health, parks, libraries, affordable housing, homeless and mental health services, and public infrastructure. Some of the state’s biggest corporations, developers, mega-landlords, and their political committees spent millions of dollars to put the deceptive and self-interested measure before voters.
+    
+    Steals power from voters 
+    The initiative would steal power away from voters, prohibiting local advisory measures where voters provide direction to politicians on how they want their local tax dollars spent. The measure would make it harder for voters to pass measures needed to fund local services and local infrastructure. It would also retroactively cancel measures already passed by voters, stripping voters of a say in local decisions. 
+    
+    As Los Angeles Times columnist Michael Hiltzik explained, “The so-called Taxpayer Protection and Government Accountability Act is just one more example of how special interests love to claim that they’re getting government off the backs of the people, when their real goal is to saddle up themselves.”
+    
+    Eliminates corporate accountability
+    The initiative claims to be about accountability while actually eliminating corporations’ accountability for impacts they have on local infrastructure or damage they do to our air, water, or environment. 
+    
+    Threatens schools, vital services and disaster response
+    The initiative would force cuts to public schools, fire and emergency response, law enforcement, public health, parks, libraries, affordable housing, services to support homeless residents, mental health services, and more. It would also reduce funding for critical infrastructure like streets and roads, public transportation, drinking water, new schools, sanitation, and utilities. During a time when our children are still recovering from the impacts of the pandemic, our state is experiencing a deluge of extreme weather disasters, and homeless residents are perishing on our streets, our communities cannot afford for these vital services to be eliminated.
+    
+    Strong Voter Opposition
+    A statewide poll conducted last February found voters resoundingly rejected the measure, with 54% of voters opposed and only 25% in support. The remaining 21% were undecided.    
+        `
+},
 
 ],
 
@@ -527,7 +521,7 @@ chatInfo = {
 competition = {
     LAST_DATE: "03/31/24",
     COMPETITION: [{
-        NAME: 'Sample Lawyers',
+        NAME: 'Sample PAC',
         SITE: 'bergplummer.com',
         BLOG_PAGE: 'bergplummer.com/blog',
         TRAFFIC: [1200, 1400, 1300, 1500],
@@ -547,7 +541,7 @@ competition = {
         }
       },
       {
-        NAME: 'Sample Lawyers',
+        NAME: 'Sample PAC 2',
         SITE: 'injuryattorneyofdallas.com',
         BLOG_PAGE: 'injuryattorneyofdallas.com/blog',
         TRAFFIC: [2650, 2550, 2700, 2650],

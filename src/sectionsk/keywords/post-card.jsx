@@ -28,12 +28,16 @@ import { getDocs, getDoc, collection, doc, updateDoc } from 'firebase/firestore'
 
 import zIndex from '@mui/material/styles/zIndex';
 import { format, subMonths } from 'date-fns';
+import { isEmpty } from 'lodash';
 
 
 // ----------------------------------------------------------------------
 
 export default function PostCard({ keyword, data, index, setWeeklyKeywords }) {
 
+  let isNew = false; let isNone = false;
+  if (JSON.stringify(data) === JSON.stringify([-1, -1, -1, -1])) {isNew = true;}
+  if (JSON.stringify(data) === JSON.stringify([0, 0, 0, 0])) {isNone = true;}
   const currentMonth = new Date();
   const monthlyData = [
     { month: format(subMonths(currentMonth, 3), 'MMMM'), value: data[0] },
@@ -139,10 +143,10 @@ const options = {
         <Stack direction="row" spacing={2}>
         <Typography sx={{color: 'grey', p: 1.2, pt: 1.1, pl: 1.75, fontSize: '18px', fontWeight: '1000',
         fontFamily: 'sans-serif', display: 'flex', alignItems: 'center', textAlign: 'left'}} >
-        <span style={{overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontStyle: '',
+        {!isNew && !isNone && <span style={{overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontStyle: '',
           width: '30ch', display: 'inline-block', fontFamily: 'DM Serif Display', letterSpacing: '0.35px'}}>
         {`${data[3] >= 10000 ? `${(data[3] / 1000).toFixed(1)}k` : data[3]} hits`}
-        </span>
+        </span>}
         </Typography> 
         </Stack>
         {/* <Iconify icon="mdi:linkedin" sx={{mr: 0.45, mb: 0.15, height: '26px', width: '26px'}}/> */}
@@ -152,10 +156,22 @@ const options = {
       <Stack sx={{width: '100%', zIndex: 125, height: 23.5, backgroundColor: 'white', bottom: '0px',
       justifyContent: "space-between", userSelect: 'none', position: 'absolute'}} />
 
+      {!isNew &&
       <Chart options={options} series={series} type="area" width={300} height={171} 
-      style={{backgroundColor: 'white', marginTop: '40.5px',}} />
+      style={{backgroundColor: 'white', marginTop: '40.5px',}} />}
 
+      {isNew && 
+      <Typography sx={{position: 'relative', top: '99.75px', userSelect: 'none', color: 'grey',
+      fontSize: '27px', fontFamily: 'DM Serif Display', textAlign: 'center'}}>
+        Updating Soon
+      </Typography>}
 
+      {isNone && 
+      <Typography sx={{position: 'absolute', top: '100.75px', left: '86px', userSelect: 'none', color: 'grey',
+      fontSize: '27px', fontFamily: 'DM Serif Display', textAlign: 'center'}}>
+        No Searches
+      </Typography>}
+      
           
       </Card>
     </Grid>

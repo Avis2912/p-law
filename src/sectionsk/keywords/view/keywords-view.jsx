@@ -29,6 +29,7 @@ export default function BlogView() {
   const [postDescription, setPostDescription] = useState('');
   const [postKeywords, setPostKeywords] = useState('');
   const [browseText, setBrowseText] = useState('');
+  const [keywordToAdd, setKeywordToAdd] = useState('');
 
   const [isNewPost, setIsNewPost] = useState(false);
   const [isUseNews, setIsUseNews] = useState(false);
@@ -45,6 +46,7 @@ export default function BlogView() {
   const [weeklyKeywords, setWeeklyKeywords] = useState([]);
   const [firmName, setFirmName] = useState(null);
   const [firmDescription, setFirmDescription] = useState(null);
+  const [isAddNewMode, setIsAddNewMode] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDialogOpen2, setIsDialogOpen2] = useState(false);
 
@@ -65,8 +67,7 @@ export default function BlogView() {
     const payload = JSON.stringify([{
         date_from: "2023-12-24",
         search_partners: true,
-        keywords: actualKeywords,
-        location_code: 2840,
+        keywords: actualKeywords.split(', '),
         sort_by: "search_volume"
     }]);
     
@@ -78,9 +79,10 @@ export default function BlogView() {
     await fetch(url, { method: 'POST', headers, body: payload })
     .then(response => response.json())
     .then(async data => {
-      const formattedData = data.result.map(item => ({
+      console.log(data);
+      const formattedData = data.tasks[0].result.map(item => ({
         keyword: item.keyword,
-        data: item.monthly_searches.map(search => search.search_volume)
+        data: item.monthly_searches ? item.monthly_searches.map(search => search.search_volume).slice(0, 4) : [0, 0, 0, 0]      
       }));
       setWeeklyKeywords(formattedData);
       console.log(formattedData);
@@ -108,16 +110,17 @@ export default function BlogView() {
         if (userDoc.exists()) {
           const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
           if (firmDoc.exists()) {
-            const lastDateParts = firmDoc.data().WEEKLY_POSTS.LAST_DATE.split('/');
+            const lastDateParts = firmDoc.data().WEEKLY_KEYWORDS.LAST_DATE.split('/');
             const lastDate = new Date(`20${lastDateParts[2]}/${lastDateParts[0]}/${lastDateParts[1]}`);
             const diffDays = updateDays - Math.ceil((new Date() - lastDate) / (1000 * 60 * 60 * 24));
             setPlanName(firmDoc.data().SETTINGS.PLAN);
-            if (firmDoc.data().WEEKLY_POSTS.LAST_DATE === "") {setIsUpdateTime(true); return;}
-            if (typeof firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS === 'string') {writeWeeklyKeywords(firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS);}
-            else {await setWeeklyKeywords(firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS || []);
-            }
+
+            if (typeof firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS === 'string') { writeWeeklyKeywords(firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS); console.log('WRITING KEYWORDS 0');}
+            else {await setWeeklyKeywords(firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS || []); console.log('NOT A STRING');} 
+            
+            if (firmDoc.data().WEEKLY_KEYWORDS.LAST_DATE === "") {setIsUpdateTime(true); return;}
             if (diffDays >= 1) { await setTimeToUpdate(diffDays); } else { setIsUpdateTime(true); writeWeeklyKeywords(); console.log('WRITING KEYWORDS'); setWeeklyKeywords([]); 
-              await updateDoc(doc(db, 'firms', userDoc.data().FIRM), { 'WEEKLY_POSTS.LAST_DATE': "" }); }
+              await updateDoc(doc(db, 'firms', userDoc.data().FIRM), { 'WEEKLY_KEYWORDS.LAST_DATE': "" }); }
             
             // GET BIG BLOG DATA
 
@@ -131,7 +134,7 @@ export default function BlogView() {
             }
             const bigBlogData = selectedBlogs.map(blog => `${blog.TITLE}: ${blog.CONTENT}`).join('\n\n');
 
-            console.log(firmDoc.data().WEEKLY_POSTS.POSTS);
+            console.log(firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS);
           }}
       } catch (err) {
         console.log(err);
@@ -149,6 +152,16 @@ export default function BlogView() {
     else {setGenPostPlatform("LinkedIn")};
   }
 
+  const trackNewKeyword = async (newKeyword) => {
+    setWeeklyKeywords([{ keyword: newKeyword, data: [-1, -1, -1, -1] }, ...weeklyKeywords]); setKeywordToAdd('');
+    const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email)); 
+    const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
+    if (firmDoc.exists()) {
+      const firmData = firmDoc.data();
+      await updateDoc(doc(db, 'firms', userDoc.data().FIRM), { 'WEEKLY_KEYWORDS.KEYWORDS': [{ keyword: newKeyword, data: [0, 0, 0, 0] }, ...weeklyKeywords] });
+    } 
+  }
+
   console.log(weeklyKeywords);
 
 
@@ -162,7 +175,7 @@ export default function BlogView() {
       <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, position: 'absolute', 
       top: '325px', left: 'calc(50% + 185px)', transform: 'translateX(-50%)', letterSpacing: '1.05px',  
       fontWeight: 800, fontSize: '60.75px'}}> 
-        🧱 Writing Posts...
+        🧱 Tracking Now...
       </Typography>
       <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, position: 'absolute', 
       top: '407.5px', left: 'calc(50% + 185px)', transform: 'translateX(-50%)', letterSpacing: '-0.05px',  fontWeight: 500, fontSize: '25.75px'}}> 
@@ -236,9 +249,9 @@ export default function BlogView() {
         </Button>
         </>)} */}
 
-        <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => {}}
+        <Button variant="contained" color="inherit" startIcon={<Iconify icon={isAddNewMode ? "charm:cross" : "eva:plus-fill"} />} onClick={() => {setIsAddNewMode(!isAddNewMode)}}
         sx={(theme) => ({backgroundColor: theme.palette.primary.black})}>
-          {isNewPost ? 'Back To All Keywords' : 'Add New'}
+          {isAddNewMode ? 'Add New' : 'Add New'}
         </Button>
 
         {!isNewPost && <Button variant="contained" color="inherit" startIcon={<Iconify icon="bx:search" />} onClick={() => {handleOpen2()}}
@@ -247,6 +260,26 @@ export default function BlogView() {
         </Button>}
 
       </Stack></Stack>
+
+      {isAddNewMode && (<>
+        <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" mt={0} mb={3}>
+        
+        <TextField
+        value={keywordToAdd}
+        size="large"
+        onChange={(e) => setKeywordToAdd(e.target.value)}
+        placeholder='New Keyword'
+        sx={{width: '100%', mt: 0, }} /> 
+
+        <Button onClick={() => {trackNewKeyword(keywordToAdd)}}
+        variant="contained" color="inherit" 
+        sx={{height: '55px', width: '215px', cursor: 'pointer'}}>
+          <Iconify icon="eva:plus-fill" sx={{mr: '10px'}}/>
+          Track Keyword 
+        </Button>
+
+        </Stack>
+       </>)}
 
       {isNewPost ? <>
       <Stack mb={3} direction="row" alignItems="center" justifyContent="space-between"

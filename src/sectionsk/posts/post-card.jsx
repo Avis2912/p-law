@@ -60,6 +60,7 @@ export default function PostCard({ platform, content, index, isGen }) {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    copyText(content);
   };
 
   const latestPostLarge = index === -10;

@@ -48,24 +48,28 @@ export default function BlogView() {
   const [weeklyPosts, setWeeklyPosts] = useState([]);
   const [bigBlogString, setBigBlogString] = useState([]);
   const [firmName, setFirmName] = useState(null);
+  const [isTemplatesOpen, setIsTemplatesOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDialogOpen2, setIsDialogOpen2] = useState(false);
 
   const updateDays = 7;
+  const templates = [
+    { title: 'Legal', id: '123456-xx', thumbnail: 'https://template1.jpg' },
+  ]
 
   // PAGE LOAD FUNCTIONS
 
   const writeWeeklyPosts = useCallback(async () => {
     
-    let tempPosts = []; const platforms = ["LinkedIn", "LinkedIn", "Facebook", "Facebook", "Instagram"]; 
+    let tempPosts = []; const platforms = ["LinkedIn", "LinkedIn", "Facebook", "Facebook", "Instagram", "Instagram"]; 
     let firmNameInt; let firmDescriptionInt; let imagesSettingsInt;
     const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
     if (userDoc.exists()) {const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
     if (firmDoc.exists()) {firmNameInt = firmDoc.data().FIRM_INFO.NAME; firmDescriptionInt = firmDoc.data().FIRM_INFO.DESCRIPTION; imagesSettingsInt = firmDoc.data().SETTINGS.IMAGES;}};
-    
-    for (let i = 0; i < tempPosts.length; i += 1) {
-      const tempPlatform = platforms[i];
 
+
+    for (let i = 0; i < platforms.length; i += 1) {
+      const tempPlatform = platforms[i];
       let isError; let tries = 0; let textWithoutImages;
       do {isError = false; tries += 1;
         // eslint-disable-next-line no-await-in-loop
@@ -274,6 +278,8 @@ export default function BlogView() {
   const handleClose = () => {setIsDialogOpen(false);};
   const handleOpen2 = () => {setIsDialogOpen2(true);};
   const handleClose2 = () => {setIsDialogOpen2(false);};
+  const handleTemplatesOpen = () => {setIsTemplatesOpen(true);};
+  const handleTemplatesClose = () => {setIsTemplatesOpen(false);};
 
   const addImages = async (posts, imagesSettings='All') => {
     const regex = /\/\/Image: (.*?)\/\//g;
@@ -468,7 +474,7 @@ export default function BlogView() {
         </>)}
 
         {isNewPost && (<>
-        <Button variant="contained" onClick={() => {handleOpen()}} startIcon={<Iconify icon="tabler:clock-filled" />}
+        <Button variant="contained" onClick={() => {handleTemplatesOpen()}} startIcon={<Iconify icon="tabler:clock-filled" />}
         sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, cursor: 'pointer', fontWeight: '600', ':hover&': {backgroundColor: theme.palette.primary.navBg}})}>
           Soon
         </Button> </>)}
@@ -561,6 +567,27 @@ export default function BlogView() {
       </Stack> 
 
       </>)}
+
+      <Dialog open={isTemplatesOpen} onClose={handleTemplatesClose} 
+      PaperProps={{ style: { minHeight: '650px', minWidth: '1000px', display: 'flex', flexDirection: "row" } }}>
+        <Card sx={{ width: '500px', height: '650px', backgroundColor: 'white', borderRadius: '0px',
+        padding: '55px' }}>
+        <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, lineHeight: '55px', userSelect: 'none',
+        letterSpacing: '-0.45px',  fontWeight: 800, fontSize: '40.75px', marginBottom: '25px'}}> 
+        Top Templates</Typography>
+        </Card>
+        <Card sx={(theme) => ({ width: '525px', height: '650px', backgroundColor: theme.palette.primary.navBg, 
+        borderRadius: '0px', display: 'flex', justifyContent: 'center', alignItems: 'center' })}>
+          <img src="https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/Screenshot%202024-04-27%20at%203.28.50%E2%80%AFAM.png?alt=media&token=3e419fa6-c956-44a6-b7ed-b0fb9b16a0c1" 
+          style={{height: '410px', width: '315px', borderRadius: '4px'}} alt=""/>
+        </Card>
+        <Button variant="contained" onClick={() => {handleTemplatesClose()}}
+      sx={(theme) => ({backgroundColor: theme.palette.primary.lighter, '&:hover': { backgroundColor: theme.palette.primary.lighter, boxShadow: 'none', }, boxShadow: 'none', fontWeight: '800', letterSpacing: '-0.35px', 
+      p: '10px', paddingInline: '20px', color: 'black', bottom: '32.5px', right: '32.5px', width: 'auto', display: 'flex', justifyContent: 'center', minWidth: '10px', position: 'absolute', })}>
+        <Iconify icon="ic:baseline-business" sx={{minHeight: '18px', minWidth: '18px', color: 'black', marginRight: '8px'}}/>
+        Make Posts
+      </Button>
+      </Dialog>
       
       <Dialog open={isDialogOpen} onClose={handleClose} 
       PaperProps={{ style: { minHeight: '650px', minWidth: '1000px', display: 'flex', flexDirection: "row" } }}>
