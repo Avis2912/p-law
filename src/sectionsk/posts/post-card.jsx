@@ -45,9 +45,8 @@ export default function PostCard({ platform, content, index, isGen }) {
   const copyText = async (text) => {
     const imgRegex = /<image[^>]*src=['"]([^'"]*)['"][^>]*>/gi; const match = imgRegex.exec(text);
     if (match) {const imgLink = match[1]; await setImgUrl(imgLink);} 
-    const postableText = text.replace(/<\/?h[1-3]>|<\/?b>|<image[^>]*>/gi, '').replace(/<br\s*\/?>/gi, '\n');
+    const postableText = text.replace(/<\/?h[1-3]>|<\/?b>|<image[^>]*>|<\/?p>/gi, '').replace(/<br\s*\/?>/gi, '\n');
     await navigator.clipboard.writeText(postableText);
-    downloadPic(imgUrl);
   };
 
   const downloadPic = async (url) => {
@@ -83,7 +82,7 @@ export default function PostCard({ platform, content, index, isGen }) {
       <Stack sx={{width: '100%', height: 50, backgroundColor: platformColors[platform], justifyContent: "space-between"}}>
         <Stack direction="row" spacing={2}>
         <Typography sx={{color: 'white', p: 1.2, pl: 1.75, fontSize: '22px', fontWeight: '800',
-      fontFamily: 'sans-serif', display: 'flex', alignItems: 'center'}}>
+      fontFamily: 'sans-serif', display: 'flex', alignItems: 'center', userSelect: 'none'}}>
           {platform === "LinkedIn" && <Iconify icon="mdi:linkedin" sx={{mr: 0.45, mb: 0.15, height: '26px', width: '26px'}}/> }
           {platform === "Facebook" && <Iconify icon="entypo-social:facebook" sx={{mr: 0.75, ml: -0.0, mb: 0.15, height: '22.25px', width: '22.25px'}}/> }
           {platform === "Instagram" && <Iconify icon="ant-design:instagram-filled" sx={{mr: 0.5, mb: 0.1, ml: -0.1, height: '24.5px', width: '24.5px'}}/> }
@@ -92,7 +91,7 @@ export default function PostCard({ platform, content, index, isGen }) {
         </Stack>
         <Iconify icon="uil:image-download"
           sx={{right: '44.5px', top: '10.5px', height: '26px', width: '26px', position: 'absolute', color: 'white', cursor: 'pointer', opacity: '0.9'}}
-          onClick={async () => {setIsCopied(true); copyText(content);}}/>
+          onClick={async () => {downloadPic(imgUrl);}}/>
         <Iconify icon={isCopied ? "mingcute:clipboard-fill" : "mingcute:clipboard-line"} 
           sx={{right: '13px', top: '11.5px', height: '26px', width: '26px', position: 'absolute', color: 'white', cursor: 'pointer', opacity: '0.9'}}
           onClick={async () => {setIsCopied(true); copyText(content);}}/>

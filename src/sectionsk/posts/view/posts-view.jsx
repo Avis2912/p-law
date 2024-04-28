@@ -33,11 +33,12 @@ export default function BlogView() {
   const [isUseNews, setIsUseNews] = useState(false);
   const [isUseBlog, setIsUseBlog] = useState(false);
   const [genPostPlatform, setGenPostPlatform] = useState(null);
-  const [imageSettings, setImageSettings] = useState('Brand & Web');
+  const [imageSettings, setImageSettings] = useState('Web');
   const [style, setStyle] = useState('Unstyled');
   const [wordRange, setWordRange] = useState('2');
   const [isUseCreativeCommons, setIsUseCreativeCommons] = useState(false);
 
+  const [isFeedbackMode, setIsFeedbackMode] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedPosts, setGeneratedPosts] = useState([]);
   const [timeToUpdate, setTimeToUpdate] = useState("");
@@ -48,6 +49,7 @@ export default function BlogView() {
   const [bigBlogString, setBigBlogString] = useState([]);
   const [firmName, setFirmName] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDialogOpen2, setIsDialogOpen2] = useState(false);
 
   const updateDays = 7;
 
@@ -55,50 +57,53 @@ export default function BlogView() {
 
   const writeWeeklyPosts = useCallback(async () => {
     
-    let tempPosts = []; const platforms = ["LinkedIn", "LinkedIn", "Facebook", "Instagram"]; 
-    let isError = false; let firmNameInt; let firmDescriptionInt; let imagesSettingsInt;
+    let tempPosts = []; const platforms = ["LinkedIn", "LinkedIn", "Facebook", "Facebook", "Instagram"]; 
+    let firmNameInt; let firmDescriptionInt; let imagesSettingsInt;
     const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
     if (userDoc.exists()) {const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
     if (firmDoc.exists()) {firmNameInt = firmDoc.data().FIRM_INFO.NAME; firmDescriptionInt = firmDoc.data().FIRM_INFO.DESCRIPTION; imagesSettingsInt = firmDoc.data().SETTINGS.IMAGES;}};
     
-    for (let i = 0; i < 6; i += 1) {
+    for (let i = 0; i < tempPosts.length; i += 1) {
       const tempPlatform = platforms[i];
 
-      // eslint-disable-next-line no-await-in-loop
-      const response = await fetch('https://us-central1-pentra-claude-gcp.cloudfunctions.net/gcp-claudeAPI', {
-        method: 'POST',headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ model: modelKeys[selectedModel], 
-        messages: [
-          { role: "user", content: `<role> You are Pentra AI, an attorney at ${firmNameInt}.
-          ${firmName} Description: ${firmDescriptionInt}. </role> 
-          
-          <instruction>
-          YOUR GOAL: Write 3 FULL EDUCATIONAL ${tempPlatform} posts from the perspective of ${firmName}. Don't be generic and corporate but be approachable and genuinely informative. Don't be lazy.
-          
-          IMPORTANT INSTRUCTIONS:
-          - RESPONSE FORMAT: Always respond with a JSON-parsable array of 3 hashmaps, 
-          EXAMPLE OUTPUT: "[{"platform": "${tempPlatform}", "content": "*Post Content*"}, {"platform": "${genPostPlatform}", "content": "*Post Content*"}, {"platform": "${genPostPlatform}", "content": "*Post Content*"}]". 
-          ONLY OUTPUT THE ARRAY. NOTHING ELSE.
-          - Wrap titles in <h2> tags. Wrap EVERY paragraph in <p> tags.
-          - Be truly informative about a relevant legal topic, use points if necessary, and mention the firm at the end if relevant. Add just a few hashtags at the end.
-          - PARAGRAPH COUNT: these posts should be informative 5-6 paragraphs long for LinkedIn, 4-5 for Facebook, and just 1 for Instagram.
-          - IMAGES: post should contain 1 image, placed after the h2 post title. Please add it in this format: //Image: {short image description}//.
-          - Array should be in proper format: [{}, {}, {}]. </instruction>
+      let isError; let tries = 0; let textWithoutImages;
+      do {isError = false; tries += 1;
+        // eslint-disable-next-line no-await-in-loop
+        const response = await fetch('https://us-central1-pentra-claude-gcp.cloudfunctions.net/gcp-claudeAPI', {
+          method: 'POST',headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ model: modelKeys[selectedModel], 
+          messages: [
+            { role: "user", content: `<role> You are Pentra AI, an attorney at ${firmNameInt}.
+            ${firmName} Description: ${firmDescriptionInt}. </role> 
+            
+            <instruction>
+            YOUR GOAL: Write 3 FULL EDUCATIONAL ${tempPlatform} posts from the perspective of ${firmName}. Don't be generic and corporate but be approachable and genuinely informative. Don't be lazy.
+            
+            IMPORTANT INSTRUCTIONS:
+            - RESPONSE FORMAT: Always respond with a JSON-parsable array of 3 hashmaps, 
+            EXAMPLE OUTPUT: "[{"platform": "${tempPlatform}", "content": "*Post Content*"}, {"platform": "${genPostPlatform}", "content": "*Post Content*"}, {"platform": "${genPostPlatform}", "content": "*Post Content*"}]". 
+            ONLY OUTPUT THE ARRAY. NOTHING ELSE.
+            - Wrap titles in <h2> tags. Wrap EVERY paragraph in <p> tags.
+            - Be truly informative about a relevant legal topic, use points if necessary, and mention the firm at the end if relevant. Add just a few hashtags at the end.
+            - PARAGRAPH COUNT: these posts should be informative 5-6 paragraphs long for LinkedIn, 4-5 for Facebook, and just 1 for Instagram.
+            - IMAGES: post should contain 1 image, placed after the h2 post title. Please add it in this format: //Image: {short image description}//.
+            - Array should be in proper format: [{}, {}, {}]. </instruction>
 
-          Pull from in the following blog posts only if useful information is contained:
+            Pull from in the following blog posts only if useful information is contained:
 
-          ${bigBlogString}
-          ` }
-        ] })
-      });
+            ${bigBlogString}
+            ` }
+          ] })
+        });
 
-      // eslint-disable-next-line no-await-in-loop
-      let gptResponse = (await response.text()); console.log(gptResponse);
-      // eslint-disable-next-line no-await-in-loop
-      gptResponse = gptResponse.replace(/<br\s*\/?>/gi, '').replace(/<\/p>|<\/h1>|<\/h2>|<\/h3>|\/\/Image:.*?\/\//gi, '$&<br>').replace(/(<image[^>]*>|\/\/Image:.*?\/\/)/gi, '$&<br>');
-      // eslint-disable-next-line no-control-regex
-      const sanitizedResponse = gptResponse.replace(/[\u0000-\u001F\u007F-\u009F]/g, ''); let textWithoutImages;
-      try { textWithoutImages = JSON.parse(sanitizedResponse) } catch (err) {isError = true; console.log(err)};
+        // eslint-disable-next-line no-await-in-loop
+        let gptResponse = (await response.text()); console.log(gptResponse);
+        // eslint-disable-next-line no-await-in-loop
+        gptResponse = gptResponse.replace(/<br\s*\/?>/gi, '').replace(/<\/p>|<\/h1>|<\/h2>|<\/h3>|\/\/Image:.*?\/\//gi, '$&<br>').replace(/(<image[^>]*>|\/\/Image:.*?\/\/)/gi, '$&<br>');
+        // eslint-disable-next-line no-control-regex
+        const sanitizedResponse = gptResponse.replace(/[\u0000-\u001F\u007F-\u009F]/g, ''); 
+        try { textWithoutImages = JSON.parse(sanitizedResponse) } catch (err) {isError = true; console.log('TEMP ERROR: ', err)};
+      } while (isError && tries < 3);
       console.log(textWithoutImages); let textWithImages = textWithoutImages;
       // eslint-disable-next-line no-await-in-loop
       if (isImagesOn) {textWithImages = await addImages(textWithoutImages, imagesSettingsInt);}
@@ -111,12 +116,11 @@ export default function BlogView() {
         if (firmDoc.exists()) {
           const currentDate = new Date();
           const formattedDate = `${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear().toString().slice(-2)}`;
-          await updateDoc(doc(db, 'firms', userDoc.data().FIRM), { 'WEEKLY_POSTS.POSTS': tempPosts, 'WEEKLY_POSTS.LAST_DATE': isError ? "3/3/3" : formattedDate });
+          await updateDoc(doc(db, 'firms', userDoc.data().FIRM), { 'WEEKLY_POSTS.POSTS': tempPosts, 'WEEKLY_POSTS.LAST_DATE': formattedDate });
         }
       }} catch (err) {console.log(err)};
      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bigBlogString, firmName, genPostPlatform, selectedModel]);
-
 
 
   useEffect(() => {
@@ -239,9 +243,11 @@ export default function BlogView() {
 
     gptResponse = gptResponse.replace(/<br\s*\/?>/gi, '').replace(/<\/p>|<\/h1>|<\/h2>|<\/h3>|\/\/Image:.*?\/\//gi, '$&<br>').replace(/(<image[^>]*>|\/\/Image:.*?\/\/)/gi, '$&<br>');
 
-    let textWithoutImages;
-    try {textWithoutImages = JSON.parse(gptResponse.trim().replace(/^```|```$/g, '').replace(/json/g, ''));
-    } catch (error) {const gptResponseRepeat = await response.text(); textWithoutImages = JSON.parse(gptResponseRepeat.trim().replace(/^```|```$/g, '').replace(/json/g, ''));}    
+    let textWithoutImages; let isError; let tries = 0;
+    do { isError = false; tries += 1; 
+    // eslint-disable-next-line no-await-in-loop
+    try { textWithoutImages = JSON.parse(gptResponse.trim().replace(/^```|```$/g, '').replace(/json/g, '')); } catch (error) { if (tries < 3) { gptResponse = await response.text(); } else { isError = true; } } } 
+    while (isError && tries < 3);
     let textWithImages = textWithoutImages;
     if (isImagesOn) {textWithImages = await addImages(textWithoutImages, imagesSettingsInt);}
     await setGeneratedPosts(textWithImages);
@@ -264,13 +270,10 @@ export default function BlogView() {
     
   }
 
-  const handleOpen = () => {
-    setIsDialogOpen(true);
-  };
-
-  const handleClose = () => {
-    setIsDialogOpen(false);
-  };
+  const handleOpen = () => {setIsDialogOpen(true);};
+  const handleClose = () => {setIsDialogOpen(false);};
+  const handleOpen2 = () => {setIsDialogOpen2(true);};
+  const handleClose2 = () => {setIsDialogOpen2(false);};
 
   const addImages = async (posts, imagesSettings='All') => {
     const regex = /\/\/Image: (.*?)\/\//g;
@@ -453,19 +456,26 @@ export default function BlogView() {
 
        {!isNewPost && (<>
         <Button variant="contained" onClick={() => {}} 
-        sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, cursor: 'default', fontWeight: '600'})}>
+        sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, cursor: 'default', fontWeight: '600',
+        '&:hover' : {backgroundColor: theme.palette.primary.navBg,}})}>
           {!isUpdateTime ? `${timeToUpdate} Days Left` : 'Update In Progress'}
         </Button>
 
+        <Button variant="contained" color="inherit" startIcon={<Iconify icon="streamline:artificial-intelligence-spark-solid" sx={{height: '16px', width: '16px'}}/>}
+         onClick={() => {setIsFeedbackMode(!isFeedbackMode); handleOpen2();}} sx={(theme) => ({backgroundColor: theme.palette.primary.black})}>
+          Give Feedback
+        </Button>
+        </>)}
+
+        {isNewPost && (<>
         <Button variant="contained" onClick={() => {handleOpen()}} startIcon={<Iconify icon="tabler:clock-filled" />}
         sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, cursor: 'pointer', fontWeight: '600', ':hover&': {backgroundColor: theme.palette.primary.navBg}})}>
           Soon
-        </Button>
-        </>)}
+        </Button> </>)}
         
-        <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => handleClickRoute()}
+        <Button variant="contained" color="inherit" startIcon={<Iconify icon={isNewPost ? "charm:cross" : "eva:plus-fill"} />} onClick={() => handleClickRoute()}
         sx={(theme) => ({backgroundColor: theme.palette.primary.black})}>
-          {isNewPost ? 'Close Creator' : 'Create New Post'}
+          {isNewPost ? 'Close Creator' : ' New Post'}
         </Button>
       </Stack></Stack>
 
@@ -496,7 +506,7 @@ export default function BlogView() {
         </> : null}
 
         {isUseNews && (<>
-        <Stack direction="row" spacing={2} alignItems="center" mt={0} mb={2}>
+        <Stack direction="row" spacing={2} alignItems="center" mt={0} mb={3}>
         
         <Button onClick={() => {}}
         variant="contained" color="inherit" 
@@ -580,6 +590,21 @@ export default function BlogView() {
         borderRadius: '0px', display: 'flex', justifyContent: 'center', alignItems: 'center' })}>
           <img src="https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/Screenshot%202024-04-27%20at%203.28.50%E2%80%AFAM.png?alt=media&token=3e419fa6-c956-44a6-b7ed-b0fb9b16a0c1" 
           style={{height: '600px', width: '415px', borderRadius: '4px'}} alt=""/>
+        </Card>
+      </Dialog>
+
+      <Dialog open={isDialogOpen2} onClose={handleClose2} 
+      PaperProps={{ style: { minHeight: '220px', minWidth: '500px', display: 'flex', flexDirection: "row" } }}>
+        <Card sx={{ width: '100%', height: '100%', backgroundColor: 'white', borderRadius: '0px',
+        padding: '55px', pb: '35px' }}>
+        <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, lineHeight: '55px',
+        letterSpacing: '-0.05px',  fontWeight: 800, fontSize: '40.75px', marginBottom: '25px'}}> 
+        Coming Soon</Typography>
+        <Typography sx={{ fontFamily: "serif", mb: 0, lineHeight: '55px', marginBottom: '35px',
+        letterSpacing: '0.25px',  fontWeight: 500, fontSize: '24.75px'}}> 
+        This feature is in the works and will <br /> 
+        be out in the next couple weeks! <br /> 
+        </Typography>
         </Card>
       </Dialog>
     </Container>

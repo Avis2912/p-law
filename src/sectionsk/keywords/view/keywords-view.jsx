@@ -46,11 +46,14 @@ export default function BlogView() {
   const [firmName, setFirmName] = useState(null);
   const [firmDescription, setFirmDescription] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDialogOpen2, setIsDialogOpen2] = useState(false);
 
   const updateDays = 14;
 
   const handleOpen = () => {setIsDialogOpen(true);};
   const handleClose = () => {setIsDialogOpen(false);};
+  const handleOpen2 = () => {setIsDialogOpen2(true);};
+  const handleClose2 = () => {setIsDialogOpen2(false);};
 
   const writeWeeklyKeywords = useCallback(async (key="") => {
 
@@ -238,7 +241,7 @@ export default function BlogView() {
           {isNewPost ? 'Back To All Keywords' : 'Add New'}
         </Button>
 
-        {!isNewPost && <Button variant="contained" color="inherit" startIcon={<Iconify icon="bx:search" />} onClick={() => {}}
+        {!isNewPost && <Button variant="contained" color="inherit" startIcon={<Iconify icon="bx:search" />} onClick={() => {handleOpen2()}}
         sx={(theme) => ({backgroundColor: theme.palette.primary.black})}>
           Search
         </Button>}
@@ -348,6 +351,21 @@ export default function BlogView() {
         color: 'white', marginRight: '8px'}}/>
         Reach out to us at pentra.hub@gmail.com
       </Button>
+        </Card>
+      </Dialog>
+
+      <Dialog open={isDialogOpen2} onClose={handleClose2} 
+      PaperProps={{ style: { minHeight: '220px', minWidth: '500px', display: 'flex', flexDirection: "row" } }}>
+        <Card sx={{ width: '100%', height: '100%', backgroundColor: 'white', borderRadius: '0px',
+        padding: '55px', pb: '35px' }}>
+        <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, lineHeight: '55px',
+        letterSpacing: '-0.05px',  fontWeight: 800, fontSize: '40.75px', marginBottom: '25px'}}> 
+        Coming Soon</Typography>
+        <Typography sx={{ fontFamily: "serif", mb: 0, lineHeight: '55px', marginBottom: '35px',
+        letterSpacing: '0.25px',  fontWeight: 500, fontSize: '24.75px'}}> 
+        This feature is in the works and will <br /> 
+        be out in the next couple weeks! <br /> 
+        </Typography>
         </Card>
       </Dialog>
     </Container>

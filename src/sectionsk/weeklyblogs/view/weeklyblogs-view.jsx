@@ -4,6 +4,8 @@ import TextField from '@mui/material/TextField';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
+import Card from '@mui/material/Card';
+import Dialog from '@mui/material/Dialog';
 
 import { db, auth } from 'src/firebase-config/firebase';
 import { useState, useEffect, useCallback } from 'react';
@@ -53,8 +55,11 @@ export default function BlogView() {
   const [bigBlogString, setBigBlogString] = useState([]);
   const [firmName, setFirmName] = useState(null);
   const [sources, setSources] = useState([]);
+  const [isDialogOpen2, setIsDialogOpen2] = useState(false);
 
   const updateDays = 7;
+  const handleOpen2 = () => {setIsDialogOpen2(true);};
+  const handleClose2 = () => {setIsDialogOpen2(false);};
 
   // PAGE LOAD FUNCTIONS
 
@@ -407,13 +412,13 @@ export default function BlogView() {
 
        {!isNewPost && (<>
         <Button variant="contained" onClick={() => {}}
-        sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, cursor: 'default', fontWeight: '600'})}>
+        sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, cursor: 'default', fontWeight: '600', '&:hover': { backgroundColor: theme.palette.primary.navBg, },})}>
           {!isUpdateTime ? `${timeToUpdate} Days Left` : 'Update In Progress'}
         </Button>
         </>)}
         
         <Button variant="contained" color="inherit" startIcon={<Iconify icon="streamline:artificial-intelligence-spark-solid" sx={{height: '16px', width: '16px'}}/>}
-         onClick={() => setIsFeedbackMode(true)} sx={(theme) => ({backgroundColor: theme.palette.primary.black})}>
+         onClick={() => {setIsFeedbackMode(true); handleOpen2();}} sx={(theme) => ({backgroundColor: theme.palette.primary.black})}>
           Give Pentra AI Feedback
         </Button>
       </Stack></Stack>
@@ -424,6 +429,21 @@ export default function BlogView() {
           <PostCard key={index} platform={platform} content={content} index={index} isGen={isGenerating} />
         ))}
       </Grid>
+
+      <Dialog open={isDialogOpen2} onClose={handleClose2} 
+      PaperProps={{ style: { minHeight: '220px', minWidth: '500px', display: 'flex', flexDirection: "row" } }}>
+        <Card sx={{ width: '100%', height: '100%', backgroundColor: 'white', borderRadius: '0px',
+        padding: '55px', pb: '35px' }}>
+        <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, lineHeight: '55px',
+        letterSpacing: '-0.05px',  fontWeight: 800, fontSize: '40.75px', marginBottom: '25px'}}> 
+        Coming Soon</Typography>
+        <Typography sx={{ fontFamily: "serif", mb: 0, lineHeight: '55px', marginBottom: '35px',
+        letterSpacing: '0.25px',  fontWeight: 500, fontSize: '24.75px'}}> 
+        This feature is in the works and will <br /> 
+        be out in the next couple weeks! <br /> 
+        </Typography>
+        </Card>
+      </Dialog>
 
     </Container>
   );

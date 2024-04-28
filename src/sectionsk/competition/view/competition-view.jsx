@@ -27,6 +27,7 @@ export default function ListsView() {
 
   const [indexedBlogs, setIndexedBlogs] = useState([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDialogOpen2, setIsDialogOpen2] = useState(false);
   const [planName, setPlanName] = useState('');
   const updateDays = 30;
 
@@ -64,8 +65,11 @@ export default function ListsView() {
 
   const handleOpen = () => {setIsDialogOpen(true);};
   const handleClose = () => {setIsDialogOpen(false);};
+  const handleOpen2 = () => {setIsDialogOpen2(true);};
+  const handleClose2 = () => {setIsDialogOpen2(false);};
 
   const handleAddNewCompetitionClick = async () => {
+    handleOpen2(true);
     // const newListData = { listName: newList, date: formattedDate, listMembers: [1, 7, 5] };
     // try {
     //   const userDocRef = doc(db, 'brands', auth.currentUser.email);
@@ -131,7 +135,7 @@ export default function ListsView() {
             )}
           </Stack>
           <Button variant="contained" onClick={() => {}}
-          sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, cursor: 'default', fontWeight: '600'})}>
+          sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, cursor: 'default', fontWeight: '600', '&:hover': { backgroundColor: theme.palette.primary.navBg, },})}>
             {!isUpdateTime ? `${timeToUpdate} Days Left` : 'Report Update Coming Soon'}
           </Button>
           <Button
@@ -178,7 +182,7 @@ export default function ListsView() {
         <Typography sx={{ fontFamily: "serif", mb: 0, lineHeight: '55px', marginBottom: '35px',
         letterSpacing: '0.25px',  fontWeight: 500, fontSize: '24.75px'}}> 
         Competition Analysis is <i>incredibly</i> expensive<br /> 
-        for Pentra to perform! Consequently, we are <br /> 
+        for Pentra to perform. Consequently, we are <br /> 
         able to offer it only on a paid plan. If things <br /> 
         change, you&apos;ll be the first to find out. <br /> 
         </Typography>
@@ -189,6 +193,21 @@ export default function ListsView() {
         color: 'white', marginRight: '8px'}}/>
         Reach out to us at pentra.hub@gmail.com
       </Button>
+        </Card>
+      </Dialog>
+
+      <Dialog open={isDialogOpen2} onClose={handleClose2} 
+      PaperProps={{ style: { minHeight: '220px', minWidth: '500px', display: 'flex', flexDirection: "row" } }}>
+        <Card sx={{ width: '100%', height: '100%', backgroundColor: 'white', borderRadius: '0px',
+        padding: '55px', pb: '35px' }}>
+        <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, lineHeight: '55px',
+        letterSpacing: '-0.05px',  fontWeight: 800, fontSize: '40.75px', marginBottom: '25px'}}> 
+        Coming Soon</Typography>
+        <Typography sx={{ fontFamily: "serif", mb: 0, lineHeight: '55px', marginBottom: '35px',
+        letterSpacing: '0.25px',  fontWeight: 500, fontSize: '24.75px'}}> 
+        This feature is in the works and will <br /> 
+        be out in the next couple weeks! <br /> 
+        </Typography>
         </Card>
       </Dialog>
     </div>

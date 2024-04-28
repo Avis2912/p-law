@@ -202,9 +202,10 @@ export default function ProductsView() {
         messages.push({
           "role": "user", 
           "content": `You are Pentra AI, a legal expert and an expert SEO blog writer. 
-          EDIT the blog post given below based on this prompt: ${blogTitle}. Don't deviate from the prompt and keep the blog post AS MUCH THE SAME as you can.
+          EDIT the blog post given below based on this prompt: ${blogTitle}. Don't deviate from the prompt and keep the blog post AS MUCH THE SAME as you can. NEVER START by saying anything else - output ONLY the blog post.
           BLOG POST: ${text}.
           
+          <instruction>
           IMPORTANT INSTRUCTIONS:
           - FORMATTING: Wrap titles in <h1> and <h2> tags. Wrap all paragraphs and also all individual pointers in <p> tags. Use b tags only in same-line text.
           - WORD RANGE: this post should be ${wordRange} long.
@@ -217,6 +218,7 @@ export default function ProductsView() {
           - ${isUseInternalLinks && `INTERNAL LINKS: Add internal links to the blog post using <a> tags.`}
           - ${isReferenceGiven && `USEFUL DATA: Refer to the following text and use as applicable: ${referenceText}`}
           - ${browseTextResponse !== "" && `WEB RESULTS: Please consider using the following internet information I got from an LLM for the prompt ${browseText}: ${browseTextResponse}`}
+          </instruction>
           `
         });
       }
@@ -274,7 +276,7 @@ export default function ProductsView() {
     - EXCEPTION: Just make sure the final how we can help / contact us paragraph remains at the end of your output.
     - STYLE & TONE: Keep the voice and tone of the text exactly the same when elongating it.
     - IMAGES: KEEP ALL IMAGES as they are. You're allowed to add one new one in your elongation in the same format.
-    - OUTPUT: ONLY output for me the final article. Nothing else.
+    - OUTPUT: ONLY output the final article. NEVER START by saying anything else.
     </instruction>
     `
 
