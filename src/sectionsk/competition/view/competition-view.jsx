@@ -25,7 +25,14 @@ export default function ListsView() {
 
   const [competition, setCompetition] = useState([]);
 
-  const [indexedBlogs, setIndexedBlogs] = useState([]);
+  const [indexedBlogs, setIndexedBlogs] = useState();
+  const [indexedJobs, setIndexedJobs] = useState([
+    { TITLE: 'Campaign Manager', VIA: 'via ZipRecruiter', LOCATION: 'Dallas, TX', TYPE: 'Full Time', POSTED: 'A Month Ago', LINK: 'hi.com' },
+    { TITLE: 'Political Consultant', VIA: 'via Indeed', LOCATION: 'San Francisco, CA', TYPE: 'Part Time', POSTED: '2 Weeks Ago', LINK: 'hello.com' },
+    { TITLE: 'Fundraising Coordinator', VIA: 'via Glassdoor', LOCATION: 'New York, NY', TYPE: 'Full Time', POSTED: '3 Days Ago', LINK: 'hey.com' },
+    { TITLE: 'Public Relations Specialist', VIA: 'via LinkedIn', LOCATION: 'Chicago, IL', TYPE: 'Contract', POSTED: 'Yesterday', LINK: 'howdy.com' },
+    { TITLE: 'Policy Analyst', VIA: 'via Monster', LOCATION: 'Los Angeles, CA', TYPE: 'Full Time', POSTED: 'A Week Ago', LINK: 'greetings.com' },
+  ]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDialogOpen2, setIsDialogOpen2] = useState(false);
   const [planName, setPlanName] = useState('');
@@ -157,7 +164,8 @@ export default function ListsView() {
                 traffic={value.TRAFFIC} 
                 linkedinData={value.ORG} 
                 orgData={value.ORG}
-                jobData={value.JOBS}
+                // jobData={value.JOBS}
+                jobData={indexedJobs}
                 indexedBlogs={value.RECENT_BLOGS}
                 rankingFor={value.RANKING_FOR} 
                 competitorName={value.NAME} 

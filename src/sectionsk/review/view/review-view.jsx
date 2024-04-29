@@ -148,7 +148,7 @@ export default function UserPage() {
     <Container>
     <style>@import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap);</style>
 
-    <Card sx ={(theme) => ({ height: matches ? '85px' : '105px', minWidth: '100%', position: 'fixed', display: 'flex', 
+    <Card sx ={(theme) => ({ height: matches ? '80px' : '105px', minWidth: '100%', position: 'fixed', display: 'flex', 
     alignItems: 'center', top: '0px', left: '0px', border: `0px solid ${theme.palette.primary.main}`, 
     borderRadius: '0px', backgroundColor: chatTheme, zIndex: '1255', })}>
 
@@ -165,7 +165,7 @@ export default function UserPage() {
       </Stack>
     </Card> 
 
-    <Stack direction={matches ? "column" : "row"} sx={{ position: 'absolute', top: matches ? '115px' : '237.5px', width: '100%', left: '0%'}}>
+    <Stack direction={matches ? "column" : "row"} sx={{ position: 'absolute', top: matches ? '110px' : '237.5px', width: '100%', left: '0%'}}>
 
       <Stack direction={matches ? "column" : "row"} spacing={matches ? 5.25 : 10} sx={{width: '100%', display: 'flex',
      justifyContent: 'center', alignItems: matches && 'center'}}>
@@ -250,13 +250,13 @@ export default function UserPage() {
       <Button variant="contained" disabled={serviceStars === 0 || responsivenessStars === 0}
         sx={{backgroundColor: 'black', position: 'absolute', top: matches ? '665px' : '660px', 
         fontFamily: 'DM Serif Display', fontSize: '18px', letterSpacing: '0.85px',
-        padding: reviewStage === 'Good' ? '10px 20px' : '7px 15px',
-        left: 'calc(50% - 70px)', '&:hover': {backgroundColor: chatTheme, },
+        padding: reviewStage === 'Good' ? '10px 20px' : '7px 15px', marginBottom: '150px',
+        left: (matches && reviewStage === 'Good') ? 'calc(50% - 80px)' : 'calc(50% - 70px)', '&:hover': {backgroundColor: chatTheme, },
         boxShadow: reviewStage === 'Good' &&  '0 0 20px #faaf4d, 0 0 10px #FF00FF',}}
         onClick={() => {
         if (reviewStage === 'Intro') {
         if(serviceStars >= starsRequired) {setReviewStage('Good')} else {setReviewStage('NotGood')}}
-        else if (reviewStage === 'Good') window.open((reviewLink.startsWith('http://') || reviewLink.startsWith('https://')) ? reviewLink : `http://${reviewLink}`, '_blank');
+        else if (reviewStage === 'Good') window.open((reviewLink.startsWith('http://') || reviewLink.startsWith('https://')) ? reviewLink : `https://${reviewLink}`, '_blank');
         else if (reviewStage === 'NotGood') {setReviewStage('PostNotGood');}
         }}>
 

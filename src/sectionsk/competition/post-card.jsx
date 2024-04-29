@@ -283,7 +283,7 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
 
       </List></>}
 
-      {(selectedOption === 2|| selectedOption === 4 || selectedOption === 5) && <><Card sx={(theme) => ({ height: '240px', width: '680px', borderRadius: '5.5px',
+      {(selectedOption === 2|| selectedOption === 5) && <><Card sx={(theme) => ({ height: '240px', width: '680px', borderRadius: '5.5px',
       top: '20px', left: '330px', p: '23px', pt: '18px', position: 'absolute', 
       backgroundColor: 'white', border: `2.75px solid ${theme.palette.primary.navBg}`,
       display: 'flex', justifyContent: 'center', alignItems: 'center'})}>
@@ -291,7 +291,56 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
         letterSpacing: '-0.3px', fontFamily: 'DM Serif Display',}}>
         Coming Soon
         </Typography>
-        </Card></>}
+      </Card></>}
+
+      {selectedOption === 4 && <>
+      
+      <List sx={(theme)=>({ width: '680px', height: '240px', 
+        bgcolor: 'white', overflow: 'auto', 
+        marginLeft: '38px',borderRadius: '5.5px', position: 'absolute',
+        top: '20px', left: '292px', pt: '0px', pb: '0px',
+        border: `2.75px solid ${theme.palette.primary.navBg}`,})}>
+
+      {jobData.map((job, index) => (
+        <ListItem 
+          key={index} 
+          sx={{ borderBottom: '0.1px solid #c2c1c0',
+          justifyContent: 'space-between'}}>          
+          <ListItemText primary={job.TITLE} sx={{fontWeight: '900', height: '32.5px', display: 'flex', alignItems: 'center'}}/>
+          
+          <Button variant="contained" color="primary" sx={(theme) => ({height: '32px', width: 'auto', cursor: 'default', boxShadow: 'none',
+          backgroundColor: theme.palette.primary.lighter, marginLeft: '10px', '&:hover': { backgroundColor: theme.palette.primary.lighter, boxShadow: 'none'},
+          borderRadius: '5px', fontSize: '14px', color: theme.palette.primary.navBg})}>
+          {job.TYPE}</Button>
+
+          <Button variant="contained" color="primary" sx={(theme) => ({height: '32px', width: 'auto', cursor: 'default', boxShadow: 'none',
+          backgroundColor: theme.palette.primary.lighter, marginLeft: '10px', '&:hover': { backgroundColor: theme.palette.primary.lighter, boxShadow: 'none'},
+          borderRadius: '5px', fontSize: '14px', color: theme.palette.primary.navBg})}>
+          {job.POSTED}</Button>
+
+          <Button variant="contained" color="primary" sx={(theme) => ({height: '32px', width: 'auto', cursor: 'default', boxShadow: 'none',
+          backgroundColor: theme.palette.primary.lighter, marginLeft: '10px', '&:hover': { backgroundColor: theme.palette.primary.lighter, boxShadow: 'none'},
+          borderRadius: '5px', fontSize: '14px', color: theme.palette.primary.navBg})}>
+          {job.LOCATION}</Button>
+
+          {/* <Button variant="contained" color="primary" sx={(theme) => ({height: '30px', maxWidth: '10px', p: '0px',
+          backgroundColor: theme.palette.primary.navBg, marginLeft: '10px', '&:hover': { backgroundColor: theme.palette.primary.navBg, },
+          borderRadius: '5px', fontSize: '14px'})} onClick={() => {
+            const url = job.LINK.startsWith('http://') || job.LINK.startsWith('https://') ? job.LINK : `http://${job.LINK}`;
+            window.open(url, '_blank');
+          }} /> */}
+
+          <Iconify icon="fluent:link-multiple-24-filled" sx={({height: '31.5px', width: '45px', p: '5.75px', cursor: 'pointer',
+          backgroundColor: 'darkred', marginLeft: '11px', '&:hover': { backgroundColor: 'darkred', }, color: 'white',
+          borderRadius: '5px', fontSize: '14px'})} onClick={() => {
+            const url = job.LINK.startsWith('http://') || job.LINK.startsWith('https://') ? job.LINK : `http://${job.LINK}`;
+            window.open(url, '_blank');
+          }}/>
+
+        </ListItem>
+      ))}
+
+      </List></>}
       
 
 
