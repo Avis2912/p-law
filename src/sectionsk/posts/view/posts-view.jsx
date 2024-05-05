@@ -53,7 +53,7 @@ export default function BlogView() {
   const [contactUsLink, setContactUsLink] = useState('');
 
   const [isTemplatesOpen, setIsTemplatesOpen] = useState(false);
-  const [selectedTemplates, setSelectedTemplates] = useState([0, 2]);
+  const [selectedTemplates, setSelectedTemplates] = useState([0, 1, 2, 3]);
   const [isCustomText, setIsCustomText] = useState(false);
   const [isCustomColor, setIsCustomColor] = useState(false);
   const [customText, setCustomText] = useState('');
@@ -66,10 +66,10 @@ export default function BlogView() {
 
   const updateDays = 7;
   const templates = [
-    { title: 'Legal', titleType: true, imgType: false, readTime: '', id: 'f360d9d3-434e-489c-8502-9026c541df8b', thumbnail: 'https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/templates%2FScreenshot%202024-05-03%20at%2012.02.08%E2%80%AFAM.png?alt=media&token=f207e707-10cc-4b5b-ac64-0d7f285adb62' },
-    { title: 'Legal', titleType: false, imgType: false, readTime: '', id: '5972339a-bd3c-4608-ad00-0e02dc887195', thumbnail: 'https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/templates%2FScreenshot%202024-05-03%20at%2012.39.27%E2%80%AFAM.png?alt=media&token=60a63e69-5e4c-415f-b5a8-3aeda19ef83a' },
-    { title: 'Legal', titleType: true, imgType: true, readTime: '', id: '75ebc6ac-b11c-4452-8537-20a3e5fd5ddd', thumbnail: 'https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/templates%2FScreenshot%202024-05-02%20at%2011.57.08%E2%80%AFPM.png?alt=media&token=4317ded0-cf03-412d-a02d-0479e89353e8' },
-    { title: 'Legal', titleType: true, imgType: true, readTime: '', id: '4cc38a38-534f-4e5b-82ed-11be890d9c72', thumbnail: 'https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/templates%2FScreenshot%202024-05-03%20at%2012.40.44%E2%80%AFAM.png?alt=media&token=e2b34e55-e641-4bfe-9e99-a0eff84bdb08' },
+    { title: 'Legal', titleType: true, imgType: false, isCaps: false, id: 'f360d9d3-434e-489c-8502-9026c541df8b', thumbnail: 'https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/templates%2FScreenshot%202024-05-03%20at%2012.02.08%E2%80%AFAM.png?alt=media&token=f207e707-10cc-4b5b-ac64-0d7f285adb62' },
+    { title: 'Legal', titleType: false, imgType: false, isCaps: false, id: '5972339a-bd3c-4608-ad00-0e02dc887195', thumbnail: 'https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/templates%2FScreenshot%202024-05-03%20at%2012.39.27%E2%80%AFAM.png?alt=media&token=60a63e69-5e4c-415f-b5a8-3aeda19ef83a' },
+    { title: 'Legal', titleType: true, imgType: true, isCaps: true, id: '75ebc6ac-b11c-4452-8537-20a3e5fd5ddd', thumbnail: 'https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/templates%2FScreenshot%202024-05-02%20at%2011.57.08%E2%80%AFPM.png?alt=media&token=4317ded0-cf03-412d-a02d-0479e89353e8' },
+    { title: 'Legal', titleType: true, imgType: true, isCaps: false, id: '4cc38a38-534f-4e5b-82ed-11be890d9c72', thumbnail: 'https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/templates%2FScreenshot%202024-05-03%20at%2012.40.44%E2%80%AFAM.png?alt=media&token=e2b34e55-e641-4bfe-9e99-a0eff84bdb08' },
   ]
 
   // PAGE LOAD FUNCTIONS
@@ -306,7 +306,7 @@ export default function BlogView() {
 
     const fetchBrandImage = async (imgDescription, post='') => { // 1.5c per image
       let resultImg = null; const randomTemplate = templates[selectedTemplates[Math.floor(Math.random() * selectedTemplates.length)]];
-      const h2Title = post.content.match(/<h2>(.*?)<\/h2>/)[1]; const formattedDate = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
+      const h2Title = randomTemplate.isCaps ? post.content.match(/<h2>(.*?)<\/h2>/)[1].toUpperCase() : post.content.match(/<h2>(.*?)<\/h2>/)[1]; const formattedDate = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
       const secondSentFirstPara = (post.content.match(/<p>(.*?)<\/p>/) || [''])[0].split('. ')[1] || (post.content.match(/<p>(.*?)<\/p>/) || [''])[0].split('. ')[0] || '';      
       const timeToRead = Math.ceil(post.content.split(' ').length / 200); const firmSite = new URL(contactUsLink).hostname.replace(/^www\./, '');
       const aiText = randomTemplate.titleType ? h2Title : `"${secondSentFirstPara}"`; let webPic = null;
@@ -324,7 +324,7 @@ export default function BlogView() {
               "text" : customText === '' ? aiText : customText,
             },
             "shape-0" : {
-              "color": customColor,
+              "fill": customColor,
             },
             "firm-name" : {
               "text": firmName,
@@ -339,7 +339,7 @@ export default function BlogView() {
               "text": formattedDate,
             },
             "read-time" : {
-              "text": `&nbsp;&nbsp;${timeToRead} MIN READ`,
+              "text": `  ${timeToRead} MIN READ`,
             },
             "primary-img" : {
                 "image_url": webPic,
