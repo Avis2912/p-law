@@ -50,6 +50,7 @@ export default function BlogView() {
   const [isFeedbackMode, setIsFeedbackMode] = useState(false);
   const [isUseCreativeCommons, setIsUseCreativeCommons] = useState(false);
 
+  const [plan, setPlan] = useState('Trial Plan');
   const [selectedModel, setSelectedModel] = useState(1);
   const [weeklyBlogs, setWeeklyBlogs] = useState([]);
   const [bigBlogString, setBigBlogString] = useState([]);
@@ -82,7 +83,7 @@ export default function BlogView() {
     
     const response0 = await fetch('https://us-central1-pentra-claude-gcp.cloudfunctions.net/gcp-claudeAPI', {
         method: 'POST',headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ model: modelKeys[selectedModel], 
+        body: JSON.stringify({ model: plan === 'Trial Plan' ? modelKeys[2] : modelKeys[2], 
         messages: [{ role: "user", content: `
         <instruction> 
         GIVE ME A JSON PARSABLE ARRAY WITH SHORT BUT 12 VERY SPECIFIC BLOG TITLES. 
@@ -114,7 +115,7 @@ export default function BlogView() {
       // eslint-disable-next-line no-await-in-loop
       const response = await fetch('https://us-central1-pentra-claude-gcp.cloudfunctions.net/gcp-claudeAPI', {
         method: 'POST',headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ model: modelKeys[1], 
+        body: JSON.stringify({ model: modelKeys[selectedModel], 
         messages: [
           { role: "user", content: `
           
@@ -228,7 +229,8 @@ export default function BlogView() {
             const lastDateParts = firmDoc.data().WEEKLY_BLOGS.LAST_DATE.split('/');
             const lastDate = new Date(`20${lastDateParts[2]}/${lastDateParts[0]}/${lastDateParts[1]}`);
             const diffDays = updateDays - Math.ceil((new Date() - lastDate) / (1000 * 60 * 60 * 24));
-            await setContactUsLink(firmDoc.data().FIRM_INFO.MODEL);
+            await setSelectedModel(firmDoc.data().SETTINGS.MODEL);
+            await setPlan(firmDoc.data().SETTINGS.PLAN);
             await setContactUsLink(firmDoc.data().FIRM_INFO.CONTACT_US);
             await setWeeklyBlogs(firmDoc.data().WEEKLY_BLOGS.BLOGS || []);
 

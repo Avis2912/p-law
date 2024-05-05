@@ -370,7 +370,7 @@ const saveChanges = async () => {
         </Button>
 
         <Button variant="contained" 
-          onClick={() => planName !== 'Trial Plan' && setSelectedModel(3) || setIsDialogOpen(true)}
+          onClick={() => planName !== 'Trial Plan' ? setSelectedModel(3) : setIsDialogOpen(true)}
           sx={(theme) => ({backgroundColor: selectedModel === 3 ? theme.palette.primary.navBg : '#DD8390'})}>
           Pentra Ultra 
         </Button>

@@ -6,11 +6,12 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 import Dialog from '@mui/material/Dialog';
 import Card from '@mui/material/Card';
+import Box from '@mui/material/Box';
 
 import { db, auth } from 'src/firebase-config/firebase';
 import { useState, useEffect, useCallback } from 'react';
 import { getDocs, getDoc, collection, doc, updateDoc } from 'firebase/firestore';
-import { getDownloadURL, ref, getStorage } from 'firebase/storage'; // Import necessary Firebase Storage functions
+import { getDownloadURL, ref, getStorage, uploadBytes } from 'firebase/storage';
 
 import Iconify from 'src/components/iconify';
 import PostCard from '../post-card';
@@ -33,7 +34,7 @@ export default function BlogView() {
   const [isUseNews, setIsUseNews] = useState(false);
   const [isUseBlog, setIsUseBlog] = useState(false);
   const [genPostPlatform, setGenPostPlatform] = useState(null);
-  const [imageSettings, setImageSettings] = useState('Web');
+  const [imageSettings, setImageSettings] = useState('Brand & Web');
   const [style, setStyle] = useState('Unstyled');
   const [wordRange, setWordRange] = useState('2');
   const [isUseCreativeCommons, setIsUseCreativeCommons] = useState(false);
@@ -48,13 +49,27 @@ export default function BlogView() {
   const [weeklyPosts, setWeeklyPosts] = useState([]);
   const [bigBlogString, setBigBlogString] = useState([]);
   const [firmName, setFirmName] = useState(null);
+  const [firmImage, setFirmImage] = useState('');
+  const [contactUsLink, setContactUsLink] = useState('');
+
   const [isTemplatesOpen, setIsTemplatesOpen] = useState(false);
+  const [selectedTemplates, setSelectedTemplates] = useState([0, 2]);
+  const [isCustomText, setIsCustomText] = useState(false);
+  const [isCustomColor, setIsCustomColor] = useState(false);
+  const [customText, setCustomText] = useState('');
+  const [customColor, setCustomColor] = useState('#000000');
+  const [customImg, setCustomImg] = useState('');
+
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDialogOpen2, setIsDialogOpen2] = useState(false);
 
+
   const updateDays = 7;
   const templates = [
-    { title: 'Legal', id: '123456-xx', thumbnail: 'https://template1.jpg' },
+    { title: 'Legal', titleType: true, imgType: false, readTime: '', id: 'f360d9d3-434e-489c-8502-9026c541df8b', thumbnail: 'https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/templates%2FScreenshot%202024-05-03%20at%2012.02.08%E2%80%AFAM.png?alt=media&token=f207e707-10cc-4b5b-ac64-0d7f285adb62' },
+    { title: 'Legal', titleType: false, imgType: false, readTime: '', id: '5972339a-bd3c-4608-ad00-0e02dc887195', thumbnail: 'https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/templates%2FScreenshot%202024-05-03%20at%2012.39.27%E2%80%AFAM.png?alt=media&token=60a63e69-5e4c-415f-b5a8-3aeda19ef83a' },
+    { title: 'Legal', titleType: true, imgType: true, readTime: '', id: '75ebc6ac-b11c-4452-8537-20a3e5fd5ddd', thumbnail: 'https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/templates%2FScreenshot%202024-05-02%20at%2011.57.08%E2%80%AFPM.png?alt=media&token=4317ded0-cf03-412d-a02d-0479e89353e8' },
+    { title: 'Legal', titleType: true, imgType: true, readTime: '', id: '4cc38a38-534f-4e5b-82ed-11be890d9c72', thumbnail: 'https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/templates%2FScreenshot%202024-05-03%20at%2012.40.44%E2%80%AFAM.png?alt=media&token=e2b34e55-e641-4bfe-9e99-a0eff84bdb08' },
   ]
 
   // PAGE LOAD FUNCTIONS
@@ -164,6 +179,8 @@ export default function BlogView() {
             const diffDays = updateDays - Math.ceil((new Date() - lastDate) / (1000 * 60 * 60 * 24));
             await setSelectedModel(firmDoc.data().SETTINGS.MODEL);
             if (firmDoc.data().WEEKLY_POSTS.LAST_DATE === "") {setIsUpdateTime(true); return;}
+            await setFirmImage(firmDoc.data().FIRM_INFO.IMAGE); await setCustomColor(firmDoc.data().CHAT_INFO.THEME);
+            setFirmName(firmDoc.data().FIRM_INFO.NAME); setContactUsLink(firmDoc.data().FIRM_INFO.CONTACT_US);
             await setWeeklyPosts(firmDoc.data().WEEKLY_POSTS.POSTS || []);
             if (diffDays >= 1) { await setTimeToUpdate(diffDays); } else { setIsUpdateTime(true); writeWeeklyPosts(); console.log('WRITING POSTS'); setWeeklyPosts([]); 
               await updateDoc(doc(db, 'firms', userDoc.data().FIRM), { 'WEEKLY_POSTS.LAST_DATE': "" }); }
@@ -203,7 +220,7 @@ export default function BlogView() {
 
   const generatePosts = async () => {
     setIsGenerating(true);
-      const messages = [];
+      const messages = []; 
 
       let firmNameInt; let firmDescriptionInt; let imagesSettingsInt;
       const userDocInt = await getDoc(doc(db, 'users', auth.currentUser.email));
@@ -236,23 +253,25 @@ export default function BlogView() {
         `
       });
       
+
+
+    let gptResponse; let textWithoutImages; let isError; let tries = 0;
+    do { isError = false; tries += 1; 
+    // eslint-disable-next-line no-await-in-loop
     const response = await fetch('https://us-central1-pentra-claude-gcp.cloudfunctions.net/gcp-claudeAPI', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ messages, blogDescription: postDescription, blogKeywords: postKeywords,
       model: modelKeys[selectedModel] })
     });
-
-    let gptResponse = (await response.text()); console.log(gptResponse);
-
-    gptResponse = gptResponse.replace(/<br\s*\/?>/gi, '').replace(/<\/p>|<\/h1>|<\/h2>|<\/h3>|\/\/Image:.*?\/\//gi, '$&<br>').replace(/(<image[^>]*>|\/\/Image:.*?\/\/)/gi, '$&<br>');
-
-    let textWithoutImages; let isError; let tries = 0;
-    do { isError = false; tries += 1; 
     // eslint-disable-next-line no-await-in-loop
-    try { textWithoutImages = JSON.parse(gptResponse.trim().replace(/^```|```$/g, '').replace(/json/g, '')); } catch (error) { if (tries < 3) { gptResponse = await response.text(); } else { isError = true; } } } 
+    gptResponse = (await response.text()); console.log(gptResponse);
+    gptResponse = gptResponse.replace(/<br\s*\/?>/gi, '').replace(/<\/p>|<\/h1>|<\/h2>|<\/h3>|\/\/Image:.*?\/\//gi, '$&<br>').replace(/(<image[^>]*>|\/\/Image:.*?\/\/)/gi, '$&<br>');  
+    // eslint-disable-next-line no-await-in-loop
+    try { textWithoutImages = JSON.parse(gptResponse.trim().replace(/^```|```$/g, '').replace(/json/g, '')); } catch (error) { if (tries < 3) {console.log('rerun'); isError = true;} else { isError = true; } } } 
     while (isError && tries < 3);
-    let textWithImages = textWithoutImages;
+
+    let textWithImages = textWithoutImages; console.log(textWithoutImages);
     if (isImagesOn) {textWithImages = await addImages(textWithoutImages, imagesSettingsInt);}
     await setGeneratedPosts(textWithImages);
     await setWeeklyPosts(textWithImages);   
@@ -282,10 +301,66 @@ export default function BlogView() {
   const handleTemplatesClose = () => {setIsTemplatesOpen(false);};
 
   const addImages = async (posts, imagesSettings='All') => {
-    const regex = /\/\/Image: (.*?)\/\//g;
+    const regex = /\/\/Image: (.*?)\/\//g; 
+    const isTemplatesOn = (imageSettings === 'Brand' || imageSettings === 'Brand & Web');
 
-    const fetchImage = async (description) => {
+    const fetchBrandImage = async (imgDescription, post='') => { // 1.5c per image
+      let resultImg = null; const randomTemplate = templates[selectedTemplates[Math.floor(Math.random() * selectedTemplates.length)]];
+      const h2Title = post.content.match(/<h2>(.*?)<\/h2>/)[1]; const formattedDate = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
+      const secondSentFirstPara = (post.content.match(/<p>(.*?)<\/p>/) || [''])[0].split('. ')[1] || (post.content.match(/<p>(.*?)<\/p>/) || [''])[0].split('. ')[0] || '';      
+      const timeToRead = Math.ceil(post.content.split(' ').length / 200); const firmSite = new URL(contactUsLink).hostname.replace(/^www\./, '');
+      const aiText = randomTemplate.titleType ? h2Title : `"${secondSentFirstPara}"`; let webPic = null;
       
+      if (imageSettings === 'Brand & Web' && Math.random() < 0.5) {return fetchWebImage(imgDescription);}
+      if (customImg !== '') {webPic = customImg;} else {if (randomTemplate.imgType) {webPic = await fetchWebImage(imgDescription, true);} console.log('fetching bg img')}
+      console.log('WEB PIC: ', webPic); 
+
+      await fetch('https://api.templated.io/v1/render', {
+        method: 'POST',
+        body: JSON.stringify({
+          "template" : randomTemplate.id,
+          "layers" : {
+            "primary-text" : {
+              "text" : customText === '' ? aiText : customText,
+            },
+            "shape-0" : {
+              "color": customColor,
+            },
+            "firm-name" : {
+              "text": firmName,
+            },
+            "firm-site" : {
+              "text": firmSite,
+            },
+            "firm-img": {
+              "image_url" : firmImage,
+            },
+            "date-today" : {
+              "text": formattedDate,
+            },
+            "read-time" : {
+              "text": `&nbsp;&nbsp;${timeToRead} MIN READ`,
+            },
+            "primary-img" : {
+                "image_url": webPic,
+            },
+
+          }
+        }),
+        headers: {
+          'Content-Type' : 'application/json',
+          'Authorization' : `Bearer ${import.meta.env.VITE_TEMPLATED_API_KEY}`
+        }
+      })
+      .then(response => {if(!response.ok){console.log('Network response was not ok')};   return response.json(); })
+      .then(data => {console.log(data); resultImg = `<image src="${data.render_url}" alt="Branded Image" />`;})
+      .catch(error => {console.error('Error:', error);});
+
+      return resultImg;
+    }
+
+
+    const fetchWebImage = async (description, justUrl=false) => { // 0.2c per image
       let resultImg = null; 
       const url = "https://api.dataforseo.com/v3/serp/google/images/live/advanced";
       const payload = JSON.stringify([{
@@ -303,21 +378,16 @@ export default function BlogView() {
           'Content-Type': 'application/json'
       };
 
-      await fetch(url, { method: 'POST', headers, body: payload })
-      .then(response => response.json())
-      .then(data => {console.log(data.tasks[0].result[0].items[0].source_url); resultImg = `<image src="${data.tasks[0].result[0].items[0].source_url}" alt="${description}" />`;})
-      .catch(error => console.error('Error:', error));
-
+      let counter = 0; let data;
+      while (counter < 2) {
+        // eslint-disable-next-line no-await-in-loop
+        data = await fetch(url, { method: 'POST', headers, body: payload })
+          .then(response => response.json())
+          .catch(error => console.error('Error:', error));
+        if (data.tasks[0].result[0].items[0].source_url !== undefined) {break;}
+        counter += 1; }
+      if (data) {console.log(data.tasks[0].result[0].items[0].source_url); resultImg = justUrl ? `${data.tasks[0].result[0].items[0].source_url}` : `<image src="${data.tasks[0].result[0].items[0].source_url}" alt="${description}" />`;}
       return resultImg;
-
-      // const subscriptionKey = `${import.meta.env.VITE_BING_API_KEY}`; const host = 'api.bing.microsoft.com';
-      // const path = '/v7.0/images/search'; const url = `https://${host}${path}?q=${encodeURIComponent(description)}`;
-      // const response = await fetch(url, {
-      //   method: 'GET', headers: {'Ocp-Apim-Subscription-Key': subscriptionKey,},});
-      // const data = await response.json();
-      // if (data.value && data.value.length > 0) {
-      //   const firstImageResult = data.value[0];
-      //   return `<image src="${firstImageResult.thumbnailUrl}" alt="${description}" />`; }
     };
 
     const postsWithImages = [];
@@ -330,10 +400,11 @@ export default function BlogView() {
         // eslint-disable-next-line no-await-in-loop
         const batchPostsWithImages = await Promise.all(batch.map(async (post) => {
           let imagefullText = post.content;
+          console.log('POST CONTENT: ', post.content);
           const matches = [...imagefullText.matchAll(regex)];
           const descriptions = matches.map(match => match[1]);
-          const imageTags = await Promise.all(descriptions.map((desc, it) => new Promise(resolve => setTimeout(() => resolve(fetchImage(desc)), it * 200))));
-
+          const imageTags = await Promise.all(descriptions.map((desc, it) => new Promise(resolve => setTimeout(() => resolve(isTemplatesOn ? fetchBrandImage(desc, post) : fetchWebImage(desc)), it * 200))));
+          
           matches.forEach((match, index) => {
             if (imageTags[index]) {
               imagefullText = imagefullText.replace(match[0], imageTags[index]);
@@ -390,6 +461,17 @@ export default function BlogView() {
       .catch(error => console.error(error));
   }
 
+  const handleUpload = async (event) => {
+    const file = event.target.files[0];
+    const storage = getStorage();
+    const storageRef = ref(storage, `user_imgs/${file.name}`);
+    await uploadBytes(storageRef, file);
+    const fileUrl = await getDownloadURL(storageRef);
+
+    document.getElementById('userImage').src = fileUrl;
+    setCustomImg(fileUrl); console.log('IMAGE SET: ', fileUrl);
+  }
+
   return (
     <Container>
       <style>
@@ -429,7 +511,7 @@ export default function BlogView() {
         }
       }}
       sx={(theme) => ({backgroundColor: theme.palette.primary.green, '&:hover': { backgroundColor: theme.palette.primary.green, },})}>
-      {wordRange} Paragraphs </Button>
+      {wordRange} Paras </Button>
 
         <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} 
       onClick={() => {
@@ -457,6 +539,12 @@ export default function BlogView() {
         }}}>
           {genPostPlatform}
         </Button>
+
+        {(imageSettings !== 'No' && imageSettings !== 'Web') && (<>
+        <Button variant="contained" onClick={() => {handleTemplatesOpen()}} startIcon={<Iconify icon="solar:posts-carousel-horizontal-bold" />}
+        sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, cursor: 'pointer', fontWeight: '600', ':hover&': {backgroundColor: theme.palette.primary.navBg}})}>
+          Branded
+        </Button> </>)}
         </>)}
 
 
@@ -469,15 +557,9 @@ export default function BlogView() {
 
         <Button variant="contained" color="inherit" startIcon={<Iconify icon="streamline:artificial-intelligence-spark-solid" sx={{height: '16px', width: '16px'}}/>}
          onClick={() => {setIsFeedbackMode(!isFeedbackMode); handleOpen2();}} sx={(theme) => ({backgroundColor: theme.palette.primary.black})}>
-          Give Feedback
+          AI Settings
         </Button>
         </>)}
-
-        {isNewPost && (<>
-        <Button variant="contained" onClick={() => {handleOpen()}} startIcon={<Iconify icon="tabler:clock-filled" />}
-        sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, cursor: 'pointer', fontWeight: '600', ':hover&': {backgroundColor: theme.palette.primary.navBg}})}>
-          Soon
-        </Button> </>)}
         
         <Button variant="contained" color="inherit" startIcon={<Iconify icon={isNewPost ? "charm:cross" : "eva:plus-fill"} />} onClick={() => handleClickRoute()}
         sx={(theme) => ({backgroundColor: theme.palette.primary.black})}>
@@ -550,7 +632,7 @@ export default function BlogView() {
           case "No": setImageSettings("Brand & Web"); break;
           default: setImageSettings("Brand & Web");
         }}}>
-          Use {imageSettings} Images
+          {imageSettings} Images
         </Button>
 
         <Button variant="contained" sx={(theme) => ({backgroundColor: isUseNews ? theme.palette.primary.green : 'grey', '&:hover': { backgroundColor: theme.palette.primary.green, }})} startIcon={<Iconify icon="eva:plus-fill" />} 
@@ -569,24 +651,88 @@ export default function BlogView() {
       </>)}
 
       <Dialog open={isTemplatesOpen} onClose={handleTemplatesClose} 
-      PaperProps={{ style: { minHeight: '650px', minWidth: '1000px', display: 'flex', flexDirection: "row" } }}>
-        <Card sx={{ width: '500px', height: '650px', backgroundColor: 'white', borderRadius: '0px',
-        padding: '55px' }}>
+      PaperProps={{ style: { minHeight: '650px', minWidth: '980px', display: 'flex', flexDirection: "row" } }}>
+        <Card sx={{ width: '635px', height: '675px', backgroundColor: 'white', borderRadius: '0px',
+        padding: '55px', pt: '40px', overflow: 'auto' }}>
         <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, lineHeight: '55px', userSelect: 'none',
         letterSpacing: '-0.45px',  fontWeight: 800, fontSize: '40.75px', marginBottom: '25px'}}> 
-        Top Templates</Typography>
+        Brand Templates</Typography>
+        
+        <Grid container spacing={5} sx={{width: '635px'}}>
+          {templates.map((template, index) => (
+            <Grid item xs={12} sm={6} md={4} lg={5} key={index}>
+              <Card 
+                sx={{ width: '237.5px', height: '237.5px', backgroundColor: 'darkred', borderRadius: '5.5px', 
+                border: selectedTemplates.includes(index) ? '5px solid darkred' : 'none' }} 
+                onClick={() => setSelectedTemplates(selectedTemplates.includes(index) ? selectedTemplates.filter(i => i !== index) : selectedTemplates.concat(index))}>
+                <img src={template.thumbnail} style={{height: '100%', width: '100%', borderRadius: '1px'}} alt=""/>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+
         </Card>
-        <Card sx={(theme) => ({ width: '525px', height: '650px', backgroundColor: theme.palette.primary.navBg, 
-        borderRadius: '0px', display: 'flex', justifyContent: 'center', alignItems: 'center' })}>
-          <img src="https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/Screenshot%202024-04-27%20at%203.28.50%E2%80%AFAM.png?alt=media&token=3e419fa6-c956-44a6-b7ed-b0fb9b16a0c1" 
-          style={{height: '410px', width: '315px', borderRadius: '4px'}} alt=""/>
+        <Card sx={(theme) => ({ width: '355px', height: '675px', backgroundColor: theme.palette.primary.navBg, 
+        borderRadius: '0px', p: '55px', pt: '40px' })}>
+        <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, lineHeight: '55px', userSelect: 'none',
+        letterSpacing: '-0.45px',  fontWeight: 800, fontSize: '40.75px', marginBottom: '25px', color: 'white'}}> 
+        Options</Typography>
+        
+        <input type="file" id="fileInput" onChange={handleUpload} style={{ display: 'none' }} />
+        <Card sx={{backgroundColor: 'transparent', height: '235px', width: '232.5px', borderRadius: '0px'}} onClick={() => document.getElementById('fileInput').click()}>
+        <img src={customImg !== '' ? customImg : "https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/misc_images%2Fdecentral__33_-removebg-preview.png?alt=media&token=21964431-cfc1-40fb-ba8e-ccc17012798c"}
+          id="userImage" alt="" style={{height: '100%', width: '100%', borderRadius: '4px', cursor: 'pointer',}} /> 
+        </Card>
+
+
+        {!isCustomText && <Button variant="contained" onClick={() => {setIsCustomText(true)}}
+        sx={(theme) => ({backgroundColor: theme.palette.primary.lighter, '&:hover': { backgroundColor: theme.palette.primary.lighter, boxShadow: 'none', }, boxShadow: 'none', fontWeight: '500', letterSpacing: '-0.55px',
+        mt: '25px', width: '232.5px', fontSize: '15.5px', p: '10px', borderRadius: '7px', paddingInline: '20px', color: 'black', 
+        display: 'flex', justifyContent: 'center', minWidth: '10px',})}>
+          <Iconify icon="quill:text-left" sx={{minHeight: '18.5px', minWidth: '18.5px', color: 'black', marginRight: '5px'}}/>
+          Enter Your Own Text
+        </Button>}
+
+        {isCustomText && <TextField 
+        sx={(theme) => ({backgroundColor: theme.palette.primary.lighter, '&:hover': { backgroundColor: theme.palette.primary.lighter, boxShadow: 'none', }, boxShadow: 'none', fontWeight: '500', letterSpacing: '-0.55px',
+        mt: '25px', width: '232.5px', fontSize: '15.5px', borderRadius: '7px', color: 'black', 
+        display: 'flex', justifyContent: 'center', minWidth: '10px',})}
+        value={customText} onChange={(e) => setCustomText(e.target.value)}
+        placeholder='Enter Your Text' size='small' />}
+
+        {!isCustomColor && <Button variant="contained" onClick={() => {setIsCustomColor(true)}}
+        sx={(theme) => ({backgroundColor: theme.palette.primary.lighter, '&:hover': { backgroundColor: theme.palette.primary.lighter, boxShadow: 'none', }, boxShadow: 'none', fontWeight: '500', letterSpacing: '-0.55px', 
+        mt: '20px', width: '232.5px', fontSize: '15.5px', p: '10px', borderRadius: '7px', paddingInline: '20px', color: 'black', 
+        display: 'flex', justifyContent: 'center', minWidth: '10px',})}>
+          <Iconify icon="ph:drop-light" sx={{minHeight: '18.5px', minWidth: '18.5px', color: 'black', marginRight: '5px'}}/>
+          Change Main Color
+        </Button>}
+
+        
+        {isCustomColor && <Stack spacing={2} direction="row" sx={{mt: '20px',}}>
+        {/* <Button variant="contained" onClick={() => {setIsCustomColor(true)}}
+        sx={(theme) => ({backgroundColor: theme.palette.primary.lighter, '&:hover': { backgroundColor: theme.palette.primary.lighter, boxShadow: 'none', }, boxShadow: 'none', fontWeight: '500', letterSpacing: '-0.55px', 
+        mt: '20px', width: '85px', fontSize: '15.5px', p: '10px', borderRadius: '7px', paddingInline: '20px', color: 'black', 
+        display: 'flex', justifyContent: 'center', minWidth: '10px',})}>
+          <Iconify icon="ph:drop-light" sx={{minHeight: '18.5px', minWidth: '18.5px', color: 'black', marginRight: '5px'}}/>
+          Back
+        </Button> */}
+
+        <input type="color" defaultValue="#8B0000" onChange={(event) => setCustomColor(event.target.value)} style={{
+          mt: '20px', width: '232.5px', height: '55px', fontSize: '15.5px', borderRadius: '2px', 
+          color: 'darkred', border: 'none', display: 'flex', outline: 'none'
+        }} value={customColor}/>
+
+        </Stack>}
+
+
         </Card>
         <Button variant="contained" onClick={() => {handleTemplatesClose()}}
-      sx={(theme) => ({backgroundColor: theme.palette.primary.lighter, '&:hover': { backgroundColor: theme.palette.primary.lighter, boxShadow: 'none', }, boxShadow: 'none', fontWeight: '800', letterSpacing: '-0.35px', 
-      fontSize: '14.5px', p: '10px', borderRadius: '7px', paddingInline: '20px', color: 'black', bottom: '32.5px', right: '32.5px', width: 'auto', display: 'flex', justifyContent: 'center', minWidth: '10px', position: 'absolute', })}>
-        <Iconify icon="charm:cross" sx={{minHeight: '18px', minWidth: '18px', color: 'black', marginRight: '5px'}}/>
+      sx={(theme) => ({backgroundColor: theme.palette.primary.lighter, '&:hover': { backgroundColor: theme.palette.primary.lighter, boxShadow: 'none', }, boxShadow: 'none', fontWeight: '800', letterSpacing: '-0.55px', 
+      fontSize: '15.5px', p: '10px', borderRadius: '7px', paddingInline: '20px', color: 'black', bottom: '38.5px', right: '38.5px', width: 'auto', display: 'flex', justifyContent: 'center', minWidth: '10px', position: 'absolute', })}>
+        <Iconify icon="mingcute:quill-pen-line" sx={{minHeight: '18.5px', minWidth: '18.5px', color: 'black', marginRight: '5px'}}/>
         Make Posts
-      </Button>
+      </Button> 
       </Dialog>
       
       <Dialog open={isDialogOpen} onClose={handleClose} 

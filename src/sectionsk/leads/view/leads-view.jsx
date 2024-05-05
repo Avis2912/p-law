@@ -214,7 +214,7 @@ export default function UserPage() {
 
       <Stack direction="row" spacing={3}>
 
-      <Card sx={{ borderRadius: '11px', width: isChatOpen ? '420px' : '100%', height: 575, transition: 'ease 0.3s' }}>
+      <Card sx={{ borderRadius: '11px', width: isChatOpen ? '420px' : '100%', height: 617.5, transition: 'ease 0.3s' }}>
         
 
         <Scrollbar>
@@ -264,9 +264,9 @@ export default function UserPage() {
         />
       </Card>
 
-      <Card sx={{ borderRadius: '11px', height: 575, width: isChatOpen ? 'calc(100% - 385px)' : '0%', transition: 'ease 0.3s' }}>
+      <Card sx={{ borderRadius: '11px', height: 617.5, width: isChatOpen ? 'calc(100% - 385px)' : '0%', transition: 'ease 0.3s' }}>
  
-          <Card sx = {{ width: '100%', height: 575, p: 2.5, overflow: 'scroll'}}>
+          <Card sx = {{ width: '100%', height: 617.5, p: 2.5, overflow: 'scroll'}}>
 
           {/* CHAT PANEL  */}
 

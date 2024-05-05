@@ -63,6 +63,7 @@ export default function UserPage() {
   const [firmName, setFirmName] = useState('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+  const [isAddedImg, setIsAddedImg] = useState(false);
 
   const reviewPlatforms = ['Google Reviews', 'Super Lawyers', 'Lawyers.com', 'Find Law USA'];
 
@@ -187,32 +188,6 @@ export default function UserPage() {
       {confetti && <Confetti />}
       </Stack> </Stack>
 
-      <Dialog open={isDialogOpen} onClose={handleClose} 
-      PaperProps={{ style: { minHeight: '650px', minWidth: '1000px', display: 'flex', flexDirection: "row" } }}>
-        <Card sx={{ width: '500px', height: '650px', backgroundColor: 'white', borderRadius: '0px',
-        padding: '55px' }}>
-        <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, lineHeight: '55px',
-        letterSpacing: '-0.45px',  fontWeight: 800, fontSize: '40.75px', marginBottom: '25px'}}> 
-        Inviting Clients To Review You</Typography>
-        <Typography sx={{ fontFamily: "serif", mb: 0, lineHeight: '55px', marginBottom: '35px',
-        letterSpacing: '-0.35px',  fontWeight: 500, fontSize: '24.75px'}}> 
-        1. Send client your Pentra link<br /> 
-        2. We ask them for a quick rating <br /> 
-        3. If it is a strong rating, we invite <br /> 
-        &nbsp;&nbsp;&nbsp;them to leave a full review on <br />
-        &nbsp;&nbsp;&nbsp;your chosen platform <br /> 
-        4. If not, we only have them elaborate <br /> 
-        &nbsp;&nbsp;&nbsp;so you can see what went wrong<br /> 
-        </Typography>
-        </Card>
-        <Card sx={(theme) => ({ width: '525px', height: '650px', backgroundColor: theme.palette.primary.navBg, 
-        borderRadius: '0px', display: 'flex', justifyContent: 'center', alignItems: 'center' })}>
-          <img src="https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/Screenshot%202024-04-26%20at%202.32.38%E2%80%AFPM.png?alt=media&token=0b6b571f-e8bb-49be-be60-a4d32e79814c" 
-          style={{height: '600px', width: '465px', borderRadius: '4px'}} alt=""/>
-        </Card>
-      </Dialog>
-
-
     <Stack direction="column" spacing={2.25}>
 
 
@@ -237,7 +212,7 @@ export default function UserPage() {
     </Card> 
 
 
-    <Stack direction="row" spacing={2.25}>
+    <Stack direction="row" spacing={2.25} >
      <Card sx ={(theme) => ({ height: 'auto', width: '70%', borderRadius: '11px',
      border: `4px solid ${theme.palette.primary.lighter}`,  })}>
       <Stack
@@ -245,7 +220,7 @@ export default function UserPage() {
         spacing={0}>
 
         {reviewPlatforms.map((platform, index) => (
-          <Card key={index} sx={{ height: '100px', backgroundColor: "white", display: 'flex', justifyContent: 'center',
+          <Card key={index} sx={{ height: '95px', backgroundColor: "white", display: 'flex', justifyContent: 'center',
             borderRadius: '0px', borderBottomWidth: '3px', borderColor: 'black', alignItems: 'center' }}>
             <Iconify icon="streamline:business-card-solid" position="absolute" left="30px" width="23.75px" height="23.75px" color="#474444"/>
             <Typography variant="subtitle2" fontSize="19px" position="absolute" left="65.0px" color="#474444"
@@ -268,14 +243,14 @@ export default function UserPage() {
       <Card sx ={(theme) => ({ border: `4px solid ${theme.palette.primary.lighter}`, height: 'auto', width: '30%', 
       display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: '11px',})}>
       <Typography sx={{ fontFamily: "DM Serif Display", letterSpacing: '-0.75px',  fontWeight: 500, fontSize: '32.75px', textAlign: 'center',
-      position: "absolute", top: "70px", width: "200px"}}> 
+      position: "absolute", top: "55px", width: "200px"}}> 
                 {"Invite To Leave Review "}
         <span style={{ fontStyle: 'italic', fontWeight: '200' }}> Only If </span></Typography>
 
       <Select
         value={starsNeeded}
         onChange={(event) => setStarsNeeded(event.target.value)}
-        sx={{position: 'absolute', bottom: '120px', height: '38px', width: '150px'}}
+        sx={{position: 'absolute', bottom: '115px', height: '38px', width: '150px'}}
       >
         <MenuItem value={5}>⭐⭐⭐⭐⭐</MenuItem>
         <MenuItem value={4}>⭐⭐⭐⭐ +</MenuItem>
@@ -285,16 +260,38 @@ export default function UserPage() {
       </Select>
 
         <Button variant="contained" startIcon={<Iconify icon="carbon:save" />}
-        sx={(theme)=>({backgroundColor: theme.palette.primary.navBg, position: 'absolute', bottom: '65px',
+        sx={(theme)=>({backgroundColor: theme.palette.primary.navBg, position: 'absolute', bottom: '60px',
         '&:hover': {backgroundColor: theme.palette.primary.navBg } })}
         onClick={saveChanges}>
         Save Changes</Button>
       </Card>
 
-      
+      </Stack> </Stack>  
 
-      </Stack> </Stack>    
+
+    <Card sx ={(theme) => ({ height: '100px', width: '100%', borderRadius: '7.5px', 
+    border: `1px solid ${theme.palette.primary.main}`, mt: 2.25, })}>
+        <Stack direction="row" sx ={{ justifyContent: 'center', alignItems: 'center', height: '100%',
+      width: '100%', }} spacing={2}>
+
+        {newReviews.length === 0 && <Typography variant="subtitle3" fontSize="24.25px" position="" left="67.5px" userSelect="none"
+      letterSpacing="0.45px" fontWeight="400" fontFamily="DM Serif Display">No Reviews Collected Yet</Typography>}
+
+        </Stack>
+    </Card>   
     </Container >
+
+
+
+
+
+
+
+
+
+
+
+
 
     {isReviewsDone && <Container sx={{ mt: 2.5 }}>
       {/* <Stack direction="row" alignItems="center" justifyContent="space-between" mb={3}>
@@ -407,6 +404,31 @@ export default function UserPage() {
       </Card>
       </div>
     </Container>}
+    <Dialog open={isDialogOpen} onClose={handleClose} 
+      PaperProps={{ style: { minHeight: '650px', minWidth: '1000px', display: 'flex', flexDirection: "row" } }}>
+        <Card sx={{ width: '500px', height: '650px', backgroundColor: 'white', borderRadius: '0px',
+        padding: '55px' }}>
+        <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, lineHeight: '55px',
+        letterSpacing: '-0.45px',  fontWeight: 800, fontSize: '40.75px', marginBottom: '25px'}}> 
+        Inviting Clients To Review You</Typography>
+        <Typography sx={{ fontFamily: "serif", mb: 0, lineHeight: '55px', marginBottom: '35px',
+        letterSpacing: '-0.35px',  fontWeight: 500, fontSize: '24.75px'}}> 
+        1. Send client your Pentra link<br /> 
+        2. We ask them for a quick rating <br /> 
+        3. If it is a strong rating, we invite <br /> 
+        &nbsp;&nbsp;&nbsp;them to leave a full review on <br />
+        &nbsp;&nbsp;&nbsp;your chosen platform <br /> 
+        4. If not, we only have them elaborate <br /> 
+        &nbsp;&nbsp;&nbsp;so you can see what went wrong<br /> 
+        </Typography>
+        </Card>
+        <Card sx={(theme) => ({ width: '525px', height: '650px', backgroundColor: theme.palette.primary.navBg, 
+        borderRadius: '0px', display: 'flex', justifyContent: 'center', alignItems: 'center' })}>
+          <img src="https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/Screenshot%202024-04-26%20at%202.32.38%E2%80%AFPM.png?alt=media&token=0b6b571f-e8bb-49be-be60-a4d32e79814c" 
+          style={{height: '600px', width: '465px', borderRadius: '4px'}} alt=""/>
+        </Card>
+      </Dialog>
+
     </>
   );
 }
