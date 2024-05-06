@@ -50,7 +50,8 @@ export default function PostCard({ platform, content, index, isGen }) {
     
     const h1Match = content.match(/<h1>(.*?)<\/h1>/i);
     const pMatch = content.match(/<p>(.*?)<\/p>/i);
-    const imgMatch = content.match(/<img[^>]+src="(.*?)"[^>]*style="(.*?)"[^>]*>/i);
+    let imgMatch = content.match(/<img[^>]+src="(.*?)"[^>]*style="(.*?)"[^>]*>/i);
+    if (!imgMatch) {imgMatch = content.match(/<image[^>]+src="(.*?)"[^>]*style="(.*?)"[^>]*>/i);}    
     console.log('imgMatch', imgMatch);
     if (h1Match) setBlogTitle(h1Match[1]);
     if (pMatch) setBlogDesc(pMatch[1]);
