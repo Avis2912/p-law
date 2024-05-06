@@ -1,6 +1,6 @@
 import { db, auth } from 'src/firebase-config/firebase';
 import { useState, useEffect } from 'react';
-import { getDocs, getDoc, collection, doc, updateDoc } from 'firebase/firestore';
+import { getDocs, getDoc, collection, doc, updateDoc, arrayUnion } from 'firebase/firestore';
 
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -51,6 +51,7 @@ export default function UserPage() {
   const [confetti, setConfetti] = useState(true);
 
   const [chatTheme, setChatTheme] = useState('#ccc');
+  const [firmParam0, setFirmParam0] = useState('');
   const [firmName, setFirmName] = useState('');
   const [firmImage, setFirmImage] = useState('');
 
@@ -60,18 +61,20 @@ export default function UserPage() {
   const [serviceStars, setServiceStars] = useState(0);
   const [responsivenessStars, setResponsivenessStars] = useState(0);
   const [starsRequired, setStarsRequired] = useState(4); 
+  const [feedback, setFeedback] = useState('');
   const [reviewStage, setReviewStage] = useState('Intro');
 
   useEffect(() => {
 
     const queryParams = new URLSearchParams(window.location.search);
-    const firmParam = decodeURI(queryParams.get('firm') || 'testlawyers');
+    const firmParam = decodeURI(queryParams.get('firm') || 'testlawyers'); 
 
     const getFirmData = async () => {
       try {
         const firmDoc = await getDoc(doc(db, 'firms', firmParam));
         if (firmDoc.exists()) {
           
+          await setFirmParam0(firmParam);
           console.log(firmDoc.data().FIRM_INFO.IMAGE);
           await setFirmName(firmDoc.data().FIRM_INFO.NAME);
           await setReviewLink(firmDoc.data().REVIEWS.LINKS[firmDoc.data().REVIEWS.SELECTION]);
@@ -79,13 +82,30 @@ export default function UserPage() {
           await setChatTheme(firmDoc.data().CHAT_INFO.THEME);
           await setFirmImage(firmDoc.data().FIRM_INFO.IMAGE);;
           
-      } else {console.log('Error: Firm document not found.');}
+        } else {console.log('Error: Firm document not found.');}
       } catch (err) {
         console.log(err);
       }
     };
     getFirmData();
   }, []);
+
+  const uploadReview = async (name, serviceStarsInt, responsivenessStarsInt, feedbackText) => {
+    try {
+      const firmDoc = doc(db, 'firms', firmParam0);
+      await updateDoc(firmDoc, {
+        'REVIEWS.NEW_REVIEWS': arrayUnion({
+          NAME: name,
+          SERVICE: serviceStarsInt,
+          RESPONSIVENESS: responsivenessStarsInt,
+          FEEDBACK: feedbackText,
+        }),
+      });
+      console.log('Review uploaded');
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
 
   const handleSort = (event, id) => {
@@ -230,12 +250,13 @@ export default function UserPage() {
 
       {reviewStage === 'NotGood' && (<><Stack direction="column" spacing={1.5}
       sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', paddingBottom: '15px'}}>
+
       <Typography sx={{ fontFamily: "Roboto", letterSpacing: '-0.05px', fontStyle: '',
       fontWeight: 400, fontSize: '30.75px', textAlign: 'center', maxWidth: '90%'}}> 
       Your Feedback</Typography>
       
       <TextField id="outlined-basic" label="I would like to see..." variant="outlined" multiline
-      sx={{width: '120%', }} minRows={3} />
+      sx={{width: '120%',}} minRows={3} value={feedback} onChange={(event) => {setFeedback(event.target.value);}}/>
       
       </Stack></>)}
 
@@ -256,8 +277,10 @@ export default function UserPage() {
         onClick={() => {
         if (reviewStage === 'Intro') {
         if(serviceStars >= starsRequired) {setReviewStage('Good')} else {setReviewStage('NotGood')}}
-        else if (reviewStage === 'Good') window.open((reviewLink.startsWith('http://') || reviewLink.startsWith('https://')) ? reviewLink : `https://${reviewLink}`, '_blank');
-        else if (reviewStage === 'NotGood') {setReviewStage('PostNotGood');}
+        else if (reviewStage === 'Good') 
+        { uploadReview('Not Entered', serviceStars, responsivenessStars, 'Not Inquired');
+          window.open((reviewLink.startsWith('http://') || reviewLink.startsWith('https://')) ? reviewLink : `https://${reviewLink}`, '_blank')
+        } else if (reviewStage === 'NotGood') {setReviewStage('PostNotGood'); uploadReview('Not Entered', serviceStars, responsivenessStars, feedback);}
         }}>
 
         <Iconify icon={reviewStage === 'Good' ? "mdi:heart" : "carbon:next-filled"} sx={{marginRight: '10px'}} />

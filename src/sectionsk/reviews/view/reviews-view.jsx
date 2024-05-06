@@ -269,16 +269,27 @@ export default function UserPage() {
       </Stack> </Stack>  
 
 
-    <Card sx ={(theme) => ({ height: '100px', width: '100%', borderRadius: '7.5px', 
-    border: `1px solid ${theme.palette.primary.main}`, mt: 2.25, })}>
-        <Stack direction="row" sx ={{ justifyContent: 'center', alignItems: 'center', height: '100%',
+    {newReviews.length === 0 && <Card sx ={(theme) => ({ height: '100px', width: '100%', borderRadius: '7.5px', 
+      border: `1px solid ${theme.palette.primary.main}`, mt: 2.25, })}>
+      <Stack direction="row" sx ={{ justifyContent: 'center', alignItems: 'center', height: '100%',
       width: '100%', }} spacing={2}>
 
-        {newReviews.length === 0 && <Typography variant="subtitle3" fontSize="24.25px" position="" left="67.5px" userSelect="none"
-      letterSpacing="0.45px" fontWeight="400" fontFamily="DM Serif Display">No Reviews Collected Yet</Typography>}
+        <Typography variant="subtitle3" fontSize="24.25px" position="" left="67.5px" userSelect="none"
+      letterSpacing="0.45px" fontWeight="400" fontFamily="DM Serif Display">No Reviews Collected Yet</Typography>
 
-        </Stack>
-    </Card>   
+      </Stack>
+    </Card>}
+
+    {newReviews.length > 0 && <Card sx ={(theme) => ({ height: '100px', width: '100%', borderRadius: '7.5px', 
+      border: `1px solid ${theme.palette.primary.main}`, mt: 2.25, })}>
+      <Stack direction="row" sx ={{ justifyContent: 'center', alignItems: 'center', height: '100%',
+      width: '100%', }} spacing={2}>
+
+        <Typography variant="subtitle3" fontSize="24.25px" position="" left="67.5px" userSelect="none"
+      letterSpacing="0.45px" fontWeight="400" fontFamily="DM Serif Display">Reviews Collected Yet</Typography>
+      
+      </Stack>
+    </Card>}
     </Container >
 
 

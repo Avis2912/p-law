@@ -353,10 +353,15 @@ export default function ProductsView() {
           'Content-Type': 'application/json'
       };
 
-      await fetch(url, { method: 'POST', headers, body: payload })
-      .then(response => response.json())
-      .then(data => {console.log(data.tasks[0].result[0].items[0].source_url); resultImg = `<img src="${data.tasks[0].result[0].items[0].source_url}" alt="${description}" style="max-width: 600px;" />`;})
-      .catch(error => console.error('Error:', error));
+      let counter = 0; let data;
+      while (counter < 2) {
+        // eslint-disable-next-line no-await-in-loop
+        data = await fetch(url, { method: 'POST', headers, body: payload })
+          .then(response => response.json())
+          .catch(error => console.error('Error:', error));
+        if (data.tasks[0].result[0].items[0].source_url !== undefined) {break;} else {console.log('rerunn img')};
+      counter += 1; }
+      if (data) {resultImg = `<img src="${data.tasks[0].result[0].items[0].source_url}" alt="${description}" style="max-width: 600px;" />`;}
 
       return resultImg;
     };

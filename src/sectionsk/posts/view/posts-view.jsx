@@ -385,7 +385,7 @@ export default function BlogView() {
           .then(response => response.json())
           .catch(error => console.error('Error:', error));
         if (data.tasks[0].result[0].items[0].source_url !== undefined) {break;}
-        counter += 1; }
+      counter += 1; }
       if (data) {console.log(data.tasks[0].result[0].items[0].source_url); resultImg = justUrl ? `${data.tasks[0].result[0].items[0].source_url}` : `<image src="${data.tasks[0].result[0].items[0].source_url}" alt="${description}" />`;}
       return resultImg;
     };

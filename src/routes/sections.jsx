@@ -17,6 +17,7 @@ export const WeeklyBlogsPage = lazy(() => import('src/pages/weeklyblogs'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 export const AccountPage = lazy(() => import('src/pages/account'));
 export const LeadsPage = lazy(() => import('src/pages/leads'));
+export const AnalyticsPage = lazy(() => import('src/pages/analytics'));
 
 
 // ----------------------------------------------------------------------
@@ -45,7 +46,7 @@ export default function Router() {
         { path: 'competition', element: <CompetitionPage /> },
         { path: 'leads', element: <LeadsPage /> },
         { path: 'account', element: <AccountPage /> },
-
+        { path: 'analytics', element: <AnalyticsPage /> },
       ],
     },
     {
