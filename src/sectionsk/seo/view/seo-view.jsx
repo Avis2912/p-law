@@ -41,7 +41,7 @@ export default function ProductsView() {
   const [loadIndicator, setLoadIndicator] = useState(['Welcome Back!', -185]);
 
   const [isBrowseWeb, setIsBrowseWeb] = useState(true);
-  const [isAdvancedBrowseWeb, setIsAdvancedBrowseWeb] = useState(false);
+  const [isAdvancedBrowseWeb, setIsAdvancedBrowseWeb] = useState(true);
   const [browseText, setBrowseText] = useState("");
   const [selectedModel, setSelectedModel] = useState(2);
   const [wordCount, setWordCount] = useState(0);

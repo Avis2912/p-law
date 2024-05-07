@@ -7,7 +7,6 @@ import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import Card from '@mui/material/Card';
 
-
 import { db, auth } from 'src/firebase-config/firebase';
 import { getDocs, getDoc, addDoc, collection, doc, updateDoc } from 'firebase/firestore';
 
