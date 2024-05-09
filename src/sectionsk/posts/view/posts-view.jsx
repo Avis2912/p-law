@@ -78,7 +78,7 @@ export default function BlogView() {
 
   const writeWeeklyPosts = useCallback(async () => {
     
-    let tempPosts = []; const platforms = ["LinkedIn", "LinkedIn", "Facebook", "Facebook", "Instagram", "Instagram"]; 
+    let tempPosts = []; const platforms = ["LinkedIn", "LinkedIn", "Facebook", "Facebook", "Instagram", "Instagram",]; 
     let firmNameInt; let firmDescriptionInt; let imagesSettingsInt;
     const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
     if (userDoc.exists()) {const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
@@ -182,7 +182,7 @@ export default function BlogView() {
             await setSelectedModel(firmDoc.data().SETTINGS.MODEL);
             if (firmDoc.data().WEEKLY_POSTS.LAST_DATE === "") {setIsUpdateTime(true); return;}
             await setFirmImage(firmDoc.data().FIRM_INFO.IMAGE); await setCustomColor(firmDoc.data().CHAT_INFO.THEME);
-            setFirmName(firmDoc.data().FIRM_INFO.NAME); setContactUsLink(firmDoc.data().FIRM_INFO.CONTACT_US);
+            setFirmName(firmDoc.data().FIRM_INFO.NAME); setContactUsLink(firmDoc.data().FIRM_INFO.CONTACT_US); console.log('FIRM CONTACT: ', firmDoc.data().FIRM_INFO.CONTACT_US);
             await setWeeklyPosts(firmDoc.data().WEEKLY_POSTS.POSTS || []);
             if (diffDays >= 1) { await setTimeToUpdate(diffDays); } else { setIsUpdateTime(true); writeWeeklyPosts(); console.log('WRITING POSTS'); setWeeklyPosts([]); 
               await updateDoc(doc(db, 'firms', userDoc.data().FIRM), { 'WEEKLY_POSTS.LAST_DATE': "" }); }
@@ -310,7 +310,8 @@ export default function BlogView() {
       let resultImg = null; const randomTemplate = templates[selectedTemplates[Math.floor(Math.random() * selectedTemplates.length)]];
       const h2Title = randomTemplate.isCaps ? post.content.match(/<h2>(.*?)<\/h2>/)[1].toUpperCase() : post.content.match(/<h2>(.*?)<\/h2>/)[1]; const formattedDate = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
       const secondSentFirstPara = (post.content.match(/<p>(.*?)<\/p>/) || [''])[0].split('. ')[1].replace(/<\/?p>|<\/?b>/g, '') || (post.content.match(/<p>(.*?)<\/p>/) || [''])[0].split('. ')[0].replace(/<\/?p>|<\/?b>/g, '') || '';      
-      const timeToRead = Math.ceil(post.content.split(' ').length / 200); const firmSite = new URL(contactUsLink).hostname.replace(/^www\./, '');
+      const timeToRead = Math.ceil(post.content.split(' ').length / 200); let firmSite = contactUsLink;
+      try {firmSite = new URL(contactUsLink).hostname.replace(/^www\./, '');} catch (e) {console.error(e);}
       const aiText = randomTemplate.titleType ? h2Title : `"${secondSentFirstPara}"`; let webPic = null;
       
       if (imageSettings === 'Brand & Web' && Math.random() < 0.5) {return fetchWebImage(imgDescription);}
@@ -405,7 +406,7 @@ export default function BlogView() {
           console.log('POST CONTENT: ', post.content);
           const matches = [...imagefullText.matchAll(regex)];
           const descriptions = matches.map(match => match[1]);
-          const imageTags = await Promise.all(descriptions.map((desc, it) => new Promise(resolve => setTimeout(() => resolve(isTemplatesOn ? fetchBrandImage(desc, post) : fetchWebImage(desc)), it * 200))));
+          const imageTags = await Promise.all(descriptions.map((desc, it) => new Promise(resolve => setTimeout(() => resolve(isTemplatesOn && isNewPost ? fetchBrandImage(desc, post) : fetchWebImage(desc)), it * 200))));
           
           matches.forEach((match, index) => {
             if (imageTags[index]) {

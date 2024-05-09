@@ -388,7 +388,7 @@ export default function ProductsView() {
         }
       })
       .then(response => {if(!response.ok){console.log('Network response was not ok')};   return response.json(); })
-      .then(data => {console.log(data); resultImg = `<image src="${data.render_url}" alt="Branded Image" />`;})
+      .then(data => {console.log(data); resultImg = `<img src="${data.render_url}" alt="Branded Image" />`;})
       .catch(error => {console.error('Error:', error);});
 
       return resultImg;
@@ -440,8 +440,8 @@ export default function ProductsView() {
     }
 
     const h1Title0 = (imagelessText.match(/<h1>(.*?)<\/h1>/) || [])[1];
-    const brandImage = await fetchImage(h1Title0, true);
-    imagefullText = imagelessText.replace(/(<\/h1>)/, `$1${brandImage}`);
+    if (isUseThumbnail) {const brandImage = await fetchImage(h1Title0, true);
+    imagefullText = imagelessText.replace(/(<\/h1>)/, `$1${brandImage}`); }
 
     matches.forEach((match, index) => {
       if (imageTags[index]) {
