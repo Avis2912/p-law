@@ -53,7 +53,7 @@ export default function BlogView() {
   const [contactUsLink, setContactUsLink] = useState('');
 
   const [isTemplatesOpen, setIsTemplatesOpen] = useState(false);
-  const [selectedTemplates, setSelectedTemplates] = useState([0, 1, 2, 3]);
+  const [selectedTemplates, setSelectedTemplates] = useState([0, 1, 2, 3, 4, 5]);
   const [isCustomText, setIsCustomText] = useState(false);
   const [isCustomColor, setIsCustomColor] = useState(false);
   const [customText, setCustomText] = useState('');
@@ -68,8 +68,10 @@ export default function BlogView() {
   const templates = [
     { title: 'Legal', titleType: true, imgType: false, isCaps: false, id: 'f360d9d3-434e-489c-8502-9026c541df8b', thumbnail: 'https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/templates%2FScreenshot%202024-05-03%20at%2012.02.08%E2%80%AFAM.png?alt=media&token=f207e707-10cc-4b5b-ac64-0d7f285adb62' },
     { title: 'Legal', titleType: false, imgType: false, isCaps: false, id: '5972339a-bd3c-4608-ad00-0e02dc887195', thumbnail: 'https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/templates%2FScreenshot%202024-05-03%20at%2012.39.27%E2%80%AFAM.png?alt=media&token=60a63e69-5e4c-415f-b5a8-3aeda19ef83a' },
-    { title: 'Legal', titleType: true, imgType: true, isCaps: true, id: '75ebc6ac-b11c-4452-8537-20a3e5fd5ddd', thumbnail: 'https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/templates%2FScreenshot%202024-05-02%20at%2011.57.08%E2%80%AFPM.png?alt=media&token=4317ded0-cf03-412d-a02d-0479e89353e8' },
+    { title: 'Legal', titleType: true, imgType: true, isCaps: false, id: 'b678796f-976a-4f2c-8350-57e4a64029f1', thumbnail: 'https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/templates%2FScreenshot%202024-05-09%20at%203.02.07%E2%80%AFAM.png?alt=media&token=7507c8a5-4f0d-4d00-a6bb-3754ad3a3fd0' },
     { title: 'Legal', titleType: true, imgType: true, isCaps: false, id: '4cc38a38-534f-4e5b-82ed-11be890d9c72', thumbnail: 'https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/templates%2FScreenshot%202024-05-03%20at%2012.40.44%E2%80%AFAM.png?alt=media&token=e2b34e55-e641-4bfe-9e99-a0eff84bdb08' },
+    { title: 'Legal', titleType: true, imgType: true, isCaps: true, id: '75ebc6ac-b11c-4452-8537-20a3e5fd5ddd', thumbnail: 'https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/templates%2FScreenshot%202024-05-02%20at%2011.57.08%E2%80%AFPM.png?alt=media&token=4317ded0-cf03-412d-a02d-0479e89353e8' },
+    { title: 'Legal', titleType: false, imgType: true, isCaps: false, id: '26564e2c-7af5-4a21-b5f8-0d6b5a96715a', thumbnail: 'https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/templates%2FScreenshot%202024-05-09%20at%202.54.05%E2%80%AFAM.png?alt=media&token=3a166a19-fcac-41b1-aee2-02b69c7e3efe' },
   ]
 
   // PAGE LOAD FUNCTIONS
@@ -307,7 +309,7 @@ export default function BlogView() {
     const fetchBrandImage = async (imgDescription, post='') => { // 1.5c per image
       let resultImg = null; const randomTemplate = templates[selectedTemplates[Math.floor(Math.random() * selectedTemplates.length)]];
       const h2Title = randomTemplate.isCaps ? post.content.match(/<h2>(.*?)<\/h2>/)[1].toUpperCase() : post.content.match(/<h2>(.*?)<\/h2>/)[1]; const formattedDate = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
-      const secondSentFirstPara = (post.content.match(/<p>(.*?)<\/p>/) || [''])[0].split('. ')[1] || (post.content.match(/<p>(.*?)<\/p>/) || [''])[0].split('. ')[0] || '';      
+      const secondSentFirstPara = (post.content.match(/<p>(.*?)<\/p>/) || [''])[0].split('. ')[1].replace(/<\/?p>|<\/?b>/g, '') || (post.content.match(/<p>(.*?)<\/p>/) || [''])[0].split('. ')[0].replace(/<\/?p>|<\/?b>/g, '') || '';      
       const timeToRead = Math.ceil(post.content.split(' ').length / 200); const firmSite = new URL(contactUsLink).hostname.replace(/^www\./, '');
       const aiText = randomTemplate.titleType ? h2Title : `"${secondSentFirstPara}"`; let webPic = null;
       

@@ -31,7 +31,9 @@ export default function ProductsView() {
   const [smallBlog, setSmallBlog] = useState(null); 
   const [internalLinks, setInternalLinks] = useState(null); 
   const [firmName, setFirmName] = useState(null);
+  const [firmImage, setFirmImage] = useState('');
   const [firmDescription, setFirmDescription] = useState(null);
+  const [customColor, setCustomColor] = useState(null);
 
   const [isGenMode, setIsGenMode] = useState(false);
   const [isAlterMode, setIsAlterMode] = useState(false);
@@ -41,6 +43,7 @@ export default function ProductsView() {
   const [loadIndicator, setLoadIndicator] = useState(['Welcome Back!', -185]);
 
   const [isBrowseWeb, setIsBrowseWeb] = useState(true);
+  const [isUseThumbnail, setIsUseThumbnail] = useState(true);
   const [isAdvancedBrowseWeb, setIsAdvancedBrowseWeb] = useState(true);
   const [browseText, setBrowseText] = useState("");
   const [selectedModel, setSelectedModel] = useState(2);
@@ -87,7 +90,9 @@ export default function ProductsView() {
         if (userDoc.exists()) {
           const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
           if (firmDoc.exists()) {
-            await setFirmName(firmDoc.data().FIRM_INFO.NAME);
+            await setFirmName(firmDoc.data().FIRM_INFO.NAME);             
+            await setFirmImage(firmDoc.data().FIRM_INFO.IMAGE);
+            await setCustomColor(firmDoc.data().CHAT_INFO.THEME);
             await setFirmDescription(firmDoc.data().FIRM_INFO.DESCRIPTION);
             await setSelectedModel(firmDoc.data().SETTINGS.MODEL);
             await setImagesSettings(firmDoc.data().SETTINGS.IMAGES);
@@ -337,8 +342,60 @@ export default function ProductsView() {
     const descriptions = matches.map(match => match[1]);
 
     let imagefullText = imagelessText;
+
+    const fetchBrandImage = async (imgDescription, webPic='') => { // 1.5c per image
+      
+      let resultImg = null;
+      const h1Title = (imagelessText.match(/<h1>(.*?)<\/h1>/) || [])[1]; const formattedDate = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
+      const timeToRead = Math.ceil(imagelessText.split(' ').length / 200);
+      const firmSite = new URL(contactUsLink).hostname.replace(/^www\./, '');
+      
+      await fetch('https://api.templated.io/v1/render', {
+        method: 'POST',
+        body: JSON.stringify({
+          "template" : '88e62b0b-9879-4d56-af23-1b32afbf1457',
+          "layers" : {
+            "primary-text" : {
+              "text" : h1Title,
+            },
+            "shape-0" : {
+              "fill": customColor,
+            },
+            "firm-name" : {
+              "text": firmName,
+            },
+            "firm-site" : {
+              "text": firmSite,
+            },
+            "firm-img": {
+              "image_url" : firmImage,
+            },
+            "date-today" : {
+              "text": formattedDate,
+            },
+            "read-time" : {
+              "text": `  ${timeToRead} MIN READ`,
+            },
+            "primary-img" : {
+                "image_url": webPic,
+            },
+
+          }
+        }),
+        headers: {
+          'Content-Type' : 'application/json',
+          'Authorization' : `Bearer ${import.meta.env.VITE_TEMPLATED_API_KEY}`
+        }
+      })
+      .then(response => {if(!response.ok){console.log('Network response was not ok')};   return response.json(); })
+      .then(data => {console.log(data); resultImg = `<image src="${data.render_url}" alt="Branded Image" />`;})
+      .catch(error => {console.error('Error:', error);});
+
+      return resultImg;
+    }
+
     
-    const fetchImage = async (description) => {
+    const fetchImage = async (description, isFirst=false) => {
       let resultImg = null; 
       const url = "https://api.dataforseo.com/v3/serp/google/images/live/advanced";
       const payload = JSON.stringify([{
@@ -361,7 +418,9 @@ export default function ProductsView() {
           .catch(error => console.error('Error:', error));
         if (data.tasks[0].result[0].items[0].source_url !== undefined) {break;} else {console.log('rerunn img')};
       counter += 1; }
-      if (data) {resultImg = `<img src="${data.tasks[0].result[0].items[0].source_url}" alt="${description}" style="max-width: 600px;" />`;}
+
+      if (isFirst) {return fetchBrandImage(description, data.tasks[0].result[0].items[0].source_url);}
+      resultImg = `<img src="${data.tasks[0].result[0].items[0].source_url}" alt="${description}" style="max-width: 600px;" />`;
 
       return resultImg;
     };
@@ -370,15 +429,19 @@ export default function ProductsView() {
 
     for (let i = 0; i < descriptions.length; i += 3) {
       const batch = descriptions.slice(i, i + 3);
-      // eslint-disable-next-line no-await-in-loop
-      const batchImageTags = await Promise.all(batch.map(fetchImage));
-      imageTags.push(...batchImageTags);
-
+      // eslint-disable-next-line no-await-in-loop 
+      const batchImageTags = await Promise.all(batch.map((item, index) => fetchImage(item, index === -1))); 
+      imageTags.push(...batchImageTags); 
+      
       if (i + 3 < descriptions.length) {
         // eslint-disable-next-line no-await-in-loop
         await new Promise(resolve => setTimeout(resolve, 2000));
       }
     }
+
+    const h1Title0 = (imagelessText.match(/<h1>(.*?)<\/h1>/) || [])[1];
+    const brandImage = await fetchImage(h1Title0, true);
+    imagefullText = imagelessText.replace(/(<\/h1>)/, `$1${brandImage}`);
 
     matches.forEach((match, index) => {
       if (imageTags[index]) {
@@ -516,6 +579,13 @@ export default function ProductsView() {
       width: '40px', display: 'flex', justifyContent: 'center', alignItems: 'center', minWidth: '10px',})}
       onClick={() => {setIsBrowseWeb(!isBrowseWeb);}}>
         <Iconify icon= {isBrowseWeb ? "mdi:web" : "mdi:web-cancel"} sx={{minHeight: '18.25px', minWidth: '18.25px'}}/>
+      </Button>
+
+      <Button variant="contained"
+      sx={(theme) => ({backgroundColor: theme.palette.primary.green, '&:hover': { backgroundColor: theme.palette.primary.green, },
+      width: '40px', display: 'flex', justifyContent: 'center', alignItems: 'center', minWidth: '10px',})}
+      onClick={() => {setIsUseThumbnail(!isUseThumbnail);}}>
+        <Iconify icon= {isUseThumbnail ? "material-symbols:thumbnail-bar" : "material-symbols:thumbnail-bar-outline"} sx={{minHeight: '18.25px', minWidth: '18.25px'}}/>
       </Button>
 
       <Button variant="contained" startIcon={<Iconify icon="material-symbols:emoji-food-beverage" sx={{height: '18px'}}/>} 

@@ -119,21 +119,21 @@ export default function BlogView() {
         messages: [
           { role: "user", content: `
           
-          <role>You are Pentra AI, an approachable, witty attorney at ${firmNameInt}. ${firmDescriptionInt}.
-          DONT MENTION YOURSELF OR THE FIRM (except at the very end) </role> 
+          <role>You are Pentra AI, a friendly, witty lawyer & expert SEO writer for ${firmNameInt}. ${firmNameInt} is described as such: ${firmDescriptionInt}.
+          Mention ${firmNameInt} ONLY at the end. </role> 
   
           <instruction>
   
           IMPORTANT INSTRUCTIONS:
           - TOPIC: This post is on ${titleArray[i]}. Use exactly this title.
-          - FORMATTING: Wrap titles in <h1> and <h2> tags. Wrap ALL individual paragraphs and points in <p> tags. Wrap parts to be BOLDED in <b> tags. 
-          - WORD RANGE: this post should be 1000 - 1200 WORDS LONG.
-          - PERSPECTIVE: DONT EVER REFER TO YOURSELF IN THE POST. ONLY MENTION ${firmNameInt} at the VERY END, when explaining how it can help.
+          - FORMATTING: Wrap titles in <h1> and sub-titles in <h2> tags. Wrap all paragraphs (and everything else that should have a line after) in <p> tags. Use b tags only in same-line text or 'title: paragraph'.
+          - PERSPECTIVE: Don't refer to yourself in the post. Explain how your firm ${firmNameInt} can help, but only at the end. 
+          - WORD RANGE: this post should be 1000+ WORDS LONG.
           - IMAGES: blog post should contain 2-3 images. Please add representations of them in this format: //Image: {Image Description}//. 
           Consider putting them right after h2 titles. Make sure these are evenly spaced out in the post and with specific descriptions.
-          - CASE LAW: Reference common / case law in the blog post if & when necessary. Dont make things up.
-          - CONTACT US LINK AT END: Use this contact us link with <a> tags toward the end if applicable: ${contactUsLinkInt}
+          - FACTS & LAW: Reference data & law in the blog post if & when necessary. Dont make things up.
           - LINK TO RELEVANT POSTS: Use <a> tags to add link(s) to relevant blog posts from the firm wherever applicable: ${internalLinksInt}.
+          - CONTACT US LINK AT END: Use this contact us link with <a> tags at the end: ${contactUsLinkInt}
           - NEVER OUTPUT ANYTHING other than the blog content. DONT START BY DESCRIBING WHAT YOURE OUTPUTING, JUST OUTPUT. 
 
           </instruction>
@@ -142,7 +142,7 @@ export default function BlogView() {
           `WEB RESULTS: Consider using the following web information I got from an LLM for the prompt ${browseText}:
           <web-information> ${browseTextResponse} </web-information>`}
 
-          COPY THE WRITING STYLE & TONE PERFECTLY FROM ${firmNameInt}'s PREVIOUS BLOGS:
+          VERY IMPORTANT: REPRODUCE THE TONE & STYLE OF THE FOLLOWING BLOGS PERFECTLY IN YOUR OUTPUT. YOUR OUTPUT ALSO MUST BE FRIENDLY & APPROACHABLE. BLOGS:
 
           <example-blogs>
           ${smallBlogInt}

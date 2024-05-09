@@ -248,154 +248,139 @@ const updateLeads = async () => {
 // uploadSome();
 // updateLeads();
 
-let newUserMoment = true;
+let newUserMoment = false;
 
 if (newUserMoment) {
-newUser(docName = 'Haley, Bailey & Jones',
+newUser(docName = 'FutureSolve',
 
 firmInfo = {
-    CONTACT_US: "https://hbjlawyers.com/contact-us/",
-    NAME: "Haley, Bailey & Jones",
+    CONTACT_US: "https://www.futuresolve.com/contact-us/",
+    NAME: "FutureSolve",
     LOCATION: "Dallas, TX",
     DESCRIPTION: 
-    `Haley, Bailey & Jones is a Dallas-based law firm distinguished for its broad legal expertise and dedication to client satisfaction. 
-    Specializing primarily in probate law & estate planning, but also servicing family, personal injury, and entertainment law, the firm offers comprehensive legal services tailored to the diverse needs of its clientele.
-    With a team of adept attorneys, Haley, Bailey & Jones navigates complex legal matters with precision and empathy, ensuring that clients receive strategic counsel and effective representation across a range of practice areas.
+    `FutureSolve.com is an HR advisory and consulting firm that provides strategic CHRO advisory services, HR Tech & AI solutions for talent management, workforce development programs, and an HR technology marketplace. 
+    Led by an team of experienced CHROs and industry experts, FutureSolve aims to be a trusted partner for mid-sized companies, supporting their organizational performance and talent strategies.
+    FutureSolve offers a range of services including interim CHRO assistance, people analytics, AI-powered talent sourcing, and training and upskilling initiatives.
     `,  
     IMAGE: `
-    https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/misc_images%2Fdecentral%20(34).png?alt=media&token=328b30fa-7f7a-4dd9-93d1-c18e0399e17e
+    https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/user_imgs%2Fdecentral%20(35).png?alt=media&token=6b7d86d3-6b63-422c-809a-5725344f3c80
     `,
     MODEL: 2,
-    PLAN: "Marketing Suite",
+    PLAN: "Trial Plan",
 },
 
 keywords = {
-    KEYWORDS: "Probate Attorneys Texas, Estate Planning Attorney, Will attorney near me, Trust Attorney near me, Texas Executor, Estate Administration, Texas Probate Court, Intestate Succession, Texas Estate Tax, Texas Probate Attorney, Texas Estate Law, Asset Distribution",
-    LAST_DATE: "05/3/24",
+    KEYWORDS: "HR Consulting Texas, HR Management, Employee Engagement, Talent Acquisition in Texas, HR Compliance, Texas Employee Benefits, HR Strategy, Workforce Planning, HR Transformation Texas, Performance Management, HR Analytics, HR Outsourcing in Texas, HR Technology, Diversity and Inclusion, Employee Retention, HR Policies Texas, Organizational Development, HR Training, HR Audit, HR Software",
+    LAST_DATE: "05/10/24",
 },
 
 smallBlog = [0, 1, 2],
 
 bigBlog = [
 {
-    TITLE: "News | Love Is In The Heir Initiative",
-    LINK: `https://hbjlawyers.com/news-you-cn-use/`,
+    TITLE: "Unlocking Growth: Top HR Grants for Texas Companies",
+    LINK: `https://www.futuresolve.com/unlocking-growth-top-hr-grants-for-texas-companies/`,
     CONTENT: `
-    This Black History Month we at Haley, Bailey & Jones are rolling out something very special and impactful for our community. The Love is in the “Heir” initiative. We at HBJ acknowledge that our community has not been equipped with the knowledge nor opportunity to get their estate planning affairs in proper order. So, HBJ has made it its goal to provide the knowledge and subsequently empower our community to take the necessary steps to protect themselves, their heirs/legacy and their assets! We want to do this in a month that recognizes the history of our people and community and prompt our community to reach new heights through estate planning!
+    Are you a company in Texas looking to invest in your workforce and fuel growth? One of the most valuable resources available to you might be HR grants. These grants can provide essential funding to support training, development, and apprenticeship programs, ultimately leading to a more skilled and engaged workforce. Let’s explore two top HR grants available for companies in Texas and how they can benefit your organization.
 
-    We are enthused about the opportunity to offer the Basic Estate Planning option. This option includes the following services that are valued at $1200 but you only pay $500:
+    Upskill Grants: These grants are designed to assist companies in training and developing their employees using unemployment tax funds. The goal is to help companies grow while reducing the likelihood of unemployment among their workforce in the future. Upskill grants typically offer around $1000 in training dollars per employee, making it a substantial investment in your team’s capabilities. By taking advantage of these grants, companies can enhance their employees’ skills, boost productivity, and create a more resilient workforce.
+    Apprenticeship Grants: Another valuable resource is apprenticeship grants, which support either internal apprenticeship programs or partnerships with external training providers. These grants can provide significant financial support, with some programs offering up to $10,000 per employee. Apprenticeship programs are often 12 months long and require companies to cover their employees’ salaries during the training period. However, the long-term benefits of having highly skilled and loyal employees far outweigh the initial investment.
+    It’s important to note that companies applying for these grants must demonstrate a commitment to workforce development and meet specific criteria outlined by grant providers. This includes having a clear training plan, a designated training coordinator, and a willingness to invest in employee growth.
     
-    Last Will & Testament
-    Statutory Durable Power of Attorney
-    Medical Power of Attorney
-    You are only required to pay half (50%) of the retainer fee in the amount of $250. The remaining balance of $250.00 must be paid prior to the review and approval of the final documents for execution.
+    If you’re interested in accessing these HR grants and maximizing their benefits for your company, FutureSolve can be your trusted partner. Our grant advisors specialize in helping companies navigate the grant application process, identify the grants that best align with their needs, and secure the funding necessary to support their workforce development initiatives.
     
-    We also have the Advanced Estate Planning option. This option includes the following services that are valued at $3,000.00 but you only pay $1,800.00:
-    
-    Revocable Living Trust w/ Pour Over Last Will & Testament
-    Statutory Durable Power of Attorney
-    Medical Power of Attorney
-    Please note that the Advanced Estate Planning option price does not include the real property deeds that must be executed to transfer real property into your trust. There will be additional fees for those services.
-    
-    To learn more about HBJ or the Love is in the “Heir” initiative, please follow us on all of our social media platforms to learn more @ HBJLAWYERS.
-    
-    This service is for TEXAS RESIDENTS ONLY.
-    
-    For any questions, please feel free to reach out to us at love@hbjlawyers.com or 1.888.HBJLAW4U. You may also text us at 972.598.0212.
-    
-     
-    
-    https://www.eventbrite.com/e/love-is-in-the-heir-black-history-month-initiative-tickets-798060750187?aff=oddtdtcreator
+    In Texas alone, there is upwards of $50 million allocated each year for HR grants, highlighting the state’s commitment to supporting businesses in building a skilled and competitive workforce. Don’t miss out on this opportunity to invest in your company’s future success through HR grants. Contact FutureSolve today to learn more and take the first step towards unlocking growth for your organization.
     `,
 },
 {
-    TITLE: "HBJ Services | Probate And Estate Planning",
-    LINK: `https://hbjlawyers.com/probate-and-estate-planning/`,
+    TITLE: "Understanding Interim HR Executives: A Guide to Finding the Right One",
+    LINK: `https://www.futuresolve.com/understanding-interim-hr-executives-a-guide-to-finding-the-right-one/`,
     CONTENT: `
-    Probate And Estate Planning
-Probate ​
-Navigating the probate process can be daunting, but with HBJ by your side, you can have confidence in a smooth and efficient resolution. We provide strategic counsel to streamline proceedings and minimize potential challenges. HBJ handles non-contested and contested probate matters including: (the items below should have check marks).
-Application to Probate Last Will & Testament and for Issuance of Letters Testamentary
-Application to Probate Last Will & Testament as a Muniment of Title
-Application for Determination of Heirship without Administration
-Application for Determination of Heirship with Court-Created Independent Administration
-Small Estate Affidavits
-Last Will & Testament Contests
-Trust Administration
-Estate Planning
-From basic wills to intricate trust structures, our services cover a broad spectrum of estate planning needs. We guide you through the entire process, addressing your concerns and ensuring that your wishes are clearly and legally documented. We recognize that estate planning is a deeply personal and often emotional journey. That's why we take the time to understand your unique goals, family dynamics, and concerns. Our client-centric approach ensures that the solutions we develop align with your values and aspirations.
-Trusts
-Last Will & Testaments
-Durable Statutory and Medical Power of Attorney
-Directive to Physicians
-Transfer on Death Deeds
-Lady Bird Deeds
+    In today’s dynamic business landscape, organizations often encounter situations where they require immediate and effective leadership in their Human Resources (HR) department. This need typically arises during periods of transition, such as sudden departures, organizational restructuring, or when a specialized skill set is required for a specific project. This is where Interim HR Executives come into play, offering their expertise and guidance to navigate through such challenging times.
+
+    What is an Interim HR Executive?
+    An Interim HR Executive is a seasoned professional with extensive experience in HR leadership roles. They step in on a temporary basis to fulfill the responsibilities of a Chief People Officer (CPO) or Chief Human Resources Officer (CHRO) within an organization. Their primary objective is to provide strategic direction, operational support, and continuity during times of transition or crisis.
+    
+    Why Choose an Interim HR Executive?
+    Immediate Availability: Interim HR Executives are readily available to start working, allowing organizations to fill crucial leadership gaps without delays.
+    
+    Expertise: These executives bring a wealth of knowledge and experience, having dealt with a wide range of HR challenges and strategies throughout their careers.
+    
+    Objective Perspective: As external consultants, Interim HR Executives offer an unbiased and fresh perspective on organizational issues, helping to identify areas for improvement and implement effective solutions.
+    
+    Cost-Effective: Hiring an interim executive can be more cost-effective than recruiting a full-time executive, especially for short-term projects or transitions.
+    
+    How to Find the Right Interim HR Executive:
+    Define Your Needs: Clearly outline your organization’s requirements, including the scope of work, duration of engagement, and specific skills or experience needed.
+    
+    Experience and Track Record: Look for candidates with a proven track record of success in similar interim roles or HR leadership positions. Consider their industry expertise and the complexity of projects they have handled.
+    
+    References and Recommendations: Seek references and recommendations from trusted sources, such as industry peers, professional networks, or reputable interim executive agencies like FutureSolve.
+    
+    Cultural Fit: Ensure that the interim executive aligns with your organization’s values, culture, and leadership style. A smooth integration into the team is essential for effective collaboration.
+    
+    Communication and Collaboration: Evaluate the candidate’s communication skills, ability to collaborate with stakeholders at all levels, and their approach to change management and problem-solving.
+    
+    Explore FutureSolve’s Interim CPOs and CHROs:
+    At FutureSolve, we specialize in providing top-tier Interim CPOs and CHROs who excel in driving HR excellence, organizational transformation, and strategic alignment. Our pool of experienced executives brings a diverse range of skills and industry knowledge, ensuring a tailored solution that meets your organization’s unique needs. Partnering with FutureSolve guarantees access to exceptional interim HR talent that delivers results and accelerates your business success.
+    
+    In conclusion, leveraging the expertise of an Interim HR Executive can be instrumental in overcoming HR challenges, driving organizational growth, and ensuring smooth transitions. By following the outlined steps and considering reputable providers like FutureSolve, organizations can find the right interim executive to lead their HR function with confidence and effectiveness.
     `
 },
 
 {
-    TITLE: "HBJ Services | Personal Injury Law",
+    TITLE: "Designing a Successful Succession Planning Strategy: A Comprehensive Guide",
     LINK: "https://www.taxpayerdeceptionact.com/news?id=12d81640-4aa7-49be-ad87-2fe316a4b03b",
 
     CONTENT: `
-    Personal Injury
-    At HBJ we understand the physical, emotional, and financial toll that accidents and injuries can have on individuals and their families. With a commitment to justice and a track record of successful outcomes, we are here to advocate for you during your time of need. We have successfully navigated a wide range of personal injury claims, from motor vehicle accidents to slip and falls. If you or a loved one has suffered an injury due to someone else's negligence, it's crucial to have a dedicated advocate on your side.
-    Motor Vehicle Accidents: Whether you've been involved in a car, truck, motorcycle, or pedestrian accident, we have the expertise to handle your case.
-    Slip and Fall Injuries: Property owners have a responsibility to maintain safe premises. If you've been injured due to negligence, we are here to hold them accountable.
-    Wrongful Death: At HBJ we understand that losing a loved one is an unimaginable tragedy. When that loss is due to someone else's negligence or misconduct, the pain is compounded. Our dedicated team is here to provide compassionate and skilled legal representation for families seeking justice in wrongful death cases across Texas.
+    Succession planning is a critical component of organizational strategy, ensuring the seamless transition of leadership and key roles within an organization. By proactively identifying and developing internal talent to fill critical positions, businesses can mitigate risks associated with leadership gaps and maintain continuity in operations. In this blog, we’ll explore the essential elements of designing a successful succession planning strategy to help organizations effectively groom future leaders and sustain long-term success.
+
+    Establish Clear Objectives: Begin by defining the objectives and goals of your succession planning strategy. Identify key leadership positions and critical roles within the organization that require succession planning. Determine the desired outcomes, such as reducing leadership vacancies, developing a pipeline of internal talent, and promoting diversity and inclusion in leadership roles.
+    Identify Key Positions and Talent Pool: Conduct a thorough assessment of current and future talent needs to identify key positions and critical roles that require succession planning. Evaluate the skills, competencies, and potential of existing employees to determine their suitability for future leadership roles. Create a talent pool comprising high-potential individuals who possess the qualities and capabilities necessary for succession.
+    Develop a Talent Development Plan: Once you’ve identified potential successors, develop a comprehensive talent development plan to groom them for future leadership roles. Provide targeted training, mentoring, coaching, and experiential learning opportunities to enhance their skills and competencies. Encourage cross-functional exposure and rotations to broaden their knowledge and perspectives.
+    Foster a Culture of Continuous Learning: Cultivate a culture of continuous learning and development within the organization to support succession planning efforts. Encourage employees to pursue ongoing education, certifications, and professional development opportunities relevant to their career aspirations. Provide access to resources, such as online courses, workshops, and conferences, to facilitate skill enhancement and knowledge acquisition.
+    Implement Performance Management Systems: Implement robust performance management systems to assess and evaluate the performance of potential successors objectively. Establish clear performance criteria, goals, and metrics aligned with organizational objectives. Conduct regular performance reviews and provide constructive feedback to help individuals identify areas for improvement and development.
+    Promote Diversity and Inclusion: Promote diversity and inclusion in succession planning efforts to ensure a broad representation of perspectives and experiences among future leaders. Create opportunities for underrepresented groups to participate in leadership development programs and initiatives. Foster an inclusive work environment where all employees feel valued, respected, and empowered to contribute their unique talents and perspectives.
+    Encourage Succession Conversations: Encourage open and transparent discussions about succession planning at all levels of the organization. Encourage managers to have ongoing conversations with employees about their career aspirations, development goals, and potential pathways for advancement. Provide guidance and support to employees as they navigate their career paths and explore opportunities for growth within the organization.
+    Monitor and Evaluate Progress: Continuously monitor and evaluate the effectiveness of your succession planning strategy to ensure alignment with organizational goals and objectives. Track key metrics such as internal promotion rates, time-to-fill critical positions, and employee engagement scores. Solicit feedback from stakeholders and adjust your strategy as needed to address evolving needs and challenges.
+    In conclusion, designing a successful succession planning strategy requires careful consideration of key elements such as talent identification, development, performance management, diversity, and inclusion. By establishing clear objectives, cultivating a culture of continuous learning, and fostering open communication and transparency, organizations can effectively groom future leaders and ensure long-term sustainability and success. By investing in succession planning, businesses can proactively prepare for leadership transitions and maintain a competitive edge in today’s rapidly evolving business landscape.
     `,
 },
 
-// {
-//     TITLE: "Coalition Vows to Protect Voters & Vital Local Services from Deceptive Corporate Ballot Measure",
-//     LINK: "https://www.taxpayerdeceptionact.com/news?id=28294790-a540-416f-8e44-98327788586d",
+{
+    TITLE: "Addressing High Turnover: Low-Cost Strategies for Improving Employee Experience and Retention",
+    LINK: "https://www.futuresolve.com/addressing-high-turnover-low-cost-strategies-for-improving-employee-experience-and-retention/",
 
-//     CONTENT: `
-//     FEB
-//     1
-//     2023
-//     PRESS RELEASE
-//     Coalition Vows to Protect Voters & Vital Local Services from Deceptive Corporate Ballot Measure
+    CONTENT: `
+    High turnover rates can be detrimental to any organization, leading to decreased productivity, increased recruitment costs, and a negative impact on employee morale. However, addressing turnover doesn’t always require a substantial financial investment. By focusing on strategic adjustments to key areas such as employee experience, hiring, onboarding, training, management leadership, and more, businesses can effectively reduce turnover rates without breaking the bank. In this blog, we’ll explore low-cost strategies to tackle high turnover and foster a more engaged and loyal workforce.
+
+    1. Conduct an Employee Experience Review:
+    Start by understanding the factors contributing to high turnover through an in-depth review of the employee experience. Utilize surveys, focus groups, and one-on-one interviews to gather feedback from current and former employees. Identify pain points, such as lack of career development opportunities, poor work-life balance, or ineffective communication channels.
     
-//     Put your press release text hCalifornia Business Roundtable initiative steals voters’ power to determine local priorities, lets corporations evade accountability
+    2. Streamline the Hiring Process:
+    Simplify and streamline the hiring process to attract and retain top talent. Optimize job descriptions to accurately reflect the role and expectations. Utilize cost-effective recruitment channels such as social media, employee referrals, and job boards. Implement efficient screening and interviewing techniques to identify candidates who align with your organization’s culture and values.
     
-//     Latest poll showed overwhelming opposition from voters
+    3. Enhance Onboarding Programs:
+    Invest in robust onboarding programs to set new hires up for success from day one. Provide comprehensive orientation sessions to familiarize employees with company policies, procedures, and culture. Assign mentors or buddies to support new hires during their transition period. Encourage open communication and feedback to address any concerns or challenges early on.
     
-//     Sacramento, CA – Today the Alliance for a Better California, League of California Cities, California State Association of Counties, California Special Districts Association, California Alliance for Jobs and the Contract Cities Association joined together to announce strong opposition to the deceptive ballot measure sponsored by the California Business Roundtable (CBRT), the lobbying arm of the largest and wealthiest corporations in California. 
+    4. Prioritize Ongoing Training and Development:
+    Offer continuous learning and development opportunities to help employees grow and advance within the organization. Implement cost-effective training initiatives such as online courses, webinars, cross-functional projects, and peer-to-peer learning. Empower employees to acquire new skills and competencies that align with their career aspirations and organizational goals.
     
-//     The coalition of public safety, education, labor, local government and infrastructure groups are vocalizing their opposition as the California Secretary of State’s office announced that the initiative has qualified for the November 2024 ballot. 
+    5. Foster Effective Management Leadership:
+    Effective leadership plays a crucial role in employee engagement and retention. Provide leadership training and coaching to managers to enhance their communication, coaching, and conflict resolution skills. Encourage managers to build strong relationships with their team members, provide regular feedback, and recognize and reward achievements.
     
-//     “Educators, nurses and firefighters won’t allow extreme, irresponsible corporations to threaten our democracy - there’s just too much at stake, from the quality of our children’s education to the air they breathe,” said the Alliance for a Better California, an organization that includes SEIU California, the California Teachers’ Association, California Professional Firefighters, California Federation of Teachers, California School Employees Association, California Faculty Association, California Labor Federation and the American Federation of State County and Municipal Employees. 
+    6. Promote Work-Life Balance:
+    Promote a healthy work-life balance to prevent burnout and improve employee satisfaction. Encourage flexible work arrangements, such as remote work options, flexible hours, and compressed workweeks. Provide access to wellness programs, employee assistance resources, and stress management workshops. Demonstrate a commitment to employee well-being by fostering a supportive and inclusive work environment.
     
-//     “This deceptive initiative eliminates corporate accountability for the damage they do to our environment, strips voters of the power to set funding priorities for our communities, and drains billions in funding from our schools, public safety, and homelessness response to name just a few. We are going to fight with everything we’ve got to protect our democracy and our children’s future,” the Alliance continued.
+    7. Implement Employee Recognition Programs:
+    Recognize and appreciate employees for their contributions and achievements through cost-effective recognition programs. Celebrate milestones, such as work anniversaries, project completions, and exceptional performance. Implement peer-to-peer recognition platforms or suggestion boxes to empower employees to acknowledge their colleagues’ efforts.
     
-//     “This is the third attempt by deep-pocketed special interest groups to advance an initiative that undermines the rights of local voters to decide what their communities need and jeopardizes the ability of local governments to deliver essential services,” said League of California Cities Executive Director and CEO Carolyn Coleman. “It was a bad idea in 2018, it was a bad idea again in 2022. And it will still be a bad idea in 2024.”
+    8. Solicit and Act on Feedback:
+    Create avenues for employees to voice their opinions, concerns, and suggestions for improvement. Conduct regular pulse surveys to gauge employee sentiment and identify areas for enhancement. Actively listen to feedback and take tangible steps to address issues and implement solutions. Communicate transparently with employees about the actions being taken based on their input.
     
-//     “Counties continue to oppose this deceptive initiative because it undermines the abilities of voters and locally elected officials to provide critical services. This measure obliterates the constitutional authority of locally elected local governments to determine the right balance between revenue and the degree of local services needed by their communities,” said Graham Knaus, CEO, California State Association of Counties.
-    
-//     “At this critical time in California’s history, our communities cannot afford to do even less than the status quo. Sadly, this initiative would lock us into a race-to-the-bottom. Overcoming challenges like drought, flooding, and wildfire will require all of us to work together and consider the real costs of undermining our future. When we think of the kind of communities we want to leave our children and grandchildren, we are not content to settle for the ‘minimum amount necessary’ and we are not willing to limit their voice at the ballot box,” said Neil McCormick, Chief Executive Officer, California Special Districts Association.
-    
-//     "The so-called Taxpayer Protection Act will damage our ability to fund and construct the infrastructure projects that support California's economy. Passage of this measure will mean less safe roads, more congestion and fewer family supporting jobs across the state,” said Michael Quigley, Executive Director, California Alliance for Jobs.
-    
-//     “If passed, this measure could cause irreparable harm to a city’s ability to provide essential services to its residents. This measure is a wolf in sheep’s clothing,” said Marcel Rodarte, Executive Director, California Contract Cities Association.
-    
-//     The CBRT measure would create major new loopholes that allow wealthy corporations to avoid paying their fair share for the impacts they have on our communities, while allowing corporations to evade enforcement when they violate environmental, health, safety, and other state and local laws. It would also significantly restrict the ability of local voters, local governments, and state elected officials to fund critical services like public schools, fire and emergency response, public health, parks, libraries, affordable housing, homeless and mental health services, and public infrastructure. Some of the state’s biggest corporations, developers, mega-landlords, and their political committees spent millions of dollars to put the deceptive and self-interested measure before voters.
-    
-//     Steals power from voters 
-//     The initiative would steal power away from voters, prohibiting local advisory measures where voters provide direction to politicians on how they want their local tax dollars spent. The measure would make it harder for voters to pass measures needed to fund local services and local infrastructure. It would also retroactively cancel measures already passed by voters, stripping voters of a say in local decisions. 
-    
-//     As Los Angeles Times columnist Michael Hiltzik explained, “The so-called Taxpayer Protection and Government Accountability Act is just one more example of how special interests love to claim that they’re getting government off the backs of the people, when their real goal is to saddle up themselves.”
-    
-//     Eliminates corporate accountability
-//     The initiative claims to be about accountability while actually eliminating corporations’ accountability for impacts they have on local infrastructure or damage they do to our air, water, or environment. 
-    
-//     Threatens schools, vital services and disaster response
-//     The initiative would force cuts to public schools, fire and emergency response, law enforcement, public health, parks, libraries, affordable housing, services to support homeless residents, mental health services, and more. It would also reduce funding for critical infrastructure like streets and roads, public transportation, drinking water, new schools, sanitation, and utilities. During a time when our children are still recovering from the impacts of the pandemic, our state is experiencing a deluge of extreme weather disasters, and homeless residents are perishing on our streets, our communities cannot afford for these vital services to be eliminated.
-    
-//     Strong Voter Opposition
-//     A statewide poll conducted last February found voters resoundingly rejected the measure, with 54% of voters opposed and only 25% in support. The remaining 21% were undecided.    
-//         `
-// },
+    In conclusion, reducing high turnover rates doesn’t always require significant financial investments. By strategically addressing key areas such as employee experience, hiring, onboarding, training, management leadership, and work-life balance, organizations can improve employee retention and create a more engaged and committed workforce. By prioritizing employee satisfaction and investing in their growth and development, businesses can cultivate a positive organizational culture that fosters loyalty and longevity.
+    `
+},
 
 ],
 
