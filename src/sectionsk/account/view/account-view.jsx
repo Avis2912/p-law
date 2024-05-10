@@ -291,7 +291,7 @@ const saveChanges = async () => {
       Indexed Blogs
       </Typography>
 
-      <List sx={{ width: '100%', height: '170px', maxWidth: '575px',
+      <List sx={{ width: '89%', height: '170px',
         bgcolor: 'white', overflow: 'auto', border: '0.1px solid #c2c1c0',
         marginLeft: '38px',borderRadius: '7px',
         paddingTop: '0px', paddingBottom: '0px',}}>

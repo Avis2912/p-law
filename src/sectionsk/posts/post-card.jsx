@@ -42,21 +42,27 @@ export default function PostCard({ platform, content, index, isGen }) {
   const [isCopied, setIsCopied] = useState(false);
   const [imgUrl, setImgUrl] = useState(null);
 
-  const copyText = async (text) => {
-    const imgRegex = /<image[^>]*src=['"]([^'"]*)['"][^>]*>/gi; const match = imgRegex.exec(text);
-    if (match) {const imgLink = match[1]; await setImgUrl(imgLink);} 
+  useEffect(() => {
+    let imgRegex = /<image[^>]*src=['"]([^'"]*)['"][^>]*>/gi; const match = imgRegex.exec(content);
+    if (match) {const imgLink = match[1]; setImgUrl(imgLink); console.log(imgLink);} 
+    else {imgRegex = /<img[^>]*src=['"]([^'"]*)['"][^>]*>/gi; const match1 = imgRegex.exec(content);
+    setImgUrl(match1[0]);}
+  }, [content]);
+
+  const copyText = async (text) => { 
     const postableText = text.replace(/<\/?h[1-3]>|<\/?b>|<image[^>]*>|<\/?p>/gi, '').replace(/<br\s*\/?>/gi, '\n');
     await navigator.clipboard.writeText(postableText);
   };
 
   const downloadPic = async (url) => {
+    console.log('GIVEN URL: ', url);
     const response = await fetch(url);
     const blob = await response.blob();
     const blobUrl = URL.createObjectURL(blob);
     
     const link = document.createElement('a');
     link.href = blobUrl;
-    link.download = 'image.jpg'; // or any other filename you want
+    link.download = 'pentra-img.jpg'; // or any other filename you want
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

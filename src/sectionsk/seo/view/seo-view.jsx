@@ -275,13 +275,12 @@ export default function ProductsView() {
 
     const elongationPrompt = `
     <instruction>
-    - YOUR GOAL IS TO COPY THE USER-GIVEN DRAFT AND ELONGATE IT TO MAKE IT ${wordRange} LONG. 
-    Right now it's falling a little short.
+    - YOUR GOAL IS TO COPY THE USER-GIVEN DRAFT AND ELONGATE IT TO MAKE IT ${wordRange} LONG. Right now it's falling a little short.
+    - OUTPUT: ONLY output the final article. NEVER START by saying anything else.
     - COPY THE TEXT'S CURRENT FORMAT EXACTLY: Wrap titles in <h1> and <h2> tags. Wrap all paragraphs in <p> tags. 
     - EXCEPTION: Just make sure the final how we can help / contact us paragraph remains at the end of your output.
     - STYLE & TONE: Keep the voice and tone of the text exactly the same when elongating it.
     - IMAGES: KEEP ALL IMAGES as they are. You're allowed to add one new one in your elongation in the same format.
-    - OUTPUT: ONLY output the final article. NEVER START by saying anything else.
     </instruction>
     `
 
