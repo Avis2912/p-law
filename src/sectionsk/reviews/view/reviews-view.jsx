@@ -220,13 +220,19 @@ export default function UserPage() {
         spacing={0}>
 
         {reviewPlatforms.map((platform, index) => (
-          <Card key={index} sx={{ height: '95px', backgroundColor: "white", display: 'flex', justifyContent: 'center',
+          <Card key={index} sx={{ height: '100px', backgroundColor: "white", display: 'flex', justifyContent: 'center',
             borderRadius: '0px', borderBottomWidth: '3px', borderColor: 'black', alignItems: 'center' }}>
-            <Iconify icon="streamline:business-card-solid" position="absolute" left="30px" width="23.75px" height="23.75px" color="#474444"/>
+            {/* <Iconify icon="streamline:business-card-solid" position="absolute" left="30px" width="23.75px" height="23.75px" color="#474444"/>
             <Typography variant="subtitle2" fontSize="19px" position="absolute" left="65.0px" color="#474444"
-            fontFamily='' letterSpacing="-0.425px" fontWeight="400"> {platform} </Typography>
+            fontFamily='' letterSpacing="-0.425px" fontWeight="400"> {platform} </Typography> */}
+            <Button variant="contained" startIcon={<Iconify icon="streamline:business-card-solid" />}
+            sx={(theme)=>({backgroundColor: selectedPlatform === index + 1 ? theme.palette.primary.navBg : theme.palette.primary.main, justifyContent: 'left',
+            left: '27.5px', width: '165px', height: '40px', position: "absolute", '&:hover': { backgroundColor: theme.palette.primary.navBg },
+            borderRadius: '7.5px', boxShadow: 'none'})}
+            onClick={()=>{setSelectedPlatform(index+1)}}>
+               {platform}</Button>
             <TextField value={links[index+1]} label="Firm Review Page" size="small" variant="outlined" sx={{position: "absolute", 
-            right: '147.5px', width: '328px', bottom: '29px', borderRadius: '0px'}}
+            right: '152.5px', width: '328px', top: '29px', borderRadius: '0px'}}
             onChange={(e) => {const newLinks = {...links}; newLinks[index+1] = e.target.value; setLinks(newLinks);}}/>
             <Button variant="contained" startIcon={<Iconify icon="fluent:link-multiple-24-filled" />}
             sx={(theme)=>({backgroundColor: selectedPlatform === index + 1 ? theme.palette.primary.navBg : theme.palette.primary.main ,
@@ -243,14 +249,14 @@ export default function UserPage() {
       <Card sx ={(theme) => ({ border: `4px solid ${theme.palette.primary.lighter}`, height: 'auto', width: '30%', 
       display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: '11px',})}>
       <Typography sx={{ fontFamily: "DM Serif Display", letterSpacing: '-0.75px',  fontWeight: 500, fontSize: '32.75px', textAlign: 'center',
-      position: "absolute", top: "55px", width: "200px"}}> 
+      position: "absolute", top: "70px", width: "200px"}}> 
                 {"Invite To Leave Review "}
         <span style={{ fontStyle: 'italic', fontWeight: '200' }}> Only If </span></Typography>
 
       <Select
         value={starsNeeded}
         onChange={(event) => setStarsNeeded(event.target.value)}
-        sx={{position: 'absolute', bottom: '115px', height: '38px', width: '150px'}}
+        sx={{position: 'absolute', top: '245px', height: '38px', width: '150px'}}
       >
         <MenuItem value={5}>⭐⭐⭐⭐⭐</MenuItem>
         <MenuItem value={4}>⭐⭐⭐⭐ +</MenuItem>
@@ -260,7 +266,7 @@ export default function UserPage() {
       </Select>
 
         <Button variant="contained" startIcon={<Iconify icon="carbon:save" />}
-        sx={(theme)=>({backgroundColor: theme.palette.primary.navBg, position: 'absolute', bottom: '60px',
+        sx={(theme)=>({top: '300px', backgroundColor: theme.palette.primary.navBg, position: 'absolute',
         '&:hover': {backgroundColor: theme.palette.primary.navBg } })}
         onClick={saveChanges}>
         Save Changes</Button>

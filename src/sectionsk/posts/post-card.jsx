@@ -46,7 +46,7 @@ export default function PostCard({ platform, content, index, isGen }) {
     let imgRegex = /<image[^>]*src=['"]([^'"]*)['"][^>]*>/gi; const match = imgRegex.exec(content);
     if (match) {const imgLink = match[1]; setImgUrl(imgLink); console.log(imgLink);} 
     else {imgRegex = /<img[^>]*src=['"]([^'"]*)['"][^>]*>/gi; const match1 = imgRegex.exec(content);
-    setImgUrl(match1[0]);}
+    setImgUrl(match1[1]);}
   }, [content]);
 
   const copyText = async (text) => { 
@@ -64,8 +64,7 @@ export default function PostCard({ platform, content, index, isGen }) {
     link.href = blobUrl;
     link.download = 'pentra-img.jpg'; // or any other filename you want
     document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    link.click(); document.body.removeChild(link);
     copyText(content);
   };
 

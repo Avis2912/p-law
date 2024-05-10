@@ -28,7 +28,7 @@ const navConfig = [
     icon: icon('ic_blog'),
   },
   {
-    title: 'Keyword Search',
+    title: 'SEO Research',
     path: '/keywords',
     icon: icon('ic_blog'),
   },
