@@ -126,7 +126,7 @@ export default function BlogView() {
             if (typeof firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS === 'string') { writeWeeklyKeywords(firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS); console.log('WRITING KEYWORDS 0');}
             else {await setWeeklyKeywords(firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS || []); console.log('NOT A STRING');} 
             
-            if (firmDoc.data().WEEKLY_KEYWORDS.LAST_DATE === "") {setIsUpdateTime(true); return;}
+            if (firmDoc.data().WEEKLY_KEYWORDS.LAST_DATE === "") {return;}
             if (diffDays >= 1) { await setTimeToUpdate(diffDays); } else { setIsUpdateTime(true); writeWeeklyKeywords(); console.log('WRITING KEYWORDS'); setWeeklyKeywords([]); 
               await updateDoc(doc(db, 'firms', userDoc.data().FIRM), { 'WEEKLY_KEYWORDS.LAST_DATE': "" }); }
             

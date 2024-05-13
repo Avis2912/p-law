@@ -68,6 +68,20 @@ export default function PostCard({ platform, content, index, isGen }) {
     copyText(content);
   };
 
+  const download = async (url) => {
+    fetch(url).then(resp => resp.blob()).then(blob => {
+      const link = document.createElement('a');
+      const blobUrl = URL.createObjectURL(blob);
+  
+      link.download = 'pentra-img.jpg';
+      link.href = blobUrl;
+  
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    })
+  }
+
   const latestPostLarge = index === -10;
   const latestPost = index === -10 || index === -20;
   
@@ -97,7 +111,7 @@ export default function PostCard({ platform, content, index, isGen }) {
         </Stack>
         <Iconify icon="uil:image-download"
           sx={{right: '44.5px', top: '10.5px', height: '26px', width: '26px', position: 'absolute', color: 'white', cursor: 'pointer', opacity: '0.9'}}
-          onClick={async () => {downloadPic(imgUrl);}}/>
+          onClick={async () => {download(imgUrl);}}/>
         <Iconify icon={isCopied ? "mingcute:clipboard-fill" : "mingcute:clipboard-line"} 
           sx={{right: '13px', top: '11.5px', height: '26px', width: '26px', position: 'absolute', color: 'white', cursor: 'pointer', opacity: '0.9'}}
           onClick={async () => {setIsCopied(true); copyText(content);}}/>

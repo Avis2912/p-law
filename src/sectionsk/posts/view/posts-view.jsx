@@ -102,12 +102,21 @@ export default function BlogView() {
             
             IMPORTANT INSTRUCTIONS:
             - RESPONSE FORMAT: Always respond with a JSON-parsable array of 3 hashmaps, 
-            EXAMPLE OUTPUT: "[{"platform": "${tempPlatform}", "content": "*Post Content*"}, {"platform": "${genPostPlatform}", "content": "*Post Content*"}, {"platform": "${genPostPlatform}", "content": "*Post Content*"}]". 
+            EXAMPLE OUTPUT: "[{"platform": "${tempPlatform}", "content": "*Post Content*"}, {"platform": "${tempPlatform}", "content": "*Post Content*"}, {"platform": "${tempPlatform}", "content": "*Post Content*"}]". 
             ONLY OUTPUT THE ARRAY. NOTHING ELSE.
-            - Wrap titles in <h2> tags. Wrap EVERY paragraph in <p> tags.
-            - Be truly informative about a relevant legal topic, use points if necessary, and mention the firm at the end if relevant. Add just a few hashtags at the end.
-            - PARAGRAPH COUNT: these posts should be informative 5-6 paragraphs long for LinkedIn, 4-5 for Facebook, and just 1 for Instagram.
-            - IMAGES: post should contain 1 image, placed after the h2 post title. Please add it in this format: //Image: {short image description}//.
+            - POST FORMAT: Wrap titles in <h2> tags. Wrap EVERY paragraph in <p> tags.
+            - Be truly informative about a relevant topic, use points if necessary, and mention the firm at the end. Add hashtags in a new paragraph at the very end.
+            ${tempPlatform === 'LinkedIn' && `
+            - PARAGRAPH COUNT: these posts should be 5-6 paragraphs long.
+            `}
+            ${tempPlatform === 'Facebook' && `
+            - PARAGRAPH COUNT: these posts should be 4-5 paragraphs long.
+            - POINTERS: only if applicable, use some same-line <b> tag points.
+            `}
+            ${tempPlatform === 'Instagram' && `
+            - PARAGRAPH COUNT: these posts should be 1 paragraph long.
+            `}
+            - IMAGES: post should contain 1 image, placed right after the h2 post title. Please add it in this format: //Image: {short image description}//.
             - Array should be in proper format: [{}, {}, {}]. </instruction>
 
             Pull from in the following blog posts only if useful information is contained:
@@ -389,7 +398,10 @@ export default function BlogView() {
           .catch(error => console.error('Error:', error));
         if (data.tasks[0].result[0].items[0].source_url !== undefined) {break;}
       counter += 1; }
-      if (data) {console.log(data.tasks[0].result[0].items[0].source_url); resultImg = justUrl ? `${data.tasks[0].result[0].items[0].source_url}` : `<image src="${data.tasks[0].result[0].items[0].source_url}" alt="${description}" />`;}
+      if (data) {console.log(data.tasks[0].result[0].items[0].source_url);
+        if (data.tasks[0].result[0].items[0].source_url === undefined) {console.log('YUP UNDEFINED')};
+        if (data.tasks[0].result[0].items[0].source_url.toString() === 'undefined') {console.log('YUP UNDEFINED 1')};
+        resultImg = justUrl ? `${data.tasks[0].result[0].items[0].source_url}` : `<image src="${data.tasks[0].result[0].items[0].source_url}" alt="${description}" />`;}
       return resultImg;
     };
 
@@ -450,7 +462,7 @@ export default function BlogView() {
         'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: 'sonar-medium-online',
+        model: 'llama-3-sonar-large-32k-online',
         messages: [
           { role: 'system', content: 'Be precise and detailed. Mention sources and dates everywhere you can. Keep the current date in mind when generating.' },
           { role: 'user', content: prompt }

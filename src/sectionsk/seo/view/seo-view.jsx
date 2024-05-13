@@ -250,7 +250,7 @@ export default function ProductsView() {
         <instruction>
 
         IMPORTANT INSTRUCTIONS:
-        - FORMATTING: Wrap titles in <h1> and sub-titles in <h2> tags. Wrap all paragraphs (and everything else that should have a line after) in <p> tags. Use b tags only in same-line text or 'title: paragraph'.
+        - FORMATTING: Wrap titles in <h1> and sub-titles in <h2> tags. Wrap all paragraphs (and everything else that should have a line after) in <p style="font-family: serif;"> tags. Use b tags only in same-line text or 'title: paragraph'.
         - PERSPECTIVE: Don't refer to yourself in the post. Explain how your firm ${firmName} can help, but only at the end.
         ${imageCount !== "No Images" && `- IMAGES: blog post should contain ${imageCount}. Please add representations of them in this format: //Image: {Relevant Image Description}//.
         Make sure these are evenly spaced out in the post, and place them after h tags or in between paragraphs.`}
@@ -439,7 +439,18 @@ export default function ProductsView() {
     }
 
     const h1Title0 = (imagelessText.match(/<h1>(.*?)<\/h1>/) || [])[1];
-    if (isUseThumbnail) {const brandImage = await fetchImage(h1Title0, true);
+    if (isUseThumbnail) {
+
+    // const backgroundFormattedTitle = await fetch('https://us-central1-pentra-claude-gcp.cloudfunctions.net/gcp-claudeAPI', {
+    //   method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ 
+    //   model: modelKeys[2], messages: [{role: "user", content: `
+    //   Based on '${blogTitle}' give me a distilled two word phrase with the three words attached at the end being HD background image. 
+    //   ONLY output the phrase. SAY NOTHING ELSE. Example: 'UI/UX trends in HR 2024' = 'UI/UX background image' `}],})});
+    // console.log(backgroundFormattedTitle);
+    // const brandImage = await fetchImage(backgroundFormattedTitle.text(), true);
+    const brandImage = await fetchImage(`HD Background Image for ${blogTitle}`, true);
+      
+
     imagefullText = imagelessText.replace(/(<\/h1>)/, `$1${brandImage}`); }
 
     matches.forEach((match, index) => {
@@ -717,12 +728,13 @@ export default function ProductsView() {
         onChange={setText}
         style={{ 
           width: boxWidth, 
-          height: boxHeight,                
+          height: boxHeight,  
           marginBottom: '58px', 
           border: '0px solid #ccc',
           borderRadius: '0px', 
           backgroundColor: isGenerating ? 'white' : 'white',
           opacity: '1',
+          fontFamily: 'serif', // Set font family to serif
           transition: 'ease-in-out 0.3s',
           // ...loadingAnimation
         }}
