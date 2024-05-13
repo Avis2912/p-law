@@ -83,6 +83,10 @@ export default function ProductsView() {
   }, [isGenerating]);
 
   useEffect(() => {
+    setWordCount(text.split(' ').length);
+  }, [text]);
+
+  useEffect(() => {
 
     const getFirmData = async () => {
       try {
