@@ -251,389 +251,346 @@ const updateLeads = async () => {
 let newUserMoment = true;
 
 if (newUserMoment) {
-newUser(docName = 'TechGenies',
+newUser(docName = 'Raval Trial Law',
 
 firmInfo = {
-    CONTACT_US: "https://techgenies.com/contact-us-2024/",
-    NAME: "TechGenies",
-    LOCATION: "Dallas, TX",
+    CONTACT_US: "https://ravaltriallaw.com/contact-us/",
+    NAME: "Raval Trial Law",
+    LOCATION: "Houston, TX",
     DESCRIPTION: 
-    `TechGenies is a global software development firm based in Richardson, Texas that provides dedicated off-site resources to augment existing operations,
-     function as self-contained product teams, or act as stand-alone software development groups, offering a flexible model that allows clients to decide 
-     how many resources they need, how long, and when they need them.
+    `Raval Trial Law is a Houston based litigation law firm offering sophisticated representation to a range of clients
+     in insurance litigation matters. Still, our belief is that in order for advocacy to be truly effective, 
+     there must be a “bite” waiting behind the “bark.” We prepare thoroughly for the prospect of trial litigation
+     and are willing and able to try a case to its conclusion, if necessary.
 
-     IMPORTANT: The focus of their current campaign with Pentra AI is exclusively cybersecurity compliance/certification for small businesses that are contracting with the US government.
+     Raval Trial Law is presently primarily focused on life insurance and long term disability insurance.
     `,  
     IMAGE: `
-    https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/misc_images%2Fdecentral%20(36).png?alt=media&token=ec47cdfb-a10a-415e-9688-c4423283fbab
-    `,
+    https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/misc_images%2Fdecentral%20(37).png?alt=media&token=c6bad835-768d-444e-8f91-db508b9a8fcd
+`,
     MODEL: 2,
-    PLAN: "Trial Plan",
+    PLAN: "Full Suite Plan",
 },
 
 keywords = {
-KEYWORDS: "Software Development, Cybersecurity Compliance, Cybersecurity Certification, Small Business IT Security, Government Contracting, US Government IT Compliance, Small Business Cybersecurity, Government Cybersecurity Standards, IT Compliance Services, Software Security, Cybersecurity for Government Contractors, Small Business Compliance, US Government Cybersecurity, Cybersecurity Software Solutions, Cybersecurity Audit, Cybersecurity Training, Cybersecurity Policies, Cybersecurity Risk Management, Cybersecurity Consulting, Government IT Security Standards",
-LAST_DATE: "05/15/24",
+KEYWORDS: "Life Insurance, Long-Term Disability Insurance, Insurance Litigation, Houston Law Firm",
+LAST_DATE: "06/06/24",
 },
 
-smallBlog = [0, 1, 2],
+smallBlog = [0, 1],
 
 bigBlog = [
 {
-    TITLE: "Artificial Intelligence and Cybersecurity: Opportunities and Challenges",
-    LINK: `https://techgenies.com/artificial-intelligence-and-cybersecurity-opportunities-challenges/`,
+    TITLE: "Long-Term Disability Insurance vs Short-Term Disability Insurance Explained",
+    LINK: `https://ravaltriallaw.com/long-term-vs-short-term/`,
     CONTENT: `
-    Cybersecurity is no longer a choice; it’s a necessity in our digital age. As we embrace technology in every aspect of our lives, the threats to our digital existence continue to evolve. Standing at the forefront of this digital battle is artificial intelligence (AI). This blog will delve into the opportunities and challenges presented by AI in the realm of cybersecurity.
+    Disability insurance provides financial security and peace of mind to those looking for additional protection if they can no longer work due to an injury or disabling illness. Americans suffer chronic and debilitating illnesses more and more every year. These injuries and ailments can dramatically impact a person’s ability to work. Thus, many workers have the option of obtaining disability insurance to supplement their income in times of medical crisis.
 
-    The Role of AI in Cybersecurity
-    Opportunity 1: Enhanced Threat Detection
-    Traditional cybersecurity approaches lean heavily on predefined rules and patterns to identify threats. However, cybercriminals operate outside these predefined boundaries, perpetually inventing novel attack methodologies that evade detection. This is where AI emerges as a true champion. It boasts the capability to process colossal volumes of data, unveil obscure patterns and anomalies that tend to elude human analysts and adapt in real time to emerging threats.
-    
-    Consider this for a more tangible understanding: AI-powered systems can detect abnormal user behavior indicating a potential breach, such as unauthorized access or irregular data transfer patterns. The ability to spot such deviations quickly and accurately makes AI a formidable ally in the realm of cybersecurity.
-    
-    Opportunity 2: Predictive Analysis
-    AI’s sphere of influence extends beyond just defense and encompasses prediction. By meticulously scrutinizing historical data and identifying trends, AI has the power to forecast potential cyber threats. This proactive approach empowers organizations to bolster their defenses proactively before an attack unfurls its destructive potential.
-    
-    For instance, AI algorithms can analyze network traffic data to predict the possibility of Distributed Denial of Service (DDoS) attacks, thus enabling preemptive countermeasures. Such predictive analysis significantly reduces the element of surprise that cybercriminals rely on.
-    
-    Opportunity 3: Automated Response
-    Should a threat materialize, AI stands ready to respond with the swiftness of a digital superhero. Automated responses, like isolating compromised systems or blocking malicious network traffic, can be executed without human intervention. This not only reduces response time but also ensures a consistent approach to addressing threats, mitigating the potential for human error.
-    
-    Imagine a scenario where AI detects suspicious activity and promptly disconnects the affected device from the network, thereby preventing further compromise. This level of automated response can be a game-changer in situations where swift action is paramount to forestall data breaches or system damage.
-    
-    The Challenges of AI in Cybersecurity
-    
-    Challenge 1: Adversarial Attacks
-    For all its capabilities, AI is not impervious; it possesses its own Achilles’ heel – adversarial attacks. Adversarial attacks involve manipulating AI algorithms by feeding them misleading or specially crafted data. These attacks can lead AI systems to categorize malicious activities as benign, essentially turning our digital protector against us.
-    
-    Countering these deceptive tactics necessitates ceaseless vigilance and the regular updating of AI models to detect and mitigate adversarial attacks as they evolve. It’s an ongoing chess match between the forces of good and evil, with each move countered and adjusted in real-time.
-    
-    Challenge 2: Data Privacy Concerns
-    AI’s efficacy hinges heavily on access to vast datasets, some of which may contain sensitive or personal information. Mishandling or misuse of this data poses significant privacy concerns.
-    
-    Robust data privacy measures are essential to address this challenge. These measures include encryption to protect data both in transit and at rest, strict access controls to limit who can access sensitive information, and data anonymization to de-identify data used in AI training processes. Moreover, organizations must adhere meticulously to relevant data protection regulations such as the General Data Protection Regulation (GDPR) to safeguard user data.
-    
-    Challenge 3: AI Bias
-    AI algorithms inherit biases present in their training data. In cybersecurity, this could lead to discrimination or oversight of particular threats, essentially perpetuating the very inequities that cybersecurity seeks to eliminate.
-    
-    To rectify this challenge, meticulous curation of training data is crucial. This involves selecting diverse datasets that accurately represent the various demographics and scenarios AI will encounter. Furthermore, ongoing monitoring and bias mitigation strategies are essential to ensure that AI-driven cybersecurity systems remain fair and unbiased in their operations.
-    
-    The Future of AI in Cybersecurity
-    
-    Trend 1: Autonomous Cybersecurity Systems
-    The future promises fully autonomous cybersecurity systems capable of detecting, responding to, and mitigating threats without human intervention. These systems will leverage AI and machine learning to make real-time decisions, thus eliminating the latency introduced by human involvement.
-    
-    Picture a scenario where a network is under attack, and the autonomous cybersecurity system detects the threat, analyzes it, and takes appropriate action – all within milliseconds. This level of autonomy offers a robust defense against rapidly evolving cyber threats.
-    
-    Trend 2: AI-Powered Threat Intelligence
-    AI will play a central role in threat intelligence, processing vast amounts of data to identify emerging threats and vulnerabilities. This will allow organizations to stay ahead of cybercriminals by proactively strengthening their defenses.
-    
-    Imagine an AI system that can sift through vast troves of information from various sources – network traffic data, social media feeds, and threat reports – to identify potential threats in real-time. Such a system can provide invaluable insights into the evolving threat landscape, enabling organizations to prepare and respond effectively.
-    
-    Trend 3: Quantum Computing vs. AI
-    Quantum computing looms on the horizon as a potential threat to current encryption standards. However, AI could also play a pivotal role in developing new encryption methods that are resistant to quantum attacks.
-    
-    Quantum-resistant encryption is a critical field of research, and AI can aid in designing and testing encryption algorithms that can withstand the computational power of quantum computers. As quantum computing matures, AI will be instrumental in safeguarding sensitive data in the digital realm.
-    
-    Trend 4: Cybersecurity Workforce Augmentation
-    AI will not replace human cybersecurity experts but will augment their capabilities. AI-driven tools will assist analysts in sifting through vast volumes of data, enabling them to focus on more strategic tasks and decision-making.
-    
-    Consider a scenario where an organization’s cybersecurity team is inundated with alerts from various security tools. AI-driven systems can analyze these alerts, prioritize them based on severity, and provide actionable insights to human analysts. This collaboration between humans and AI streamlines the response to cyber threats.
-    
-    Trend 5: Ethical Hacking and AI
-    Ethical hackers, often referred to as “white hat” hackers, will increasingly use AI tools to identify vulnerabilities in systems before malicious actors can exploit them. This proactive approach to cybersecurity leads to more robust security postures for organizations.
-    
-    Think of ethical hackers employing AI-driven vulnerability scanners that automatically identify potential weaknesses in software or network configurations. This enables organizations to patch vulnerabilities before cybercriminals can exploit them, enhancing overall cybersecurity.
-    
-    The Ethical Implications
-    
-    Ethical Consideration 1: Accountability
-    Determining responsibility when AI systems make autonomous decisions in response to cyber threats is a complex challenge. Legal and ethical frameworks for accountability are crucial. Organizations must establish clear lines of responsibility for the actions taken by AI systems, including incident response decisions. This can involve defining the roles and responsibilities of human operators who oversee AI-driven cybersecurity systems.
-    
-    Ethical Consideration 2: Privacy
-    AI’s use in cybersecurity, especially predictive analysis, raises privacy concerns. Data handling must align with established privacy regulations and respect individual rights. Organizations should be transparent about the data they collect and how it is used and provide mechanisms for individuals to control their data.
-    
-    Moreover, AI systems used in cybersecurity should incorporate privacy-enhancing technologies such as differential privacy to protect individual data while still enabling effective threat detection.
-    
-    Ethical Consideration 3: Bias and Fairness
-    AI bias is a pervasive concern, especially when it comes to decision-making in cybersecurity. Ensuring fairness and transparency in AI-driven cybersecurity tools is essential. This involves regular audits of AI systems for bias and implementing measures to mitigate bias where it is detected.
-    
-    Furthermore, organizations should adopt diverse and inclusive training data to ensure that AI systems do not unfairly target or neglect specific threats based on demographic or other factors. Rigorous testing and validation of AI-driven cybersecurity systems can help uncover and rectify bias issues.
-    
-    Conclusion
-    Artificial intelligence is indisputably transforming the landscape of cybersecurity, offering enhanced threat detection, predictive analysis, and automated responses. Yet, it also poses challenges, including adversarial attacks, data privacy concerns, and bias. To harness AI’s full potential in cybersecurity, organizations must invest in robust AI systems, prioritize data privacy and fairness, and remain vigilant in addressing its challenges.
-    
-    As AI continues to evolve, so too will cyber threats, making the ongoing development and adaptation of AI-driven cybersecurity measures imperative to protect digital assets and data. Ethics must guide this journey, ensuring that the benefits of AI are leveraged responsibly and ethically to create a safer digital world for all. In this rapidly evolving digital landscape, the alliance between AI and cybersecurity is poised to be our most potent defense against the ever-evolving arsenal of cyber threats.
+    What is Texas Disability Coverage?
+    Disability insurance is a form of insurance designed to supplement a person’s income while that person is out of work – often related to a medical illness. This type of insurance allows workers to supplement their income during medical treatment and / or recovery. Depending on the coverage plan, insurance may cover between a couple of months to a year or more of income.
+
+    Texas is one of many states that does not offer government-funded disability coverage. Instead, Texans must utilize Social Security Disability Insurance (SSDI), Supplemental Security Income (SSI), Veterans disability benefits (applicable to U.S. Veterans), or private disability coverage. This blog’s primary focus is privately funded disability insurance plans.
+
+    Minimum Standards for Disability Coverage
+    Texas law refers to short-term disability and long-term disability insurance as “disability income protection coverage.” Under 28 Tex. Admin. Code § 3.3075, the minimum standard for disability income protection coverage includes the following:
+
+    The plan must provide a periodic payment of at least $100 per month, payable through age 62 and payable for at least $50 after age 62.
+    The plan must contain an elimination period of 90, 180, or 365 days, depending on the policyholder’s circumstances.
+    The plan must have a maximum time period for payable benefits of at least six months.
+    Insurance companies cannot offer disability income protection coverage plans in the state of Texas without abiding by these minimum standards.
+
+    The Differences Between Long-Term Disability Insurance and Short-Term Disability Insurance Coverage
+    Hands hovering over image of a person in a wheelchair. Long term disability vs short term.Disability insurance provides a policyholder with supplemental income while on leave from their employment due to a disability. However, there are two forms of disability coverage based on the type of disability a person is experiencing and the duration of their disability.
+
+    Short-term disability insurance coverage allows a person to obtain supplemental income while dealing with a disabling affliction. This type of insurance can last three to six months, depending on the disability. Most short-term disability insurance plans cover approximately 40 percent to 70 percent of a person’s income when they become eligible for coverage. Short-term disability insurance coverage only covers afflictions that can be recovered from over a short period of time.
+
+    Long-term disability insurance coverage allows a person to supplement their income after a crippling injury or illness that leaves them unable to work for the foreseeable future or even for the rest of their lives. Long-term disability coverage typically pays 60 percent of a person’s gross monthly wage during the coverage period.
+
+    Long-term disability coverage can span a year or more, including the duration of time from disability inception until the insured becomes eligible for Social Security or retirement. The terms of coverage will vary by policy.
+
+    Understanding Disability Coverage
+    Those seeking disability coverage from private insurance should understand what they can expect in most disability insurance policies. See below for a breakdown of standard disability insurance policies and their clauses.
+
+    Eligibility Clause
+    After a policyholder has purchased the plan and commenced paying monthly premiums, a particular set of circumstances must occur before they can utilize their disability benefits:
+
+    The policyholder must complete a mandatory waiting period before becoming eligible for benefits under the plan.
+    Plans typically include an assessment conducted by a medical professional who can adequately evaluate the claim for disability benefits by reviewing the policyholder’s injury or illness.
+    The insurance company typically conducts an independent third-party review of the claim by another medical professional of its own choosing.
+    Pre-Existing Condition Clause
+    Most clauses governing pre-existing conditions do not preclude a person with a pre-existing condition from purchasing disability insurance coverage and utilizing their benefits when the need arises.
+
+    Instead, a pre-existing condition clause usually encompasses illnesses and injuries that occurred within the prior three months before obtaining coverage. In those cases, the insurance company may prohibit a policyholder from obtaining income benefits from the plan for the first six months of coverage.
+
+    After the preliminary six months of premiums have been paid, the policyholder will likely have to enter a waiting period. Once the waiting period has ended, the policyholder will probably be eligible for benefits.
+
+    Waiting Period Clause (Long-Term Disability Insurance)
+    Disability insurance form. Long term vs short term disability.As stated above, policyholders may have to engage in a waiting period under a disability plan before obtaining benefits. This waiting period is similar to a probationary period to deter users from receiving benefits directly after purchasing coverage. Under most waiting period clauses, a policyholder will likely have to wait anywhere from 180 days to six months to qualify for coverage. Often, policyholders must utilize their employer-provided sick and benefit time before receiving income benefits from a disability plan.
+
+    Coverage Period
+    The coverage period depends on the nature of the affliction and the plan’s parameters. For short-term plans, a person can expect to see between three to six months of benefits. However, this depends on the policyholder’s illness and whether it is a short-term affliction. For long-term plans, policyholders should expect benefits for as long as they are disabled, which can easily reach a year or more of benefits.
+
+    Monthly Benefits
+    Monthly benefits range from 40 percent to 70 percent of the policyholder’s income, depending on the type of coverage and policy terms. Most plans will calculate how much to provide in monthly benefits using a person’s average weekly wage or gross monthly wage, which all depends on the policy and the person’s occupation. For example, if a person earns $2,000 a month in wages, they can expect to receive $800 to $1,400 a month in disability benefits.
+
+    Can I Use Disability Insurance While on FMLA Leave?
+    The short answer is yes. The Family Medical Leave Act offers eligible employees 12 weeks of unpaid leave due to a qualifying medical or family event. During the leave period, the employee’s position with their employer is protected from termination. Qualifying events can include:
+
+    Birth of a child.
+    Adoption or foster care of a child within one year of placement.
+    Affliction of an illness or injury that renders an employee unable to perform their essential job functions.
+    Providing care to a qualifying family member.
+    When on FMLA, a person may be eligible for disability benefits depending on the type of plan they purchase. For long-term disability insurance coverage, FMLA leave will likely expire before a person is eligible for disability insurance coverage, which means the benefit may only be utilized after they are no longer on FMLA leave. However, because short-term disability insurance has a shorter eligibility window, a policyholder may use disability insurance to supplement their income while on leave.
+
+    Contact Us About Your Disability Claim Today
+    Disability insurance can be a savior to many experiencing a long-term or short-term disability. However, understanding a disability insurance policy and the claims process can be difficult. If you have questions or concerns about your disability coverage, please contact one of our Houston disability insurance lawyers today at Berg Plummer Johnson & Raval, LLP for a consultation
     `,
 },
 {
-    TITLE: "Building Cyber Resilience: A Definitive Guide to Top Tools and Technologies",
-    LINK: `https://techgenies.com/cyber-resilience-top-tools-and-technologies/`,
+    TITLE: "Types of Life Insurance Exclusions",
+    LINK: `https://ravaltriallaw.com/types-of-exclusions/`,
     CONTENT: `
-    In today’s digital age, where cyber threats loom around every corner, businesses must proactively safeguard their valuable assets. Cyber resilience, the ability to withstand, recover from, and adapt to cyber-attacks, is the key to staying one step ahead of ever-evolving adversaries.
+    Life insurance provides a financial safety net for surviving family members when someone dies unexpectedly. Life insurance proceeds must be paid to the beneficiaries in a timely manner. But there are circumstances which can excuse an insurance company from the obligation to pay benefits.
 
-    This comprehensive blog will explore the top tools and technologies that play a pivotal role in fortifying an organization’s cyber resilience strategy. Let’s dive in and discover the powerful arsenal that can help us build robust defenses and secure our digital future.
+    The person on whose life the insurance policy is underwritten has entered into a contract with the insurance company. In that contract, the insurance company has promised to pay a certain sum of money to beneficiaries designated by the policy owner upon the owner’s death. However, in order to trigger the insurance company’s obligation to pay, the policy owner must comply with certain conditions and no policy exclusion can apply.
     
-    Understanding the Cyber Threat Landscape
-    The cyber threat landscape is ever-evolving, with malicious actors continuously devising new and sophisticated ways to breach organizational defenses. Cyber-attacks, data breaches, and malware infections pose significant risks to businesses of all sizes and sectors. Social engineering tactics targeting the human element further amplify the threat. To build effective cyber resilience, organizations must first understand the types of threats they face and their potential impact.
+    Life insurance companies are allowed to avoid paying the benefits on a life insurance policy if one of the coverage exclusions permitted in Texas applies. Insurance companies may sometimes argue an exclusion applies when the claim is actually legitimate.
     
-    In recent years, the rise of advanced persistent threats (APTs) and nation-state-sponsored attacks has added complexity to the threat landscape. Additionally, the Internet of Things (IoT) growth has introduced new vectors for cyber-attacks, with IoT devices becoming attractive targets for exploitation. Furthermore, cloud adoption has expanded the attack surface, requiring organizations to secure their cloud-based assets effectively.
+    It can be devastating to families to have a life insurance claim denied after the already harsh impact of losing a loved one. Life insurance companies need to be held to the commitments made to policy owners. A Houston life insurance lawyer can help beneficiaries collect the life insurance proceeds they are entitled to.
     
-    The Pillars of Cyber Resilience
-    The Pillars of Cyber Resilience
+    Permissible Life Insurance Policy Exclusions Under Texas Law
+    With limited exceptions, life insurance companies operating in Texas cannot exclude coverage based on a particular cause of death. The Texas Insurance Code’s life insurance section, 1101.055, lists the causes of death that insurance companies are allowed to exclude:
     
-    Threat Intelligence Platforms
-    Understanding the Role of Threat Intelligence: Threat Intelligence Platforms act as vigilant sentinels, continuously monitoring the digital landscape for emerging risks, vulnerabilities, and malicious actors. They aggregate and analyze data from various sources, including open-source intelligence, commercial threat feeds, and dark web monitoring, to comprehensively view the threat landscape.
-    Types of Threat Intelligence: Different types of threat intelligence offer unique insights. External threat intelligence focuses on external threats targeting an organization, while internal threat intelligence pertains to threats within the organization’s network. Tactical intelligence provides real-time information on specific threats, while strategic intelligence offers long-term insights into threat actors’ motivations and capabilities.
-    Intelligence-Driven Defense: Implementing an intelligence-driven defense approach involves leveraging threat intelligence to identify potential threats, prioritize security efforts, and proactively implement measures to prevent attacks. Threat intelligence can be used to enrich security information and event management (SIEM) systems, intrusion detection systems (IDS), and firewalls to enhance their threat detection capabilities.
-    Endpoint Protection Solutions
-    Endpoint Security Challenges: The proliferation of remote work and bring-your-own-device (BYOD) policies has expanded the number and diversity of endpoints. Securing these endpoints poses significant challenges, especially with the growing trend of shadow IT, where employees use unsanctioned devices and applications.
-    Behavior-Based Analysis: Endpoint Protection Solutions leverage behavior-based analysis to detect malicious activities that may evade traditional signature-based detection. These solutions can identify and block potential threats by continuously monitoring endpoint behavior and analyzing patterns.
-    Machine Learning and AI: Integrating machine learning and artificial intelligence (AI) enables Endpoint Protection Solutions to adapt to new and emerging threats. These technologies use historical data to identify patterns and anomalies, enabling more accurate threat detection and reducing false positives.
-    IoT Endpoint Security: Securing IoT devices is critical as they often lack robust built-in security features. Endpoint Protection Solutions for IoT devices focus on securing communication channels, implementing device authentication, and ensuring data encryption.
-    Data Encryption
-    data encryption
+    Death by suicide whether the decedent was mentally competent or not
+    Death as the result of a hazardous occupation
+    Death as the result of aviation activities
+    Death by Suicide
+    Exclusions of coverage, when the cause of death is self-inflicted, are aimed at discouraging financial benefit as a motive for suicide. The exclusion of coverage when death is by suicide only lasts for two years after a policy is issued. After two years, a life insurance policy must pay benefits regardless of how the policy owner died except for a beneficiary who was involved in willfully bringing about the policy owner’s death.
     
-    Encryption Methods: Data encryption uses cryptographic algorithms to convert sensitive information into unreadable code, protecting it from unauthorized access. Symmetric encryption employs a single key for encryption and decryption, while asymmetric encryption uses a pair of public and private keys for encryption and decryption, respectively.
-    Key Management: Effective key management is essential for secure data encryption. It involves generating, storing, distributing, and revoking encryption keys to ensure the confidentiality and integrity of encrypted data. Hardware security modules (HSMs) and key management platforms are used to manage encryption keys securely.
-    Compliance and Data Privacy: Data encryption aligns with data protection regulations such as the General Data Protection Regulation (GDPR) and the Health Insurance Portability and Accountability Act (HIPAA). Compliance with these regulations is vital for organizations handling sensitive data.
-    Full Disk Encryption (FDE) and File Encryption: Full Disk Encryption protects an entire storage device, while file encryption encrypts individual files or folders. Implementing a combination of FDE and file encryption provides comprehensive data protection.
-    Incident Response Platforms
-    Incident Identification and Classification: Incident Response Platforms continuously monitor network traffic and system logs to detect and classify security incidents. They use behavioral analytics and anomaly detection to identify potential threats.
-    Incident Containment and Mitigation: In the event of a security incident, incident response teams must act swiftly to contain the threat and prevent further damage. Incident Response Platforms provide real-time response playbooks to guide response actions effectively.
-    Post-Incident Analysis: After containing an incident, post-incident analysis is conducted to understand the attack’s root cause, the extent of the damage, and any weaknesses in the organization’s defense. This analysis informs future security improvements and risk mitigation strategies.
-    Multi-Factor Authentication (MFA)
-    Multi-Factor Authentication (MFA)
+    Hazardous Occupation
+    Life insurance policies may exclude coverage when death is the result of engaging in an occupation where the risk of death is greater than average. Occupations are to be distinguished from hobbies and recreational activities which cannot be excluded.
     
-    Strengthening Authentication: Password-based authentication is susceptible to brute-force attacks and credential stuffing. MFA adds an extra layer of security by requiring users to provide multiple forms of identification, such as something they know (password), something they have (smartphone or token), and something they are (biometric data).
-    MFA Implementation: Organizations can implement MFA across various access points, such as login portals, VPNs, and remote access systems. MFA should be carefully implemented to balance security and user experience.
-    Biometrics and Beyond: Biometric authentication, such as fingerprint scanning and facial recognition, is gaining popularity due to its convenience and enhanced security. Emerging MFA technologies may incorporate biometric features and context-aware authentication, adapting to user behavior and location.
-    Backup and Disaster Recovery Solutions
-    Data Backup Best Practices: Regular and frequent data backups are critical for cyber resilience. Organizations should adopt the 3-2-1 backup strategy, involving three copies of data on two different media, with one copy stored off-site.
-    Disaster Recovery Strategies: Cloud-based disaster recovery solutions provide scalable and flexible recovery options. They enable rapid data restoration and system recovery, reducing downtime during a cyber incident.
-    Business Continuity Planning: Backup and disaster recovery are essential to comprehensive business continuity planning. Organizations should regularly test their backup and recovery procedures to ensure they can restore operations effectively.
-    Vendor Cyber Resilience: Organizations should assess the cyber resilience of their third-party vendors and partners. Implementing cyber resilience requirements in vendor contracts ensures the security of shared data and services.
-    Integrating Cyber Resilience Tools into an Organization
-    Integrating Cyber Resilience Tools into an Organization
-    Cyber Resilience Assessment: A cyber resilience assessment involves risk assessments and gap analyses to identify vulnerabilities and prioritize cyber resilience efforts. Organizations should assess their existing security measures and identify areas for improvement.
-    Security Operations Center (SOC): Establishing a dedicated SOC or partnering with a managed security services provider (MSSP) enhances proactive threat monitoring and response capabilities. A SOC serves as the nerve center for incident detection and response.
-    Cyber Resilience Policies: Developing and implementing policies that outline security best practices, incident response protocols, and acceptable use of technology. Regular security training and awareness programs ensure employees are well-informed and prepared to respond to cyber threats.
-    Vendor Cyber Resilience: Organizations should assess the cyber resilience of their third-party vendors and partners. Implementing cyber resilience requirements in vendor contracts ensures the security of shared data and services.
-    Looking Ahead: Emerging Trends in Cyber Resilience
-    Looking Ahead: Emerging Trends in Cyber Resilience
+    Military service and occupations such as construction, oil and gas extraction, law enforcement, and commercial fishing are among some of the occupations a life insurance company may choose not to underwrite. For the exclusion to apply, the excluded hazardous occupation must be listed in the policy.
     
-    Artificial Intelligence (AI) in Cybersecurity: AI-driven cybersecurity solutions are becoming more prevalent in detecting and responding to sophisticated threats. AI enables threat hunting and response automation, reducing the time to identify and mitigate threats.
-    Automation and Orchestration: Automation of routine cybersecurity tasks streamlines incident response and frees up security analysts to focus on more complex threats. Security orchestration ensures seamless collaboration between security tools and teams.
-    Threat Intelligence Sharing: Collaborative efforts among organizations and industry sectors strengthen the collective defense against cyber threats. Threat intelligence sharing platforms facilitate the exchange of threat information and indicators of compromise.
-    Zero Trust Architecture: Zero Trust is an emerging security framework that assumes no user or device can be trusted by default. Instead, access is granted based on continuous authentication and authorization.
-    Conclusion
-    In conclusion, cyber resilience is not a single solution but a combination of top tools and technologies, training, and a proactive mindset. The dynamic and evolving nature of cyber threats requires continuous vigilance and adaptability.
+    Aviation Activities
+    Hang glider. Types of Life Insurance ExclusionsLife insurance policies may exclude coverage when death is caused by certain aviation activities stated in the policy. The Texas Department of Insurance says the following types of aviation activities are acceptable to exclude:
     
-    By integrating the pillars of cyber resilience into their strategies, organizations can effectively navigate the digital landscape and safeguard their assets. Embracing cyber resilience is a proactive approach and a necessity in a world where digital risks are ever-present. Let’s build our digital fortresses and secure a resilient future.
+    Duties aboard an aircraft as a pilot or member of a flight crew
+    Assisting in the operation of an aircraft
+    Giving or receiving training regarding an aircraft
+    Being aboard an aircraft for any purpose other than as a passenger
+    Hang gliding
+    Para-planing
+    Death by descending or falling from an aircraft is not considered an excludable aviation activity. Thus, skydiving cannot be an excluded cause of death in a life insurance policy but hang gliding could be.
+    
+    Insurance Companies Have A Two-Year Window to Contest Coverage
+    Limiting the amount of time a life insurance company has to challenge the obligation to pay benefits protects consumers from having coverage voided years after a policy is issued. Life Insurance policies in Texas are required to contain language stating they will be uncontestable if the insured lives two years from the date the policy is issued and pays the premiums.
+    
+    After the contestability period, life insurance companies generally cannot deny the payment of claims based on misrepresentations made by the policyholder. But there is no limit on the contestability period when a policyholder has committed fraud. Fraud voids the contract and the obligation to pay.
+    
+    There are some circumstances under which the contestability period may be extended. Life insurance companies can choose to include policy language that extends the contestability period for challenging the violation of policy conditions relating to military service during a time of war.
+    
+    Misrepresentations May Reduce Proceeds but Rarely Void Life Insurance Contracts
+    A misrepresentation as to age in a life insurance application will not void the insurance company’s obligation to pay but the payout will be reduced to the amount of insurance that the policy owner could have purchased with the premiums paid had the correct age been given.
+    
+    The Texas Insurance Code says a misrepresentation made in an application to an insurance company will only void the contract if it is material to the risk or contributes to the circumstances triggering the insurance company’s obligation to pay.
+    
+    The Supreme Court of Texas recently clarified when a misrepresentation made on an application would be sufficient to excuse a life insurance company from paying the policy amount during the contestability period. The policy owner had indicated ‘no’ on a medical history question. Upon reviewing the policy owner’s medical records, it was discovered that the question should have been answered ‘yes’. The insurance company tried to deny paying the benefits based on the insured’s misrepresentation.
+    
+    The issue was whether a misrepresentation need only be of a material fact affecting the risk assumed or whether the applicant must also intend to deceive the insurance company. The Texas Insurance Code makes no mention of intent as necessary for a misrepresentation to void a life insurance contract; however, common law does.
+    
+    The Texas high court upheld the longstanding principle that there must be an intent to deceive in order for a material inaccuracy to void an insurer’s obligation to pay.
+    
+    What Happens When Your Life Insurance Claim is Denied?
+    Life insurance policy papers. Types of life insurance exclusions.The problem with insurance companies is that they are for-profit businesses. The more claims they pay, the less money they make. Insurance companies have a strong incentive to limit the payment of claims as much as they can legally get away with. To protect against the perverse incentive to deny clains, insurance companies are required by Texas law to settle claims in good faith. An insurance company that acts in bad faith can be held liable for damages – often beyond the value of the actual policy.
+    
+    Misrepresentation is a common reason life insurance companies attempt to deny paying claims. If a life insurance claim is denied based on a misrepresentation by the policy owner, the insurance company cannot avoid paying the claim unless the misrepresentation was both significant to the insurance company’s decision to underwrite the risk and made with the intention to influence the company into issuing the policy.
+    
+    There is typically an appeal process where life insurance claimants can refute the insurance company’s reasons for denying the claim. Getting legal help at this stage of the process can help persuade the insurance company to reverse its decision and pay the claim. It will also lay the foundation for a more successful claim in court should you need to move into civil litigation to recover what you are rightfully owed.
+    
+    Where To Get Help Fighting the Wrongful Denial of a Life Insurance Claim
+    After a loved one has passed, the last thing a grieving family needs is a hassle with an insurance company over paying a claim. Unfortunately, life insurance claim denials are all too common and can create hardships, adding more anguish to an already difficult situation.
+    
+    At Berg Plummer Johnson & Raval, LLP, we help life insurance beneficiaries challenge claim denials and force insurance companies to honor their contractual obligations to pay claims.
     `
 },
 
 {
-    TITLE: "Cyber Resilience: What is it and Why it Matters",
-    LINK: "https://techgenies.com/cyber-resilience-what-is-it-and-why-it-matters/",
+    TITLE: "What To Do If a Life Insurance Policy Claim Is Denied",
+    LINK: "https://ravaltriallaw.com/policy-denied/",
 
     CONTENT: `
-    In today’s rapidly evolving digital landscape, cyber resilience is crucial in safeguarding organizations and individuals from the ever-increasing threat of cyberattacks. Cyber resilience, defined as the ability to withstand and recover from cyber threats, has become paramount in modern cybersecurity. Not only does cyber resilience allow organizations to minimize potential risks, but they can also safeguard their digital assets in an interconnected world.
+    Life insurance is usually purchased to make sure a beneficiary has some financial means if the policyholder should die. Life insurance contracts promise to pay a beneficiary in a timely manner upon proof of death and compliance with policy terms and conditions.
 
-    Understanding the Importance of Cyber Resilience
-    In an era characterized by sophisticated cyber threats, the importance of cyber resilience cannot be overstated. With cybercriminals continuously devising new attack techniques, organizations must prioritize cyber resilience to mitigate potential risks and consequences.
-    
-    Through proper implementation of cyber resilience practices, organizations can fortify their defenses and build robust frameworks that withstand the ever-evolving threat landscape. With appropriate care, firms can swiftly detect, respond to, and recover from cyber incidents, minimizing potential damages and downtime. To understand the full significance of cyber resilience, you would first need to familiarize yourself with the concept of cyber threats and the many ways in which these threats come about.
-    
-    What Are Cyber Threats?
-    
-    Cyber threats
-    
-    
-    Organizations face numerous cyber threats in the digital era that require a robust cyber resilience approach. Knowing these common threats will help better understand how cyber resilience is crucial in mitigating their impact.
-    
-    1. Malware Attacks:
-    Malware attacks pose significant risks. By embracing cyber resilience measures, organizations can fortify their systems, quickly detect and respond to malware incidents, and minimize potential damage.
-    
-    2. Phishing and Social Engineering:
-    Phishing and social engineering exploit human vulnerabilities. A cyber resilience-focused approach empowers employees to recognize and report these threats, fostering a vigilant workforce that helps prevent successful attacks.
-    
-    3. DDoS Attacks:
-    DDoS attacks disrupt online services. Organizations can bolster cyber resilience by implementing robust network security measures, ensuring availability, and efficiently managing traffic during such episodes.
-    
-    4. Insider Threats:
-    Insider threats demand a proactive cyber resilience approach. By implementing access controls, monitoring user activities, and fostering a cybersecurity-aware culture, organizations can minimize risks associated with insider threats.
-    
-    5. Advanced Persistent Threats (APTs):
-    APTs require a comprehensive cyber resilience strategy. Strengthening security measures, conducting regular risk assessments, and sharing threat intelligence contribute to early detection and effective response against APTs. Cyber resilience can help keep you and your organization safe from all cyber-attacks.
-    
-    The Foundations of Cyber Resilience
-    
-    Foundation of cyber resilience
-    
-    Cyber resilience encompasses the principles, strategies, and practices that enable organizations to withstand, adapt to, and recover from cyber incidents effectively. It has certain essential foundations that organizations must establish to navigate the complex cybersecurity landscape.
-    
-    1. Comprehensive Risk Assessment:
-    Cyber resilience begins with a comprehensive risk assessment, identifying potential vulnerabilities and allowing organizations to address weaknesses and enhance their security posture. This assessment includes evaluating network infrastructure, software vulnerabilities, and user access controls.
-    
-    2. Robust Prevention Strategies:
-    Cyber resilience demands robust prevention strategies, including firewalls, intrusion detection systems, secure network configurations, and regular software patching. These measures form essential components of cyber resilience by acting as the first line of defense against potential threats.
-    
-    3. Real-Time Detection and Response:
-    Cyber resilience requires proactive monitoring to detect potential threats. By leveraging advanced threat detection technologies, such as intrusion detection and prevention systems, Security Information and Event Management (SIEM) tools, and behavioral analytics, organizations can identify and respond to cyber incidents swiftly. Real-time detection enables immediate action to mitigate potential damages.
-    
-    4. Incident Response and Recovery:
-    In the face of cyberattacks, having a well-defined incident response plan is crucial. Cyber resilience enables organizations to minimize the impact of incidents through effective incident response processes, including incident identification, containment, eradication, recovery, and lessons learned. This ensures a structured, coordinated approach to minimize disruption and restore normal operations.
-    
-    What Benefits Does Cyber Resilience Offer?
-    In today’s digital world, cyber threats constantly risk organizations. Cyber resilience, which emphasizes detecting, responding, and recovering from cyber incidents, offers several benefits in safeguarding businesses.
-    
-    Minimizing Financial Losses:
-    Cyber resilience reduces the risk of data breaches, fraud, and financial theft. It ensures proactive measures are in place to detect and prevent cyber threats, helping organizations avoid costly consequences and maintain customer trust.
-    
-    Safeguarding Reputation and Customer Trust:
-    By prioritizing cyber resilience, organizations demonstrate their commitment to protecting sensitive data and maintaining critical systems. This helps preserve reputation, customer trust, and brand integrity, differentiating them in the marketplace.
-    
-    Ensuring Business Continuity:
-    Cyber resilience allows organizations to maintain essential operations during and after a cyber incident. Businesses minimize downtime and ensure continuous service by implementing redundancy, backup mechanisms, and disaster recovery plans.
-    
-    Strengthening Stakeholder Confidence:
-    A robust cyber resilience posture instills confidence in stakeholders. Organizations prioritizing cyber resilience foster trust, attracting investors, partners, and employees who value security and responsible practices.
-    
-    Ensuring Operational Continuity:
-    Cyber resilience is vital for maintaining business continuity. By implementing resilient systems and response protocols, organizations can minimize downtime and ensure seamless operations, even in the face of cyber disruptions. Redundant infrastructure, backup power systems, and alternative communication channels are essential for maintaining operational continuity.
-    
-    The Human Element in Cyber Resilience
-    
-    Human Element in Cyber resilience
-    
-    People play a pivotal role in cyber resilience. Despite technological advancements, human actions and decision-making remain central to effective cybersecurity. They are the first line of defense, capable of identifying and reporting potential threats. Organizations must undertake specific steps to ensure that the people are ready to face and mitigate cyber threats before they can cause any actual harm.
-    
-    Building Cybersecurity Awareness:
-    Organizations must prioritize cybersecurity training and awareness programs to empower employees to recognize and respond to potential threats. Regular training sessions, phishing awareness campaigns, and ongoing communication can foster a culture of cybersecurity awareness.
-    
-    Cultivating a Cyber-Ready Culture:
-    Inculcating a culture of cyber resilience is essential. Organizations can strengthen their defenses by fostering a mindset that values security and encourage proactive participation in maintaining cyber resilience. Regular security audits, incident reporting mechanisms, and a reward system for security-conscious behavior can contribute to a cyber-ready culture.
-    
-    Employee Vigilance and Responsiveness:
-    Employees should have the knowledge and tools to report suspicious activities or incidents promptly. Their vigilance and responsiveness are crucial in ensuring the success of cyber resilience strategies. Establishing incident reporting channels, providing incident response training, and encouraging an open and transparent reporting culture can empower employees to contribute to cyber resilience actively.
-    
-    The Future of Cyber Resilience
-    
-    The Future of Cyber Resilience
-    
-    The digital landscape is constantly evolving, presenting new challenges and risks. The future of cyber resilience lies in embracing emerging technologies such as artificial intelligence, machine learning, and blockchain. These technologies can enhance threat detection, improve response times, and fortify the resilience of organizations against cyber threats. Advancements in cybersecurity automation, threat intelligence sharing platforms, and predictive analytics will significantly strengthen cyber resilience.
-    
-    Final Thoughts
-    Cyber resilience is of utmost importance in an era where cyber threats are omnipresent. By prioritizing cyber resilience, organizations can build strong defenses, detect threats in real time, respond effectively, and recover swiftly from cyber incidents. Cyber resilience ensures the continuity of operations, protects sensitive data, and safeguards organizations’ financial and reputational standing. We can navigate the digital landscape with confidence and security by fostering a cyber-ready culture, enhancing prevention strategies, and leveraging emerging technologies. Embracing cyber resilience is not just necessary; it is the key to safeguarding our digital future. Let us strive for a resilient and secure digital ecosystem where organizations and individuals can thrive peacefully.
+However, because insurance companies would rather not pay out any more than is necessary, they will look very closely at the circumstances of the policyholder’s death and try to determine if there is any way to avoid paying the life insurance benefit.
 
+Life insurance companies are heavily regulated in Texas and are expected to evaluate claims in good faith and deal fairly with claimants. When companies unfairly delay or deny legitimate claims, beneficiaries have the right to challenge those decisions.
+
+Why Insurance Companies Deny Life Insurance Claims
+Companies reserve the right to deny paying life insurance benefits if certain policy conditions are not met by the policyholder or the beneficiaries. When a life insurance company denies a claim for benefits it is usually for one of the following reasons:
+
+Premium payments were not made: If the policyholder missed paying the premiums, the policy may have lapsed. However, if only a payment or two were recently missed, there may be a window of opportunity to resolve the matter.
+Death occurred under contestable circumstances: Contestable circumstances are one of the most common reasons for a life insurance claim denial. Every policy is different and may have unique exclusions or specific contestable timeframes. Generally, if a person’s death is ruled a suicide or they were involved in illegal activity at the time of death, a life insurance policy claim may be denied.
+Information was misrepresented on the application for coverage: In some cases, a claim may be denied if the information on the application is thought to be false. For example, if the policyholder inflated their income or failed to disclose any prior health concerns.
+Exclusion of coverage applies: Life insurance policies will cover most forms of death. However, many policies will exclude certain high-risk behaviors and activities. For example, a policy may not cover death attributed to substance abuse or skydiving.
+Speaking to an experienced life insurance lawyer can help you understand the details of your denial and pursue any opportunity to appeal the decision.
+
+Life Insurance Claims Denied During the Contestability Period
+Life insurance policies in Texas have a two-year contestability period. That means if a policyholder dies within two years of purchasing a life insurance policy, the issuing insurance company has the right to investigate the circumstances of the death and may be able to deny paying benefits.
+
+The contestability period is intended to give insurance companies the opportunity to detect fraudulent claims. There is also a standard exclusion in life insurance policies denying coverage if a policyholder dies by suicide during the contestability period. A life insurance claim might also be denied if it is discovered that the policyholder provided inaccurate information on the application for coverage.
+
+Once the contestability period has expired, the only way an insurance company can legally deny paying benefits other than for non-payment of premiums or an applicable policy exclusion is to show the policyholder intentionally provided false information that was significant to underwriting the risk.
+
+Life Insurance Claim Denial for Misrepresentation on the Application for Coverage
+The Texas Insurance Code says a misrepresentation on a life insurance application will not void coverage unless:
+
+It is of a material fact
+It affects the risks assumed
+Material facts with regard to life insurance will be the personal information requested on the life insurance application. Risks are rated based on the answers given. If the information provided is inaccurate, the appropriate premiums will not be charged, and a risk may be underwritten that would not otherwise be eligible for coverage.
+
+The law further states that a life insurance claim cannot be denied based on a misrepresentation in the application after the two-year contestability period unless the misrepresentation was:
+
+Material to the risk; and
+Intentionally made
+The specific requirement that a misrepresentation be intentional to void a life insurance claim after the contestability period led some insurance companies to believe a misrepresentation during the contestability period only had to be material to the risk in order to deny a life insurance claim.
+
+The Texas Supreme Court recently clarified the issue of an applicant’s intent when misrepresentations are made in life insurance applications in an opinion published on April 28, 2023:
+
+“Adhering to our precedent, we therefore hold that insurers must plead and prove intent to deceive to avoid contractual liability based on a misrepresentation in an application for life insurance, whether the policy is contestable or not.”
+
+ Thus, a life insurance claim cannot be denied at any time for a misrepresentation in the insurance application unless it can be proven the misrepresentation was made with the intent to deceive the insurance company into issuing the policy.
+
+Typical Exclusions of Coverage in Life Insurance Policies
+Texas law allows life insurance companies to settle life insurance claims for less than the face amount of the policy when a policyholder’s death occurs in any of the following ways:
+
+By suicide during the contestability period
+Engaging in a hazardous occupation
+Engaging in aviation activities
+The occupations which are considered hazardous and the prohibited aviation activities must be explicitly stated in the policy.
+
+How to Challenge an Insurance Company when a Life Insurance Claim is Denied
+When a life insurance claim is made, it means someone has died, and often family members are still struggling with their loss when they receive the claim denial. The insurance company’s actions can cause additional suffering during an already difficult time. The beneficiaries can usually appeal the insurance company’s decision but will have to provide additional evidence to get the insurance company to change its position.
+
+Insurance companies are required to provide written reasons for denying coverage. If the reason for the denial is non-payment of premiums, the insurance company likely has the right to deny coverage. Similarly, if the cause of death is excluded by the policy terms, the insurance company may have a valid reason for rejecting the claim. Challenging these denials requires a detailed investigation into the circumstances and the help of an experience life insurance claims denial lawyer.
+
+Claiming the policyholder misrepresented information in the insurance application is a common reason given by life insurance companies when denying a claim. But in order to avoid paying a life insurance claim, the misrepresentation must be both material (related to the risk being underwritten) and intentional (wanting the insurance company to rely on the false information).
+
+Proving the mental state of someone who is unavailable to question can be difficult for an insurance company, and the evidence must be compelling for a court to rule in favor of denying payment of life insurance benefits.
+
+Courts and juries don’t like insurance companies trying to get out of paying covered claims. Unless the misrepresented information would have caused the insurance company to decline the risk in the first place, a life insurance benefit will likely be payable less any additional premium that would have been charged if the insurer had accurate information when assessing the risk.
+
+Don’t Risk Losing Life Insurance Benefits
+Life insurance proceeds are often needed to provide for surviving family members. Delays and denials by insurance companies can cause unnecessary hardships and may indicate an insurance company acted in bad faith.
+
+A Houston insurance litigation attorney whose practice is to help beneficiaries who have had life insurance claims denied knows how to investigate the reasons given for denial and get the information necessary to persuade an insurance company to pay a legitimate life insurance claim without further delay. Contact us today and find out how Berg Plummer Johnson & Raval, LLP can help with your denied life insurance claim.
     `,
 },
 
 {
-    TITLE: "Addressing High Turnover: Low-Cost Strategies for Improving Employee Experience and Retention",
-    LINK: "https://www.futuresolve.com/addressing-high-turnover-low-cost-strategies-for-improving-employee-experience-and-retention/",
+    TITLE: "Can Insurance Companies Deny Cancer Treatment?",
+    LINK: "https://ravaltriallaw.com/deny-cancer-treatment/",
 
     CONTENT: `
-    High turnover rates can be detrimental to any organization, leading to decreased productivity, increased recruitment costs, and a negative impact on employee morale. However, addressing turnover doesn’t always require a substantial financial investment. By focusing on strategic adjustments to key areas such as employee experience, hiring, onboarding, training, management leadership, and more, businesses can effectively reduce turnover rates without breaking the bank. In this blog, we’ll explore low-cost strategies to tackle high turnover and foster a more engaged and loyal workforce.
+    The answer to the question of “Can insurance companies deny cancer treatment?” is often different from the answer to the question of “Do insurance companies deny cancer treatment?”
 
-    1. Conduct an Employee Experience Review:
-    Start by understanding the factors contributing to high turnover through an in-depth review of the employee experience. Utilize surveys, focus groups, and one-on-one interviews to gather feedback from current and former employees. Identify pain points, such as lack of career development opportunities, poor work-life balance, or ineffective communication channels.
+    Although federal law often prohibits insurance companies from denying certain vital cancer treatments, patients are often forced to fight for coverage. In some cases, patients may even end up paying for the necessary treatment out of their own pockets because they cannot afford to lose time waiting to receive an insurer’s authorization before beginning treatment. Some patients may be forced to take legal action against their insurance company to get the vital coverage they need. One of the most common reasons why cancer patients must fight insurance companies is that they have been denied coverage for proton beam therapy treatment.
     
-    2. Streamline the Hiring Process:
-    Simplify and streamline the hiring process to attract and retain top talent. Optimize job descriptions to accurately reflect the role and expectations. Utilize cost-effective recruitment channels such as social media, employee referrals, and job boards. Implement efficient screening and interviewing techniques to identify candidates who align with your organization’s culture and values.
+    Federal Law Places Requirements on Health Insurance Companies
+    The Affordable Care Act made numerous changes in the law that governs how and when insurance companies must cover illnesses like cancer. Health insurance providers are no longer able to deny coverage on account of pre-existing conditions, nor can they impose yearly or lifetime caps on the amount of coverage that they provide. Insurance plans must cover essential health benefits that include cancer treatments.
     
-    3. Enhance Onboarding Programs:
-    Invest in robust onboarding programs to set new hires up for success from day one. Provide comprehensive orientation sessions to familiarize employees with company policies, procedures, and culture. Assign mentors or buddies to support new hires during their transition period. Encourage open communication and feedback to address any concerns or challenges early on.
+    In practice, insurance companies push the limits as far as they can to save themselves money. It is, unfortunately, all too common for patients to either have to fight to get the coverage they need or have it denied altogether.
     
-    4. Prioritize Ongoing Training and Development:
-    Offer continuous learning and development opportunities to help employees grow and advance within the organization. Implement cost-effective training initiatives such as online courses, webinars, cross-functional projects, and peer-to-peer learning. Empower employees to acquire new skills and competencies that align with their career aspirations and organizational goals.
+    Health Insurance Companies Have Often Flouted the Law
+    A relatively recent survey by the Texas Medical Association revealed that roughly one in every four people have had coverage for treatment prescribed by their doctor denied by an insurance company, notwithstanding the requirements of the Affordable Care Act. This includes people who have critically needed life-saving cancer treatment. Some patients’ conditions grew worse after having been denied the treatment or taking the time to fight the denial of coverage.
     
-    5. Foster Effective Management Leadership:
-    Effective leadership plays a crucial role in employee engagement and retention. Provide leadership training and coaching to managers to enhance their communication, coaching, and conflict resolution skills. Encourage managers to build strong relationships with their team members, provide regular feedback, and recognize and reward achievements.
+    Insurance companies give many reasons for their denial of coverage of certain medical treatments to save themselves money at the expense of cancer patients, including:
     
-    6. Promote Work-Life Balance:
-    Promote a healthy work-life balance to prevent burnout and improve employee satisfaction. Encourage flexible work arrangements, such as remote work options, flexible hours, and compressed workweeks. Provide access to wellness programs, employee assistance resources, and stress management workshops. Demonstrate a commitment to employee well-being by fostering a supportive and inclusive work environment.
+    The cancer treatment is medically unnecessary
+    The treatment is experimental in nature
+    The specific provider of the treatment is out of the insurer’s network
+    To insurance companies, it does not matter that a doctor has recommended a treatment or that it may save the patient’s life. All that matters is that a cancer treatment may be expensive and will hurt the insurance company’s bottom line. Patients are already facing a tough battle in their fight against cancer. Unfortunately, they may also be forced to fight another battle: getting their insurance company to authorize payment for the treatment of that cancer.
     
-    7. Implement Employee Recognition Programs:
-    Recognize and appreciate employees for their contributions and achievements through cost-effective recognition programs. Celebrate milestones, such as work anniversaries, project completions, and exceptional performance. Implement peer-to-peer recognition platforms or suggestion boxes to empower employees to acknowledge their colleagues’ efforts.
+    Cancer treatments such as proton beam therapy are prescribed out of medical necessity. Presumably, they would meet the requirements for coverage under the Affordable Care Act. In a dispute with your insurer, the burden of proof may shift to you to prove that proton beam therapy is both a recognized treatment and medically necessary. Even if you can prove both with ease, you can still expect a fight on your hands.
     
-    8. Solicit and Act on Feedback:
-    Create avenues for employees to voice their opinions, concerns, and suggestions for improvement. Conduct regular pulse surveys to gauge employee sentiment and identify areas for enhancement. Actively listen to feedback and take tangible steps to address issues and implement solutions. Communicate transparently with employees about the actions being taken based on their input.
+    You Can Contest the Insurance Company’s Denial of Your Cancer Treatment
+    Under the law, you have a right to challenge the denial of cancer treatments. Unfortunately, the appeals process takes time, and time may not be on your side when you are undergoing treatment for cancer. Nonetheless, you owe it to yourself and your family to fight as hard as you can for all the necessary and required treatments. Before filing your appeal, you should closely review the exact language of your health insurance policy because recent changes to federal law allow for policies that are less comprehensive in nature. In addition, you can and should consult an insurance coverage lawyer during the administrative appeals process.
     
-    In conclusion, reducing high turnover rates doesn’t always require significant financial investments. By strategically addressing key areas such as employee experience, hiring, onboarding, training, management leadership, and work-life balance, organizations can improve employee retention and create a more engaged and committed workforce. By prioritizing employee satisfaction and investing in their growth and development, businesses can cultivate a positive organizational culture that fosters loyalty and longevity.
+    Before you appeal your insurer’s decision to deny your cancer treatment, you should take several steps that can increase your chances of success, including:
+    Gathering documentation that conclusively shows that the treatment is medically necessary
+    Compiling additional medical records that detail your medical history and the prior course(s) of your treatment(s)
+    Contacting your medical providers to help obtain supportive evidence of medical necessity
+    Consulting with an insurance lawyer who can advise you on the appeals process
+    Insurance companies are required to offer an internal appeals process wherein you can contest the denial of benefits. However, without legal representation, the internal appeals process can become  a rubber stamp of the initial decision that was made. Insurance companies rarely take an objective look at their own decisions, even though there may be legal consequences for decisions that violate the law.
+    
+    You Can Take Your Case to Court if Necessary
+    There is an additional external check on the conduct of insurance companies. You can always take your insurance company to court and file a lawsuit to compel it to cover your cancer treatment. In the meantime, you would need to retain legal counsel and go through the entire court process and win your case. A court would provide an objective review of whether your cancer treatment would be required under federal law.
+    
+    In addition, state law also serves as a constraint on an insurance company’s behavior. If the insurance company has unreasonably denied your coverage, it could be subject to a bad faith lawsuit. Further, if there are many people who have had the same treatment denied, a class action lawsuit against the insurance company may even be possible. For example, Aetna recently settled a class action lawsuit alleging that it wrongfully denied cancer treatments. A class of 142 patients who were wrongfully denied proton beam therapy treatments received a total of $3.4 million.
+    
+    In another case, a judge lambasted United Healthcare for its “immoral and barbaric” conduct in denying coverage for proton beam therapy treatment. The judge, who was himself a cancer survivor, stated that “it is undisputed among legitimate medical experts that proton radiation therapy is not experimental and causes much less collateral damage than traditional radiation.”
+    
+    You can and should fight back when your insurance company has wrongfully denied your cancer treatment. Not only can you legally force it to cover your treatment, but you may win additional damages in court. Also, fighting back could lead to negative news headlines for insurance companies and cause them public relations and reputational nightmares. An experienced insurance claims denial attorney knows how to leverage the court of public opinion to help support your legal battle against your health insurance company.
     `
 },
 
 {
-    TITLE: "10 Essential Cyber Resilience Strategies to Safeguard Your Business",
-    LINK: "https://techgenies.com/essential-cyber-resilience-strategies-to-safeguard-your-business/",
+    TITLE: "Why Government Plans Are Exempt From ERISA",
+    LINK: "https://ravaltriallaw.com/why-government-plans-are-exempt-from-erisa/",
 
     CONTENT: `
-    In an increasingly interconnected world, businesses face a myriad of cyber threats that can disrupt operations, compromise sensitive data, and undermine customer trust. However, amidst these challenges lies an opportunity for organizations to bolster their defenses and emerge stronger than ever.
+    If you have been denied benefits provided through an employer-sponsored plan, your claim will generally fall under the Employee Retirement Income Security Act (ERISA). ERISA is a federal law that governs most employee benefit plans. While ERISA was originally enacted to safeguard employees’ retirement and pension benefits, its reach and scope has been expanded over the years.
 
-    By embracing the concept of cyber resilience and implementing effective strategies, businesses can proactively navigate the ever-evolving threat landscape, mitigate risks, and swiftly recover from cyber incidents. But, to understand the importance of these strategies, we must first understand what cyber resilience is and what common cyber threats businesses face today.
+But not all employee benefit plans fall under ERISA. When Congress crafted ERISA, it wanted to reduce abuses in the system for private employee pensions. However, it decided that state and local governments should be free to decide the best way to protect their employees. This became an established part of the law. Under ERISA, a government plan means any plan “established or maintained” by the federal government, a state government or political subdivision, or by any agency or instrumentality of any of the foregoing. 29 U.S.C. §1002(32). Courts have defined “established” to include plans created under a collective bargaining agreement between a government unit and a union.
+
+This means that employees who fall under the government plan exemption are not subject to ERISA. There are many reasons why it is beneficial to get out from ERISA’s reach. Like other states, Texas has laws governing life, accidental death, disability, and health insurance that are more fair to insurance claimants and allow them to sue an insurance company for breach of contract, insurance bad faith, and punitive damages. Emotional distress damages and other damages caused by insurance company’s bad faith may be recoverable under Texas law but are not recoverable in ERISA cases.
+
+Determining whether a matter is governed by ERISA can be a complex process, but this is one factor to keep in mind when a plan may be established or maintained by the government. If you have been denied ERISA benefits, a Houston ERISA attorney at Berg Plummer Johnson & Raval, LLP can help you file a case and recover the compensation you deserve. For more information on filing an ERISA claim, call our firm today at (713) 526-0200 or contact us online to schedule a consultation. Our lawyers offer unique, cost-effective fee arrangements and will fight for your rights throughout the entire duration of your case.
+    `
+},
+
+{
+    TITLE: "The Mental Health Parity Act Explained And Why It Matters",
+    LINK: "https://ravaltriallaw.com/why-government-plans-are-exempt-from-erisa/",
+
+    CONTENT: `
+    Mental illness affects a significant number of Americans, and many of them are not able to get the treatment they need. Even when health plans cover mental health benefits, they can be harder to access and less comprehensive than other types of health benefits.
+
+    The Mental Health Parity Act (MHPA) of 1996 was the original legislative attempt to force providers of group health insurance for employees to furnish the same levels of coverage for mental health benefits as were provided for medical / surgical (M/S) benefits.
     
-    Understanding Cyber Resilience
-    Cyber resilience is an organization’s capacity to anticipate, withstand, respond to, and recover from cyber threats while maintaining its critical information assets’ confidentiality, integrity, and availability. It goes beyond traditional cybersecurity measures, primarily focusing on prevention and defense. Cyber resilience emphasizes the ability to adapt, recover, and continue operating in the face of cyber-attacks and incidents.
+    Prior to the enactment of the MHPA, health benefit providers had been slow to recognize that mental health disorders were as important in terms of needing effective treatment as physical health conditions. Federal legislation over the years has expanded the scope of the MHPA to press health benefit providers to make mental health treatment as accessible as other health benefits.
     
-    The importance of cyber resilience cannot be overstated in today’s digital landscape. Cyber-attacks have become more sophisticated and prevalent, with organizations of all sizes and industries falling victim to breaches and disruptions. The consequences of such incidents extend far beyond financial losses, often resulting in reputational damage, legal liabilities, and loss of customer trust. By embracing cyber resilience, businesses can minimize the impact of cyber incidents, ensure business continuity, and safeguard their competitive edge.
+    Though improvements in access to mental health treatment are being made, parity with access to M/S benefits has not been achieved, and legislative efforts to enforce compliance by health benefit plan providers continue.
     
-    Common Types of Cyber Attacks
-    Common cyber attacks
+    Mental Illness and Substance Use in America
+    According to the Substance Abuse and Mental Health Services Administration (SAMHSA) annual survey on mental illness and substance use levels, one in four adults – over 83 million Americans – had a mental illness. More than 12 million adults had serious thoughts of suicide, and 1.7 million attempted to take their lives.
     
-    To truly understand the significance of cyber resilience, we must familiarize ourselves with the common types of cyber-attacks that organizations face. These attacks are constantly evolving and becoming more sophisticated, making it crucial for businesses to stay ahead of the curve.
+    Over 46 million people ages 12 and above met the criteria for having a substance use disorder, with 30 million people classified as having an alcohol use disorder and 24 million people classified as having a drug use disorder. The highest incidence of substance use disorder was among young adults ages 18 to 25.
     
-    Phishing Attacks:
-    Phishing attacks involve fraudulent emails, messages, or websites that trick individuals into revealing sensitive information, such as login credentials or financial details. These attacks often rely on social engineering tactics and exploit human vulnerabilities.
-    Malware Attacks:
-    Malware refers to malicious software designed to disrupt, damage, or gain unauthorized access to computer systems. It includes viruses, ransomware, spyware, and trojans. Malware can enter systems through various vectors, such as email attachments, infected websites, or removable media.
-    Denial-of-Service (DoS) Attacks:
-    Denial-of-Service attacks overload a system or network, making it unavailable to users. Attackers flood the target with a high volume of traffic or requests, causing disruptions in service and impacting business operations.
-    Social Engineering Attacks:
-    Social engineering attacks exploit human psychology to manipulate individuals into divulging sensitive information or performing actions that compromise security. This can include tactics like impersonation, pretexting, or baiting.
-    Insider Threats:
-    Insider threats involve malicious actions or negligence by individuals within an organization who have authorized access to systems and data. They can intentionally or unintentionally cause harm to the organization’s security by leaking sensitive information or misusing their privileges.
-    Advanced Persistent Threats (APTs):
-    APTs are sophisticated, targeted attacks that involve a prolonged and stealthy presence within a network, aimed at extracting valuable information or conducting espionage. APTs are highly coordinated and often backed by well-resourced threat actors.
-    10 Essential Strategies for Cyber Resilience
-    Strategies for Cyber Resilience
-    To build a strong cyber resilience plan, businesses must adopt and implement various strategies. These strategies work in tandem to create a layered defense system that addresses vulnerabilities, detects threats, and enables swift response and recovery. Here are some essential strategies to consider:
+    The Mental Health Parity and Addiction Equity Act (MHPAEA)
+    The MHPAEA (Parity Law) was passed in 2008 and added addiction diseases to the mental health parity requirement. The Parity Law requires group health coverage providers to make financial requirements and treatment limitations no more restrictive for mental health or substance use disorders (MH / SUD) than for other medical and surgical benefits.
     
-    1. Develop a Comprehensive Security Framework:
-    Establish a robust security framework encompassing preventive measures, detection capabilities, and incident response protocols. This includes implementing firewalls, antivirus software, and intrusion detection systems to protect your network. Conduct regular vulnerability assessments and penetration testing to identify and address potential weaknesses.
+    The Affordable Care Act (ACA)
+    Effective in 2014, the ACA expanded the reach of mental health and substance use disorder parity to small group and individual health plan providers and made MH / SUD coverage mandatory as an essential health benefit under the affected plans.
+
+    Latest Developments in Mental Health Parity Law
+    Recognizing how much work still remains to achieve mental health parity, the Department of Labor, along with HHS and the Treasury Department, have proposed a rule designed to make parity a reality for more people seeking MH / SUD services.
     
-    2. Educate and Train Your Employees:
-    Human error remains one of the biggest vulnerabilities in cybersecurity. Educate your employees about best practices for data protection, such as creating strong passwords, identifying phishing attempts, and practicing safe browsing habits. Conduct regular training sessions to update your workforce on emerging threats and provide them with the necessary skills to contribute to your organization’s cyber resilience.
+    The proposed rule would require group health plan providers to present actual data showing how a person’s access to treatment is affected by the limitations placed on benefits. Attention will focus on how provider networks are constructed and whether they promote access to benefits.
     
-    3. Implement Secure Backup and Recovery Solutions:
-    Regularly back up your critical data and systems to secure offsite locations or cloud-based platforms. Ensure your backup solutions are periodically tested and easily accessible to facilitate swift data recovery during a cyber incident. A reliable backup system is crucial for minimizing downtime and maintaining business continuity.
+    The rule would also change how NQTL criteria are analyzed for purposes of compliance and set forth required content elements for analysis.
     
-    4. Enforce Access Controls and Privilege Management:
-    Implement strict access controls to limit user privileges and grant access only to authorized personnel. Implement multi-factor authentication and strong password policies to enhance security. Regularly review and update user permissions to ensure employees have access rights based on their roles and responsibilities.
+    Parity in Texas
+    Under the Texas Administrative Code, a health benefit plan that provides both M / S and MH / SUD benefits must comply with the following regarding lifetime aggregate or annual dollar limit restrictions:
     
-    5. Continuously Monitor and Detect Threats:
-    Deploy advanced real-time threat detection and monitoring tools to identify potential cyber threats. Implement security information and event management (SIEM) systems that provide comprehensive visibility into your network, enabling you to promptly detect and respond to incidents. Monitor network traffic, system logs, and user activities to identify suspicious behavior or anomalies that may indicate a cyber-attack.
+    If there are no limits or limits on less than one-third of the medical/surgical benefits, there can be no limits on MH / SUD benefits.
+    If there are limits on at least two-thirds of M / S benefits, they must be applied in a way that does not distinguish mental health / substance use disorders, or there must not be a more restrictive limit on MH / SUD benefits.
+    Non-quantitative treatment limitations imposed on MH / SUD benefits must be similar to and applied no more stringently than NQTL applied to M / S benefits.
     
-    6. Develop an Incident Response Plan:
-    Prepare and document a detailed incident response plan that outlines the steps to be taken during a cyber incident. Assign clear roles and responsibilities to team members and establish communication channels for efficient coordination. Regularly test and update your incident response plan to ensure its effectiveness and alignment with the evolving threat landscape.
+    What You Can Do if a Parity Violation is Suspected with Regard to MH / SUD Benefits
+    Under current federal and state laws, many but not all health benefit plans are required to provide MH / SUD benefits. If your health plan has benefits for MH / SUD, they must be as easy to access as your other medical benefits. Any limitations on mental health benefits can be no more restrictive than the limitations on M / S benefits.
     
-    7. Regularly Update and Patch Systems:
-    Keep your software, applications, and operating systems updated with the latest security patches and updates. Cyber attackers often exploit vulnerabilities in outdated software. Implement a patch management process to ensure timely updates across your IT infrastructure, reducing the risk of exploitation.
-    
-    8. Conduct Regular Vulnerability Assessments:
-    Perform regular vulnerability assessments to identify and remediate potential weaknesses in your systems. Use automated scanning tools or engage the services of cybersecurity professionals to conduct comprehensive inspections. Address identified vulnerabilities promptly to minimize the risk of exploitation by attackers.
-    
-    9. Implement Strong Password Policies and Multi-Factor Authentication:
-    Require employees to use strong, unique passwords for all their accounts. Encourage the use of password managers to store and generate secure passwords. Additionally, enable multi-factor authentication (MFA) wherever possible, adding an extra layer of protection by requiring users to provide additional verification beyond their passwords.
-    
-    10. Engage in Threat Intelligence and Information Sharing:
-    Stay informed about the latest cyber threats by actively engaging in threat intelligence and information-sharing initiatives. Collaborate with industry peers, government organizations, and cybersecurity communities to exchange threat intelligence and insights. This collective knowledge can help you identify emerging threats and enhance your cyber resilience strategies.
-    
-    By implementing these essential strategies, businesses can strengthen their cyber resilience, minimize vulnerabilities, and effectively respond to and recover from cyber incidents. Remember, cyber resilience is an ongoing effort that requires continuous evaluation, adaptation, and investment in the right resources to keep pace with evolving threats.
-    
-    Conclusion
-    By adopting a proactive approach to cyber resilience and implementing these essential strategies, businesses can fortify their defenses, minimize the impact of cyber-attacks, and ensure the continuity of their operations. The journey toward cyber resilience requires ongoing vigilance, adaptability, and investment in the right resources. Embrace the power of cyber resilience and secure your business’s future in an increasingly interconnected digital world.
+    If you’ve had an insurance claim for mental health or substance use treatment denied and you believe the treatment limitations violate parity requirements, Berg Plummer Johnson & Raval, LLP may be able to help you get compensation. Our Texas health insurance lawyers have decades of experience helping clients obtain the benefits they are entitled to. In Houston, contact Berg Plummer Johnson & Raval, LLP to discuss your health benefit plan and how to get your claim covered.
     `
 },
 
@@ -656,7 +613,7 @@ chatInfo = {
 
     `,
     IMAGE: "https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/image_2024-04-06_013307713.png?alt=media&token=bd6e6f2a-15d3-427f-bf4e-3506005391f8",
-    THEME: "#0C3963",
+    THEME: "#B35261",
     IS_CHAT_ON: false,
 },
 
