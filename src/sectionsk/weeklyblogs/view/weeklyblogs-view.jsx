@@ -289,15 +289,16 @@ export default function BlogView() {
           'Content-Type': 'application/json'
       };
 
-      let counter = 0; let data;
-      while (counter < 2) {
-        // eslint-disable-next-line no-await-in-loop
-        data = await fetch(url, { method: 'POST', headers, body: payload })
-          .then(response => response.json())
-          .catch(error => console.error('Error:', error));
-        if (data.tasks[0].result[0].items[0].source_url !== undefined) {break;} else {console.log('rerunn img')};
+      let counter = 0; let data = null; let tempUrl; let rIndex = 0;
+      // eslint-disable-next-line no-await-in-loop
+      data = await fetch(url, { method: 'POST', headers, body: payload })
+      .then(response => response.json())
+      .catch(error => console.error('Error:', error));      
+      while (counter < 3) {
+        if (data.tasks[0].result[0].items[rIndex].source_url === undefined) {rIndex = Math.floor(Math.random() * 3); console.log('rerunn serp img, undefined: ', data.tasks[0].result[0].items[rIndex].source_url, 'img desc: ', description);} else {tempUrl = data.tasks[0].result[0].items[rIndex].source_url; console.log('img not undefined: ', tempUrl, 'img desc: ', description); break;};
       counter += 1; }
-      if (data) {resultImg = `<img src="${data.tasks[0].result[0].items[0].source_url}" alt="${description}" style="max-width: 600px;" />`;}
+
+      resultImg = `<img src="${tempUrl}" alt="${description}"/>`;
 
       return resultImg;
     };

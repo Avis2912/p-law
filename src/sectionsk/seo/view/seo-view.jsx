@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Editor, EditorState } from 'draft-js';
+import React, { useState, useEffect, useMemo } from 'react';
+import { Editor, EditorState, ContentState } from 'draft-js';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // import styles
 import Anthropic from '@anthropic-ai/sdk';
@@ -12,6 +12,12 @@ import { db, auth } from 'src/firebase-config/firebase';
 import Button from '@mui/material/Button';
 import { Card, TextField, ListItem, ListItemText } from '@mui/material';
 import { css, keyframes } from '@emotion/react';
+
+import { createEditor } from 'slate';
+import { Slate, Editable, withReact } from 'slate-react';
+import { withHistory } from "slate-history";
+
+
 
 const isImagesOn = true;
 const modelKeys = {
@@ -70,6 +76,44 @@ export default function ProductsView() {
   // else if (isBrowseWeb) { boxHeight = 'calc(80% - 125px)';} 
   else { boxHeight = 'calc(80% - 55px)'; }
   const boxWidth = 'calc(100%)';
+
+  const editor = useMemo(() => withHistory(withReact(createEditor())), []);
+  const [value, setValue] = useState([
+    {
+      type: "paragraph",
+      children: [
+        { text: "This is editable " },
+        { text: "rich", bold: true },
+        { text: " text, " },
+        { text: "much", italic: true },
+        { text: " better than a " },
+        { text: "<textarea>", code: true },
+        { text: "!" }
+      ]
+    },
+    {
+      type: "paragraph",
+      children: [
+        {
+          text:
+            "Since it's rich text, you can do things like turn a selection of text "
+        },
+        { text: "bold", bold: true },
+        {
+          text:
+            ", or add a semantically rendered block quote in the middle of the page, like this:"
+        }
+      ]
+    },
+    {
+      type: "block-quote",
+      children: [{ text: "A wise quote." }]
+    },
+    {
+      type: "paragraph",
+      children: [{ text: "Try it out for yourself!" }]
+    }
+  ]);
 
   const [dots, setDots] = useState('');
   useEffect(() => {
@@ -351,8 +395,8 @@ export default function ProductsView() {
       let resultImg = null;
       const h1Title = (imagelessText.match(/<h1>(.*?)<\/h1>/) || [])[1]; const formattedDate = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
       const timeToRead = Math.ceil(imagelessText.split(' ').length / 200);
-      const firmSite = new URL(contactUsLink).hostname.replace(/^www\./, '');
-      
+      let firmSite = ''; try {firmSite = new URL(contactUsLink).hostname.replace(/^www\./, '');} catch (e) {console.error(e);}      
+
       await fetch('https://api.templated.io/v1/render', {
         method: 'POST',
         body: JSON.stringify({
@@ -413,17 +457,17 @@ export default function ProductsView() {
           'Content-Type': 'application/json'
       };
 
-      let counter = 0; let data;
-      while (counter < 2) {
-        // eslint-disable-next-line no-await-in-loop
-        data = await fetch(url, { method: 'POST', headers, body: payload })
-          .then(response => response.json())
-          .catch(error => console.error('Error:', error));
-        if (data.tasks[0].result[0].items[0].source_url !== undefined) {break;} else {console.log('rerunn img')};
+      let counter = 0; let data = null; let tempUrl; let rIndex = 0;
+      // eslint-disable-next-line no-await-in-loop
+      data = await fetch(url, { method: 'POST', headers, body: payload })
+      .then(response => response.json())
+      .catch(error => console.error('Error:', error));      
+      while (counter < 3) {
+        if (data.tasks[0].result[0].items[rIndex].source_url === undefined) {rIndex = Math.floor(Math.random() * 3); console.log('rerunn serp img, undefined: ', data.tasks[0].result[0].items[rIndex].source_url, 'img desc: ', description);} else {tempUrl = data.tasks[0].result[0].items[rIndex].source_url; console.log('img not undefined: ', tempUrl, 'img desc: ', description); break;};
       counter += 1; }
 
-      if (isFirst) {return fetchBrandImage(description, data.tasks[0].result[0].items[0].source_url);}
-      resultImg = `<img src="${data.tasks[0].result[0].items[0].source_url}" alt="${description}" style="max-width: 600px;" />`;
+      if (isFirst) {return fetchBrandImage(description, tempUrl);}
+      resultImg = `<img src="${tempUrl}" alt="${description}" style="max-width: 600px;" />`;
 
       return resultImg;
     };
@@ -536,8 +580,11 @@ export default function ProductsView() {
     .catch(err => {console.error(err); return err;});
     
   } return (claudeKeyPoints.text());
-}
+  }
 
+  const [editorState, setEditorState] = React.useState(() =>
+    EditorState.createWithContent(ContentState.createFromText('Hello'))
+);
 
   return (
     <Container sx={{backgroundColor: '', height: '100%', paddingBottom: '20px'}}>
@@ -743,6 +790,21 @@ export default function ProductsView() {
           // ...loadingAnimation
         }}
       />
+
+        {/* <div style={{
+      width: boxWidth,
+      height: boxHeight,
+      marginBottom: '58px',
+      padding: '15px',
+      border: '5px solid #ccc',
+      borderRadius: '0px',
+      backgroundColor: isGenerating ? 'white' : 'white',
+      opacity: '1',
+      fontFamily: 'serif', // Set font family to serif
+      transition: 'ease-in-out 0.3s',
+      }}>
+        <Editor editorState={editorState} onChange={setEditorState} />
+      </div> */}
 
       <Typography sx={{ position: 'absolute', fontSize: '14px', fontFamily: 'Arial', 
             top: '206.5px', right: '72.5px', letterSpacing: '-0.25px', fontWeight: '600' }}>

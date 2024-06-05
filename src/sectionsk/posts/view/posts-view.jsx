@@ -108,14 +108,13 @@ export default function BlogView() {
             - RESPONSE FORMAT: Always respond with a JSON-parsable array of 3 hashmaps, 
             EXAMPLE OUTPUT: "[{"platform": "${tempPlatform}", "content": "*Post Content*"}, {"platform": "${tempPlatform}", "content": "*Post Content*"}, {"platform": "${tempPlatform}", "content": "*Post Content*"}]". 
             ONLY OUTPUT THE ARRAY. NOTHING ELSE.
-            - POST FORMAT: Wrap titles in <h2> tags. Wrap EVERY paragraph in <p> tags.
-            - Be truly informative about a relevant topic, use points if necessary, and mention the firm at the end. Add hashtags in a new paragraph at the very end.
+            - POST FORMAT: Wrap titles in <h2> tags. Wrap EVERY paragraph in <p> tags. don't use list tags.
+            - Be truly informative about a relevant topic, and mention the firm at the end. Add hashtags in a new paragraph at the very end.
             ${tempPlatform === 'LinkedIn' && `
-            - PARAGRAPH COUNT: these posts should be 5-6 paragraphs long.
+            - PARAGRAPH COUNT: these posts should be 5-6 paragraphs long. 
             `}
             ${tempPlatform === 'Facebook' && `
             - PARAGRAPH COUNT: these posts should be 4-5 paragraphs long.
-            - POINTERS: only if applicable, use some same-line <b> tag points.
             `}
             ${tempPlatform === 'Instagram' && `
             - PARAGRAPH COUNT: these posts should be 1 paragraph long.
@@ -129,6 +128,8 @@ export default function BlogView() {
             ` }
           ] })
         });
+
+        // - POINTERS: only if applicable, use some same-line <b> titled points (don't use list tags). wrap each point in a p tag.
 
         // eslint-disable-next-line no-await-in-loop
         let gptResponse = (await response.text()); console.log(gptResponse);
@@ -394,18 +395,26 @@ export default function BlogView() {
           'Content-Type': 'application/json'
       };
 
-      let counter = 0; let data;
-      while (counter < 2) {
-        // eslint-disable-next-line no-await-in-loop
-        data = await fetch(url, { method: 'POST', headers, body: payload })
-          .then(response => response.json())
-          .catch(error => console.error('Error:', error));
-        if (data.tasks[0].result[0].items[0].source_url !== undefined) {break;}
-      counter += 1; }
-      if (data) {console.log(data.tasks[0].result[0].items[0].source_url);
-        if (data.tasks[0].result[0].items[0].source_url === undefined) {console.log('YUP UNDEFINED')};
-        if (data.tasks[0].result[0].items[0].source_url.toString() === 'undefined') {console.log('YUP UNDEFINED 1')};
-        resultImg = justUrl ? `${data.tasks[0].result[0].items[0].source_url}` : `<image src="${data.tasks[0].result[0].items[0].source_url}" alt="${description}" />`;}
+      let counter = 0; let data = null; let tempUrl; let rIndex = 0;
+      // eslint-disable-next-line no-await-in-loop
+      data = await fetch(url, { method: 'POST', headers, body: payload })
+      .then(response => response.json())
+      .catch(error => console.error('Error:', error));
+      while (counter < 3) {
+        if (data.tasks[0].result[0].items[rIndex].source_url === undefined) {
+          rIndex = Math.floor(Math.random() * 3);
+          console.log('rerunn serp img, undefined: ', data.tasks[0].result[0].items[rIndex].source_url, 'img desc: ', description);
+        } else {
+          tempUrl = data.tasks[0].result[0].items[rIndex].source_url;
+          console.log('img not undefined: ', tempUrl, 'img desc: ', description);
+          break;
+        }
+        counter += 1;
+      }
+
+      resultImg = justUrl ? `${tempUrl}` : `<img src="${tempUrl}" alt="${description}"/>`;
+
+
       return resultImg;
     };
 
