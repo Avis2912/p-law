@@ -20,19 +20,9 @@ import Dialog from '@mui/material/Dialog';
 
 import { users } from 'src/_mock/user';
 
+import PageTitle from 'src/routes/components/PageTitle';
 import Iconify from 'src/components/iconify';
-import Scrollbar from 'src/components/scrollbar';
 
-
-import { products } from 'src/_mock/products';
-
-
-import { encode } from 'draft-js/lib/DraftOffsetKey';
-import TableNoData from '../table-no-data';
-import UserTableRow from '../user-table-row';
-import UserTableHead from '../user-table-head';
-import TableEmptyRows from '../table-empty-rows';
-import UserTableToolbar from '../user-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
 
 
@@ -179,8 +169,7 @@ export default function UserPage() {
           {firmName} {!matches && <>| Review Us</>}
       </Typography>
 
-      {/* <Typography sx={{ fontFamily: "DM Serif Display", letterSpacing: '-0.5px', color: 'white',
-      fontWeight: 500, fontSize: '27.75px', textAlign: 'left'}}>Review Us</Typography> */}
+      <PageTitle title={`${firmName} ${!matches && <>| Review Us</>}`} />
 
       </Stack>
     </Card> 

@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { NotFoundView } from 'src/sectionsk/error';
+import NotFoundView from 'src/sectionsk/error/not-found-view';
 import { auth } from 'src/firebase-config/firebase';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';

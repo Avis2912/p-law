@@ -19,6 +19,7 @@ import { bgGradient } from 'src/theme/css';
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
 
+import PageTitle from 'src/routes/components/PageTitle';
 import { db, auth, googleProvider } from 'src/firebase-config/firebase';
 import { createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 

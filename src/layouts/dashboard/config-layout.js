@@ -2,7 +2,8 @@
 
 export const HEADER = {
   H_MOBILE: 64,
-  H_DESKTOP: 70,
+  // DECIDES MARGIN TOP
+  H_DESKTOP: 42.5,
   H_DESKTOP_OFFSET: 80 - 16,
 };
 

@@ -15,6 +15,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { getDocs, getDoc, collection, doc, updateDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, getStorage } from 'firebase/storage'; // Import necessary Firebase Storage functions
 
+import PageTitle from 'src/routes/components/PageTitle';
 import Iconify from 'src/components/iconify';
 import PostCard from '../post-card';
 
@@ -235,10 +236,8 @@ export default function BlogView() {
       </Typography> </>}
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
-        <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, 
-      letterSpacing: '1.05px',  fontWeight: 800, fontSize: '32.75px'}}>         
-        {isSearchMode ? 'Search New Keywords' : 'Keywords Being Tracked'}
-        </Typography>
+        
+        <PageTitle title={isSearchMode ? 'Search New Keywords' : 'Keywords Being Tracked'} />
         
         <Stack direction="row" spacing={2}>
 

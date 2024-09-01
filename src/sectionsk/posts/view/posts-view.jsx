@@ -13,6 +13,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { getDocs, getDoc, collection, doc, updateDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, getStorage, uploadBytes } from 'firebase/storage';
 
+import PageTitle from 'src/routes/components/PageTitle';
 import Iconify from 'src/components/iconify';
 import PostCard from '../post-card';
 
@@ -682,6 +683,7 @@ export default function BlogView() {
       PaperProps={{ style: { minHeight: '650px', minWidth: '980px', display: 'flex', flexDirection: "row" } }}>
         <Card sx={{ width: '635px', height: '675px', backgroundColor: 'white', borderRadius: '0px',
         padding: '55px', pt: '40px', overflow: 'auto' }}>
+          
         <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, lineHeight: '55px', userSelect: 'none',
         letterSpacing: '-0.45px',  fontWeight: 800, fontSize: '40.75px', marginBottom: '25px'}}> 
         Brand Templates</Typography>

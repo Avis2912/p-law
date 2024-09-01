@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { ListsView } from 'src/sectionsk/competition/view';
+import ListsView from 'src/sectionsk/competition/view/competition-view';
 import { auth } from 'src/firebase-config/firebase';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';

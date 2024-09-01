@@ -17,12 +17,13 @@ import { createEditor } from 'slate';
 import { Slate, Editable, withReact } from 'slate-react';
 import { withHistory } from "slate-history";
 
-
+import PageTitle from 'src/routes/components/PageTitle';
+import { Page } from 'openai/pagination';
 
 const isImagesOn = true;
 const modelKeys = {
 1: 'claude-3-haiku-20240307',
-2: 'claude-3-sonnet-20240229',
+2: 'claude-3-5-sonnet-20240620',
 3: 'claude-3-opus-20240229'} 
 
 
@@ -72,9 +73,9 @@ export default function ProductsView() {
   const [sources, setSources] = useState([]);
 
   let boxHeight;
-  if (isReferenceGiven) { boxHeight = 'calc(80% - 200px)';} 
+  if (isReferenceGiven) { boxHeight = 'calc(80% - 225px)';} 
   // else if (isBrowseWeb) { boxHeight = 'calc(80% - 125px)';} 
-  else { boxHeight = 'calc(80% - 55px)'; }
+  else { boxHeight = 'calc(80% - 82.5px)'; }
   const boxWidth = 'calc(100%)';
 
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
@@ -594,10 +595,7 @@ export default function ProductsView() {
         <style>
         @import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap);
       </style>
-      <Typography sx={{ fontFamily: "DM Serif Display", mb: 2, 
-      letterSpacing: '1.05px',  fontWeight: 800, fontSize: '32.75px'}}>
-        Create Blog Post
-      </Typography>
+      <PageTitle title="Blog Generator" />
 
       <Stack direction="row" spacing={2} >
 
@@ -741,7 +739,7 @@ export default function ProductsView() {
 
     
       {isGenerating && (
-      <Stack direction="column" spacing={loadIndicator[0] === "Welcome Back!" ? 0.5 : 1.25} sx={{top: '382.5px', right: 'calc((100% - 285px)/2 - 160px)', position: 'absolute', 
+      <Stack direction="column" spacing={loadIndicator[0] === "Welcome Back!" ? 0.5 : 1.25} sx={{top: '352.5px', right: 'calc((100% - 285px)/2 - 160px)', position: 'absolute', 
       height: 'auto', width: '320px', backgroundColor: 'transparent', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
 
       <Typography sx={{ fontFamily: "DM Serif Display",
@@ -763,13 +761,14 @@ export default function ProductsView() {
       {currentMode !== "Alter Draft" && <TextField
        value={blogInstructions}
        onChange={(e) => setBlogInstructions(e.target.value)}
-       placeholder='Optional Instructions / Keywords'
+       placeholder='Instructions or Keywords [Optional]'
        sx={{width: '60%', transition: 'ease 0.3s'}} />}
        </Stack>
        
         <Button onClick={() => generateBlog()}
         variant="contained" color="inherit" 
-        sx={(theme) => ({height: '54px', width: '150px', backgroundColor: currentMode === "Generate" ? theme.palette.primary.navBg : theme.palette.primary.black})}>
+        sx={(theme) => ({height: '54px', width: '150px',
+        backgroundColor: currentMode === "Generat" ? theme.palette.primary.navBg : theme.palette.primary.black})}>
           {currentMode} ✨
         </Button>
         </Stack>

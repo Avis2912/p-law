@@ -1,6 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-
-import { SignUpView } from 'src/sectionsk/signup';
+import SignUpView from 'src/sectionsk/signup/signup-view';
 
 // ----------------------------------------------------------------------
 

@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { auth } from 'src/firebase-config/firebase';
-import { UserView } from 'src/sectionsk/reviews/view';
+import UserView from 'src/sectionsk/reviews/view/reviews-view';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 

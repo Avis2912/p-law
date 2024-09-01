@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { BlogView } from 'src/sectionsk/weeklyblogs/view';
+import BlogView from 'src/sectionsk/weeklyblogs/view/weeklyblogs-view';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { auth } from 'src/firebase-config/firebase'; // Import auth

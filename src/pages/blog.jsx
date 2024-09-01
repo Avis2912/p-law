@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { CreatorsView } from 'src/sectionsk/blog/view';
+import CreatorsView from 'src/sectionsk/blog/view/blog-view';
 import React, { useState, useEffect } from 'react';
 import { auth } from 'src/firebase-config/firebase';
 import { BrowserRouter as Router, Route, useNavigate } from 'react-router-dom';

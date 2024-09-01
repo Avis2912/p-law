@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { auth } from 'src/firebase-config/firebase';
-import { ConversationsView } from 'src/sectionsk/leads/view';
+import ConversationsView from 'src/sectionsk/leads/view/leads-view';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 

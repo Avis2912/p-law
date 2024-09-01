@@ -13,6 +13,7 @@ import { getDocs, getDoc, collection, doc, updateDoc } from 'firebase/firestore'
 import { getDownloadURL, ref, getStorage } from 'firebase/storage'; // Import necessary Firebase Storage functions
 import { useNavigate } from 'react-router-dom'; 
 
+import PageTitle from 'src/routes/components/PageTitle';
 import Iconify from 'src/components/iconify';
 import PostCard from '../weeklyblogs-card';
 
@@ -367,10 +368,8 @@ export default function BlogView() {
       </Typography> </>}
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
-        <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, 
-      letterSpacing: '1.05px',  fontWeight: 800, fontSize: '32.75px'}}>         
-        {isNewPost ? 'Create New Posts' : 'Weekly Blog Idea Drafts'}
-        </Typography>
+
+        <PageTitle title={`${isNewPost ? 'Create New Posts' : 'Weekly Blog Idea Drafts'}`} />    
         
         <Stack direction="row" spacing={2}>
         {isNewPost && (<>

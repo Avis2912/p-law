@@ -16,7 +16,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import Divider from '@mui/material/Divider';
 
 import { usePathname } from 'src/routes/hooks';
-import { RouterLink } from 'src/routes/components';
+import RouterLink from 'src/routes/components/router-link';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 import { useLocation } from 'react-router-dom';
@@ -179,6 +179,7 @@ export default function Nav({ openNav, onCloseNav }) {
         flexShrink: { lg: 0 },
         width: { lg: 1.00 * NAV.WIDTH },
         backgroundColor: 'primary.navBg',
+        position: 'relative',
       }}
     >
       {upLg ? (
@@ -188,7 +189,8 @@ export default function Nav({ openNav, onCloseNav }) {
             position: 'fixed',
             width: 0.955 * NAV.WIDTH,
             marginLeft: 0.00225 * NAV.WIDTH,
-            marginTop: 0.01495 * NAV.WIDTH,
+            marginTop: 0.00715 * NAV.WIDTH,
+            // marginTop: 0.01495 * NAV.WIDTH,
             // borderRight: (theme) => `dashed 0.5px ${theme.palette.divider}`,
           }}
         >

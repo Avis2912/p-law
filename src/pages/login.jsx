@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { LoginView } from 'src/sectionsk/login';
+import LoginView from 'src/sectionsk/login/login-view';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { auth } from 'src/firebase-config/firebase'; // Import auth

@@ -46,7 +46,8 @@ export default function Header({ onOpenNav }) {
   );
 
   return (
-    <AppBar
+    <>
+    {/* <AppBar
       sx={{
         boxShadow: 'none',
         height: HEADER.H_MOBILE,
@@ -74,7 +75,8 @@ export default function Header({ onOpenNav }) {
       >
         {renderContent}
       </Toolbar>
-    </AppBar>
+    </AppBar> */}
+    </>
   );
 }
 

@@ -11,7 +11,7 @@ import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 import { getDocs, getDoc, addDoc, collection, doc, updateDoc } from 'firebase/firestore';
 
-
+import PageTitle from 'src/routes/components/PageTitle';
 import AppTasks from '../app-tasks';
 import AppNewsUpdate from '../app-news-update';
 import AppOrderTimeline from '../app-order-timeline';
@@ -97,10 +97,8 @@ export default function AppView() {
       <style>
         @import url(https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Yeseva+One&display=swap);
       </style>
-      <Typography variant="h3" sx={{ mb: 5, fontWeight: 700,letterSpacing: '-0.02em', 
-        fontFamily: '"Yeseva One", sans-serif', color: '#272727'}}>
-        Hey {firmName}, Welcome Back 👋
-      </Typography>
+
+      <PageTitle title={`Hey ${firmName}, Welcome Back 👋`} />
 
       <Grid container spacing={3}>
         <Grid xs={12} sm={6} md={3}>

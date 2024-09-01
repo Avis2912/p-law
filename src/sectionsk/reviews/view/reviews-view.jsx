@@ -22,9 +22,8 @@ import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 
 import Confetti from 'react-confetti';
-import { products } from 'src/_mock/products';
 
-
+import PageTitle from 'src/routes/components/PageTitle';
 import { encode } from 'draft-js/lib/DraftOffsetKey';
 import TableNoData from '../table-no-data';
 import UserTableRow from '../user-table-row';
@@ -170,11 +169,12 @@ export default function UserPage() {
     <>
     <Container>
 
-    <Stack sx={{ mb: 3.25 }} justifyContent="space-between" direction="row" alignItems="center">
+    <Stack sx={{ mb: 1.5 }} justifyContent="space-between" direction="row" alignItems="center">
       <style>@import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap);</style>
-      <Typography sx={{ fontFamily: "DM Serif Display", letterSpacing: '1.05px',  fontWeight: 800, fontSize: '32.75px'}}> 
-        Invite Clients To Review</Typography>
-      <Stack direction="row" spacing={2}>
+      
+      <PageTitle title="Invite Clients To Review"/>
+
+      <Stack direction="row" spacing={2} mb={1.5}>
       <Button target="_blank" href="https://tally.so/r/mBxLkR" variant="contained" startIcon={<Iconify icon="streamline:business-card-solid" sx={{height: '18.5px'}}/>}
       sx={(theme)=>({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: theme.palette.primary.navBg, }})} >
        Request Platform</Button> 
@@ -186,7 +186,9 @@ export default function UserPage() {
         How It Works
       </Button>
       {confetti && <Confetti />}
-      </Stack> </Stack>
+      </Stack> 
+      
+      </Stack>
 
     <Stack direction="column" spacing={2.25}>
 

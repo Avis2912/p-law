@@ -15,6 +15,7 @@ import { db, auth } from 'src/firebase-config/firebase';
 import Button from '@mui/material/Button';
 import { Card, TextField } from '@mui/material';
 import { css, keyframes } from '@emotion/react';
+import PageTitle from 'src/routes/components/PageTitle';
 
 
 const isImagesOn = true;
@@ -380,10 +381,9 @@ export default function ProductsView() {
       <style>
         @import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap);
       </style>
-      <Typography sx={{ fontFamily: "DM Serif Display", mb: 2, 
-      letterSpacing: '1.05px',  fontWeight: 800, fontSize: '32.75px'}}>
-        Edit Blog Post Draft
-      </Typography>
+
+      <PageTitle title="Edit Blog Post" />
+
 
       <Stack direction="row" spacing={2} >
 
