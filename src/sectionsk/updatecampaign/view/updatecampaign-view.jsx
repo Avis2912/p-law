@@ -23,7 +23,7 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box'
 
 import Iconify from 'src/components/iconify';
-
+import PageTitle from 'src/components/PageTitle';
 import PostCard from '../post-card';
 import PostSearch from '../post-search';
 

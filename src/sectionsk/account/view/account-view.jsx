@@ -17,7 +17,7 @@ import { getDocs, getDoc, collection, doc, updateDoc } from 'firebase/firestore'
 import { getDownloadURL, ref, getStorage, deleteObject, uploadString } from 'firebase/storage'; // Import necessary Firebase Storage functions
 import { List, ListItem, ListItemText } from '@mui/material';
 
-import PageTitle from 'src/routes/components/PageTitle';
+import PageTitle from 'src/components/PageTitle';
 import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
@@ -153,7 +153,7 @@ const saveChanges = async () => {
     
     <Container>
       
-      <Stack className='heading' direction="row" alignItems="center" justifyContent="space-between" mb={2.5}>
+      <Stack className='heading' direction="row" alignItems="center" justifyContent="space-between" mb={1.5}>
       
       <style>
           @import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap);
@@ -162,7 +162,7 @@ const saveChanges = async () => {
       <PageTitle title="My Account" />
 
       <Button onClick={() => saveChanges()}
-      sx={{ marginLeft:'40px' }} variant="contained" color="inherit">
+      sx={{ marginLeft:'40px', mb: 2, }} variant="contained" color="inherit">
       🎉 Save Changes
       </Button>
 

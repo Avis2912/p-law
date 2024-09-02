@@ -17,8 +17,10 @@ import { createEditor } from 'slate';
 import { Slate, Editable, withReact } from 'slate-react';
 import { withHistory } from "slate-history";
 
-import PageTitle from 'src/routes/components/PageTitle';
+import BlogEditor from 'src/components/Editor';
+import PageTitle from 'src/components/PageTitle';
 import { Page } from 'openai/pagination';
+import 'src/components/Editor.css';
 
 const isImagesOn = true;
 const modelKeys = {
@@ -26,12 +28,31 @@ const modelKeys = {
 2: 'claude-3-5-sonnet-20240620',
 3: 'claude-3-opus-20240229'} 
 
+// import "react-quill/dist/quill.snow.css"; // import styles
 
 // ----------------------------------------------------------------------
 
 export default function ProductsView() {
 
-  const [text, setText] = useState(``);
+const Font = ReactQuill.Quill.import("formats/font");
+Font.whitelist = ["serif", "arial", "courier", "comic-sans"]; // Add more fonts here
+ReactQuill.Quill.register(Font, true);
+
+const Size = ReactQuill.Quill.import("formats/size");
+Size.whitelist = ["small", "medium", "large", "huge"]; // Add more sizes here
+ReactQuill.Quill.register(Size, true);
+
+const modules = {
+  toolbar: [
+    [{ font: Font.whitelist }],
+    [{ size: Size.whitelist }],
+    ["bold", "italic", "underline"],
+    [{ list: "ordered" }, { list: "bullet" }],
+    ["link"],
+  ],
+};
+
+  const [text, setText] = useState(`<p><span class="ql-font-serif"></span></p>`);
 
   const [blogTitle, setBlogTitle] = useState('');
   const [blogInstructions, setBlogInstructions] = useState(null);
@@ -299,7 +320,7 @@ export default function ProductsView() {
         <instruction>
 
         IMPORTANT INSTRUCTIONS:
-        - FORMATTING: Wrap titles in <h1> and sub-titles in <h2> tags. Wrap all paragraphs (and everything else that should have a line after) in <p style="font-family: serif;"> tags. Use b tags only in same-line text or 'title: paragraph'.
+        - FORMATTING: Wrap titles in <h2> and sub-titles in <h3> tags. Wrap all paragraphs (and everything else that should have a line after) in <p style="font-family: serif;"> tags. Use b tags only in same-line text or 'title: paragraph'.
         - PERSPECTIVE: Don't refer to yourself in the post. Explain how your firm ${firmName} can help, but only at the end.
         ${imageCount !== "No Images" && `- IMAGES: blog post should contain ${imageCount}. Please add representations of them in this format: //Image: {Relevant Image Description}//.
         Make sure these are evenly spaced out in the post, and place them after h tags or in between paragraphs.`}
@@ -742,16 +763,22 @@ export default function ProductsView() {
       <Stack direction="column" spacing={loadIndicator[0] === "Welcome Back!" ? 0.5 : 1.25} sx={{top: '352.5px', right: 'calc((100% - 285px)/2 - 160px)', position: 'absolute', 
       height: 'auto', width: '320px', backgroundColor: 'transparent', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
 
-      <Typography sx={{ fontFamily: "DM Serif Display",
+      {loadIndicator[0] !== "Welcome Back!" && <Typography sx={{ fontFamily: "DM Serif Display",
       letterSpacing: '-0.55px',  fontWeight: 500, fontSize: '36.75px'}}>
         {loadIndicator[0]}
-      </Typography>
+      </Typography>}
+
+      {loadIndicator[0] === "Welcome Back!" && <Typography sx={{ fontFamily: "DM Serif Display",
+      letterSpacing: '-0.55px',  fontWeight: 500, fontSize: '36.75px'}}>
+        {text === '' ? "Welcome Back!" : ''}
+      </Typography>}
+
 
       {loadIndicator[0] !== "Welcome Back!" && <Card sx={(theme) => ({height: '45px', backgroundColor: 'white', width: '100%', borderRadius: '6px',
       border: `2.00px solid ${theme.palette.primary.navBg}`, background: `linear-gradient(to right, ${theme.palette.primary.navBg} ${loadIndicator[1]}%, white 20%)`,
       transition: '1s ease all' })} />}
 
-      {loadIndicator[0] === "Welcome Back!" && !isReferenceGiven && <Typography sx={{ fontFamily: "serif", 
+      {loadIndicator[0] === "Welcome Back!" && !isReferenceGiven && text === '' && <Typography sx={{ fontFamily: "serif", 
       lineHeight: '32.5px', letterSpacing: '-0.25px',  fontWeight: 200, fontSize: '23.75px', textAlign: 'center'}}>
         This is the place your new <br />  articles will appear.
       </Typography>}
@@ -767,28 +794,15 @@ export default function ProductsView() {
        
         <Button onClick={() => generateBlog()}
         variant="contained" color="inherit" 
-        sx={(theme) => ({height: '54px', width: '150px',
+        className='gen-buttons'
+        sx={(theme) => ({height: '54px', width: '140px',
         backgroundColor: currentMode === "Generat" ? theme.palette.primary.navBg : theme.palette.primary.black})}>
-          {currentMode} ✨
+          {currentMode} {/* ✨ */}
         </Button>
         </Stack>
 
-        <ReactQuill 
-        value={text}
-        onChange={setText}
-        style={{ 
-          width: boxWidth, 
-          height: boxHeight,  
-          marginBottom: '58px', 
-          border: '0px solid #ccc',
-          borderRadius: '0px', 
-          backgroundColor: isGenerating ? 'white' : 'white',
-          opacity: '1',
-          fontFamily: 'serif', // Set font family to serif
-          transition: 'ease-in-out 0.3s',
-          // ...loadingAnimation
-        }}
-      />
+        <BlogEditor text={text} setText={setText} isGenerating={isGenerating}
+        boxHeight={boxHeight} boxWidth={boxWidth}/>
 
         {/* <div style={{
       width: boxWidth,
@@ -806,7 +820,7 @@ export default function ProductsView() {
       </div> */}
 
       <Typography sx={{ position: 'absolute', fontSize: '14px', fontFamily: 'Arial', 
-            top: '206.5px', right: '72.5px', letterSpacing: '-0.25px', fontWeight: '600' }}>
+            top: '184px', right: '72.5px', letterSpacing: '-0.25px', fontWeight: '600' }}>
         {wordCount && currentMode === "Alter Draft" ? `${wordCount} Words` : ''}
       </Typography>
 

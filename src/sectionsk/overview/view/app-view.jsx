@@ -11,7 +11,7 @@ import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 import { getDocs, getDoc, addDoc, collection, doc, updateDoc } from 'firebase/firestore';
 
-import PageTitle from 'src/routes/components/PageTitle';
+import PageTitle from 'src/components/PageTitle';
 import AppTasks from '../app-tasks';
 import AppNewsUpdate from '../app-news-update';
 import AppOrderTimeline from '../app-order-timeline';

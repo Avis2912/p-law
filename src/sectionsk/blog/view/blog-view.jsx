@@ -15,7 +15,7 @@ import { db, auth } from 'src/firebase-config/firebase';
 import Button from '@mui/material/Button';
 import { Card, TextField } from '@mui/material';
 import { css, keyframes } from '@emotion/react';
-import PageTitle from 'src/routes/components/PageTitle';
+import PageTitle from 'src/components/PageTitle';
 
 
 const isImagesOn = true;

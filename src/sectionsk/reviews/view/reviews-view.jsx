@@ -23,7 +23,7 @@ import Scrollbar from 'src/components/scrollbar';
 
 import Confetti from 'react-confetti';
 
-import PageTitle from 'src/routes/components/PageTitle';
+import PageTitle from 'src/components/PageTitle';
 import { encode } from 'draft-js/lib/DraftOffsetKey';
 import TableNoData from '../table-no-data';
 import UserTableRow from '../user-table-row';
@@ -174,7 +174,7 @@ export default function UserPage() {
       
       <PageTitle title="Invite Clients To Review"/>
 
-      <Stack direction="row" spacing={2} mb={1.5}>
+      <Stack direction="row" spacing={2} mb={2}>
       <Button target="_blank" href="https://tally.so/r/mBxLkR" variant="contained" startIcon={<Iconify icon="streamline:business-card-solid" sx={{height: '18.5px'}}/>}
       sx={(theme)=>({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: theme.palette.primary.navBg, }})} >
        Request Platform</Button> 

@@ -15,7 +15,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { getDocs, getDoc, collection, doc, updateDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, getStorage } from 'firebase/storage'; // Import necessary Firebase Storage functions
 
-import PageTitle from 'src/routes/components/PageTitle';
+import PageTitle from 'src/components/PageTitle';
 import Iconify from 'src/components/iconify';
 import PostCard from '../post-card';
 
@@ -235,11 +235,11 @@ export default function BlogView() {
         {`Return in ~5 minutes and they'll be ready!`}
       </Typography> </>}
 
-      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
-        
+      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={1.5}>
+
         <PageTitle title={isSearchMode ? 'Search New Keywords' : 'Keywords Being Tracked'} />
         
-        <Stack direction="row" spacing={2}>
+        <Stack direction="row" spacing={2} mb={2}>
 
         {/* {planName === 'Trial Plan' && <Button variant="contained" onClick={() => {handleOpen()}}
       sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: theme.palette.primary.navBg, },

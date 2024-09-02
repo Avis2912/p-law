@@ -13,7 +13,7 @@ import { getDocs, getDoc, collection, doc, updateDoc } from 'firebase/firestore'
 import { getDownloadURL, ref, getStorage } from 'firebase/storage'; // Import necessary Firebase Storage functions
 import { useNavigate } from 'react-router-dom'; 
 
-import PageTitle from 'src/routes/components/PageTitle';
+import PageTitle from 'src/components/PageTitle';
 import Iconify from 'src/components/iconify';
 import PostCard from '../weeklyblogs-card';
 

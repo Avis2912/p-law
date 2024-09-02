@@ -20,7 +20,7 @@ import Dialog from '@mui/material/Dialog';
 
 import { users } from 'src/_mock/user';
 
-import PageTitle from 'src/routes/components/PageTitle';
+import PageTitle from 'src/components/PageTitle';
 import Iconify from 'src/components/iconify';
 
 import { emptyRows, applyFilter, getComparator } from '../utils';

@@ -22,7 +22,7 @@ import { getDocs, getDoc, addDoc, collection, doc, updateDoc } from 'firebase/fi
 
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
-import PageTitle from 'src/routes/components/PageTitle';
+import PageTitle from 'src/components/PageTitle';
 
 import TableNoData from '../table-no-data';
 import UserTableRow from '../user-table-row';
