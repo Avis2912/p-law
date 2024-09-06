@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -31,6 +31,13 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
   const latestPost = index2 === -10 || index2 === -20;
 
   const [selectedOption, setSelectedOption] = useState(1);
+  const [isElongated, setIsElongated] = useState(false);
+
+  useEffect(() => {
+    if (selectedOption === 2 || selectedOption === 0) {
+      setIsElongated(true);
+    } else {setIsElongated(false);}
+  }, [selectedOption]);
 
   const currentMonth = new Date();
   const monthlyData = [
@@ -93,8 +100,8 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
     <Grid xs={12} sm={latestPostLarge ? 12 : 6} md={latestPostLarge ? 1 : 12} >
       <style> @import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap) </style>
       
-      <Card sx={{ height: '280px', borderRadius: '5.5px',
-      p: '23px', pt: '18px'}}>
+      <Card sx={{ height: isElongated ? '340px' : '280px', borderRadius: '5.5px',
+      p: '23px', pt: '18px', transition: '0.3s all'}}>
 
       <Stack spacing={1.45} direction="row" sx={{display: 'flex', alignItems: 'center',}}>
         <img src={`https://www.google.com/s2/favicons?domain=${siteLink}&sz=256`} alt=''
@@ -127,8 +134,8 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
         <Stack spacing={1.55} direction="row" sx={{display: 'flex', alignItems: 'center',}}>
 
         <Button onClick={() => {setSelectedOption(2)}} variant="contained" color="inherit" 
-        sx={(theme) => ({fontSize: '16.5px', height: '47.5px', width: '133px',
-        color: selectedOption === 2 ? 'white' : theme.palette.primary.navBg, 
+        sx={(theme) => ({fontSize: '16.5px', height: '47.5px', width: isElongated ? '280px' : '133px',
+        color: selectedOption === 2 ? 'white' : theme.palette.primary.navBg, transition: 'width 0.3s',  
         backgroundColor: selectedOption === 2 ? theme.palette.primary.navBg : theme.palette.primary.lighter,
         '&:hover': {color: 'white', backgroundColor: theme.palette.primary.navBg, boxShadow: 'none'},
         letterSpacing: '-0.5px', borderRadius: '5.5px', boxShadow: 'none'})}>
@@ -136,7 +143,7 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
           Ads
         </Button>
 
-        <Button onClick={() => {setSelectedOption(3)}} variant="contained" color="inherit" 
+        {!isElongated && <Button onClick={() => {setSelectedOption(3)}} variant="contained" color="inherit" 
         sx={(theme) => ({fontSize: '16.5px', height: '47.5px', width: '133px',
         color: selectedOption === 3 ? 'white' : theme.palette.primary.navBg, 
         backgroundColor: selectedOption === 3 ? theme.palette.primary.navBg : theme.palette.primary.lighter,
@@ -144,9 +151,21 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
         letterSpacing: '-0.5px', borderRadius: '5.5px', boxShadow: 'none'})}>
         <Iconify icon="cib:blogger-b" sx={{mr: '5px', height: '17.75px', width: '17.75px'}} />
           Blogs
-        </Button>
+        </Button>}
 
         </Stack>
+
+        {isElongated && <Stack spacing={1.55} direction="row" sx={{display: 'flex', alignItems: 'center',}}>
+
+        <Button onClick={() => {setSelectedOption(3)}} variant="contained" color="inherit" 
+        sx={(theme) => ({fontSize: '16.5px', height: '47.5px', width: isElongated ? '280px' : '0px',
+        color: selectedOption === 3 ? 'white' : theme.palette.primary.navBg, transition: 'width 0.3s',  
+        backgroundColor: selectedOption === 3 ? theme.palette.primary.navBg : theme.palette.primary.lighter,
+        '&:hover': {color: 'white', backgroundColor: theme.palette.primary.navBg, boxShadow: 'none'},
+        letterSpacing: '-0.5px', borderRadius: '5.5px', boxShadow: 'none'})}>
+        <Iconify icon="cib:blogger-b" sx={{mr: '5px', height: '17.75px', width: '17.75px'}} />
+          Blogs
+        </Button> </Stack>}
 
         <Stack spacing={1.55} direction="row" sx={{display: 'flex', alignItems: 'center',}}>
 
@@ -283,7 +302,9 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
 
       </List></>}
 
-      {(selectedOption === 2|| selectedOption === 5) && <><Card sx={(theme) => ({ height: '240px', width: '680px', borderRadius: '5.5px',
+      {(selectedOption === 2|| selectedOption === 5) && <><Card sx={(theme) => ({ 
+      height: isElongated && selectedOption === 2 ? '300px' : '240px', 
+      width: '680px', borderRadius: '5.5px', transition: '0.3s all',
       top: '20px', left: '330px', p: '23px', pt: '18px', position: 'absolute', 
       backgroundColor: 'white', border: `1.5px solid ${theme.palette.primary.navBg}`,
       display: 'flex', justifyContent: 'center', alignItems: 'center'})}>

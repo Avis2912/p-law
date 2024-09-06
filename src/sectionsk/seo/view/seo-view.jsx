@@ -18,15 +18,19 @@ import { Slate, Editable, withReact } from 'slate-react';
 import { withHistory } from "slate-history";
 
 import BlogEditor from 'src/components/Editor';
+import WpDialog from 'src/components/WpDialog';
+import ComingSoon from 'src/components/ComingSoon';
 import PageTitle from 'src/components/PageTitle';
 import { Page } from 'openai/pagination';
+import { modelKeys } from 'src/genData/models';
+
+// eslint-disable-next-line import/no-relative-packages
+import publishBlog from '../../../../functions/src/publishBlog';
+
 import 'src/components/Editor.css';
 
 const isImagesOn = true;
-const modelKeys = {
-1: 'claude-3-haiku-20240307',
-2: 'claude-3-5-sonnet-20240620',
-3: 'claude-3-opus-20240229'} 
+
 
 // import "react-quill/dist/quill.snow.css"; // import styles
 
@@ -52,7 +56,7 @@ const modules = {
   ],
 };
 
-  const [text, setText] = useState(`<p><span class="ql-font-serif"></span></p>`);
+  const [text, setText] = useState('');
 
   const [blogTitle, setBlogTitle] = useState('');
   const [blogInstructions, setBlogInstructions] = useState(null);
@@ -66,7 +70,7 @@ const modules = {
   const [isGenMode, setIsGenMode] = useState(false);
   const [isAlterMode, setIsAlterMode] = useState(false);
   const [currentMode, setCurrentMode] = useState('Generate');
-  const [isGenerating, setIsGenerating] = useState(true);
+  const [isGenerating, setIsGenerating] = useState(false);
   const [isElongating, setIsElongating] = useState(false);
   const [loadIndicator, setLoadIndicator] = useState(['Welcome Back!', -185]);
 
@@ -78,6 +82,7 @@ const modules = {
   const [wordCount, setWordCount] = useState(0);
   const [contactUsLink, setContactUsLink] = useState(null);
   const [isSourcesOpen, setIsSourcesOpen] = useState(false);
+  const [siteUrl, setSiteUrl] = useState(null);
 
   const [isMimicBlogStyle, setIsMimicBlogStyle] = useState(false);
   const [imageCount, setImageCount] = useState("2 Images");
@@ -93,60 +98,60 @@ const modules = {
   const [doneSourcing, setDoneSourcing] = useState(true);
   const [sources, setSources] = useState([]);
 
-  let boxHeight;
-  if (isReferenceGiven) { boxHeight = 'calc(80% - 225px)';} 
-  // else if (isBrowseWeb) { boxHeight = 'calc(80% - 125px)';} 
-  else { boxHeight = 'calc(80% - 82.5px)'; }
-  const boxWidth = 'calc(100%)';
+  const [isWpDropdownOpen, setIsWpDropdownOpen] = useState(false);
+  const [isWpIntegrated, setIsWpIntegrated] = useState(false);
+  const [isWpDialogOpen, setIsWpDialogOpen] = useState(false);
+  const [isPostError, setIsPostError] = useState(false);
 
-  const editor = useMemo(() => withHistory(withReact(createEditor())), []);
-  const [value, setValue] = useState([
-    {
-      type: "paragraph",
-      children: [
-        { text: "This is editable " },
-        { text: "rich", bold: true },
-        { text: " text, " },
-        { text: "much", italic: true },
-        { text: " better than a " },
-        { text: "<textarea>", code: true },
-        { text: "!" }
-      ]
-    },
-    {
-      type: "paragraph",
-      children: [
-        {
-          text:
-            "Since it's rich text, you can do things like turn a selection of text "
-        },
-        { text: "bold", bold: true },
-        {
-          text:
-            ", or add a semantically rendered block quote in the middle of the page, like this:"
-        }
-      ]
-    },
-    {
-      type: "block-quote",
-      children: [{ text: "A wise quote." }]
-    },
-    {
-      type: "paragraph",
-      children: [{ text: "Try it out for yourself!" }]
-    }
-  ]);
+  const [wpUrl, setWpUrl] = React.useState(null);
+  const [wpUsername, setWpUsername] = React.useState(null);
+  const [wpPassword, setWpPassword] = React.useState(null);
+  const [isComingSoon, setIsComingSoon] = React.useState(false);
+  const titleTag = 'h2';
 
-  const [dots, setDots] = useState('');
-  useEffect(() => {
-    // const intervalId = isGenerating && setInterval(() => {
-    //   setDots(prevDots => {
-    //     const newDots = prevDots.length < 3 ? `${prevDots}.` : '';
-    if (isGenerating) {setText(``)};
-    //     return newDots;
-    //   }); }, 350);
-    // return () => intervalId && clearInterval(intervalId);
-  }, [isGenerating]);
+  let boxHeight; const boxWidth = 'calc(100%)';
+  if (isReferenceGiven) { boxHeight = 'calc(80% - 220px)';} 
+  else if (wordCount < 300) { boxHeight = 'calc(80% - 76.5px)'; }
+  else { boxHeight = 'auto'; }
+
+  // const editor = useMemo(() => withHistory(withReact(createEditor())), []);
+  // const [value, setValue] = useState([
+  //   {
+  //     type: "paragraph",
+  //     children: [
+  //       { text: "This is editable " },
+  //       { text: "rich", bold: true },
+  //       { text: " text, " },
+  //       { text: "much", italic: true },
+  //       { text: " better than a " },
+  //       { text: "<textarea>", code: true },
+  //       { text: "!" }
+  //     ]
+  //   },
+  //   {
+  //     type: "paragraph",
+  //     children: [
+  //       {
+  //         text:
+  //           "Since it's rich text, you can do things like turn a selection of text "
+  //       },
+  //       { text: "bold", bold: true },
+  //       {
+  //         text:
+  //           ", or add a semantically rendered block quote in the middle of the page, like this:"
+  //       }
+  //     ]
+  //   },
+  //   {
+  //     type: "block-quote",
+  //     children: [{ text: "A wise quote." }]
+  //   },
+  //   {
+  //     type: "paragraph",
+  //     children: [{ text: "Try it out for yourself!" }]
+  //   }
+  // ]);
+
 
   useEffect(() => {
     setWordCount(text.split(' ').length);
@@ -160,12 +165,13 @@ const modules = {
         if (userDoc.exists()) {
           const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
           if (firmDoc.exists()) {
-            await setFirmName(firmDoc.data().FIRM_INFO.NAME);             
+            await setFirmName(userDoc.data().FIRM);             
             await setFirmImage(firmDoc.data().FIRM_INFO.IMAGE);
             await setCustomColor(firmDoc.data().CHAT_INFO.THEME);
             await setFirmDescription(firmDoc.data().FIRM_INFO.DESCRIPTION);
             await setSelectedModel(firmDoc.data().SETTINGS.MODEL);
             await setImagesSettings(firmDoc.data().SETTINGS.IMAGES);
+            const url = new URL(firmDoc.data().FIRM_INFO.CONTACT_US); await setSiteUrl(url.origin);
             const bigBlog = firmDoc.data().BLOG_DATA.BIG_BLOG || [];
             const smallBlogArray = firmDoc.data().BLOG_DATA.SMALL_BLOG || [];
             const smallBlogString = smallBlogArray.map(index => `[${bigBlog[index]?.TITLE || ''}]: ${bigBlog[index]?.CONTENT || ''}`).join('\n'); 
@@ -320,7 +326,8 @@ const modules = {
         <instruction>
 
         IMPORTANT INSTRUCTIONS:
-        - FORMATTING: Wrap titles in <h2> and sub-titles in <h3> tags. Wrap all paragraphs (and everything else that should have a line after) in <p style="font-family: serif;"> tags. Use b tags only in same-line text or 'title: paragraph'.
+        - FORMATTING: Wrap titles in <${titleTag}> and sub-titles in <h3> tags. Wrap all paragraphs (and everything else that should have a line after) in <p style="font-family: serif;"> tags. Use b tags only in same-line text or 'title: paragraph'.
+        - TABLES: Also include one or two tables using appropriate html (make sure to create rows correctly).
         - PERSPECTIVE: Don't refer to yourself in the post. Explain how your firm ${firmName} can help, but only at the end.
         ${imageCount !== "No Images" && `- IMAGES: blog post should contain ${imageCount}. Please add representations of them in this format: //Image: {Relevant Image Description}//.
         Make sure these are evenly spaced out in the post, and place them after h tags or in between paragraphs.`}
@@ -415,7 +422,8 @@ const modules = {
     const fetchBrandImage = async (imgDescription, webPic='') => { // 1.5c per image
       
       let resultImg = null;
-      const h1Title = (imagelessText.match(/<h1>(.*?)<\/h1>/) || [])[1]; const formattedDate = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
+      const h1Title = (imagelessText.match(new RegExp(`<${titleTag}>(.*?)</${titleTag}>`)) || [])[1];
+      const formattedDate = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
       const timeToRead = Math.ceil(imagelessText.split(' ').length / 200);
       let firmSite = ''; try {firmSite = new URL(contactUsLink).hostname.replace(/^www\./, '');} catch (e) {console.error(e);}      
 
@@ -457,7 +465,7 @@ const modules = {
         }
       })
       .then(response => {if(!response.ok){console.log('Network response was not ok')};   return response.json(); })
-      .then(data => {console.log(data); resultImg = `<img src="${data.render_url}" alt="Branded Image" />`;})
+      .then(data => {console.log('templated data: ', data); resultImg = `<img src="${data.render_url}" alt="Branded Image" style="max-width: 100%;"/>`;})
       .catch(error => {console.error('Error:', error);});
 
       return resultImg;
@@ -489,7 +497,7 @@ const modules = {
       counter += 1; }
 
       if (isFirst) {return fetchBrandImage(description, tempUrl);}
-      resultImg = `<img src="${tempUrl}" alt="${description}" style="max-width: 600px;" />`;
+      resultImg = `<img src="${tempUrl}" alt="${description}" style="max-width: 100%;" />`;
 
       return resultImg;
     };
@@ -508,20 +516,21 @@ const modules = {
       }
     }
 
-    const h1Title0 = (imagelessText.match(/<h1>(.*?)<\/h1>/) || [])[1];
+    const h1Title0 = (imagelessText.match(new RegExp(`<${titleTag}>(.*?)</${titleTag}>`)) || [])[1];
     if (isUseThumbnail) {
 
-    // const backgroundFormattedTitle = await fetch('https://us-central1-pentra-claude-gcp.cloudfunctions.net/gcp-claudeAPI', {
-    //   method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ 
-    //   model: modelKeys[2], messages: [{role: "user", content: `
-    //   Based on '${blogTitle}' give me a distilled two word phrase with the three words attached at the end being HD background image. 
-    //   ONLY output the phrase. SAY NOTHING ELSE. Example: 'UI/UX trends in HR 2024' = 'UI/UX background image' `}],})});
-    // console.log(backgroundFormattedTitle);
-    // const brandImage = await fetchImage(backgroundFormattedTitle.text(), true);
-    const brandImage = await fetchImage(`HD Background Image for ${blogTitle}`, true);
-      
+    const backgroundFormattedTitle = await fetch('https://us-central1-pentra-claude-gcp.cloudfunctions.net/gcp-claudeAPI', {
+      method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ 
+      model: modelKeys[2], messages: [{role: "user", content: `
+      Based on '${h1Title0}' give me a distilled two word phrase with the three words attached at the end being HD background image. 
+      ONLY output the phrase. SAY NOTHING ELSE. Example: 'UI/UX trends in HR 2024' = 'UI/UX background image' `}],})});
+    console.log(backgroundFormattedTitle);
+    const brandImage = await fetchImage(backgroundFormattedTitle.text(), true);
 
-    imagefullText = imagelessText.replace(/(<\/h1>)/, `$1${brandImage}`); }
+    // const brandImage = await fetchImage(`HD Background Image for ${blogTitle}`, true);
+      
+    imagefullText = imagelessText.replace(new RegExp(`(</${titleTag}>)`), `$1${brandImage}`);
+    }
 
     matches.forEach((match, index) => {
       if (imageTags[index]) {
@@ -611,7 +620,7 @@ const modules = {
   return (
     <Container sx={{backgroundColor: '', height: '100%', paddingBottom: '20px'}}>
       <script src="http://localhost:30015/embed.min.js" defer />
-      <Stack mb={2} direction="row" alignItems="center" justifyContent="space-between"
+      <Stack mb={1.5} direction="row" alignItems="center" justifyContent="space-between"
       sx={{}} spacing={2}>
         <style>
         @import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap);
@@ -634,11 +643,11 @@ const modules = {
           default: setWordRange("600 - 800 Words");
         }
       }}
-      sx={(theme) => ({ backgroundColor: theme.palette.primary.green,
+      sx={(theme) => ({ backgroundColor: theme.palette.primary.green, display: isWpDropdownOpen ? 'none' : 'flex',
       '&:hover': { backgroundColor: theme.palette.primary.green, }, })}>
       {wordRange} </Button>
 
-      <Button variant="contained" startIcon={<Iconify icon="ph:images-bold" />} 
+      <Button variant="contained" endIcon={<Iconify icon="ph:images-bold" />} 
       onClick={() => {
         switch (imageCount) {
           case "2 Images": setImageCount("3 Images"); break;
@@ -650,20 +659,21 @@ const modules = {
           default: setImageCount("2 Images");
         }
       }}
-      sx={(theme) => ({ backgroundColor: theme.palette.primary.green,
+      sx={(theme) => ({ backgroundColor: theme.palette.primary.green, display: isWpDropdownOpen ? 'none' : 'flex',
       '&:hover': { backgroundColor: theme.palette.primary.green, }, })}>
-      {imageCount} </Button>
+        {imageCount.replace(" Images", "")}
+      </Button>
 
       <Button variant="contained"
       sx={(theme) => ({backgroundColor: theme.palette.primary.green, '&:hover': { backgroundColor: theme.palette.primary.green, },
-      width: '40px', display: 'flex', justifyContent: 'center', alignItems: 'center', minWidth: '10px',})}
+      width: '40px', justifyContent: 'center', alignItems: 'center', minWidth: '10px', display: isWpDropdownOpen ? 'none' : 'flex',})}
       onClick={() => {setIsBrowseWeb(!isBrowseWeb);}}>
         <Iconify icon= {isBrowseWeb ? "mdi:web" : "mdi:web-cancel"} sx={{minHeight: '18.25px', minWidth: '18.25px'}}/>
       </Button>
 
       <Button variant="contained"
       sx={(theme) => ({backgroundColor: theme.palette.primary.green, '&:hover': { backgroundColor: theme.palette.primary.green, },
-      width: '40px', display: 'flex', justifyContent: 'center', alignItems: 'center', minWidth: '10px',})}
+      width: '40px', justifyContent: 'center', alignItems: 'center', minWidth: '10px', display: isWpDropdownOpen ? 'none' : 'flex',})}
       onClick={() => {setIsUseThumbnail(!isUseThumbnail);}}>
         <Iconify icon= {isUseThumbnail ? "material-symbols:thumbnail-bar" : "material-symbols:thumbnail-bar-outline"} sx={{minHeight: '18.25px', minWidth: '18.25px'}}/>
       </Button>
@@ -680,9 +690,39 @@ const modules = {
           default: setStyle("Unstyled");
         }
       }}
-      sx={(theme) => ({ backgroundColor: theme.palette.primary.green,
+      sx={(theme) => ({ backgroundColor: theme.palette.primary.green, display: isWpDropdownOpen ? 'none' : 'flex',
       '&:hover': { backgroundColor: theme.palette.primary.green, }, })}>        
       {style} </Button>
+
+      {isWpDropdownOpen && <Button variant="contained" startIcon={<Iconify icon="teenyicons:text-document-solid" sx={{height: '13.25px'}}/>} 
+      onClick={() => {setIsComingSoon(true);}}
+      sx={(theme) => ({ backgroundColor: theme.palette.primary.black,
+      '&:hover': { backgroundColor: theme.palette.primary.black, }, })}>        
+      Save for Later </Button>}
+
+      {isWpDropdownOpen && <Button variant="contained" startIcon={<Iconify icon="mdi:clock" sx={{height: '16.25px'}}/>} 
+      onClick={() => {setIsComingSoon(true);}}
+      sx={(theme) => ({ backgroundColor: theme.palette.primary.black,
+      '&:hover': { backgroundColor: theme.palette.primary.black, }, })}>        
+      Schedule </Button>}
+
+      {isComingSoon && <ComingSoon isDialogOpen2={isComingSoon} handleClose2={() => {setIsComingSoon(false)}} />}
+
+      {isWpDropdownOpen && <Button variant="contained" startIcon={<Iconify icon="cib:telegram-plane" sx={{height: '15.75px'}}/>} 
+      onClick={async () => {
+          const response = await publishBlog(wpUsername, wpPassword, wpUrl, text, titleTag);
+          if (response && (response.status === 200 || response.status === 201)) {console.log('done'); setText(''); setIsWpDropdownOpen(false); setCurrentMode('Generate'); setIsPostError(false); setBlogTitle(''); setBlogInstructions('');}
+          else {console.log('error'); setIsPostError(true);}
+        }}
+      sx={(theme) => ({ backgroundColor: theme.palette.primary.black,
+      '&:hover': { backgroundColor: theme.palette.primary.black, }, })}>        
+      Publish Now </Button>}
+
+      {text !== '' && <Button variant="contained" startIcon={<Iconify icon="dashicons:wordpress" sx={{height: '15.25px'}}/>} 
+      onClick={() => {if (isWpIntegrated) {setIsWpDropdownOpen(!isWpDropdownOpen);} else {setIsWpDialogOpen(true);}}}
+    sx={(theme) => ({ backgroundColor: theme.palette.primary.navBg,
+      '&:hover': { backgroundColor: theme.palette.primary.navBg, }, })}>        
+      {(isWpDropdownOpen ? `Close` : `Publish`)} </Button>}
 
       {isBrowseWeb && sources.length !== 0 && <Button variant="contained" startIcon={<Iconify icon= {doneSourcing ? "map:search" : "line-md:downloading-loop"} sx={{height: '18px'}}/>}  
       sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: theme.palette.primary.navBg, },
@@ -763,23 +803,28 @@ const modules = {
       <Stack direction="column" spacing={loadIndicator[0] === "Welcome Back!" ? 0.5 : 1.25} sx={{top: '352.5px', right: 'calc((100% - 285px)/2 - 160px)', position: 'absolute', 
       height: 'auto', width: '320px', backgroundColor: 'transparent', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
 
-      {loadIndicator[0] !== "Welcome Back!" && <Typography sx={{ fontFamily: "DM Serif Display",
+      <Typography sx={{ fontFamily: "DM Serif Display", zIndex: 9,
       letterSpacing: '-0.55px',  fontWeight: 500, fontSize: '36.75px'}}>
         {loadIndicator[0]}
-      </Typography>}
+      </Typography>
 
-      {loadIndicator[0] === "Welcome Back!" && <Typography sx={{ fontFamily: "DM Serif Display",
-      letterSpacing: '-0.55px',  fontWeight: 500, fontSize: '36.75px'}}>
-        {text === '' ? "Welcome Back!" : ''}
-      </Typography>}
-
-
-      {loadIndicator[0] !== "Welcome Back!" && <Card sx={(theme) => ({height: '45px', backgroundColor: 'white', width: '100%', borderRadius: '6px',
+      {loadIndicator[0] !== "Welcome Back!" && <Card sx={(theme) => ({height: '45px', backgroundColor: 'white', width: '100%', borderRadius: '6px', zIndex: 9,
       border: `2.00px solid ${theme.palette.primary.navBg}`, background: `linear-gradient(to right, ${theme.palette.primary.navBg} ${loadIndicator[1]}%, white 20%)`,
       transition: '1s ease all' })} />}
 
+      </Stack>)}
+
+      {!isGenerating && text === '' && (
+      <Stack direction="column" spacing={loadIndicator[0] === "Welcome Back!" ? 0.5 : 1.25} sx={{top: '352.5px', right: 'calc((100% - 285px)/2 - 160px)', position: 'absolute', 
+      height: 'auto', width: '320px', backgroundColor: 'transparent', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 9}}>
+
+      {loadIndicator[0] === "Welcome Back!" && <Typography sx={{ fontFamily: "DM Serif Display",
+      letterSpacing: '-0.55px',  fontWeight: 500, fontSize: '36.75px', zIndex: 9}}>
+        {text === '' ? "Welcome Back!" : ''}
+      </Typography>}
+
       {loadIndicator[0] === "Welcome Back!" && !isReferenceGiven && text === '' && <Typography sx={{ fontFamily: "serif", 
-      lineHeight: '32.5px', letterSpacing: '-0.25px',  fontWeight: 200, fontSize: '23.75px', textAlign: 'center'}}>
+      lineHeight: '32.5px', letterSpacing: '-0.25px',  fontWeight: 200, fontSize: '23.75px', textAlign: 'center', zIndex: 9}}>
         This is the place your new <br />  articles will appear.
       </Typography>}
 
@@ -792,35 +837,43 @@ const modules = {
        sx={{width: '60%', transition: 'ease 0.3s'}} />}
        </Stack>
        
-        <Button onClick={() => generateBlog()}
+        <Button onClick={() => isGenerating ? {} : generateBlog()}
         variant="contained" color="inherit" 
-        className='gen-buttons'
-        sx={(theme) => ({height: '54px', width: '140px',
-        backgroundColor: currentMode === "Generat" ? theme.palette.primary.navBg : theme.palette.primary.black})}>
-          {currentMode} {/* ✨ */}
+        className={`generate-button ${isGenerating ? 'generating' : ''} gen-buttons`}
+        sx={(theme) => ({height: '54px', width: '140px', cursor: isGenerating ? 'default' : 'pointer',
+        backgroundColor: isGenerating ? theme.palette.primary.black : theme.palette.primary.black})}>
+          {isGenerating ? `Generating` : currentMode} {/* ✨ */}
         </Button>
         </Stack>
+
+        <style>{`
+                .generate-button:before {
+                    content: ''; background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+                    position: absolute; top: -2px; left:-2px; background-size: 400%; z-index: -1; filter: blur(1.2px);
+                    width: calc(100% + 4px); height: calc(100% + 4px); animation: glowing 20s linear infinite;
+                    opacity: 0; transition: opacity .3s ease-in-out; border-radius: inherit;
+                }
+
+                .generate-button.generating:before { opacity: 1; }
+
+                .generate-button:after {
+                    z-index: -1; content: ''; position: absolute; width: 100%; height: 100%;
+                    background: black; left: 0; top: 0; border-radius: inherit;
+                }
+
+                @keyframes glowing {
+                    0% { background-position: 0 0; }
+                    50% { background-position: 400% 0; }
+                    100% { background-position: 0 0; }
+                }
+            `}</style>
 
         <BlogEditor text={text} setText={setText} isGenerating={isGenerating}
         boxHeight={boxHeight} boxWidth={boxWidth}/>
 
-        {/* <div style={{
-      width: boxWidth,
-      height: boxHeight,
-      marginBottom: '58px',
-      padding: '15px',
-      border: '5px solid #ccc',
-      borderRadius: '0px',
-      backgroundColor: isGenerating ? 'white' : 'white',
-      opacity: '1',
-      fontFamily: 'serif', // Set font family to serif
-      transition: 'ease-in-out 0.3s',
-      }}>
-        <Editor editorState={editorState} onChange={setEditorState} />
-      </div> */}
 
       <Typography sx={{ position: 'absolute', fontSize: '14px', fontFamily: 'Arial', 
-            top: '184px', right: '72.5px', letterSpacing: '-0.25px', fontWeight: '600' }}>
+            top: '180px', right: '72.5px', letterSpacing: '-0.25px', fontWeight: '600' }}>
         {wordCount && currentMode === "Alter Draft" ? `${wordCount} Words` : ''}
       </Typography>
 
@@ -861,6 +914,11 @@ const modules = {
         borderRadius: '0px', padding: '15px', fontSize: '15px', fontFamily: 'Arial',}} 
         placeholder='Feed any text here you would like the AI model to use. It helps to explain how youd like it to use it in the blog description.'/>
         )}    
+
+        <WpDialog isDialogOpen={isWpDialogOpen} handleClose={() => {setIsWpDialogOpen(false)}} 
+        isWpIntegrated={isWpIntegrated} setIsWpIntegrated={setIsWpIntegrated} firmName={firmName}
+        wpUrl={wpUrl} setWpUrl={setWpUrl} wpUsername={wpUsername} setWpUsername={setWpUsername}
+        wpPassword={wpPassword} setWpPassword={setWpPassword} />
 
     
     </Container>

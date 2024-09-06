@@ -16,7 +16,7 @@ import Button from '@mui/material/Button';
 import { Card, TextField } from '@mui/material';
 import { css, keyframes } from '@emotion/react';
 import PageTitle from 'src/components/PageTitle';
-
+import BlogEditor from 'src/components/Editor';
 
 const isImagesOn = true;
 const modelKeys = {
@@ -66,7 +66,7 @@ export default function ProductsView() {
   const [isUseInternalLinks, setIsUseInternalLinks] = useState(false);
   const [isMentionCaseLaw, setIsMentionCaseLaw] = useState(false);
 
-  const boxHeight = 'calc(80% + 45px)'; 
+  const boxHeight = 'calc(100% - 125px)'; 
   const boxWidth = 'calc(100%)';
 
   const [dots, setDots] = useState('');
@@ -479,20 +479,8 @@ export default function ProductsView() {
         </Button>
         </Stack> */}
 
-        <ReactQuill 
-        value={text}
-        onChange={setText}
-        style={{ 
-          width: boxWidth, 
-          height: boxHeight,                
-          marginBottom: '58px', 
-          border: '0px solid #ccc',
-          borderRadius: '0px', 
-          backgroundColor: isGenerating ? '#fffefa' : 'white',
-          opacity: '1',
-          transition: 'ease-in-out 0.3s',
-        }}
-      />
+        <BlogEditor text={text} setText={setText} isGenerating={isGenerating}
+        boxHeight={boxHeight} boxWidth={boxWidth}/>
 
       <Typography sx={{ position: 'absolute', fontSize: '14px', fontFamily: 'Arial', 
             top: '143.5px', right: '72.5px', letterSpacing: '-0.25px', fontWeight: '600' }}>

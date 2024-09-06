@@ -1,60 +1,111 @@
-import ReactQuill from 'react-quill';
-import "react-quill/dist/quill.snow.css"; // import styles
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import './Editor.css'; // replace with the path to your CSS file
+import Quill from 'quill';
+import 'quill/dist/quill.snow.css';
 
-// ----------------------------------------------------------------------
+function BlogEditor({ text, setText, isGenerating, boxWidth, boxHeight }) {
+  const quillRef = useRef(null);
+// Existing code...
+const editorRef = useRef(null);
 
-export default function BlogEditor({ text, setText, isGenerating, boxWidth, boxHeight }) {
+// Add this line to create a state for the sanitized text
+const [sanitizedText, setSanitizedText] = React.useState(text.replace(/<br>/g, ''));
 
-    const Font = ReactQuill.Quill.import("formats/font");
-    Font.whitelist = ["serif", "arial", "courier", "comic-sans"]; // Add more fonts here
-    ReactQuill.Quill.register(Font, true);
-    
-    const Size = ReactQuill.Quill.import("formats/size");
-    Size.whitelist = ["small", "medium", "large", "huge"]; // Add more sizes here
-    ReactQuill.Quill.register(Size, true);
-    
-    const modules = {
-      toolbar: [
-        // [{ font: Font.whitelist }],
-        [{ size: Size.whitelist }],
-        ["bold", "italic", "underline"],
-        [{ list: "ordered" }, { list: "bullet" }],
-        ["link"],
-      ],
+
+  useEffect(() => {
+    if (!editorRef.current) {
+      editorRef.current = new Quill(quillRef.current, {
+        theme: 'snow',
+        modules: {
+          toolbar: [
+            ['bold', 'italic', 'underline'],
+            [{ list: 'ordered' }, { list: 'bullet' }],
+            ['link'],
+          ],
+        },
+      });
+
+      editorRef.current.on('text-change', () => {
+        const html = editorRef.current.root.innerHTML;
+        setText(html.replace(/<br>/g, ''));
+      });
+    }
+
+    return () => {
+      if (editorRef.current) {
+        editorRef.current.off('text-change');
+      }
     };
-        
-    return (
+  }, [setText]);
 
-        <ReactQuill 
-        value={text}
-        // value={`<p><span style="font-family: serif">${text}</span></p>`}
-        modules={modules}
-        theme='snow'
-        onChange={setText}
-        // formats={["font", "size", "bold", "italic", "underline", "list", "bullet", "link"]}
-        style={{ 
-        width: boxWidth, 
-        height: boxHeight,  
-        marginBottom: '58px', 
+
+useEffect(() => {
+  setSanitizedText(text
+    // .replace(/<br>/g, '')
+    .replace(/<p>\s*<\/p>/g, ''));
+  console.log('Sanitized text:', sanitizedText);
+    // eslint-disable-next-line
+}, [text]);
+
+// Replace all occurrences of 'text' with 'sanitizedText' in the rest of your code
+useEffect(() => {
+  if (!editorRef.current) {
+    editorRef.current = new Quill(quillRef.current, {
+      theme: 'snow',
+      modules: {
+        toolbar: [
+          ['bold', 'italic', 'underline'],
+          [{ list: 'ordered' }, { list: 'bullet' }],
+          ['link'],
+        ],
+      },
+    });
+
+    editorRef.current.on('text-change', () => {
+      const html = editorRef.current.root.innerHTML;
+      setSanitizedText(html.replace(/<br>/g, ''));
+    });
+  }
+
+  return () => {
+    if (editorRef.current) {
+      editorRef.current.off('text-change');
+    }
+  };
+}, [setSanitizedText]);
+
+useEffect(() => {
+  if (editorRef.current && sanitizedText !== editorRef.current.root.innerHTML) {
+    editorRef.current.root.innerHTML = sanitizedText;
+  }
+}, [sanitizedText]);
+
+// Existing code...
+
+  return (
+    <div
+      ref={quillRef}
+      style={{
+        width: boxWidth,
+        height: boxHeight,
+        marginBottom: '58px',
         border: '0px solid #ccc',
-        borderRadius: '0px', 
+        borderRadius: '0px',
         backgroundColor: isGenerating ? 'white' : 'white',
         opacity: '1',
-        fontFamily: 'serif', // Set font family to serif
+        fontFamily: 'serif',
         transition: 'ease-in-out 0.3s',
-        // ...loadingAnimation
-        }}
-        />
-
-    );
+      }}
+    />
+  );
 }
 
 BlogEditor.propTypes = {
-    text: PropTypes.node.isRequired,
-    setText: PropTypes.func.isRequired,
-    isGenerating: PropTypes.bool,
-    boxWidth: PropTypes.string,
-    boxHeight: PropTypes.string
-  };
+  text: PropTypes.string.isRequired,
+  setText: PropTypes.func.isRequired,
+  isGenerating: PropTypes.bool,
+  boxWidth: PropTypes.string,
+  boxHeight: PropTypes.string,
+};
+
+export default BlogEditor;

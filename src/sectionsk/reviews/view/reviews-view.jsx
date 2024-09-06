@@ -194,7 +194,7 @@ export default function UserPage() {
 
 
     <Card sx ={(theme) => ({ height: '110px', width: '100%', borderRadius: '11px', 
-    border: `4px solid ${theme.palette.primary.main}`})}>
+    border: `1.5px solid ${theme.palette.primary.main}`})}>
         <Stack direction="row" sx ={{ justifyContent: 'center', alignItems: 'center', height: '100%',
       width: '100%', }} spacing={2}>
 
@@ -216,7 +216,7 @@ export default function UserPage() {
 
     <Stack direction="row" spacing={2.25} >
      <Card sx ={(theme) => ({ height: 'auto', width: '70%', borderRadius: '11px',
-     border: `4px solid ${theme.palette.primary.lighter}`,  })}>
+     border: `1.5px solid ${theme.palette.primary.lighter}`,  })}>
       <Stack
         direction="column"
         spacing={0}>
@@ -248,7 +248,7 @@ export default function UserPage() {
       </Card>
       
       
-      <Card sx ={(theme) => ({ border: `4px solid ${theme.palette.primary.lighter}`, height: 'auto', width: '30%', 
+      <Card sx ={(theme) => ({ border: `1.5px solid ${theme.palette.primary.lighter}`, height: 'auto', width: '30%', 
       display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: '11px',})}>
       <Typography sx={{ fontFamily: "DM Serif Display", letterSpacing: '-0.75px',  fontWeight: 500, fontSize: '32.75px', textAlign: 'center',
       position: "absolute", top: "70px", width: "200px"}}> 

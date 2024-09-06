@@ -5,6 +5,13 @@
   font-size: 17px;
   letter-spacing: -0.15px;
   line-height: 1.6;
+  z-index: 0;
+  border: 1.5px solid #e0e0e0;
+  border-top-width: 0;
+}
+
+.ql-editor p {
+  margin: 0;
 }
 
 .gen-buttons {

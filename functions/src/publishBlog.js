@@ -2,7 +2,7 @@ import axios from 'axios';
 
 async function publishBlog(user_id, user_app_password, siteUrl, htmlContent, titleTag, scheduledFor=null) {
 
-    // const article_title = htmlContent.match(new RegExp(`<${titleTag}>(.*?)</${titleTag}>`))[1];
+    const article_title = htmlContent.match(new RegExp(`<${titleTag}>(.*?)</${titleTag}>`))[1];
     const formattedContent = htmlContent.replace(new RegExp(`<${titleTag}>.*?</${titleTag}>`, 'g'), '').replace(/<p>\s*(<img[^>]*>)\s*<\/p>/g, '$1');
     const formattedContent1 = formattedContent.replace(/(<img[^>]*)(>)/g, '$1 style="max-width: 100%;"$2');
     const formattedSiteUrl = siteUrl.replace('https://', '').replace('http://', '');
@@ -15,29 +15,8 @@ async function publishBlog(user_id, user_app_password, siteUrl, htmlContent, tit
     console.log('HTML:', formattedContent1);
 
     const post_data = {
-        "title": "article_title",
-        "content": `<table border="1" style="border-collapse: collapse; width: 100%;">
-        <tr>
-          <th style="padding: 10px;">Factor</th>
-          <th style="padding: 10px;">Description</th>
-        </tr>
-        <tr>
-          <td style="padding: 10px;">Income Generation</td>
-          <td style="padding: 10px;">The business should generate sufficient income to support more than just the E1 visa holder and their family.</td>
-        </tr>
-        <tr>
-          <td style="padding: 10px;">Job Creation</td>
-          <td style="padding: 10px;">The enterprise should have the potential to create jobs for U.S. workers.</td>
-        </tr>
-        <tr>
-          <td style="padding: 10px;">Future Growth Potential</td>
-          <td style="padding: 10px;">There should be a clear path for business expansion and increased trade volume.</td>
-        </tr>
-        <tr>
-          <td style="padding: 10px;">Impact on U.S. Economy</td>
-          <td style="padding: 10px;">The business should contribute positively to the local or national economy.</td>
-        </tr>
-      </table>`,
+        "title": article_title,
+        "content": formattedContent1,
         "categories": [1],
         "status": scheduledFor ? 'future' : 'publish',
         ...(scheduledFor && { "date": '2024-08-31T12:00:00' }),
