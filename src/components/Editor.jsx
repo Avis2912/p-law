@@ -1,19 +1,15 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import Quill from 'quill';
 import 'quill/dist/quill.snow.css';
 
 function BlogEditor({ text, setText, isGenerating, boxWidth, boxHeight }) {
   const quillRef = useRef(null);
-// Existing code...
-const editorRef = useRef(null);
-
-// Add this line to create a state for the sanitized text
-const [sanitizedText, setSanitizedText] = React.useState(text.replace(/<br>/g, ''));
-
+  const editorRef = useRef(null);
+  const [content, setContent] = useState(text);
 
   useEffect(() => {
-    if (!editorRef.current) {
+    if (!editorRef.current && quillRef.current) {
       editorRef.current = new Quill(quillRef.current, {
         theme: 'snow',
         modules: {
@@ -26,8 +22,21 @@ const [sanitizedText, setSanitizedText] = React.useState(text.replace(/<br>/g, '
       });
 
       editorRef.current.on('text-change', () => {
+
+
         const html = editorRef.current.root.innerHTML;
-        setText(html.replace(/<br>/g, ''));
+
+        const cleanedHtml = html
+        .replace(/<p>\s*<\/p>/g, '')
+        .replace(/<br>/g, '')
+        .replace(/<p>\s*<\/p>$/g, '')
+        // .replace(/<p><\/p>$/g, '')
+        
+        setContent(cleanedHtml);
+        setText(cleanedHtml);
+        console.log('Content changed:', cleanedHtml);
+
+
       });
     }
 
@@ -38,49 +47,11 @@ const [sanitizedText, setSanitizedText] = React.useState(text.replace(/<br>/g, '
     };
   }, [setText]);
 
-
-useEffect(() => {
-  setSanitizedText(text
-    // .replace(/<br>/g, '')
-    .replace(/<p>\s*<\/p>/g, ''));
-  console.log('Sanitized text:', sanitizedText);
-    // eslint-disable-next-line
-}, [text]);
-
-// Replace all occurrences of 'text' with 'sanitizedText' in the rest of your code
-useEffect(() => {
-  if (!editorRef.current) {
-    editorRef.current = new Quill(quillRef.current, {
-      theme: 'snow',
-      modules: {
-        toolbar: [
-          ['bold', 'italic', 'underline'],
-          [{ list: 'ordered' }, { list: 'bullet' }],
-          ['link'],
-        ],
-      },
-    });
-
-    editorRef.current.on('text-change', () => {
-      const html = editorRef.current.root.innerHTML;
-      setSanitizedText(html.replace(/<br>/g, ''));
-    });
-  }
-
-  return () => {
-    if (editorRef.current) {
-      editorRef.current.off('text-change');
+  useEffect(() => {
+    if (editorRef.current && text !== editorRef.current.root.innerHTML) {
+      editorRef.current.root.innerHTML = text;
     }
-  };
-}, [setSanitizedText]);
-
-useEffect(() => {
-  if (editorRef.current && sanitizedText !== editorRef.current.root.innerHTML) {
-    editorRef.current.root.innerHTML = sanitizedText;
-  }
-}, [sanitizedText]);
-
-// Existing code...
+  }, [text]);
 
   return (
     <div
@@ -93,7 +64,6 @@ useEffect(() => {
         borderRadius: '0px',
         backgroundColor: isGenerating ? 'white' : 'white',
         opacity: '1',
-        fontFamily: 'serif',
         transition: 'ease-in-out 0.3s',
       }}
     />

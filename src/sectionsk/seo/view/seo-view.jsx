@@ -326,8 +326,8 @@ const modules = {
         <instruction>
 
         IMPORTANT INSTRUCTIONS:
-        - FORMATTING: Wrap titles in <${titleTag}> and sub-titles in <h3> tags. Wrap all paragraphs (and everything else that should have a line after) in <p style="font-family: serif;"> tags. Use b tags only in same-line text or 'title: paragraph'.
-        - TABLES: Also include one or two tables using appropriate html (make sure to create rows correctly).
+        - FORMATTING: Wrap titles in <${titleTag}> and sub-titles in <h3> tags. Wrap all paragraphs (and everything else that should have a line after) in <p> tags. Use b tags only in same-line text or 'title: paragraph'. Use numbers if you decide to add a list not ul tags.
+        - TABLES: Also include table(s) using appropriate html. 
         - PERSPECTIVE: Don't refer to yourself in the post. Explain how your firm ${firmName} can help, but only at the end.
         ${imageCount !== "No Images" && `- IMAGES: blog post should contain ${imageCount}. Please add representations of them in this format: //Image: {Relevant Image Description}//.
         Make sure these are evenly spaced out in the post, and place them after h tags or in between paragraphs.`}
@@ -362,7 +362,8 @@ const modules = {
     `
 
     let gptResponse = (await claudeResponse.text()).replace(/<br><br> /g, '<br><br>');
-    const textWithBreaks0 = await gptResponse.replace(/<br\s*\/?>/gi, '').replace(/<\/p>|<\/b>|<\/ul>|<\/h1>|<\/h2>|<\/h3>|\/\/Image:.*?\/\//gi, '$&<br>').replace(/<\/ol>/gi, '$&<br><br>').replace(/(<image[^>]*>)/gi, '$&<br><br>');    
+    const textWithBreaks0 = await gptResponse.replace(/<br\s*\/?>/gi, '').replace(/<\/p>|<\/b>|<\/ul>|<\/h1>|<\/h2>|<\/h3>|\/\/Image:.*?\/\//gi, '$&<br>').replace(/<\/ol>/gi, '$&<br><br>')
+    .replace(/(<image[^>]*>)/gi, '$&<br>').replace(/<\/table>/g, '</table><br>');    
     if (currentMode === "Build Outline") {setCurrentMode('Generate');};
     if (currentMode === "Build Outline") {await setIsGenerating(false); await setText(textWithBreaks0); console.log('return'); return;};
 
@@ -388,7 +389,7 @@ const modules = {
     let textWithImages = gptResponse.trim();
     setLoadIndicator(['Adding All Images', 90]);
     if (isImagesOn) {textWithImages = await addImages(gptResponse.trim());}
-    const textWithBreaks = await textWithImages.replace(/<br\s*\/?>/gi, '').replace(/<\/p>|<\/h1>|<\/h2>|<\/h3>|\/\/Image:.*?\/\//gi, '$&<br>').replace(/<\/ol>/gi, '$&<br><br>').replace(/(<img[^>]*>)/gi, '$&<br><br>');
+    const textWithBreaks = await textWithImages.replace(/<br\s*\/?>/gi, '').replace(/<\/p>|<\/h1>|<\/h2>|<\/h3>|\/\/Image:.*?\/\//gi, '$&<br>').replace(/<\/ol>/gi, '$&<br><br>').replace(/(<img[^>]*>)/gi, '$&<br>').replace(/<\/table>/g, '</table><br>');
     await setText(textWithBreaks); console.log(textWithBreaks);
 
     if (currentMode === "Generate") await setWordCount(textWithBreaks.split(' ').length);
