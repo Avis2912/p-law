@@ -197,7 +197,8 @@ const modules = {
   const generateBlog = async () => {
 
       // setText(`<h1>✨ Generating${dots} </h1>`);
-      setIsGenerating(true); setBrowseText(blogTitle);
+      setIsGenerating(true); 
+      setText(''); setBrowseText(blogTitle);
       if (isBrowseWeb) {setDoneSourcing(false)};
       let messages = [];
 
@@ -327,7 +328,29 @@ const modules = {
 
         IMPORTANT INSTRUCTIONS:
         - FORMATTING: Wrap titles in <${titleTag}> and sub-titles in <h3> tags. Wrap all paragraphs (and everything else that should have a line after) in <p> tags. Use b tags only in same-line text or 'title: paragraph'. Use numbers if you decide to add a list not ul tags.
-        - TABLES: Also include table(s) using appropriate html. 
+        - TABLES: Always include table(s). Add in this syntax:
+
+          <div class="quill-better-table-wrapper">
+            <table class="quill-better-table" style="width: 600px;">
+              <colgroup>
+                <col width="300"> <col width="300">
+              </colgroup>
+              <tbody>
+                <tr data-row="row-1" height="45">
+                  <td data-row="row-1" rowspan="1" colspan="1">
+                    <p class="qlbt-cell-line" data-row="row-1" data-cell="cell-xc52" data-rowspan="1" data-colspan="1">Hey whats popping</p>
+                  </td>
+                </tr>
+                <tr data-row="row-2" height="45">
+                  <td data-row="row-2" rowspan="1" colspan="1">
+                    <p class="qlbt-cell-line" data-row="row-2" data-cell="cell-ywlw" data-rowspan="1" data-colspan="1"></p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <p></p>
+          </div>
+
         - PERSPECTIVE: Don't refer to yourself in the post. Explain how your firm ${firmName} can help, but only at the end.
         ${imageCount !== "No Images" && `- IMAGES: blog post should contain ${imageCount}. Please add representations of them in this format: //Image: {Relevant Image Description}//.
         Make sure these are evenly spaced out in the post, and place them after h tags or in between paragraphs.`}
@@ -363,7 +386,7 @@ const modules = {
 
     let gptResponse = (await claudeResponse.text()).replace(/<br><br> /g, '<br><br>');
     const textWithBreaks0 = await gptResponse.replace(/<br\s*\/?>/gi, '').replace(/<\/p>|<\/b>|<\/ul>|<\/h1>|<\/h2>|<\/h3>|\/\/Image:.*?\/\//gi, '$&<br>').replace(/<\/ol>/gi, '$&<br><br>')
-    .replace(/(<image[^>]*>)/gi, '$&<br>').replace(/<\/table>/g, '</table><br>');    
+    .replace(/(<image[^>]*>)/gi, '$&<br>').replace(/<\/div><p><\p>/g, '</div>');    
     if (currentMode === "Build Outline") {setCurrentMode('Generate');};
     if (currentMode === "Build Outline") {await setIsGenerating(false); await setText(textWithBreaks0); console.log('return'); return;};
 
@@ -389,7 +412,8 @@ const modules = {
     let textWithImages = gptResponse.trim();
     setLoadIndicator(['Adding All Images', 90]);
     if (isImagesOn) {textWithImages = await addImages(gptResponse.trim());}
-    const textWithBreaks = await textWithImages.replace(/<br\s*\/?>/gi, '').replace(/<\/p>|<\/h1>|<\/h2>|<\/h3>|\/\/Image:.*?\/\//gi, '$&<br>').replace(/<\/ol>/gi, '$&<br><br>').replace(/(<img[^>]*>)/gi, '$&<br>').replace(/<\/table>/g, '</table><br>');
+    const textWithBreaks = await textWithImages.replace(/<br\s*\/?>/gi, '').replace(/<\/p>|<\/h1>|<\/h2>|<\/h3>|\/\/Image:.*?\/\//gi, '$&<br>').replace(/<\/ol>/gi, '$&<br><br>')
+    .replace(/(<img[^>]*>)/gi, '$&<br>').replace(/<\/div><p><\p>/g, '</div>');     
     await setText(textWithBreaks); console.log(textWithBreaks);
 
     if (currentMode === "Generate") await setWordCount(textWithBreaks.split(' ').length);

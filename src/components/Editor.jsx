@@ -2,6 +2,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import Quill from 'quill';
 import 'quill/dist/quill.snow.css';
+import QuillBetterTable from 'quill-better-table';
+import 'quill-better-table/dist/quill-better-table.css';
+
+Quill.register({
+  'modules/better-table': QuillBetterTable
+}, true);
 
 function BlogEditor({ text, setText, isGenerating, boxWidth, boxHeight }) {
   const quillRef = useRef(null);
@@ -10,33 +16,54 @@ function BlogEditor({ text, setText, isGenerating, boxWidth, boxHeight }) {
 
   useEffect(() => {
     if (!editorRef.current && quillRef.current) {
-      editorRef.current = new Quill(quillRef.current, {
-        theme: 'snow',
-        modules: {
-          toolbar: [
-            ['bold', 'italic', 'underline'],
-            [{ list: 'ordered' }, { list: 'bullet' }],
-            ['link'],
-          ],
-        },
-      });
+      try {
+        editorRef.current = new Quill(quillRef.current, {
+          theme: 'snow',
+          modules: {
+            toolbar: [
+              ['bold', 'italic', 'underline'],
+              [{ list: 'ordered' }, { list: 'bullet' }],
+              ['link'],
+              ['table']
+            ],
+            table: false,
+            'better-table': {
+              operationMenu: {
+                items: {
+                  unmergeCells: {
+                    text: 'Another unmerge cells name'
+                  }
+                }
+              }
+            },
+            keyboard: {
+              bindings: QuillBetterTable.keyboardBinddings
+            }
+          },
+        });
+
+        // Add table button to toolbar
+        const toolbar = editorRef.current.getModule('toolbar');
+        toolbar.addHandler('table', () => {
+          const tableModule = editorRef.current.getModule('better-table');
+          tableModule.insertTable(3, 2);
+        });
+
+      } catch (error) {
+        console.error('Error initializing Quill:', error);
+      }
 
       editorRef.current.on('text-change', () => {
-
-
         const html = editorRef.current.root.innerHTML;
 
         const cleanedHtml = html
-        .replace(/<p>\s*<\/p>/g, '')
-        .replace(/<br>/g, '')
-        .replace(/<p>\s*<\/p>$/g, '')
-        // .replace(/<p><\/p>$/g, '')
+          .replace(/<p>\s*<\/p>/g, '')
+          .replace(/<br>/g, '')
+          .replace(/<p>\s*<\/p>$/g, '');
         
         setContent(cleanedHtml);
         setText(cleanedHtml);
         console.log('Content changed:', cleanedHtml);
-
-
       });
     }
 

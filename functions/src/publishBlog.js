@@ -6,9 +6,9 @@ async function publishBlog(user_id, user_app_password, siteUrl, htmlContent, tit
     const formattedContent = htmlContent.replace(new RegExp(`<${titleTag}>.*?</${titleTag}>`, 'g'), '').replace(/<p>\s*(<img[^>]*>)\s*<\/p>/g, '$1');
     const formattedContent1 = formattedContent.replace(/(<img[^>]*)(>)/g, '$1 style="max-width: 100%;"$2');
     const formattedContent2 = formattedContent1
-    .replace(/<p>\s*<\/p>/g, '<br><br>')
-    .replace(/<table>/g, '<table style="border-collapse: collapse; width: 100%;">')
-    .replace(/<td>/g, '<td style="border: 1px solid black; padding: 8px;">');
+    .replace(/<p>\s*<\/p>/g, '').replace('45', '35')
+    .replace(/(<table(?=\s|>))/g, '<table style="border-collapse: collapse; width: 100%;"')
+    .replace(/(<td(?=\s|>))/g, '<td style="border: 1px solid black; padding: 4px; padding-left: 8px;"');
     
     const formattedSiteUrl = siteUrl.replace('https://', '').replace('http://', '');
     const wp_url = `https://${formattedSiteUrl}/wp-json/wp/v2`;
