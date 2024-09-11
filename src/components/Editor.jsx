@@ -86,7 +86,7 @@ function BlogEditor({ text, setText, isGenerating, boxWidth, boxHeight }) {
       style={{
         width: boxWidth,
         height: boxHeight,
-        marginBottom: '58px',
+        marginBottom: '18px',
         border: '0px solid #ccc',
         borderRadius: '0px',
         backgroundColor: isGenerating ? 'white' : 'white',

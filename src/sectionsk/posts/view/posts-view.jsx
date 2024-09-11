@@ -18,7 +18,7 @@ import Iconify from 'src/components/iconify';
 import { modelKeys } from 'src/genData/models';
 
 // eslint-disable-next-line import/no-relative-packages
-import { writeWeeklyPosts } from '../../../../functions/src/writeWeeklyPosts';
+import { writeWeeklyPosts } from '../../../../functions/src/Weekly/writeWeeklyPosts';
 import PostCard from '../post-card';
 
 const isImagesOn = true;
@@ -82,165 +82,6 @@ export default function BlogView() {
 
   // PAGE LOAD FUNCTIONS
 
-  const writePosts = writeWeeklyPosts(bigBlogString, firmName, genPostPlatform, selectedModel, auth, db, modelKeys, addImages, isImagesOn);
-
-  useEffect(() => {
-
-    if (isUpdateTime) {setWeeklyPosts([]); return;}; 
-
-    if (genPostPlatform) {
-      if (genPostPlatform === "LinkedIn") {
-        setWeeklyPosts([
-          { platform: "LinkedIn", content: "" },
-          { platform: "LinkedIn", content: "" },
-          { platform: "LinkedIn", content: "" }, 
-        ]);
-      } else if (genPostPlatform === "Facebook") {
-        setWeeklyPosts([
-          { platform: "Facebook", content: "" },
-          { platform: "Facebook", content: "" },
-          { platform: "Facebook", content: "" }, 
-        ]);
-      } else if (genPostPlatform === "Instagram") {
-        setWeeklyPosts([
-          { platform: "Instagram", content: "" },
-          { platform: "Instagram", content: "" },
-          { platform: "Instagram", content: "" }, 
-        ]);
-      }
-    }
-    
-    const getFirmData = async () => {
-      try {
-        const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email)); 
-        if (userDoc.exists()) {
-          const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
-          if (firmDoc.exists()) {
-            const lastDateParts = firmDoc.data().WEEKLY_POSTS.LAST_DATE.split('/');
-            const lastDate = new Date(`20${lastDateParts[2]}/${lastDateParts[0]}/${lastDateParts[1]}`);
-            const diffDays = updateDays - Math.ceil((new Date() - lastDate) / (1000 * 60 * 60 * 24));
-            await setSelectedModel(firmDoc.data().SETTINGS.MODEL);
-            if (firmDoc.data().WEEKLY_POSTS.LAST_DATE === "") {setIsUpdateTime(true); return;}
-            await setFirmImage(firmDoc.data().FIRM_INFO.IMAGE); await setCustomColor(firmDoc.data().CHAT_INFO.THEME);
-            setFirmName(firmDoc.data().FIRM_INFO.NAME); setContactUsLink(firmDoc.data().FIRM_INFO.CONTACT_US); console.log('FIRM CONTACT: ', firmDoc.data().FIRM_INFO.CONTACT_US);
-            await setWeeklyPosts(firmDoc.data().WEEKLY_POSTS.POSTS || []);
-            if (diffDays >= 1) { await setTimeToUpdate(diffDays); } else { setIsUpdateTime(true); writeWeeklyPosts(); console.log('WRITING POSTS'); setWeeklyPosts([]); 
-              await updateDoc(doc(db, 'firms', userDoc.data().FIRM), { 'WEEKLY_POSTS.LAST_DATE': "" }); }
-            
-            // GET BIG BLOG DATA
-
-            const bigBlog = firmDoc.data().BLOG_DATA.BIG_BLOG;
-            const selectedBlogs = [];
-            const numBlogsToSelect = Math.min(4, bigBlog.length);
-            for (let i = 0; i < numBlogsToSelect; i += 1) {
-              const randomIndex = Math.floor(Math.random() * bigBlog.length);
-              selectedBlogs.push(bigBlog[randomIndex]);
-              bigBlog.splice(randomIndex, 1);
-            }
-            const bigBlogData = selectedBlogs.map(blog => `${blog.TITLE}: ${blog.CONTENT}`).join('\n\n');
-            setBigBlogString(bigBlogData);
-            // console.log(bigBlogData);
-
-            console.log(firmDoc.data().WEEKLY_POSTS.POSTS);
-          }}
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    if (!genPostPlatform) {getFirmData()};
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isNewPost, genPostPlatform]);
-    
-  
-  
-  const handleClickRoute = () => {
-    setIsNewPost(!isNewPost);
-    if (genPostPlatform) {setGenPostPlatform(null)} 
-    else {setGenPostPlatform("LinkedIn")};
-  }
-
-  const generatePosts = async () => {
-    setIsGenerating(true);
-      const messages = []; 
-
-      let firmNameInt; let firmDescriptionInt; let imagesSettingsInt;
-      const userDocInt = await getDoc(doc(db, 'users', auth.currentUser.email));
-      if (userDocInt.exists()) {const firmDoc = await getDoc(doc(db, 'firms', userDocInt.data().FIRM));
-      if (firmDoc.exists()) {firmNameInt = firmDoc.data().FIRM_INFO.NAME; firmDescriptionInt = firmDoc.data().FIRM_INFO.DESCRIPTION; imagesSettingsInt = firmDoc.data().SETTINGS.IMAGES;}};
-
-      let browseTextResponse = "";
-
-      if (isUseNews) {browseTextResponse = await browseWeb(browseText); console.log('PERPLEXITY: ', browseTextResponse);};
-      messages.push({
-        "role": "user", 
-        "content":  `<instruction> You are Pentra AI, a lawyer working at ${firmNameInt}, described as ${firmDescriptionInt}.  
-        YOUR GOAL: Write 3 informative posts for ${genPostPlatform} ${postDescription !== "" && `based roughly on the following topic: ${postDescription}.`}. 
-        
-        IMPORTANT INSTRUCTIONS:
-        - RESPONSE FORMAT: Always respond with a JSON-parsable array of 3 hashmaps, 
-        EXAMPLE OUTPUT: "[{"platform": "${genPostPlatform}", "content": "*Post Content*"}, {"platform": "${genPostPlatform}", "content": "*Post Content*"}, {"platform": "${genPostPlatform}", "content": "*Post Content*"}]". 
-        ONLY OUTPUT THE ARRAY. NOTHING ELSE. Make sure to put quotes at the ends of the content string.
-        - Wrap titles in <h2> tags. Wrap EVERY paragraph in <p> tags.
-        - PARAGRAPH COUNT: these posts should be ${wordRange} paragraphs long. 
-        - IMAGES: post should contain 1 image, placed after the h2 post title. Please add it in this format: //Image: {relevant description}//.
-        - ${browseTextResponse !== "" && `WEB RESULTS: Consider using the following web information I got from an LLM for the prompt ${browseText}: ${browseTextResponse}`}
-        - ${postKeywords !== "" && `KEYWORDS: Use the following keywords in your posts: ${postKeywords}.`}
-        - ${style !== "Unstyled" && `STYLE: This post should SPECIFICALLY be written in the ${style} style.`}
-        - DONT ADD ANY SPACE BETWEEN THE JSON AND ARRAY BRACKETS. It should be proper [{}, {}, {}].
-        </instruction>
-
-        - ${isUseBlog && `BLOGS: Use the following blogs from the firm to source content from: ${bigBlogString}.`}
-
-        `
-      });
-      
-
-
-    let gptResponse; let textWithoutImages; let isError; let tries = 0;
-    do { isError = false; tries += 1; 
-    // eslint-disable-next-line no-await-in-loop
-    const response = await fetch('https://us-central1-pentra-claude-gcp.cloudfunctions.net/gcp-claudeAPI', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ messages, blogDescription: postDescription, blogKeywords: postKeywords,
-      model: modelKeys[selectedModel] })
-    });
-    // eslint-disable-next-line no-await-in-loop
-    gptResponse = (await response.text()); console.log(gptResponse);
-    gptResponse = gptResponse.replace(/<br\s*\/?>/gi, '').replace(/<\/p>|<\/h1>|<\/h2>|<\/h3>|\/\/Image:.*?\/\//gi, '$&<br>').replace(/(<image[^>]*>|\/\/Image:.*?\/\/)/gi, '$&<br>');  
-    // eslint-disable-next-line no-await-in-loop
-    try { textWithoutImages = JSON.parse(gptResponse.trim().replace(/^```|```$/g, '').replace(/json/g, '')); } catch (error) { if (tries < 3) {console.log('rerun'); isError = true;} else { isError = true; } } } 
-    while (isError && tries < 3);
-
-    let textWithImages = textWithoutImages; console.log(textWithoutImages);
-    if (isImagesOn) {textWithImages = await addImages(textWithoutImages, imagesSettingsInt);}
-    await setGeneratedPosts(textWithImages);
-    await setWeeklyPosts(textWithImages);   
-    console.log(weeklyPosts);
-    setIsGenerating(false);
-
-    try {
-      const firmDatabase = collection(db, 'firms');
-      const data = await getDocs(firmDatabase);
-      const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
-      const firmDoc = data.docs.find((docc) => docc.id === userDoc.data().FIRM);
-      if (firmDoc) {  
-        const firmDocRef = doc(db, 'firms', firmDoc.id);
-        const currentDate = new Date(); const formattedDate = `${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear().toString().substr(-2)} | ${currentDate.getHours() % 12 || 12}:${currentDate.getMinutes()} ${currentDate.getHours() >= 12 ? 'PM' : 'AM'}`;
-        const genPosts = firmDoc.data().GEN_POSTS || [];
-        const newPost = { [formattedDate]: textWithImages }; genPosts.unshift(newPost);
-        await updateDoc(firmDocRef, { GEN_POSTS: genPosts });
-    }} catch (err) {console.log('ERRORRRRRR', err);}
-    
-  }
-
-  const handleOpen = () => {setIsDialogOpen(true);};
-  const handleClose = () => {setIsDialogOpen(false);};
-  const handleOpen2 = () => {setIsDialogOpen2(true);};
-  const handleClose2 = () => {setIsDialogOpen2(false);};
-  const handleTemplatesOpen = () => {setIsTemplatesOpen(true);};
-  const handleTemplatesClose = () => {setIsTemplatesOpen(false);};
 
   const addImages = async (posts, imagesSettings='All') => {
     const regex = /\/\/Image: (.*?)\/\//g; 
@@ -389,6 +230,168 @@ export default function BlogView() {
     return postsWithImages; 
   }
 
+  const writePosts = () => {
+    writeWeeklyPosts(bigBlogString, firmName, genPostPlatform, selectedModel, auth, db, modelKeys, addImages, isImagesOn);
+  }
+
+  useEffect(() => {
+
+    if (isUpdateTime) {setWeeklyPosts([]); return;}; 
+
+    if (genPostPlatform) {
+      if (genPostPlatform === "LinkedIn") {
+        setWeeklyPosts([
+          { platform: "LinkedIn", content: "" },
+          { platform: "LinkedIn", content: "" },
+          { platform: "LinkedIn", content: "" }, 
+        ]);
+      } else if (genPostPlatform === "Facebook") {
+        setWeeklyPosts([
+          { platform: "Facebook", content: "" },
+          { platform: "Facebook", content: "" },
+          { platform: "Facebook", content: "" }, 
+        ]);
+      } else if (genPostPlatform === "Instagram") {
+        setWeeklyPosts([
+          { platform: "Instagram", content: "" },
+          { platform: "Instagram", content: "" },
+          { platform: "Instagram", content: "" }, 
+        ]);
+      }
+    }
+    
+    const getFirmData = async () => {
+      try {
+        const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email)); 
+        if (userDoc.exists()) {
+          const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
+          if (firmDoc.exists()) {
+            const lastDateParts = await firmDoc.data().WEEKLY_POSTS.LAST_DATE.split('/');
+            const lastDate = await new Date(`20${lastDateParts[2]}/${lastDateParts[0]}/${lastDateParts[1]}`);
+            const diffDays = await updateDays - Math.ceil((new Date() - lastDate) / (1000 * 60 * 60 * 24));
+            await setSelectedModel(firmDoc.data().SETTINGS.MODEL);
+            if (firmDoc.data().WEEKLY_POSTS.LAST_DATE === "") {setIsUpdateTime(true); return;}
+            await setFirmImage(firmDoc.data().FIRM_INFO.IMAGE); await setCustomColor(firmDoc.data().CHAT_INFO.THEME);
+            setFirmName(firmDoc.data().FIRM_INFO.NAME); setContactUsLink(firmDoc.data().FIRM_INFO.CONTACT_US); console.log('FIRM CONTACT: ', firmDoc.data().FIRM_INFO.CONTACT_US);
+            await setWeeklyPosts(firmDoc.data().WEEKLY_POSTS.POSTS || []); console.log('DIFF DAYS: ', diffDays);
+            if (diffDays >= 1) { await setTimeToUpdate(diffDays); } else { setIsUpdateTime(true); writePosts(); console.log('WRITING POSTS'); setWeeklyPosts([]); 
+              await updateDoc(doc(db, 'firms', userDoc.data().FIRM), { 'WEEKLY_POSTS.LAST_DATE': "" }); }
+            
+            // GET BIG BLOG DATA
+
+            const bigBlog = firmDoc.data().BLOG_DATA.BIG_BLOG;
+            const selectedBlogs = [];
+            const numBlogsToSelect = Math.min(4, bigBlog.length);
+            for (let i = 0; i < numBlogsToSelect; i += 1) {
+              const randomIndex = Math.floor(Math.random() * bigBlog.length);
+              selectedBlogs.push(bigBlog[randomIndex]);
+              bigBlog.splice(randomIndex, 1);
+            }
+            const bigBlogData = selectedBlogs.map(blog => `${blog.TITLE}: ${blog.CONTENT}`).join('\n\n');
+            setBigBlogString(bigBlogData);
+            // console.log(bigBlogData);
+
+            console.log(firmDoc.data().WEEKLY_POSTS.POSTS);
+          }}
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    if (!genPostPlatform) {getFirmData()};
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isNewPost, genPostPlatform]);
+    
+  
+  
+  const handleClickRoute = () => {
+    setIsNewPost(!isNewPost);
+    if (genPostPlatform) {setGenPostPlatform(null)} 
+    else {setGenPostPlatform("LinkedIn")};
+  }
+
+  const generatePosts = async () => {
+    setIsGenerating(true);
+      const messages = []; 
+
+      let firmNameInt; let firmDescriptionInt; let imagesSettingsInt;
+      const userDocInt = await getDoc(doc(db, 'users', auth.currentUser.email));
+      if (userDocInt.exists()) {const firmDoc = await getDoc(doc(db, 'firms', userDocInt.data().FIRM));
+      if (firmDoc.exists()) {firmNameInt = firmDoc.data().FIRM_INFO.NAME; firmDescriptionInt = firmDoc.data().FIRM_INFO.DESCRIPTION; imagesSettingsInt = firmDoc.data().SETTINGS.IMAGES;}};
+
+      let browseTextResponse = "";
+
+      if (isUseNews) {browseTextResponse = await browseWeb(browseText); console.log('PERPLEXITY: ', browseTextResponse);};
+      messages.push({
+        "role": "user", 
+        "content":  `<instruction> You are Pentra AI, a lawyer working at ${firmNameInt}, described as ${firmDescriptionInt}.  
+        YOUR GOAL: Write 3 informative posts for ${genPostPlatform} ${postDescription !== "" && `based roughly on the following topic: ${postDescription}.`}. 
+        
+        IMPORTANT INSTRUCTIONS:
+        - RESPONSE FORMAT: Always respond with a JSON-parsable array of 3 hashmaps, 
+        EXAMPLE OUTPUT: "[{"platform": "${genPostPlatform}", "content": "*Post Content*"}, {"platform": "${genPostPlatform}", "content": "*Post Content*"}, {"platform": "${genPostPlatform}", "content": "*Post Content*"}]". 
+        ONLY OUTPUT THE ARRAY. NOTHING ELSE. Make sure to put quotes at the ends of the content string.
+        - Wrap titles in <h2> tags. Wrap EVERY paragraph in <p> tags.
+        - PARAGRAPH COUNT: these posts should be ${wordRange} paragraphs long. 
+        - IMAGES: post should contain 1 image, placed after the h2 post title. Please add it in this format: //Image: {relevant description}//.
+        - ${browseTextResponse !== "" && `WEB RESULTS: Consider using the following web information I got from an LLM for the prompt ${browseText}: ${browseTextResponse}`}
+        - ${postKeywords !== "" && `KEYWORDS: Use the following keywords in your posts: ${postKeywords}.`}
+        - ${style !== "Unstyled" && `STYLE: This post should SPECIFICALLY be written in the ${style} style.`}
+        - DONT ADD ANY SPACE BETWEEN THE JSON AND ARRAY BRACKETS. It should be proper [{}, {}, {}].
+        </instruction>
+
+        - ${isUseBlog && `BLOGS: Use the following blogs from the firm to source content from: ${bigBlogString}.`}
+
+        `
+      });
+      
+
+
+    let gptResponse; let textWithoutImages; let isError; let tries = 0;
+    do { isError = false; tries += 1; 
+    // eslint-disable-next-line no-await-in-loop
+    const response = await fetch('https://us-central1-pentra-claude-gcp.cloudfunctions.net/gcp-claudeAPI', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ messages, blogDescription: postDescription, blogKeywords: postKeywords,
+      model: modelKeys[selectedModel] })
+    });
+    // eslint-disable-next-line no-await-in-loop
+    gptResponse = (await response.text()); console.log(gptResponse);
+    gptResponse = gptResponse.replace(/<br\s*\/?>/gi, '').replace(/<\/p>|<\/h1>|<\/h2>|<\/h3>|\/\/Image:.*?\/\//gi, '$&<br>').replace(/(<image[^>]*>|\/\/Image:.*?\/\/)/gi, '$&<br>');  
+    // eslint-disable-next-line no-await-in-loop
+    try { textWithoutImages = JSON.parse(gptResponse.trim().replace(/^```|```$/g, '').replace(/json/g, '')); } catch (error) { if (tries < 3) {console.log('rerun'); isError = true;} else { isError = true; } } } 
+    while (isError && tries < 3);
+
+    let textWithImages = textWithoutImages; console.log(textWithoutImages);
+    if (isImagesOn) {textWithImages = await addImages(textWithoutImages, imagesSettingsInt);}
+    await setGeneratedPosts(textWithImages);
+    await setWeeklyPosts(textWithImages);   
+    console.log(weeklyPosts);
+    setIsGenerating(false);
+
+    try {
+      const firmDatabase = collection(db, 'firms');
+      const data = await getDocs(firmDatabase);
+      const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
+      const firmDoc = data.docs.find((docc) => docc.id === userDoc.data().FIRM);
+      if (firmDoc) {  
+        const firmDocRef = doc(db, 'firms', firmDoc.id);
+        const currentDate = new Date(); const formattedDate = `${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear().toString().substr(-2)} | ${currentDate.getHours() % 12 || 12}:${currentDate.getMinutes()} ${currentDate.getHours() >= 12 ? 'PM' : 'AM'}`;
+        const genPosts = firmDoc.data().GEN_POSTS || [];
+        const newPost = { [formattedDate]: textWithImages }; genPosts.unshift(newPost);
+        await updateDoc(firmDocRef, { GEN_POSTS: genPosts });
+    }} catch (err) {console.log('ERRORRRRRR', err);}
+    
+  }
+
+  const handleOpen = () => {setIsDialogOpen(true);};
+  const handleClose = () => {setIsDialogOpen(false);};
+  const handleOpen2 = () => {setIsDialogOpen2(true);};
+  const handleClose2 = () => {setIsDialogOpen2(false);};
+  const handleTemplatesOpen = () => {setIsTemplatesOpen(true);};
+  const handleTemplatesClose = () => {setIsTemplatesOpen(false);};
+
 
   const browseWeb = (prompt) => {
     const apiKey = `${import.meta.env.VITE_PERPLEXITY_API_KEY}`;
@@ -443,13 +446,11 @@ export default function BlogView() {
         {`Return in ~5 minutes and they'll be ready!`}
       </Typography> </>}
 
-      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
-        <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, 
-      letterSpacing: '1.05px',  fontWeight: 800, fontSize: '32.75px'}}>         
-        {isNewPost ? 'Create New Posts' : 'Weekly Social Media Posts'}
-        </Typography>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={0.75}>
         
-        <Stack direction="row" spacing={2}>
+      <PageTitle title={`${isNewPost ? 'Create New Posts' : 'Weekly Social Media Posts'}`} />    
+        
+        <Stack direction="row" spacing={2}  mt={-2}>
         {isNewPost && (<>
 
         <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} 

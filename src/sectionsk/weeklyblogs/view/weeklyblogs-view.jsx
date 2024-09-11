@@ -18,7 +18,7 @@ import Iconify from 'src/components/iconify';
 import { modelKeys } from 'src/genData/models';
 
 // eslint-disable-next-line import/no-relative-packages
-import { writeWeeklyBlogs } from '../../../../functions/src/writeWeeklyBlogs';
+import { writeWeeklyBlogs } from '../../../../functions/src/Weekly/writeWeeklyBlogs';
 import PostCard from '../weeklyblogs-card';
 
 const isImagesOn = true;
@@ -224,7 +224,8 @@ export default function BlogView() {
     return postsWithImages; 
   }
 
-  const writeBlogs = writeWeeklyBlogs(
+  const writeBlogs = () => { writeWeeklyBlogs(
+    
     contactUsLink, 
     internalLinks, 
     bigBlogString, 
@@ -237,6 +238,8 @@ export default function BlogView() {
     isImagesOn, 
     addImages
   );
+
+  }
 
 
   return (

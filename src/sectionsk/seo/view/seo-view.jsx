@@ -25,7 +25,7 @@ import { Page } from 'openai/pagination';
 import { modelKeys } from 'src/genData/models';
 
 // eslint-disable-next-line import/no-relative-packages
-import publishBlog from '../../../../functions/src/publishBlog';
+import publishBlog from '../../../../functions/src/WpFunctions/publishBlog';
 
 import 'src/components/Editor.css';
 
@@ -110,8 +110,8 @@ const modules = {
   const titleTag = 'h2';
 
   let boxHeight; const boxWidth = 'calc(100%)';
-  if (isReferenceGiven) { boxHeight = 'calc(80% - 220px)';} 
-  else if (wordCount < 300) { boxHeight = 'calc(80% - 76.5px)'; }
+  if (isReferenceGiven) { boxHeight = 'calc(77.5% - 220px)';} 
+  else if (wordCount < 300) { boxHeight = 'calc(77.5% - 51.5px)'; }
   else { boxHeight = 'auto'; }
 
   // const editor = useMemo(() => withHistory(withReact(createEditor())), []);

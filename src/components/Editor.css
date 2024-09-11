@@ -15,6 +15,10 @@
   margin: 0;
 }
 
+.ql-editor h {
+  font-size: 15px;
+}
+
 .gen-buttons {
   font-family: 'Mulish', sans-serif;
   font-size: 15.75px;

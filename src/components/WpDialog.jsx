@@ -15,7 +15,7 @@ import Alert from '@mui/material/Alert';
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore"; 
 import { db } from 'src/firebase-config/firebase';
 // eslint-disable-next-line import/no-relative-packages
-import { integrateWp } from '../../functions/src/testIntegration';
+import { integrateWp } from '../../functions/src/WpFunctions/testIntegration';
 
 
 export default function WpDialog ({ wpUrl, setWpUrl, wpUsername, setWpUsername, wpPassword, setWpPassword,

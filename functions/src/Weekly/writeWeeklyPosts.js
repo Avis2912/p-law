@@ -3,7 +3,9 @@ import { useCallback } from 'react';
 
 export const writeWeeklyPosts = async (bigBlogString, firmName, genPostPlatform, selectedModel, auth, db, modelKeys, addImages, isImagesOn) => {
     
-    let tempPosts = []; const platforms = ["LinkedIn", "LinkedIn", "Facebook", "Facebook", "Instagram", "Instagram",]; 
+    console.log('WEEKLY POSTS ACTIVATED');
+    let tempPosts = []; const platforms = ["LinkedIn", "Facebook", "Instagram",];
+    // const platforms = ["LinkedIn", "LinkedIn", "Facebook", "Facebook", "Instagram", "Instagram",]; 
     let firmNameInt; let firmDescriptionInt; let imagesSettingsInt;
     const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
     if (userDoc.exists()) {const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
