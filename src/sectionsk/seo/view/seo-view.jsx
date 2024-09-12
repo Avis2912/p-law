@@ -451,6 +451,7 @@ const modules = {
       const formattedDate = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
       const timeToRead = Math.ceil(imagelessText.split(' ').length / 200);
       let firmSite = ''; try {firmSite = new URL(contactUsLink).hostname.replace(/^www\./, '');} catch (e) {console.error(e);}      
+      // const templatedBgImage = await fetchImage(`HD Background Image for ${blogTitle}`, true);
 
       await fetch('https://api.templated.io/v1/render', {
         method: 'POST',
@@ -550,9 +551,10 @@ const modules = {
       Based on '${h1Title0}' give me a distilled two word phrase with the three words attached at the end being HD background image. 
       ONLY output the phrase. SAY NOTHING ELSE. Example: 'UI/UX trends in HR 2024' = 'UI/UX background image' `}],})});
     console.log(backgroundFormattedTitle);
-    const brandImage = await fetchImage(backgroundFormattedTitle.text(), true);
+    console.log('BACKGROUND FORMATTED TITLE: ', backgroundFormattedTitle.text());
+    // const brandImage = await fetchImage(backgroundFormattedTitle.text(), true);
 
-    // const brandImage = await fetchImage(`HD Background Image for ${blogTitle}`, true);
+    const brandImage = await fetchImage(`HD Background Image for ${blogTitle}`, true);
       
     imagefullText = imagelessText.replace(new RegExp(`(</${titleTag}>)`), `$1${brandImage}`);
     }
@@ -894,14 +896,7 @@ const modules = {
             `}</style>
 
         <BlogEditor text={text} setText={setText} isGenerating={isGenerating}
-        boxHeight={boxHeight} boxWidth={boxWidth}/>
-
-
-      <Typography sx={{ position: 'absolute', fontSize: '14px', fontFamily: 'Arial', 
-            top: '180px', right: '72.5px', letterSpacing: '-0.25px', fontWeight: '600' }}>
-        {wordCount && currentMode === "Alter Draft" ? `${wordCount} Words` : ''}
-      </Typography>
-
+        boxHeight={boxHeight} boxWidth={boxWidth} wordCount={wordCount}/>
 
       
         <Stack direction="row" spacing={2} >

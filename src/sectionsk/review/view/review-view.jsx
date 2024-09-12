@@ -169,7 +169,7 @@ export default function UserPage() {
           {firmName} {!matches && <>| Review Us</>}
       </Typography>
 
-      <PageTitle title={`${firmName} ${!matches && <>| Review Us</>}`} />
+      {/* <PageTitle title={`${firmName} ${!matches && <>| Review Us</>}`} /> */}
 
       </Stack>
     </Card> 

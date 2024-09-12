@@ -112,7 +112,7 @@ export default function WpDialog ({ wpUrl, setWpUrl, wpUsername, setWpUsername, 
       <Stack direction="row" spacing={3} sx={{width: '92%', marginBottom: '25px', display: 'flex', alignItems: 'center'}}>
       <TextField label="Your WP Username / Email" placeholder="john@johnlawyers.com" size="large" 
       sx={{width: '100%', marginBottom: '25px', borderRadius: '0px', }} value={wpUsername} onChange={(e) => setWpUsername(e.target.value)}
-      /> <Tooltip title="You can generate an application password from your WordPress account settings">
+      /> <Tooltip title="The WordPress username or email (either works) that you use to login to your account.">
   <div>
     <Iconify icon="material-symbols:help" sx={{height: '24px', minWidth: '24px', color: 'gray',}}/>
   </div>
@@ -121,7 +121,7 @@ export default function WpDialog ({ wpUrl, setWpUrl, wpUsername, setWpUsername, 
       <Stack direction="row" spacing={3} sx={{width: '92%', marginBottom: '25px', display: 'flex', alignItems: 'center'}}>
       <TextField label="Your Application Password" placeholder="Enter your WordPress URL" size="large" 
       sx={{width: '100%', marginBottom: '25px', borderRadius: '0px', }} value={wpPassword} onChange={(e) => setWpPassword(e.target.value)}
-      /> <Tooltip title="You can generate an application password from your WordPress account settings">
+      /> <Tooltip title="Found inside your Profile Section under Account Settings after enabling 2 Factor Authorization for your account. Click this icon to watch a quick tutorial.">
   <div>
     <Iconify 
       icon="material-symbols:help" 

@@ -240,7 +240,7 @@ export default function UserPage() {
             sx={(theme)=>({backgroundColor: selectedPlatform === index + 1 ? theme.palette.primary.navBg : theme.palette.primary.main ,
             position: "absolute", right: '30px', height: '40px', '&:hover': { backgroundColor: selectedPlatform === index+1 ? theme.palette.primary.navBg : `` }})}
             onClick={()=>{setSelectedPlatform(index+1)}}>
-               Select</Button>
+               {selectedPlatform === index + 1 ? `Linked` : `Select`}</Button>
           </Card>
         ))}
 
@@ -283,7 +283,7 @@ export default function UserPage() {
       width: '100%', }} spacing={2}>
 
         <Typography variant="subtitle3" fontSize="24.25px" position="" left="67.5px" userSelect="none"
-      letterSpacing="0.45px" fontWeight="400" fontFamily="DM Serif Display">No Reviews Collected Yet</Typography>
+      letterSpacing="0.45px" fontWeight="400" fontFamily="DM Serif Display">No Reviews Collected So Far</Typography>
 
       </Stack>
     </Card>}
@@ -294,7 +294,7 @@ export default function UserPage() {
       width: '100%', }} spacing={2}>
 
         <Typography variant="subtitle3" fontSize="24.25px" position="" left="67.5px" userSelect="none"
-      letterSpacing="0.45px" fontWeight="400" fontFamily="DM Serif Display">Reviews Collected Yet</Typography>
+      letterSpacing="0.45px" fontWeight="400" fontFamily="DM Serif Display">Reviews Collected So Far</Typography>
       
       </Stack>
     </Card>}

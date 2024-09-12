@@ -197,9 +197,9 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
       
       <Card sx={(theme) => ({ height: '240px', width: '465px', borderRadius: '5.5px',
       top: '20px', left: '330px', p: '23px', pt: '18px', position: 'absolute', 
-      backgroundColor: 'white', border: `1.5px solid ${theme.palette.primary.navBg}`,})}>
+      backgroundColor: 'white', border: `1.0px solid ${theme.palette.primary.navBg}`,})}>
 
-      <Chart options={options} series={series} type="area" width={450} height={255} 
+      <Chart options={options} series={series} type="area" width={450} height={270} 
       style={{backgroundColor: 'white', position: 'absolute',
       left: '-1.5px', top: '-8px'}} />  
 
@@ -212,7 +212,7 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
       
       <Card sx={(theme) => ({ height: '240px', width: '195px', borderRadius: '5.5px',
       top: '20px', left: '815px', pt: '18px', position: 'absolute', 
-      backgroundColor: 'white', border: `1.5px solid ${theme.palette.primary.navBg}`,})}>
+      backgroundColor: 'white', border: `1.0px solid ${theme.palette.primary.navBg}`,})}>
 
       <Card sx={(theme)=>({ height: '37.5px', width: '194px', borderRadius: '0px', borderBottomRightRadius: '3.5px',
       backgroundColor: theme.palette.primary.navBg, position: 'absolute', display: 'flex',
@@ -245,7 +245,7 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
       <Card sx={(theme)=>({ height: '240px', width: '195px', borderRadius: '5.5px',
       top: '20px', left: '330px', p: '23px', pt: '18px', position: 'absolute', 
       display: 'flex', justifyContent: 'center', alignItems: 'center',
-      backgroundColor: 'white', border: `1.5px solid ${theme.palette.primary.navBg}`,})}>
+      backgroundColor: 'white', border: `1.0px solid ${theme.palette.primary.navBg}`,})}>
       
       <Card sx={(theme)=>({ height: '37.5px', width: '100%', borderRadius: '0px', borderBottomRightRadius: '0px',
       backgroundColor: theme.palette.primary.navBg, position: 'absolute', display: 'flex', userSelect: 'none',
@@ -283,7 +283,7 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
         bgcolor: 'white', overflow: 'auto', 
         marginLeft: '38px',borderRadius: '5.5px', position: 'absolute',
         top: '20px', left: '510px', pt: '0px', pb: '0px',
-        border: `1.5px solid ${theme.palette.primary.navBg}`,})}>
+        border: `1.0px solid ${theme.palette.primary.navBg}`,})}>
 
       {indexedBlogs.map((blog, index) => (
         <ListItem 
@@ -306,7 +306,7 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
       height: isElongated && selectedOption === 2 ? '300px' : '240px', 
       width: '680px', borderRadius: '5.5px', transition: '0.3s all',
       top: '20px', left: '330px', p: '23px', pt: '18px', position: 'absolute', 
-      backgroundColor: 'white', border: `1.5px solid ${theme.palette.primary.navBg}`,
+      backgroundColor: 'white', border: `1.0px solid ${theme.palette.primary.navBg}`,
       display: 'flex', justifyContent: 'center', alignItems: 'center'})}>
         <Typography sx={{ fontSize: '34px', fontWeight: '400', userSelect: 'none',
         letterSpacing: '-0.3px', fontFamily: 'DM Serif Display',}}>
@@ -320,7 +320,7 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
         bgcolor: 'white', overflow: 'auto', 
         marginLeft: '38px',borderRadius: '5.5px', position: 'absolute',
         top: '20px', left: '292px', pt: '0px', pb: '0px',
-        border: `1.5px solid ${theme.palette.primary.navBg}`,})}>
+        border: `1.0px solid ${theme.palette.primary.navBg}`,})}>
 
       {jobData.map((job, index) => (
         <ListItem 

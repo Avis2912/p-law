@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import Quill from 'quill';
+import { Typography } from '@mui/material';
 import 'quill/dist/quill.snow.css';
 import QuillBetterTable from 'quill-better-table';
 import 'quill-better-table/dist/quill-better-table.css';
@@ -9,7 +10,7 @@ Quill.register({
   'modules/better-table': QuillBetterTable
 }, true);
 
-function BlogEditor({ text, setText, isGenerating, boxWidth, boxHeight }) {
+function BlogEditor({ text, setText, isGenerating, boxWidth, boxHeight, wordCount }) {
   const quillRef = useRef(null);
   const editorRef = useRef(null);
   const [content, setContent] = useState(text);
@@ -81,12 +82,19 @@ function BlogEditor({ text, setText, isGenerating, boxWidth, boxHeight }) {
   }, [text]);
 
   return (
+    <>
+    <Typography sx={{ position: 'relative', fontSize: '14px', fontFamily: 'Arial',  height: 0,
+        top: 12.5, right: 13.5, letterSpacing: '-0.25px', fontWeight: '600', textAlign: 'right' }}>
+    {wordCount > 1 && wordCount ? `${wordCount} Words` : ''}
+    {/* {wordCount > 1 ? `${wordCount} Words` : wordCount === 1 ? '1 Word' : ''} */}
+    </Typography>
+
     <div
       ref={quillRef}
       style={{
         width: boxWidth,
         height: boxHeight,
-        marginBottom: '18px',
+        marginBottom: 18,
         border: '0px solid #ccc',
         borderRadius: '0px',
         backgroundColor: isGenerating ? 'white' : 'white',
@@ -94,6 +102,7 @@ function BlogEditor({ text, setText, isGenerating, boxWidth, boxHeight }) {
         transition: 'ease-in-out 0.3s',
       }}
     />
+    </>
   );
 }
 
@@ -103,6 +112,7 @@ BlogEditor.propTypes = {
   isGenerating: PropTypes.bool,
   boxWidth: PropTypes.string,
   boxHeight: PropTypes.string,
+  wordCount: PropTypes.number,
 };
 
 export default BlogEditor;

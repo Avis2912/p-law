@@ -14,6 +14,7 @@ import Iconify from 'src/components/iconify';
 import { useState, useEffect } from 'react';
 
 import PageTitle from 'src/components/PageTitle';
+import CompetitionDialog from 'src/components/CompDialog';
 import PostCard from '../post-card';
 
 export default function ListsView() {
@@ -77,18 +78,6 @@ export default function ListsView() {
 
   const handleAddNewCompetitionClick = async () => {
     handleOpen2(true);
-    // const newListData = { listName: newList, date: formattedDate, listMembers: [1, 7, 5] };
-    // try {
-    //   const userDocRef = doc(db, 'brands', auth.currentUser.email);
-    //   await updateDoc(userDocRef, {
-    //     lists: [...brandLists, newListData]
-    //   });
-    //   setBrandLists(prevLists => [...prevLists, newListData]);
-    //   setNewList('');
-    //   setAddingList(false);
-    // } catch (err) {
-    //   alert(err);
-    // }
   };
 
   return (
@@ -108,6 +97,8 @@ export default function ListsView() {
         <style>
           @import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap);
         </style>
+
+        {isDialogOpen2 && <CompetitionDialog isDialogOpen={isDialogOpen2} handleClose={handleClose2} firmName='Raval Trial Law' />}
 
         <PageTitle title="Competition Analysis" />
 
@@ -204,20 +195,6 @@ export default function ListsView() {
         </Card>
       </Dialog>
 
-      <Dialog open={isDialogOpen2} onClose={handleClose2} 
-      PaperProps={{ style: { minHeight: '220px', minWidth: '500px', display: 'flex', flexDirection: "row" } }}>
-        <Card sx={{ width: '100%', height: '100%', backgroundColor: 'white', borderRadius: '0px',
-        padding: '55px', pb: '35px' }}>
-        <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, lineHeight: '55px',
-        letterSpacing: '-0.05px',  fontWeight: 800, fontSize: '40.75px', marginBottom: '25px'}}> 
-        Coming Soon</Typography>
-        <Typography sx={{ fontFamily: "serif", mb: 0, lineHeight: '55px', marginBottom: '35px',
-        letterSpacing: '0.25px',  fontWeight: 500, fontSize: '24.75px'}}> 
-        This feature is in the works and will <br /> 
-        be out in the next couple weeks! <br /> 
-        </Typography>
-        </Card>
-      </Dialog>
     </div>
   );
 }

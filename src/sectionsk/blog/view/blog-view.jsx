@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Editor, EditorState } from 'draft-js';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -15,8 +15,14 @@ import { db, auth } from 'src/firebase-config/firebase';
 import Button from '@mui/material/Button';
 import { Card, TextField } from '@mui/material';
 import { css, keyframes } from '@emotion/react';
+
 import PageTitle from 'src/components/PageTitle';
 import BlogEditor from 'src/components/Editor';
+import WpDialog from 'src/components/WpDialog';
+import ComingSoon from 'src/components/ComingSoon';
+
+// eslint-disable-next-line import/no-relative-packages
+import publishBlog from '../../../../functions/src/WpFunctions/publishBlog';
 
 const isImagesOn = true;
 const modelKeys = {
@@ -40,6 +46,8 @@ export default function ProductsView() {
   const [blogText, setBlogText] = useState('');
   const [blogDescription, setBlogDescription] = useState('');
   const [blogKeywords, setBlogKeywords] = useState(null);
+  const [blogTitle, setBlogTitle] = useState('');
+  const [blogInstructions, setBlogInstructions] = useState(null);
   const [smallBlog, setSmallBlog] = useState(null); 
   const [internalLinks, setInternalLinks] = useState(null); 
   const [firmName, setFirmName] = useState(null);
@@ -65,6 +73,17 @@ export default function ProductsView() {
   const [referenceText, setReferenceText] = useState(null);
   const [isUseInternalLinks, setIsUseInternalLinks] = useState(false);
   const [isMentionCaseLaw, setIsMentionCaseLaw] = useState(false);
+
+  const [isWpIntegrated, setIsWpIntegrated] = useState(false);
+  const [isWpDropdownOpen, setIsWpDropdownOpen] = useState(false);
+  const [isWpDialogOpen, setIsWpDialogOpen] = useState(false);
+  const [isPostError, setIsPostError] = useState(false);
+
+  const [wpUrl, setWpUrl] = React.useState(null);
+  const [wpUsername, setWpUsername] = React.useState(null);
+  const [wpPassword, setWpPassword] = React.useState(null);
+  const [isComingSoon, setIsComingSoon] = React.useState(false);
+  const titleTag = 'h2';
 
   const boxHeight = 'calc(100% - 125px)'; 
   const boxWidth = 'calc(100%)';
@@ -448,12 +467,48 @@ export default function ProductsView() {
         onClick={() => {setCurrentMode("Generate"); setText('');}}>
         Skip Outline </Button>} */}
 
+
+      {isWpDropdownOpen && <Button variant="contained" startIcon={<Iconify icon="teenyicons:text-document-solid" sx={{height: '13.25px'}}/>} 
+      onClick={() => {setIsComingSoon(true);}}
+      sx={(theme) => ({ backgroundColor: theme.palette.primary.black,
+      '&:hover': { backgroundColor: theme.palette.primary.black, }, })}>        
+      Save for Later </Button>}
+
+      {isWpDropdownOpen && <Button variant="contained" startIcon={<Iconify icon="mdi:clock" sx={{height: '16.25px'}}/>} 
+      onClick={() => {setIsComingSoon(true);}}
+      sx={(theme) => ({ backgroundColor: theme.palette.primary.black,
+      '&:hover': { backgroundColor: theme.palette.primary.black, }, })}>        
+      Schedule </Button>}
+
+      {isComingSoon && <ComingSoon isDialogOpen2={isComingSoon} handleClose2={() => {setIsComingSoon(false)}} />}
+
+      {isWpDropdownOpen && <Button variant="contained" startIcon={<Iconify icon="cib:telegram-plane" sx={{height: '15.75px'}}/>} 
+      onClick={async () => {
+          const response = await publishBlog(wpUsername, wpPassword, wpUrl, text, titleTag);
+          if (response && (response.status === 200 || response.status === 201)) {console.log('done'); setText(''); setIsWpDropdownOpen(false); setCurrentMode('Generate'); setIsPostError(false); setBlogTitle(''); setBlogInstructions('');}
+          else {console.log('error'); setIsPostError(true);}
+        }}
+      sx={(theme) => ({ backgroundColor: theme.palette.primary.black,
+      '&:hover': { backgroundColor: theme.palette.primary.black, }, })}>        
+      Publish Now </Button>}
+
+      {text !== '' && <Button variant="contained" startIcon={<Iconify icon="dashicons:wordpress" sx={{height: '15.25px'}}/>} 
+      onClick={() => {if (isWpIntegrated) {setIsWpDropdownOpen(!isWpDropdownOpen);} else {setIsWpDialogOpen(true);}}}
+    sx={(theme) => ({ backgroundColor: theme.palette.primary.navBg,
+      '&:hover': { backgroundColor: theme.palette.primary.navBg, }, })}>        
+      {(isWpDropdownOpen ? `Close` : `Publish`)} </Button>}
+
         <Button variant="contained" startIcon={<Iconify icon="icon-park-solid:left-c" />} 
         sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: theme.palette.primary.black, },})}
         onClick={() => {navigate('/weeklyblogs')}}>
         Return To Weekly Posts </Button>
 
         </Stack></Stack>
+
+        <WpDialog isDialogOpen={isWpDialogOpen} handleClose={() => {setIsWpDialogOpen(false)}} 
+        isWpIntegrated={isWpIntegrated} setIsWpIntegrated={setIsWpIntegrated} firmName={firmName}
+        wpUrl={wpUrl} setWpUrl={setWpUrl} wpUsername={wpUsername} setWpUsername={setWpUsername}
+        wpPassword={wpPassword} setWpPassword={setWpPassword} />
 
       {/* <Stack mb={2} direction="row" alignItems="center" justifyContent="space-between"
       sx={{}} spacing={2}>
@@ -480,12 +535,7 @@ export default function ProductsView() {
         </Stack> */}
 
         <BlogEditor text={text} setText={setText} isGenerating={isGenerating}
-        boxHeight={boxHeight} boxWidth={boxWidth}/>
-
-      <Typography sx={{ position: 'absolute', fontSize: '14px', fontFamily: 'Arial', 
-            top: '143.5px', right: '72.5px', letterSpacing: '-0.25px', fontWeight: '600' }}>
-        {wordCount !== 0 ? `${wordCount} Words` : ''}
-      </Typography>
+        boxHeight={boxHeight} boxWidth={boxWidth} wordCount={wordCount}/>
 
 
 {/*       

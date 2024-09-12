@@ -31,7 +31,7 @@ export default function BlogView() {
   const [postDescription, setPostDescription] = useState('');
   const [postKeywords, setPostKeywords] = useState('');
   const [browseText, setBrowseText] = useState('');
-
+  
   const [isNewPost, setIsNewPost] = useState(false);
   const [isUseNews, setIsUseNews] = useState(false);
   const [isUseBlog, setIsUseBlog] = useState(false);
@@ -446,7 +446,7 @@ export default function BlogView() {
         {`Return in ~5 minutes and they'll be ready!`}
       </Typography> </>}
 
-      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={0.75}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={isNewPost ? 0.5 : 1.5}>
         
       <PageTitle title={`${isNewPost ? 'Create New Posts' : 'Weekly Social Media Posts'}`} />    
         

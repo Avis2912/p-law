@@ -1,21 +1,23 @@
 // writeWeeklyBlogs.js
 import { getDoc, doc, updateDoc } from '@firebase/firestore';
 import { useState, useCallback } from 'react';
+import { db, auth } from 'src/firebase-config/firebase';
 
 export const writeWeeklyBlogs = async (
-//   contactUsLink, 
-//   internalLinks, 
-//   bigBlogString, 
-//   firmName, 
+  contactUsLink, 
+  internalLinks, 
+  bigBlogString, 
+  firmName, 
   selectedModel, 
-  auth, 
-  db, 
   modelKeys, 
   browseWeb, 
+  browseText,
   isImagesOn, 
-  addImages
+  addImages,
+  plan
 ) => {
-    
+
+    console.log('ACTIVATED WRITE WEEKLY BLOGS');
     let tempPosts = []; const numberOfBlogs = 6; 
     let isError = false; let firmNameInt; let firmDescriptionInt; let internalLinksInt; let contactUsLinkInt; let smallBlogInt; let blogTitlesInt; let imagesSettingsInt;
     const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email)); 

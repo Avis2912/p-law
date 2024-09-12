@@ -112,7 +112,8 @@ export default function BlogView() {
             await setWeeklyBlogs(firmDoc.data().WEEKLY_BLOGS.BLOGS || []);
 
             if (firmDoc.data().WEEKLY_BLOGS.LAST_DATE === "") {setIsUpdateTime(true); return;}
-            if (diffDays >= 1) { await setTimeToUpdate(diffDays); } else { setIsUpdateTime(true); writeBlogs(); console.log('WRITING BLOGS'); setWeeklyBlogs([]); 
+            if (diffDays >= 1) { await setTimeToUpdate(diffDays); } else { 
+              setIsUpdateTime(true); writeBlogs(); console.log('WRITING BLOGS'); setWeeklyBlogs([]); 
               await updateDoc(doc(db, 'firms', userDoc.data().FIRM), { 'WEEKLY_BLOGS.LAST_DATE': "" }); }
             
             // GET BIG BLOG DATA
@@ -225,21 +226,23 @@ export default function BlogView() {
   }
 
   const writeBlogs = () => { writeWeeklyBlogs(
-    
+
     contactUsLink, 
     internalLinks, 
     bigBlogString, 
     firmName, 
     selectedModel, 
-    auth, 
-    db, 
     modelKeys, 
     browseWeb, 
+    browseText,
     isImagesOn, 
-    addImages
+    addImages,
+    plan
   );
 
   }
+
+  
 
 
   return (
@@ -260,11 +263,11 @@ export default function BlogView() {
         {`Return in ~5 minutes and they'll be ready!`}
       </Typography> </>}
 
-      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={1.5}>
 
         <PageTitle title={`${isNewPost ? 'Create New Posts' : 'Weekly Blog Idea Drafts'}`} />    
         
-        <Stack direction="row" spacing={2}>
+        <Stack direction="row" spacing={2} mb={2}>
         {isNewPost && (<>
 
         <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} 
