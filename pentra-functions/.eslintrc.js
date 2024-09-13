@@ -4,7 +4,7 @@ module.exports = {
     node: true,
   },
   parserOptions: {
-    "ecmaVersion": 2018,
+    "ecmaVersion": 2020,
   },
   extends: [
     "eslint:recommended",
@@ -41,6 +41,13 @@ module.exports = {
     "import/newline-after-import": "off",
     "import/no-unused-imports": "off",
     "import/no-relative-packages": "off",
+    "one-var": "off",
+    "spaced-comment": "off",
+    "comma-spacing": "off",
+    "brace-style": "off",
+    "no-multiple-empty-lines": "off",
+    "func-call-spacing": "off",
+    "space-before-function-paren": "off",
   },
   overrides: [
     {

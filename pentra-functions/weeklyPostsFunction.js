@@ -1,4 +1,9 @@
-import { modelKeys } from '../src/genData/models';
+const modelKeys = {
+  1: 'claude-3-haiku-20240307',
+  2: 'claude-3-5-sonnet-20240620',
+  3: 'claude-3-opus-20240229',
+  // 3: 'claude-3-sonnet-20240229',
+} 
 
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
@@ -6,7 +11,7 @@ const fetch = require("node-fetch");
 
 admin.initializeApp();
 
-exports.generateWeeklyPosts = functions.pubsub.schedule("5 0 * * 1").timeZone("America/New_York").onRun(async (context) => {
+exports.generateWeeklyPosts = functions.pubsub.schedule("5 0 * * 1").timeZone("America/Chicago").onRun(async (context) => {
   const db = admin.firestore();
 
   const adminDoc = await db.collection("admin").doc("firms").get();
@@ -24,17 +29,23 @@ async function generatePostsForFirm(firmId) {
   const firmDoc = await db.collection("firms").doc(firmId).get();
   const firmData = firmDoc.data();
 
-  const bigBlogString = ""; // You'll need to implement logic to fetch this
   console.log('FIRM DATA: ', firmData);
   const firmName = firmData.FIRM_INFO.NAME;
+  const firmImage = firmData.FIRM_INFO.IMAGE;
+  const firmSite = firmData.FIRM_INFO.CONTACT_US;
+  const customColor = firmData.CHAT_INFO.THEME || "#000000";
   const firmDescription = firmData.FIRM_INFO.DESCRIPTION;
   const imagesSettings = firmData.SETTINGS.IMAGES;
   const genPostPlatform = ""; // You'll need to implement logic to determine this
-  const selectedModel = 2; // You'll need to implement logic to determine this
+  const selectedModel = 1; // You'll need to implement logic to determine this
+  const bigBlogString = firmData.BLOG_DATA.BIG_BLOG || [];
 
   const posts = await writeWeeklyPosts(
       bigBlogString,
       firmName,
+      firmImage,
+      firmSite,
+      customColor,
       firmDescription,
       imagesSettings,
       genPostPlatform,
@@ -47,13 +58,14 @@ async function generatePostsForFirm(firmId) {
   const currentDate = new Date();
   const formattedDate = `${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear().toString().slice(-2)}`;
 
+  console.log('POSTS IN MAIN FUNC: ', posts);
   await db.collection("firms").doc(firmId).update({
     "WEEKLY_POSTS.POSTS": posts,
     "WEEKLY_POSTS.LAST_DATE": formattedDate,
   });
 }
 
-async function writeWeeklyPosts(bigBlogString, firmName, firmDescription, imagesSettings, genPostPlatform, selectedModel, auth, db, isImagesOn) {
+async function writeWeeklyPosts(bigBlogString, firmName, firmImage, firmSite, customColor, firmDescription, imagesSettings, genPostPlatform, selectedModel, auth, db, isImagesOn) {
   console.log("WEEKLY POSTS ACTIVATED");
   let tempPosts = [];
   const platforms = ["LinkedIn"];
@@ -72,12 +84,13 @@ async function writeWeeklyPosts(bigBlogString, firmName, firmDescription, images
         body: JSON.stringify({
           model: modelKeys[selectedModel],
           messages: [
-            { role: "user", content: `<role> You are Pentra AI, an attorney at ${firmName}.
+            { role: "user", content: `
+            <role> You are Pentra AI, an attorney at ${firmName}.
             ${firmName} Description: ${firmDescription}. </role> 
             
             <instruction>
             YOUR GOAL: Write 3 FULL EDUCATIONAL ${tempPlatform} posts from the perspective of ${firmName}. Don't be generic and corporate but be approachable and genuinely informative. Don't be lazy.
-            
+
             IMPORTANT INSTRUCTIONS:
             - RESPONSE FORMAT: Always respond with a JSON-parsable array of 3 hashmaps, 
             EXAMPLE OUTPUT: "[{"platform": "${tempPlatform}", "content": "*Post Content*"}, {"platform": "${tempPlatform}", "content": "*Post Content*"}, {"platform": "${tempPlatform}", "content": "*Post Content*"}]". 
@@ -114,11 +127,11 @@ async function writeWeeklyPosts(bigBlogString, firmName, firmDescription, images
       }
     } while (isError && tries < 3);
 
-    console.log(textWithoutImages);
+    console.log('TEXT WOUT IMAGES: ', textWithoutImages);
     let textWithImages = textWithoutImages;
 
     if (isImagesOn) {
-      textWithImages = await addImages(textWithoutImages, imagesSettings);
+      textWithImages = await addImages(textWithoutImages, imagesSettings, firmName, firmImage, firmSite, customColor);
     }
 
     tempPosts = tempPosts.concat(textWithImages);
@@ -140,20 +153,20 @@ const templates = [
   { title: 'Legal', titleType: false, imgType: true, isCaps: false, id: '26564e2c-7af5-4a21-b5f8-0d6b5a96715a', thumbnail: 'https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/templates%2FScreenshot%202024-05-09%20at%202.54.05%E2%80%AFAM.png?alt=media&token=3a166a19-fcac-41b1-aee2-02b69c7e3efe' },
 ]
 
-const addImages = async (posts, imagesSettings='All') => {
+const addImages = async (posts, imagesSettings='All', firmName, firmImage, firmSite, customColor) => {
   const regex = /\/\/Image: (.*?)\/\//g; 
-  const templateSetting = 'Brand';
-  const isTemplatesOn = (templateSetting === 'Brand' || templateSetting === 'Brand & Web');
+  // const templateSetting = 'Brand'; const isTemplatesOn = (templateSetting === 'Brand' || templateSetting === 'Brand & Web');
+  const isTemplatesOn = true; const templateSetting = 'Brand';
 
   const fetchBrandImage = async (imgDescription, post='') => { // 1.5c per image
     let resultImg = null; const randomTemplate = templates[Math.floor(Math.random() * templates.length)];
     const h2Title = randomTemplate.isCaps ? post.content.match(/<h2>(.*?)<\/h2>/)[1].toUpperCase() : post.content.match(/<h2>(.*?)<\/h2>/)[1]; const formattedDate = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
     const secondSentFirstPara = (post.content.match(/<p>(.*?)<\/p>/) || [''])[0].split('. ')[1].replace(/<\/?p>|<\/?b>/g, '') || (post.content.match(/<p>(.*?)<\/p>/) || [''])[0].split('. ')[0].replace(/<\/?p>|<\/?b>/g, '') || '';      
-    const timeToRead = Math.ceil(post.content.split(' ').length / 200); let firmSite = '';
-    try {firmSite = new URL('').hostname.replace(/^www\./, '');} catch (e) {console.error(e);}
+    const timeToRead = Math.ceil(post.content.split(' ').length / 200); let formattedFirmSite = '';
+    try {formattedFirmSite = new URL('').firmSite.replace(/^www\./, '');} catch (e) {console.error(e);}
     const aiText = randomTemplate.titleType ? h2Title : `"${secondSentFirstPara}"`; let webPic = '';
     
-    if (imagesSettings === 'Brand & Web' && Math.random() < 0.5) {return fetchWebImage(imgDescription);}
+    if (templateSetting === 'Brand & Web' && Math.random() < 0.5) {return fetchWebImage(imgDescription);}
     if (randomTemplate.imgType) {webPic = await fetchWebImage(imgDescription, true);} console.log('fetching bg img')
     console.log('WEB PIC: ', webPic); 
 
@@ -163,19 +176,19 @@ const addImages = async (posts, imagesSettings='All') => {
         "template" : randomTemplate.id,
         "layers" : {
           "primary-text" : {
-            "text" : '' === '' ? aiText : '',
+            "text" : aiText,
           },
           "shape-0" : {
-            "fill": '',
+            "fill": customColor,
           },
           "firm-name" : {
-            "text": '',
+            "text": firmName,
           },
           "firm-site" : {
-            "text": firmSite,
+            "text": formattedFirmSite,
           },
           "firm-img": {
-            "image_url" : '',
+            "image_url" : firmImage,
           },
           "date-today" : {
             "text": formattedDate,
@@ -254,10 +267,11 @@ const addImages = async (posts, imagesSettings='All') => {
       // eslint-disable-next-line no-await-in-loop
       const batchPostsWithImages = await Promise.all(batch.map(async (post) => {
         let imagefullText = post.content;
-        console.log('POST CONTENT: ', post.content);
+        console.log('POST CONTENTT: ', post.content);
         const matches = [...imagefullText.matchAll(regex)];
         const descriptions = matches.map(match => match[1]);
-        const imageTags = await Promise.all(descriptions.map((desc, it) => new Promise(resolve => setTimeout(() => resolve(isTemplatesOn && isNewPost ? fetchBrandImage(desc, post) : fetchWebImage(desc)), it * 200))));
+        console.log('IS TEMPLATES ON: ', isTemplatesOn);
+        const imageTags = await Promise.all(descriptions.map((desc, it) => new Promise(resolve => setTimeout(() => resolve(isTemplatesOn ? fetchBrandImage(desc, post) : fetchWebImage(desc)), it * 200))));
         
         matches.forEach((match, index) => {
           if (imageTags[index]) {
@@ -285,7 +299,7 @@ const addImages = async (posts, imagesSettings='All') => {
   } catch (error) {
     console.error('An error occurred:', error);
   }
-
+  console.log('POSTS WITH IMAGES: ', postsWithImages);
   return postsWithImages; 
 }
 
@@ -293,7 +307,6 @@ exports.manuallyTriggerWeeklyPosts = functions.https.onRequest(async (req, res) 
   const { firmId } = req.body;
 
   console.log(`Received request with firmId: ${firmId}`);
-
 
   if (!firmId) {
     res.status(400).send("The function must be called with a firmId.");
