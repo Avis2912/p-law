@@ -3,6 +3,10 @@ const { chromium } = require('playwright');
 async function scrapeGoogleAdsLibrary(keyword) {
   const browser = await chromium.launch({ headless: true }); 
   const page = await browser.newPage();
+  const result = {
+    SPEND: '',
+    ADS: []
+  };
 
   try {
     console.log('Navigating to Google Ads Library...');
@@ -36,7 +40,7 @@ async function scrapeGoogleAdsLibrary(keyword) {
     if (creativePreviews.length > 0) {
       for (const preview of creativePreviews) {
         const imgSrc = await preview.$eval('img', img => img.src);
-        console.log('Ad Preview:', imgSrc);
+        result.ADS.push({ preview: imgSrc });
       }
     } else {
       console.error('No creative-preview elements found');
@@ -45,16 +49,21 @@ async function scrapeGoogleAdsLibrary(keyword) {
     //GET SPYFU DATA
 
     await page.goto(`https://www.spyfu.com/overview/domain?query=${keyword}`);
-    await page.waitForTimeout(1500);
+    await page.waitForTimeout(2000);
+
 
     const estGoogleSpend = await page.$eval('div[data-test="valueC"]', div => div.textContent || '$0.00');
     console.log('Estimated Google Spend:', estGoogleSpend);
+    result.SPEND = estGoogleSpend;
 
   } catch (error) {
     console.error('Error scraping Google Ads Library:', error);
   } finally {
     await browser.close();
   }
+
+  console.log(result);
+  return result;
 }
 
-scrapeGoogleAdsLibrary('linkedin.com');
+scrapeGoogleAdsLibrary('flair.ai');
