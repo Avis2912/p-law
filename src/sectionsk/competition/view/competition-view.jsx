@@ -34,6 +34,13 @@ export default function ListsView() {
     { TITLE: 'Public Relations Specialist', VIA: 'via LinkedIn', LOCATION: 'Chicago, IL', TYPE: 'Contract', POSTED: 'Yesterday', LINK: 'howdy.com' },
     { TITLE: 'Policy Analyst', VIA: 'via Monster', LOCATION: 'Los Angeles, CA', TYPE: 'Full Time', POSTED: 'A Week Ago', LINK: 'greetings.com' },
   ]);
+  const [reviews, setReviews] = useState([
+    { NAME: 'John Doe', DATE: '18 June 2024', RATING: 5, REVIEW: 'Great service, very professional.', PFP: 'https://www.w3schools.com/w3images/avatar2.png' },
+    { NAME: 'Jane Doe', DATE: '18 June 2024', RATING: 4, REVIEW: 'Good service, very professional.', PFP: 'https://www.w3schools.com/w3images/avatar2.png' },
+    { NAME: 'John Smith', DATE: '18 June 2024', RATING: 3, REVIEW: 'Okay service, professional.', PFP: 'https://www.w3schools.com/w3images/avatar2.png' },
+    { NAME: 'Jane Smith', DATE: '18 June 2024', RATING: 2, REVIEW: 'Bad service, unprofessional.', PFP: 'https://www.w3schools.com/w3images/avatar2.png' },
+    { NAME: 'John Johnson', DATE: '18 June 2024', RATING: 1, REVIEW: 'Terrible service, very unprofessional.', PFP: 'https://www.w3schools.com/w3images/avatar2.png' },
+  ]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDialogOpen2, setIsDialogOpen2] = useState(false);
   const [planName, setPlanName] = useState('');
@@ -157,6 +164,7 @@ export default function ListsView() {
                 orgData={value.ORG}
                 // jobData={value.JOBS}
                 jobData={indexedJobs}
+                reviewData={reviews}
                 indexedBlogs={value.RECENT_BLOGS}
                 rankingFor={value.RANKING_FOR} 
                 competitorName={value.NAME} 

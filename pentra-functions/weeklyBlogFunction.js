@@ -9,8 +9,8 @@ const modelKeys = {
   const admin = require("firebase-admin");
   const fetch = require("node-fetch");
   
-  admin.initializeApp();
-  
+  admin.initializeApp();  
+
   exports.generateWeeklyBlogs = functions.pubsub.schedule("5 0 * * 1").timeZone("America/Chicago").onRun(async (context) => {
     const db = admin.firestore();
   
@@ -301,8 +301,7 @@ const addImages = async (posts, imagesSettings='All') => {
 
     return postsWithImages; 
   }
-
-
+  
 
   exports.manuallyTriggerWeeklyBlogs = functions.https.onRequest(async (req, res) => {
     const { firmId } = req.body;

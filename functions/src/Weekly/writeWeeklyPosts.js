@@ -52,7 +52,7 @@ export const writeWeeklyPosts = async (bigBlogString, firmName, genPostPlatform,
           ] })
         });
 
-        // - POINTERS: only if applicable, use some same-line <b> titled points (don't use list tags). wrap each point in a p tag.
+        // - POINTERS: only if applicable, use same-line <b> titled points (don't use list tags). wrap each point in a p tag.
 
         // eslint-disable-next-line no-await-in-loop
         let gptResponse = (await response.text()); console.log(gptResponse);
@@ -64,7 +64,7 @@ export const writeWeeklyPosts = async (bigBlogString, firmName, genPostPlatform,
       } while (isError && tries < 3);
       console.log(textWithoutImages); let textWithImages = textWithoutImages;
       // eslint-disable-next-line no-await-in-loop
-      if (isImagesOn) {textWithImages = await addImages(textWithoutImages, imagesSettingsInt);}
+      if (isImagesOn) {textWithImages = await addImages(textWithoutImages, 'Brand');}
       // eslint-disable-next-line no-await-in-loop
       tempPosts = tempPosts.concat(textWithImages); console.log(`TEMP POSTS (${tempPlatform} DONE): `, tempPosts);
     };

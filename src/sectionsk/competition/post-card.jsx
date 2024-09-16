@@ -25,7 +25,7 @@ import Iconify from 'src/components/iconify';
 import { db } from 'src/firebase-config/firebase';
 import { deleteDoc, doc } from 'firebase/firestore';
 
-export default function PostCard({ competitorName, indexedBlogs, orgData, jobData, traffic, rankingFor, siteLink, index2 }) {
+export default function PostCard({ competitorName, indexedBlogs, orgData, jobData, reviewData, traffic, rankingFor, siteLink, index2 }) {
 
   const latestPostLarge = index2 === -10;
   const latestPost = index2 === -10 || index2 === -20;
@@ -139,7 +139,7 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
         backgroundColor: selectedOption === 2 ? theme.palette.primary.navBg : theme.palette.primary.lighter,
         '&:hover': {color: 'white', backgroundColor: theme.palette.primary.navBg, boxShadow: 'none'},
         letterSpacing: '-0.5px', borderRadius: '5.5px', boxShadow: 'none'})}>
-        <Iconify icon="cib:blogger-b" sx={{mr: '5px', height: '17.75px', width: '17.75px'}} />
+        <Iconify icon="icon-park-solid:google-ads" sx={{mr: '5px', height: '17.75px', width: '17.75px'}} />
           Ads
         </Button>
 
@@ -185,8 +185,8 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
         backgroundColor: selectedOption === 5 ? theme.palette.primary.navBg : theme.palette.primary.lighter,
         '&:hover': {color: 'white', backgroundColor: theme.palette.primary.navBg, boxShadow: 'none'},
         letterSpacing: '-0.5px', borderRadius: '5.5px', boxShadow: 'none'})}>
-        <Iconify icon="bxs:business" sx={{mr: '5px', height: '19px', width: '19px'}} />
-          Org
+        <Iconify icon="devicon-plain:google" sx={{mr: '5px', height: '14.5px', width: '14.5px'}} />
+          GMB
         </Button>
 
         </Stack>
@@ -278,7 +278,6 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
 
       </Card>
 
-
       <List sx={(theme)=>({ width: '460px', height: '240px', 
         bgcolor: 'white', overflow: 'auto', 
         marginLeft: '38px',borderRadius: '5.5px', position: 'absolute',
@@ -302,16 +301,24 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
 
       </List></>}
 
-      {(selectedOption === 2|| selectedOption === 5) && <><Card sx={(theme) => ({ 
+      {(selectedOption === 2) && <><Card sx={(theme) => ({ 
       height: isElongated && selectedOption === 2 ? '300px' : '240px', 
       width: '680px', borderRadius: '5.5px', transition: '0.3s all',
       top: '20px', left: '330px', p: '23px', pt: '18px', position: 'absolute', 
       backgroundColor: 'white', border: `1.0px solid ${theme.palette.primary.navBg}`,
       display: 'flex', justifyContent: 'center', alignItems: 'center'})}>
+        
         <Typography sx={{ fontSize: '34px', fontWeight: '400', userSelect: 'none',
         letterSpacing: '-0.3px', fontFamily: 'DM Serif Display',}}>
         Coming Soon
         </Typography>
+
+        <Card sx={(theme)=>({ height: '37.5px', width: '235px', borderRadius: '0px', borderBottomRightRadius: '2.5px',
+      backgroundColor: theme.palette.primary.navBg, position: 'absolute', display: 'flex',
+      left: '0px', top: '0px', justifyContent: 'center', alignItems: 'center', })}>
+      <Typography sx={{ fontSize: '16px', fontWeight: '500', color: 'white', letterSpacing: '-0.5px',}}>
+       $14,250 - Estimated Spend </Typography></Card>
+      
       </Card></>}
 
       {selectedOption === 4 && <>
@@ -364,7 +371,49 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
       </List></>}
       
 
+      {selectedOption === 5 && <>
+      
+      <List sx={(theme)=>({ width: '680px', height: '240px', 
+        bgcolor: 'white', overflow: 'auto', 
+        marginLeft: '38px',borderRadius: '5.5px', position: 'absolute',
+        top: '20px', left: '292px', pt: '0px', pb: '0px',
+        border: `1.0px solid ${theme.palette.primary.navBg}`,})}>
 
+      {reviewData.map((review, index) => (
+        <ListItem 
+          key={index} 
+          sx={{ borderBottom: '0.1px solid #c2c1c0',
+          justifyContent: 'space-between'}}>          
+          <ListItemText primary={review.REVIEW} sx={{fontWeight: '900', height: '32.5px', display: 'flex', alignItems: 'center'}}/>
+
+          <Button variant="contained" color="primary" sx={(theme) => ({height: '32px', width: 'auto', cursor: 'default', boxShadow: 'none',
+          backgroundColor: theme.palette.primary.lighter, marginLeft: '10px', '&:hover': { backgroundColor: theme.palette.primary.lighter, boxShadow: 'none'},
+          borderRadius: '5px', fontSize: '14px', color: theme.palette.primary.navBg})}>
+          {review.RATING}</Button>
+
+          <Button variant="contained" color="primary" sx={(theme) => ({height: '32px', width: 'auto', cursor: 'default', boxShadow: 'none',
+          backgroundColor: theme.palette.primary.lighter, marginLeft: '10px', '&:hover': { backgroundColor: theme.palette.primary.lighter, boxShadow: 'none'},
+          borderRadius: '5px', fontSize: '14px', color: theme.palette.primary.navBg})}>
+          {review.DATE}</Button>
+
+          {/* <Button variant="contained" color="primary" sx={(theme) => ({height: '30px', maxWidth: '10px', p: '0px',
+          backgroundColor: theme.palette.primary.navBg, marginLeft: '10px', '&:hover': { backgroundColor: theme.palette.primary.navBg, },
+          borderRadius: '5px', fontSize: '14px'})} onClick={() => {
+            const url = job.LINK.startsWith('http://') || job.LINK.startsWith('https://') ? job.LINK : `http://${job.LINK}`;
+            window.open(url, '_blank');
+          }} /> */}
+
+          {/* <Iconify icon="fluent:link-multiple-24-filled" sx={({height: '31.5px', width: '45px', p: '5.75px', cursor: 'pointer',
+          backgroundColor: 'darkred', marginLeft: '11px', '&:hover': { backgroundColor: 'darkred', }, color: 'white',
+          borderRadius: '5px', fontSize: '14px'})} onClick={() => {
+            const url = job.LINK.startsWith('http://') || job.LINK.startsWith('https://') ? job.LINK : `http://${job.LINK}`;
+            window.open(url, '_blank');
+          }}/> */}
+
+        </ListItem>
+      ))}
+
+      </List></>}
 
 
       </Card>
@@ -381,6 +430,7 @@ PostCard.propTypes = {
   traffic: PropTypes.any,
   rankingFor: PropTypes.any,
   indexedBlogs: PropTypes.any,
+  reviewData: PropTypes.any,
   competitorName: PropTypes.string,
   siteLink: PropTypes.any,
   index2: PropTypes.any,

@@ -50,12 +50,12 @@ export default function CompetitionDialog ({
       letterSpacing: '-0.45px',  fontWeight: 800, fontSize: '40.75px', marginBottom: '25px'}}> 
       Add a Competitior</Typography>
 
-      <TextField label="Competitor Name"  placeholder="https://johnlawyers.com" size="large"
-      sx={{width: '82.25%', marginBottom: '25px', borderRadius: '0px', }} 
+      <TextField label="Competitor Name"  placeholder="John Lawyers" size="large"
+      sx={{width: '82.25%', marginBottom: '20px', borderRadius: '0px', }} 
       value={competitorName} onChange={(e) => {setCompetitorName(e.target.value)}}/> 
 
       <Stack direction="row" spacing={3} sx={{width: '92%', marginBottom: '25px', display: 'flex', alignItems: 'center'}}>
-      <TextField label="Competitor Website" placeholder="john@johnlawyers.com" size="large" 
+      <TextField label="Competitor Website" placeholder="https://johnlawyers.com" size="large" 
       sx={{width: '100%', marginBottom: '25px', borderRadius: '0px', }} value={competitorSite} onChange={(e) => {setCompetitorSite(e.target.value)}}
       /> <Tooltip title="Your competitor's home page's URL.">
   <div>
@@ -63,21 +63,21 @@ export default function CompetitionDialog ({
   </div>
 </Tooltip></Stack>
 
-      <Stack direction="row" spacing={3} sx={{width: '92%', marginBottom: '25px', display: 'flex', alignItems: 'center'}}>
+      {/* <Stack direction="row" spacing={3} sx={{width: '92%', marginBottom: '25px', display: 'flex', alignItems: 'center'}}>
       <TextField label="Competitor Blog Page" placeholder="https://johnlawyers.com/blog" size="large" 
       sx={{width: '100%', marginBottom: '25px', borderRadius: '0px', }} value={competitorBlogPage} onChange={(e) => {setCompetitorBlogPage(e.target.value)}}
       /> <Tooltip title="Your competitor's main blog page. Used to get competitor blogs.">
-  <div>
-    <Iconify 
-      icon="material-symbols:help" 
-      sx={{height: '24px', minWidth: '24px', color: 'gray', }}
-    />
-  </div>
-</Tooltip> </Stack>
+      <div>
+        <Iconify 
+          icon="material-symbols:help" 
+          sx={{height: '24px', minWidth: '24px', color: 'gray', }}
+        />
+        </div>
+      </Tooltip> </Stack> */}
 
       <Button variant="contained" onClick={() => {addCompetitor()}}
       sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: theme.palette.primary.navBg, },
-      marginTop: '35px', width: 'auto', display: 'flex', justifyContent: 'center', minHeight: '40px' })}>
+      marginTop: '25px', width: 'auto', display: 'flex', justifyContent: 'center', minHeight: '40px' })}>
         <Iconify icon="line-md:circle-filled-to-confirm-circle-filled-transition" sx={{height: '16px', minWidth: '16px', 
         color: 'white', marginRight: '8px'}}/>
         Add Competitor

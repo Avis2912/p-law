@@ -31,7 +31,7 @@ export default function BlogView() {
   const [postDescription, setPostDescription] = useState('');
   const [postKeywords, setPostKeywords] = useState('');
   const [browseText, setBrowseText] = useState('');
-  
+
   const [isNewPost, setIsNewPost] = useState(false);
   const [isUseNews, setIsUseNews] = useState(false);
   const [isUseBlog, setIsUseBlog] = useState(false);
@@ -85,7 +85,7 @@ export default function BlogView() {
 
   const addImages = async (posts, imagesSettings='All') => {
     const regex = /\/\/Image: (.*?)\/\//g; 
-    const isTemplatesOn = (imageSettings === 'Brand' || imageSettings === 'Brand & Web');
+    const isTemplatesOn = (imagesSettings === 'Brand' || imagesSettings === 'Brand & Web');
 
     const fetchBrandImage = async (imgDescription, post='') => { // 1.5c per image
       let resultImg = null; const randomTemplate = templates[selectedTemplates[Math.floor(Math.random() * selectedTemplates.length)]];
@@ -95,7 +95,7 @@ export default function BlogView() {
       try {firmSite = new URL(contactUsLink).hostname.replace(/^www\./, '');} catch (e) {console.error(e);}
       const aiText = randomTemplate.titleType ? h2Title : `"${secondSentFirstPara}"`; let webPic = null;
       
-      if (imageSettings === 'Brand & Web' && Math.random() < 0.5) {return fetchWebImage(imgDescription);}
+      if (imagesSettings === 'Brand & Web' && Math.random() < 0.5) {return fetchWebImage(imgDescription);}
       if (customImg !== '') {webPic = customImg;} else {if (randomTemplate.imgType) {webPic = await fetchWebImage(imgDescription, true);} console.log('fetching bg img')}
       console.log('WEB PIC: ', webPic); 
 

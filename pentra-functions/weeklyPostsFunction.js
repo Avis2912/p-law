@@ -9,7 +9,10 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const fetch = require("node-fetch");
 
-admin.initializeApp();
+admin.initializeApp({
+  credential: admin.credential.applicationDefault(),
+  databaseURL: 'https://pentra-hub.firebaseio.com'
+});
 
 exports.generateWeeklyPosts = functions.pubsub.schedule("5 0 * * 1").timeZone("America/Chicago").onRun(async (context) => {
   const db = admin.firestore();

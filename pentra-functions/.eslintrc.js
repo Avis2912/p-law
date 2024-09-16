@@ -48,6 +48,7 @@ module.exports = {
     "no-multiple-empty-lines": "off",
     "func-call-spacing": "off",
     "space-before-function-paren": "off",
+    "import/order": "off",
   },
   overrides: [
     {
