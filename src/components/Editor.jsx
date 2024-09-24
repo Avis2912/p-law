@@ -13,11 +13,20 @@ Quill.register({
 function BlogEditor({ text, setText, isGenerating, boxWidth, boxHeight, wordCount }) {
   const quillRef = useRef(null);
   const editorRef = useRef(null);
-  const [content, setContent] = useState(text);
+  const [isInitialized, setIsInitialized] = useState(false);
 
+  const cleanHtml = (html) => {
+      // Remove all whitespace between tags
+      html = html.replace(/>\s+</g, '><');
+      // Replace empty <p> tags with <p><br></p>
+      return html.replace(/<p>\s*<\/p>/gi, '<p><br></p>').trim();
+  };
   useEffect(() => {
+    console.log('BlogEditor mounted. Initial text:', text);
+
     if (!editorRef.current && quillRef.current) {
       try {
+        console.log('Initializing Quill editor');
         editorRef.current = new Quill(quillRef.current, {
           theme: 'snow',
           modules: {
@@ -38,7 +47,7 @@ function BlogEditor({ text, setText, isGenerating, boxWidth, boxHeight, wordCoun
               }
             },
             keyboard: {
-              bindings: QuillBetterTable.keyboardBinddings
+              bindings: QuillBetterTable.keyboardBindings
             }
           },
         });
@@ -50,58 +59,60 @@ function BlogEditor({ text, setText, isGenerating, boxWidth, boxHeight, wordCoun
           tableModule.insertTable(3, 2);
         });
 
+        editorRef.current.on('text-change', () => {
+          const content = editorRef.current.root.innerHTML;
+          console.log('Quill content changed:', content);
+          setText(cleanHtml(content));
+        });
+
+        setIsInitialized(true);
+        console.log('Quill editor initialized');
       } catch (error) {
         console.error('Error initializing Quill:', error);
       }
-
-      editorRef.current.on('text-change', () => {
-        const html = editorRef.current.root.innerHTML;
-
-        const cleanedHtml = html
-          .replace(/<p>\s*<\/p>/g, '')
-          .replace(/<br>/g, '')
-          .replace(/<p>\s*<\/p>$/g, '');
-        
-        setContent(cleanedHtml);
-        setText(cleanedHtml);
-        console.log('Content changed:', cleanedHtml);
-      });
     }
 
     return () => {
+      console.log('BlogEditor unmounting');
       if (editorRef.current) {
         editorRef.current.off('text-change');
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setText]);
 
   useEffect(() => {
-    if (editorRef.current && text !== editorRef.current.root.innerHTML) {
-      editorRef.current.root.innerHTML = text;
+    if (isInitialized && editorRef.current) {
+      console.log('Updating Quill content. New text:', text);
+      if (text !== editorRef.current.root.innerHTML) {
+        editorRef.current.root.innerHTML = text;
+        console.log('Quill content updated');
+      } else {
+        console.log('No update needed, content is the same');
+      }
     }
-  }, [text]);
+  }, [text, isInitialized]);
 
   return (
     <>
-    <Typography sx={{ position: 'relative', fontSize: '14px', fontFamily: 'Arial',  height: 0,
-        top: 12.5, right: 13.5, letterSpacing: '-0.25px', fontWeight: '600', textAlign: 'right' }}>
-    {wordCount > 1 && wordCount ? `${wordCount} Words` : ''}
-    {/* {wordCount > 1 ? `${wordCount} Words` : wordCount === 1 ? '1 Word' : ''} */}
-    </Typography>
+      <Typography sx={{ position: 'relative', fontSize: '14px', fontFamily: 'Arial', height: 0,
+          top: 12.5, right: 13.5, letterSpacing: '-0.25px', fontWeight: '600', textAlign: 'right' }}>
+        {wordCount > 1 ? `${wordCount} Words` : ''}
+      </Typography>
 
-    <div
-      ref={quillRef}
-      style={{
-        width: boxWidth,
-        height: boxHeight,
-        marginBottom: 18,
-        border: '0px solid #ccc',
-        borderRadius: '0px',
-        backgroundColor: isGenerating ? 'white' : 'white',
-        opacity: '1',
-        transition: 'ease-in-out 0.3s',
-      }}
-    />
+      <div
+        ref={quillRef}
+        style={{
+          width: boxWidth,
+          height: boxHeight,
+          marginBottom: 18,
+          border: '1px solid #ccc',
+          borderRadius: '4px',
+          backgroundColor: isGenerating ? '#f0f0f0' : 'white',
+          opacity: '1',
+          transition: 'ease-in-out 0.3s',
+        }}
+      />
     </>
   );
 }

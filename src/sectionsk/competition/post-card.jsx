@@ -308,10 +308,6 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
       backgroundColor: 'white', border: `1.0px solid ${theme.palette.primary.navBg}`,
       display: 'flex', justifyContent: 'center', alignItems: 'center'})}>
         
-        <Typography sx={{ fontSize: '34px', fontWeight: '400', userSelect: 'none',
-        letterSpacing: '-0.3px', fontFamily: 'DM Serif Display',}}>
-        Coming Soon
-        </Typography>
 
         <Card sx={(theme)=>({ height: '37.5px', width: '235px', borderRadius: '0px', borderBottomRightRadius: '2.5px',
       backgroundColor: theme.palette.primary.navBg, position: 'absolute', display: 'flex',

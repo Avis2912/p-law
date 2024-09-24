@@ -112,7 +112,7 @@ const modules = {
   let boxHeight; const boxWidth = 'calc(100%)';
   if (isReferenceGiven) { boxHeight = 'calc(77.5% - 220px)';} 
   else if (wordCount < 300) { boxHeight = 'calc(77.5% - 51.5px)'; }
-  else { boxHeight = 'auto'; }
+  else { boxHeight = 'auto' } // else { boxHeight = '450px' }
 
   // const editor = useMemo(() => withHistory(withReact(createEditor())), []);
   // const [value, setValue] = useState([
@@ -383,12 +383,22 @@ const modules = {
     - IMAGES: KEEP ALL IMAGES as they are. You're allowed to add one new one in your elongation in the same format.
     </instruction>
     `
+    let gptResponse = (await claudeResponse.text())
+    .replace(/<br><br> /g, '<br><br>')
+    .replace(/<br\s*\/?>/gi, '');
 
-    let gptResponse = (await claudeResponse.text()).replace(/<br><br> /g, '<br><br>');
-    const textWithBreaks0 = await gptResponse.replace(/<br\s*\/?>/gi, '').replace(/<\/p>|<\/b>|<\/ul>|<\/h1>|<\/h2>|<\/h3>|\/\/Image:.*?\/\//gi, '$&<br>').replace(/<\/ol>/gi, '$&<br><br>')
-    .replace(/(<image[^>]*>)/gi, '$&<br>').replace(/<\/div><p><\p>/g, '</div>');    
+    console.log('GPT RESPONSE:', gptResponse);
+
+    const textWithBreaks0 = await gptResponse
+    .replace(/<\/ol>/gi, '$&')  // Remove <br><br>
+    .replace(/(<image[^>]*>)/gi, '$&')  // Remove <br>
+    .replace(/<\/div><p><\p>/g, '</div>')
+    .replace(/<br\s*\/?>/gi, '');  // Remove any remaining <br> tags
     if (currentMode === "Build Outline") {setCurrentMode('Generate');};
     if (currentMode === "Build Outline") {await setIsGenerating(false); await setText(textWithBreaks0); console.log('return'); return;};
+
+    
+    console.log('TEXT WITH BREAKS IN SEO-VIEW:', textWithBreaks0);
 
     // const data = await gptResponse.json();
     // const gptText = data.choices[0].message.content.trim();
@@ -412,9 +422,18 @@ const modules = {
     let textWithImages = gptResponse.trim();
     setLoadIndicator(['Adding All Images', 90]);
     if (isImagesOn) {textWithImages = await addImages(gptResponse.trim());}
-    const textWithBreaks = await textWithImages.replace(/<br\s*\/?>/gi, '').replace(/<\/p>|<\/h1>|<\/h2>|<\/h3>|\/\/Image:.*?\/\//gi, '$&<br>').replace(/<\/ol>/gi, '$&<br><br>')
-    .replace(/(<img[^>]*>)/gi, '$&<br>').replace(/<\/div><p><\p>/g, '</div>');     
-    await setText(textWithBreaks); console.log(textWithBreaks);
+    
+    const textWithBreaks = await textWithImages
+        .replace(/<br\s*\/?>/gi, '') // Remove all <br> tags initially
+        .replace(/<\/p>|<\/h1>|<\/h2>|<\/h3>|\/\/Image:.*?\/\//gi, '$&<br>')
+        .replace(/<\/ol>/gi, '$&<br><br>')
+        .replace(/(<img[^>]*>)/gi, '$&<br>')
+        .replace(/<\/div><p><\p>/g, '</div>')
+        .replace(/<br\s*\/?>/gi, '') // Ensure no <br> tags remain
+        .replace(/<p>\s*<\/p>/gi, ''); // Remove empty <p> tags
+    
+    await setText(textWithBreaks);
+    console.log(textWithBreaks);
 
     if (currentMode === "Generate") await setWordCount(textWithBreaks.split(' ').length);
     if (currentMode === "Generate") {setCurrentMode('Alter Draft');};
@@ -652,7 +671,7 @@ const modules = {
         <style>
         @import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap);
       </style>
-      <PageTitle title="Legal Blog Generator" />
+      <PageTitle title="Blog Generator" />
 
       <Stack direction="row" spacing={2} >
 
@@ -807,7 +826,7 @@ const modules = {
         {currentMode === "Alter Draft" && <Button variant="contained" startIcon={<Iconify icon="mingcute:quill-pen-fill" sx={{height: '20px'}}/>} // iconoir:post
         sx={{backgroundColor: 'black', '&:hover': { backgroundColor: 'black', },}}
         onClick={() => {setCurrentMode("Generate"); setText('');}}>
-        New Article </Button>}
+        New </Button>}
 
         {currentMode === "Build Outline" && <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" sx={{height: '20px'}}/>} 
         sx={(theme) => ({backgroundColor: theme.palette.primary.black, '&:hover': { backgroundColor: theme.palette.primary.black, },})}
