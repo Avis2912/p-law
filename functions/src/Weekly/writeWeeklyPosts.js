@@ -64,7 +64,7 @@ export const writeWeeklyPosts = async (bigBlogString, firmName, genPostPlatform,
       } while (isError && tries < 3);
       console.log(textWithoutImages); let textWithImages = textWithoutImages;
       // eslint-disable-next-line no-await-in-loop
-      if (isImagesOn) {textWithImages = await addImages(textWithoutImages, 'Brand');}
+      textWithImages = await addImages(textWithoutImages, 'Brand');
       // eslint-disable-next-line no-await-in-loop
       tempPosts = tempPosts.concat(textWithImages); console.log(`TEMP POSTS (${tempPlatform} DONE): `, tempPosts);
     };

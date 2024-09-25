@@ -10,6 +10,14 @@ import Card from '@mui/material/Card';
 import { db, auth } from 'src/firebase-config/firebase';
 import { getDocs, getDoc, addDoc, collection, doc, updateDoc } from 'firebase/firestore';
 
+import getBlogs from 'src/data-functions/getBlogs/route';
+import getJobs from 'src/data-functions/getJobs/route';
+import getReviews from 'src/data-functions/getReviews/route';
+import getTraffic from 'src/data-functions/getTraffic/route';
+// import getAds from 'src/data-functions/getAds/route.js';
+
+// export { getBlogs, getJobs, getReviews, getTraffic, getAds };
+
 import Iconify from 'src/components/iconify';
 import { useState, useEffect } from 'react';
 
@@ -44,7 +52,7 @@ export default function ListsView() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDialogOpen2, setIsDialogOpen2] = useState(false);
   const [planName, setPlanName] = useState('');
-  const updateDays = 30;
+  const updateDays = 31;
 
   useEffect(() => {
     const firmDatabase = collection(db, 'firms');
@@ -87,17 +95,16 @@ export default function ListsView() {
     handleOpen2(true);
   };
 
+  const fetchCompetitorData = async () => {
+    competition.map(async (competitor) => {
+      if (competition.COMP_SITE) {
+
+      } else {console.log ('NO SITE for this competitor');}
+    });
+  }
+
   return (
     <div style={{ position: 'relative',   height: '100%',  }}>
-      {/* <div style={{ borderRadius: '8px', position: 'absolute',
-      top: 0, left: 20, right: 20, bottom: 0, background: 'rgba(255, 255, 255, 0.4)',
-      backdropFilter: 'blur(3px)', display: 'flex', justifyContent: 'center',
-      alignItems: 'center', zIndex: 10, marginTop: '70px' }}>
-      <span style={{ fontFamily: "serif", fontWeight: 100,
-        fontSize: '2rem', }}>
-        Coming Soon
-      </span>
-    </div> */}
 
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={1.5}>
@@ -110,35 +117,7 @@ export default function ListsView() {
         <PageTitle title="Competition Analysis" />
 
         <Stack spacing={2} mb={2} direction="row" alignItems="center" justifyContent="space-between">
-          <Stack direction="row" spacing={2}>
 
-            {planName === 'Trial Plan' && <Button variant="contained" onClick={() => {handleOpen()}}
-            sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: theme.palette.primary.navBg, },
-            width: 'auto', display: 'flex', justifyContent: 'center', minWidth: '10px',})}>
-            <Iconify icon="teenyicons:tick-circle-solid" sx={{height: '16px', width: '16px', 
-              color: 'white', marginRight: '8px'}}/>
-              Coming Soon
-            </Button>}
-
-            {isAddingCompetitor && (
-              <>
-                <Button
-                  variant="contained"
-                  color="inherit"
-                  startIcon={<Iconify icon="eva:plus-fill" />}
-                  onClick={handleAddNewCompetitionClick}
-                >
-                  Add
-                </Button>
-                <TextField
-                  size="small"
-                  placeholder="List Name"
-                  value={newCompetitor}
-                  onChange={(e) => {}}
-                />
-              </>
-            )}
-          </Stack>
           <Button variant="contained" onClick={() => {}}
           sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, cursor: 'default', fontWeight: '600', '&:hover': { backgroundColor: theme.palette.primary.navBg, },})}>
             {!isUpdateTime ? `${timeToUpdate} Days Left` : 'Report Update Coming Soon'}
@@ -168,7 +147,7 @@ export default function ListsView() {
                 indexedBlogs={value.RECENT_BLOGS}
                 rankingFor={value.RANKING_FOR} 
                 competitorName={value.NAME} 
-                siteLink={value.SITE}
+                siteLink={value.COMP_SITE}
                 listId={index} 
                 index2={index} 
               />

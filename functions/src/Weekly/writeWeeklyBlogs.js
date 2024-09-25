@@ -80,6 +80,29 @@ export const writeWeeklyBlogs = async (
             - FORMATTING: Wrap titles in <h1> and sub-titles in <h2> tags. Wrap all paragraphs (and everything else that should have a line after) in <p> tags. Use b tags only in same-line text or 'title: paragraph'.
             - PERSPECTIVE: Don't refer to yourself in the post. Explain how your firm ${firmNameInt} can help, but only at the end. 
             - WORD RANGE: this post should be 1000+ WORDS LONG.
+            - TABLES: Consider using table(s) in the following format:
+
+            <div class="quill-better-table-wrapper">
+                <table class="quill-better-table" style="width: 600px;">
+                <colgroup>
+                    <col width="300"> <col width="300">
+                </colgroup>
+                <tbody>
+                    <tr data-row="row-1" height="45">
+                    <td data-row="row-1" rowspan="1" colspan="1">
+                        <p class="qlbt-cell-line" data-row="row-1" data-cell="cell-xc52" data-rowspan="1" data-colspan="1">Hey whats popping</p>
+                    </td>
+                    </tr>
+                    <tr data-row="row-2" height="45">
+                    <td data-row="row-2" rowspan="1" colspan="1">
+                        <p class="qlbt-cell-line" data-row="row-2" data-cell="cell-ywlw" data-rowspan="1" data-colspan="1"></p>
+                    </td>
+                    </tr>
+                </tbody>
+                </table>
+                <p></p>
+            </div>
+
             - IMAGES: blog post should contain 2-3 images. Please add representations of them in this format: //Image: {Image Description}//. 
             Consider putting them right after h2 titles. Make sure these are evenly spaced out in the post and with specific descriptions.
             - FACTS & LAW: Reference data & law in the blog post if & when necessary. Dont make things up.

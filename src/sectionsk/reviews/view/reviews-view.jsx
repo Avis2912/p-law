@@ -79,7 +79,7 @@ export default function UserPage() {
             await setStarsNeeded(firmDoc.data().REVIEWS.THRESHOLD);
             await setNewReviews(firmDoc.data().REVIEWS.NEW_REVIEWS);
             await setFirmName(firmDoc.data().FIRM_INFO.NAME);
-            await setReviewLink(`www.pentra.club/review?firm=${encodeURIComponent(firmDoc.data().FIRM_INFO.NAME)}`);
+            await setReviewLink(`app.pentra.club/review?firm=${encodeURIComponent(firmDoc.data().FIRM_INFO.NAME)}`);
           } else {
             console.log('Error: Firm document not found.');
           }}

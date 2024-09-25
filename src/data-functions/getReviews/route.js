@@ -1,8 +1,8 @@
-const axios = require('axios');
+import axios from 'axios';
 
 const apiUrl = 'https://api.dataforseo.com/v3/business_data/google/reviews/task_post';
 
-async function getReviews(keyword) {
+export default async function getReviews(keyword) {
   try {
     const postData = [{
       "location_name": "United States",
@@ -16,15 +16,15 @@ async function getReviews(keyword) {
       headers: {
         'Authorization': 'Basic YXZpcm94NEBnbWFpbC5jb206NTEwNjUzYzA0ODkyNjBmYg==',
         'Content-Type': 'application/json'
-    }
+      }
     });
 
     const taskId = response.data.tasks[0].id;
     console.log(`Task ID: ${taskId}`);
   
-    setTimeout(() => {
-      const results = fetchResults(taskId);
-      return results;
+    setTimeout(async () => {
+      const results = await fetchResults(taskId);
+      console.log('Results:', results);
     }, 10000);
 
   } catch (error) {
@@ -40,7 +40,7 @@ async function fetchResults(taskId) {
       headers: {
         'Authorization': 'Basic YXZpcm94NEBnbWFpbC5jb206NTEwNjUzYzA0ODkyNjBmYg==',
         'Content-Type': 'application/json'
-    }
+      }
     });
 
     const reviews = response.data.tasks[0].result[0].items;

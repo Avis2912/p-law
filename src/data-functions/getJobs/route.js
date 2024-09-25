@@ -1,8 +1,8 @@
-const axios = require('axios');
+import axios from 'axios';
 
 const apiUrl = 'https://api.dataforseo.com/v3/serp/google/jobs/task_post';
 
-async function getJobs(keyword) {
+export default async function getJobs(keyword) {
   try {
     const postData = [];
     postData.push({
@@ -24,16 +24,15 @@ async function getJobs(keyword) {
     const taskId = response.data.tasks[0].id;
     console.log(`Task ID: ${taskId}`);
   
-    setTimeout(() => {
-      const results = fetchResults(taskId);
-      return results;
+    setTimeout(async () => {
+      const results = await fetchResults(taskId);
+      console.log('Results:', results);
     }, 10000);
 
   } catch (error) {
     console.error('Error posting task:', error.response.data);
   }
 }
-
 
 async function fetchResults(taskId) {
   const resultUrl = `https://api.dataforseo.com/v3/serp/google/jobs/task_get/advanced/${taskId}`;

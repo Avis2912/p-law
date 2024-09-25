@@ -44,6 +44,7 @@
   "rules": {
     "no-warning-comments": "error",
     "prefer-const": "off",
+    "no-empty": "off",
     "import/newline-after-import": "off",
     "no-unused-expressions": "off",
     "dot-notation": "off",

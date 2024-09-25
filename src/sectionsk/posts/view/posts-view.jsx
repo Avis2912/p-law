@@ -85,7 +85,7 @@ export default function BlogView() {
 
   const addImages = async (posts, imagesSettings='All') => {
     const regex = /\/\/Image: (.*?)\/\//g; 
-    const isTemplatesOn = (imagesSettings === 'Brand' || imagesSettings === 'Brand & Web');
+    const isTemplatesOn = imagesSettings === 'Brand' || imagesSettings === 'Brand & Web';
 
     const fetchBrandImage = async (imgDescription, post='') => { // 1.5c per image
       let resultImg = null; const randomTemplate = templates[selectedTemplates[Math.floor(Math.random() * selectedTemplates.length)]];
@@ -364,7 +364,7 @@ export default function BlogView() {
     while (isError && tries < 3);
 
     let textWithImages = textWithoutImages; console.log(textWithoutImages);
-    if (isImagesOn) {textWithImages = await addImages(textWithoutImages, imagesSettingsInt);}
+    if (isImagesOn) {textWithImages = await addImages(textWithoutImages, imageSettings);}
     await setGeneratedPosts(textWithImages);
     await setWeeklyPosts(textWithImages);   
     console.log(weeklyPosts);

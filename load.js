@@ -251,348 +251,302 @@ const updateLeads = async () => {
 let newUserMoment = true;
 
 if (newUserMoment) {
-newUser(docName = 'Raval Trial Law',
+newUser(docName = 'Morvay Consulting',
 
 firmInfo = {
-    CONTACT_US: "https://ravaltriallaw.com/contact-us/",
-    NAME: "Raval Trial Law",
-    LOCATION: "Houston, TX",
+    CONTACT_US: "https://www.morvayconsulting.com/contact",
+    NAME: "Morvay Consulting",
+    LOCATION: "New York, NY",
     DESCRIPTION: 
-    `Raval Trial Law is a Houston based litigation law firm offering sophisticated representation to a range of clients
-     in insurance litigation matters. Still, our belief is that in order for advocacy to be truly effective, 
-     there must be a “bite” waiting behind the “bark.” We prepare thoroughly for the prospect of trial litigation
-     and are willing and able to try a case to its conclusion, if necessary.
-
-     Raval Trial Law is presently primarily focused on life insurance and long term disability insurance.
+    `Morvay Consulting Group specializes in providing Executive Sponsorship services to law firms, accounting firms, and other professional services firms.
+     They focus on helping clients maximize their project return on investment (ROI) through dedicated consulting support. The firm emphasizes investing in people, encouraging employees, and creating an environment that allows for learning from failures to build cohesive and trusting teams. 
+     Morvay Consulting Group offers strategic guidance and support to help professional services firms improve their operations and achieve measurable results. 
     `,  
     IMAGE: `
-    https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/misc_images%2Fdecentral%20(37).png?alt=media&token=c6bad835-768d-444e-8f91-db508b9a8fcd
+https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/user_imgs%2Fdecentral%20(43).png?alt=media&token=d2484ce1-ac1d-4b15-9b94-8067f16652d1
 `,
     MODEL: 2,
     PLAN: "Full Suite Plan",
 },
 
 keywords = {
-KEYWORDS: "Life Insurance, Long-Term Disability Insurance, Insurance Litigation, Houston Law Firm",
-LAST_DATE: "06/06/24",
+    KEYWORDS: "Executive Sponsorship, Consulting Services, Professional Services Consulting, Law Firm Consulting, Accounting Firm Consulting, Project ROI, Consulting Support, Strategic Guidance, Operations Improvement, Measurable Results, Team Building, Employee Encouragement, Learning from Failures, Consulting Group, New York Consulting, Consulting Firm NY, Consulting Services NY, Professional Services Firm Consulting, Consulting for Law Firms, Consulting for Accounting Firms",
+    LAST_DATE: "25/09/24",
 },
 
-smallBlog = [0, 1],
+smallBlog = [0],
 
 bigBlog = [
 {
-    TITLE: "Long-Term Disability Insurance vs Short-Term Disability Insurance Explained",
-    LINK: `https://ravaltriallaw.com/long-term-vs-short-term/`,
+    TITLE: "Executive Sponsorship: A Case Study",
+    LINK: `https://ridleylawoffices.com/why-is-a-living-trust-important/`,
     CONTENT: `
-    Disability insurance provides financial security and peace of mind to those looking for additional protection if they can no longer work due to an injury or disabling illness. Americans suffer chronic and debilitating illnesses more and more every year. These injuries and ailments can dramatically impact a person’s ability to work. Thus, many workers have the option of obtaining disability insurance to supplement their income in times of medical crisis.
+Executive Sponsorship
+Transforming a Stalled ERP Implementation into a Resounding Success  
+In the rapidly evolving landscape of law and accounting firms, effective project management and streamlined operations are paramount. Morvay Consulting Group, led by Jacob Morvay, specializes in rescuing and revitalizing complex projects that have gone off track using the Executive Sponsorship model of project management. This case study showcases the successful turnaround of a stalled ERP implementation utilizing the Executive Sponsorship method.
 
-    What is Texas Disability Coverage?
-    Disability insurance is a form of insurance designed to supplement a person’s income while that person is out of work – often related to a medical illness. This type of insurance allows workers to supplement their income during medical treatment and / or recovery. Depending on the coverage plan, insurance may cover between a couple of months to a year or more of income.
+Background
+The firm had embarked on an ambitious project to upgrade its ERP system from a legacy platform in place for over 10 years to a new platform, while also implementing a new paperless billing solution. However, midway through, the project had come to a complete halt, with work paused indefinitely. The situation was dire, with multiple challenges threatening the project's success.
 
-    Texas is one of many states that does not offer government-funded disability coverage. Instead, Texans must utilize Social Security Disability Insurance (SSDI), Supplemental Security Income (SSI), Veterans disability benefits (applicable to U.S. Veterans), or private disability coverage. This blog’s primary focus is privately funded disability insurance plans.
+Challenges
+Despite having strong support from firm leadership, the project had stalled. The first step was to determine why.
 
-    Minimum Standards for Disability Coverage
-    Texas law refers to short-term disability and long-term disability insurance as “disability income protection coverage.” Under 28 Tex. Admin. Code § 3.3075, the minimum standard for disability income protection coverage includes the following:
+Team Dynamics
+The project team was understaffed, and existing team members were not collaborating effectively. People were worried about individual consequences for bad decisions versus overall project success.
 
-    The plan must provide a periodic payment of at least $100 per month, payable through age 62 and payable for at least $50 after age 62.
-    The plan must contain an elimination period of 90, 180, or 365 days, depending on the policyholder’s circumstances.
-    The plan must have a maximum time period for payable benefits of at least six months.
-    Insurance companies cannot offer disability income protection coverage plans in the state of Texas without abiding by these minimum standards.
+Vendor Relationships
+The project relied heavily on third party vendor support to implement the solution. The vendor relationships had deteriorated due to changing timelines and targets. The vendors did not trust the team, and the team did not trust the vendors.
 
-    The Differences Between Long-Term Disability Insurance and Short-Term Disability Insurance Coverage
-    Hands hovering over image of a person in a wheelchair. Long term disability vs short term.Disability insurance provides a policyholder with supplemental income while on leave from their employment due to a disability. However, there are two forms of disability coverage based on the type of disability a person is experiencing and the duration of their disability.
+Written Plan and Goals
+There was no formal project plan specifying key deadlines, deliverables, and goals. Individual teams were working on different parts of the project without a view to the overall goals, because they were not clearly established.
 
-    Short-term disability insurance coverage allows a person to obtain supplemental income while dealing with a disabling affliction. This type of insurance can last three to six months, depending on the disability. Most short-term disability insurance plans cover approximately 40 percent to 70 percent of a person’s income when they become eligible for coverage. Short-term disability insurance coverage only covers afflictions that can be recovered from over a short period of time.
+Approach
+By focusing on bringing people together to work towards a common goal, while ensuring they had the resources to be successful, the project began to turn around.
 
-    Long-term disability insurance coverage allows a person to supplement their income after a crippling injury or illness that leaves them unable to work for the foreseeable future or even for the rest of their lives. Long-term disability coverage typically pays 60 percent of a person’s gross monthly wage during the coverage period.
+Listening and Understanding
+The first step was to ask open questions and listen to the concerns of different groups within the firm. The approach for the internal finance team was a focus on team building, encouraging mutual support and collaboration. For the HR and IT teams, the start was to assess their level of  integration with the project and quickly establish strong working relationships with the other teams, fostering a collaborative environment.
 
-    Long-term disability coverage can span a year or more, including the duration of time from disability inception until the insured becomes eligible for Social Security or retirement. The terms of coverage will vary by policy.
+By pausing the project to reassess the situation, engaging with all vendors to understand their perspectives, and adjusting vendor relationships as needed, the firm developed a comprehensive project plan with stakeholder buy-in.
 
-    Understanding Disability Coverage
-    Those seeking disability coverage from private insurance should understand what they can expect in most disability insurance policies. See below for a breakdown of standard disability insurance policies and their clauses.
+Engaging Leadership
+The team worked closely with the firm’s attorney leadership to define what success would look like and helped them understand the additional financial investments needed. By collaborating with them to develop a clear communication strategy, the firm ensured all stakeholders were informed and aligned.
 
-    Eligibility Clause
-    After a policyholder has purchased the plan and commenced paying monthly premiums, a particular set of circumstances must occur before they can utilize their disability benefits:
+Leadership moved to a role of supporting the project as cheerleaders and enforcers, rather than getting involved in daily decisions. It was impressed upon leadership the importance of using the solutions themselves to set an example.
 
-    The policyholder must complete a mandatory waiting period before becoming eligible for benefits under the plan.
-    Plans typically include an assessment conducted by a medical professional who can adequately evaluate the claim for disability benefits by reviewing the policyholder’s injury or illness.
-    The insurance company typically conducts an independent third-party review of the claim by another medical professional of its own choosing.
-    Pre-Existing Condition Clause
-    Most clauses governing pre-existing conditions do not preclude a person with a pre-existing condition from purchasing disability insurance coverage and utilizing their benefits when the need arises.
+Building Culture and Collaboration
+Team members were identified into three groups: proactive supporters of the project, persuadable adversaries, and active resistors. Clear expectations were set for all groups, and the project teams were balanced to include both supporters and persuadable adversaries. Resistors were coached  to adopt the necessary changes. 
 
-    Instead, a pre-existing condition clause usually encompasses illnesses and injuries that occurred within the prior three months before obtaining coverage. In those cases, the insurance company may prohibit a policyholder from obtaining income benefits from the plan for the first six months of coverage.
+The firm created clear roles and responsibilities within the team, with a robust structure to raise concerns and objections. This allowed team members to feel heard and valued. The firm assigned specific team members to particular parts of the project, significantly increasing their independent decision-making authority. They empowered those closest to the functions to lead decision-making, ensuring the best outcomes for the project.
 
-    After the preliminary six months of premiums have been paid, the policyholder will likely have to enter a waiting period. Once the waiting period has ended, the policyholder will probably be eligible for benefits.
+Defining Success
+The firm set clear and measurable goals for the team as a whole, and for individual contributors. This helped team members understand their role within the project while also focusing on the larger institutional goals. Having defined goals allows team members to self-assess, increasing confidence.
 
-    Waiting Period Clause (Long-Term Disability Insurance)
-    Disability insurance form. Long term vs short term disability.As stated above, policyholders may have to engage in a waiting period under a disability plan before obtaining benefits. This waiting period is similar to a probationary period to deter users from receiving benefits directly after purchasing coverage. Under most waiting period clauses, a policyholder will likely have to wait anywhere from 180 days to six months to qualify for coverage. Often, policyholders must utilize their employer-provided sick and benefit time before receiving income benefits from a disability plan.
+Building Trust and Engagement
+The firm instituted regular meetings for managers and their teams, provided opportunities for junior members to take on bigger roles, and ensured continuous feedback. They  organized social activities to foster personal connections among team members, and encouraged open communication, promoting a culture of experimentation and support.
 
-    Coverage Period
-    The coverage period depends on the nature of the affliction and the plan’s parameters. For short-term plans, a person can expect to see between three to six months of benefits. However, this depends on the policyholder’s illness and whether it is a short-term affliction. For long-term plans, policyholders should expect benefits for as long as they are disabled, which can easily reach a year or more of benefits.
+To trust in others, you must first trust yourself. It was essential to conduct an honest assessments of team members' skills relative to their roles and brought in third-party help to supplement and support areas where internal capabilities were lacking.
 
-    Monthly Benefits
-    Monthly benefits range from 40 percent to 70 percent of the policyholder’s income, depending on the type of coverage and policy terms. Most plans will calculate how much to provide in monthly benefits using a person’s average weekly wage or gross monthly wage, which all depends on the policy and the person’s occupation. For example, if a person earns $2,000 a month in wages, they can expect to receive $800 to $1,400 a month in disability benefits.
+Technology and Vendor Adjustments
+The firm replaced the outdated paperless billing solution with a new vendor offering a proactive partnership and a superior product. They used the feedback from project vendors to change the approach and better utilize their skills,  which was one of the major contributors to finishing the project under budget.
 
-    Can I Use Disability Insurance While on FMLA Leave?
-    The short answer is yes. The Family Medical Leave Act offers eligible employees 12 weeks of unpaid leave due to a qualifying medical or family event. During the leave period, the employee’s position with their employer is protected from termination. Qualifying events can include:
+Results
+The ERP implementation and the firm-wide launch of paperless billing were completed 9 months ahead of the original schedule. The new paperless billing solution improved the efficiency and speed of client billing, leading to a record high billing and collection year for the firm.
 
-    Birth of a child.
-    Adoption or foster care of a child within one year of placement.
-    Affliction of an illness or injury that renders an employee unable to perform their essential job functions.
-    Providing care to a qualifying family member.
-    When on FMLA, a person may be eligible for disability benefits depending on the type of plan they purchase. For long-term disability insurance coverage, FMLA leave will likely expire before a person is eligible for disability insurance coverage, which means the benefit may only be utilized after they are no longer on FMLA leave. However, because short-term disability insurance has a shorter eligibility window, a policyholder may use disability insurance to supplement their income while on leave.
+Measuring Success
+There are many ways to measure success; meeting your project goals is just one of them. In addition to going live ahead of schedule and under budget, the firm recognized longer-term cultural change that ensured strong overall adoption.
 
-    Contact Us About Your Disability Claim Today
-    Disability insurance can be a savior to many experiencing a long-term or short-term disability. However, understanding a disability insurance policy and the claims process can be difficult. If you have questions or concerns about your disability coverage, please contact one of our Houston disability insurance lawyers today at Berg Plummer Johnson & Raval, LLP for a consultation
+Stakeholder Advocacy
+Many skeptical partners became advocates through understanding their concerns and addressing them effectively. As a result, they became advocates of the new system. Strong senior leadership from the firm’s attorney leaders was integral to the partner adoption.
+
+Team Culture Transformation
+The team developed a strong sense of ownership, knowing that their collaborative efforts were crucial to the project’s success. There was a noticeable improvement in interpersonal relationships and enhanced collaboration, both within the finance function and across the firm, which continued after the project ended.
+
+Conclusion
+The firm had embarked on an ambitious project to upgrade its ERP system from a legacy platform in place for over 10 years to a new platform, while also implementing a new paperless billing solution. However, midway through, the project had come to a complete halt, with work paused indefinitely. The situation was dire, with multiple challenges threatening the project's success.
+
+Want to Learn More? Contact us.
+
+Name
+(required)
+First Name
+Last Name
+Email
+(required)
+Message
+Send
+
+
     `,
 },
-{
-    TITLE: "Types of Life Insurance Exclusions",
-    LINK: `https://ravaltriallaw.com/types-of-exclusions/`,
-    CONTENT: `
-    Life insurance provides a financial safety net for surviving family members when someone dies unexpectedly. Life insurance proceeds must be paid to the beneficiaries in a timely manner. But there are circumstances which can excuse an insurance company from the obligation to pay benefits.
+// {
+//     TITLE: "What Are The Costs Associated With Probate In California?",
+//     LINK: `https://ridleylawoffices.com/what-are-the-costs-associated-with-probate-in-california/`,
+//     CONTENT: `
+//     What Are The Costs Associated With Probate In California?
+//     Sep 24, 2024
+//     Hi, I’m Eric Ridley, an estate planning lawyer based in California. Today, let’s unravel the often complex and misunderstood topic of probate costs in California. Understanding these costs is crucial for anyone involved in estate planning or handling an estate after a loved one’s passing. So, let’s dive in and make sense of it together.
 
-    The person on whose life the insurance policy is underwritten has entered into a contract with the insurance company. In that contract, the insurance company has promised to pay a certain sum of money to beneficiaries designated by the policy owner upon the owner’s death. However, in order to trigger the insurance company’s obligation to pay, the policy owner must comply with certain conditions and no policy exclusion can apply.
-    
-    Life insurance companies are allowed to avoid paying the benefits on a life insurance policy if one of the coverage exclusions permitted in Texas applies. Insurance companies may sometimes argue an exclusion applies when the claim is actually legitimate.
-    
-    It can be devastating to families to have a life insurance claim denied after the already harsh impact of losing a loved one. Life insurance companies need to be held to the commitments made to policy owners. A Houston life insurance lawyer can help beneficiaries collect the life insurance proceeds they are entitled to.
-    
-    Permissible Life Insurance Policy Exclusions Under Texas Law
-    With limited exceptions, life insurance companies operating in Texas cannot exclude coverage based on a particular cause of death. The Texas Insurance Code’s life insurance section, 1101.055, lists the causes of death that insurance companies are allowed to exclude:
-    
-    Death by suicide whether the decedent was mentally competent or not
-    Death as the result of a hazardous occupation
-    Death as the result of aviation activities
-    Death by Suicide
-    Exclusions of coverage, when the cause of death is self-inflicted, are aimed at discouraging financial benefit as a motive for suicide. The exclusion of coverage when death is by suicide only lasts for two years after a policy is issued. After two years, a life insurance policy must pay benefits regardless of how the policy owner died except for a beneficiary who was involved in willfully bringing about the policy owner’s death.
-    
-    Hazardous Occupation
-    Life insurance policies may exclude coverage when death is the result of engaging in an occupation where the risk of death is greater than average. Occupations are to be distinguished from hobbies and recreational activities which cannot be excluded.
-    
-    Military service and occupations such as construction, oil and gas extraction, law enforcement, and commercial fishing are among some of the occupations a life insurance company may choose not to underwrite. For the exclusion to apply, the excluded hazardous occupation must be listed in the policy.
-    
-    Aviation Activities
-    Hang glider. Types of Life Insurance ExclusionsLife insurance policies may exclude coverage when death is caused by certain aviation activities stated in the policy. The Texas Department of Insurance says the following types of aviation activities are acceptable to exclude:
-    
-    Duties aboard an aircraft as a pilot or member of a flight crew
-    Assisting in the operation of an aircraft
-    Giving or receiving training regarding an aircraft
-    Being aboard an aircraft for any purpose other than as a passenger
-    Hang gliding
-    Para-planing
-    Death by descending or falling from an aircraft is not considered an excludable aviation activity. Thus, skydiving cannot be an excluded cause of death in a life insurance policy but hang gliding could be.
-    
-    Insurance Companies Have A Two-Year Window to Contest Coverage
-    Limiting the amount of time a life insurance company has to challenge the obligation to pay benefits protects consumers from having coverage voided years after a policy is issued. Life Insurance policies in Texas are required to contain language stating they will be uncontestable if the insured lives two years from the date the policy is issued and pays the premiums.
-    
-    After the contestability period, life insurance companies generally cannot deny the payment of claims based on misrepresentations made by the policyholder. But there is no limit on the contestability period when a policyholder has committed fraud. Fraud voids the contract and the obligation to pay.
-    
-    There are some circumstances under which the contestability period may be extended. Life insurance companies can choose to include policy language that extends the contestability period for challenging the violation of policy conditions relating to military service during a time of war.
-    
-    Misrepresentations May Reduce Proceeds but Rarely Void Life Insurance Contracts
-    A misrepresentation as to age in a life insurance application will not void the insurance company’s obligation to pay but the payout will be reduced to the amount of insurance that the policy owner could have purchased with the premiums paid had the correct age been given.
-    
-    The Texas Insurance Code says a misrepresentation made in an application to an insurance company will only void the contract if it is material to the risk or contributes to the circumstances triggering the insurance company’s obligation to pay.
-    
-    The Supreme Court of Texas recently clarified when a misrepresentation made on an application would be sufficient to excuse a life insurance company from paying the policy amount during the contestability period. The policy owner had indicated ‘no’ on a medical history question. Upon reviewing the policy owner’s medical records, it was discovered that the question should have been answered ‘yes’. The insurance company tried to deny paying the benefits based on the insured’s misrepresentation.
-    
-    The issue was whether a misrepresentation need only be of a material fact affecting the risk assumed or whether the applicant must also intend to deceive the insurance company. The Texas Insurance Code makes no mention of intent as necessary for a misrepresentation to void a life insurance contract; however, common law does.
-    
-    The Texas high court upheld the longstanding principle that there must be an intent to deceive in order for a material inaccuracy to void an insurer’s obligation to pay.
-    
-    What Happens When Your Life Insurance Claim is Denied?
-    Life insurance policy papers. Types of life insurance exclusions.The problem with insurance companies is that they are for-profit businesses. The more claims they pay, the less money they make. Insurance companies have a strong incentive to limit the payment of claims as much as they can legally get away with. To protect against the perverse incentive to deny clains, insurance companies are required by Texas law to settle claims in good faith. An insurance company that acts in bad faith can be held liable for damages – often beyond the value of the actual policy.
-    
-    Misrepresentation is a common reason life insurance companies attempt to deny paying claims. If a life insurance claim is denied based on a misrepresentation by the policy owner, the insurance company cannot avoid paying the claim unless the misrepresentation was both significant to the insurance company’s decision to underwrite the risk and made with the intention to influence the company into issuing the policy.
-    
-    There is typically an appeal process where life insurance claimants can refute the insurance company’s reasons for denying the claim. Getting legal help at this stage of the process can help persuade the insurance company to reverse its decision and pay the claim. It will also lay the foundation for a more successful claim in court should you need to move into civil litigation to recover what you are rightfully owed.
-    
-    Where To Get Help Fighting the Wrongful Denial of a Life Insurance Claim
-    After a loved one has passed, the last thing a grieving family needs is a hassle with an insurance company over paying a claim. Unfortunately, life insurance claim denials are all too common and can create hardships, adding more anguish to an already difficult situation.
-    
-    At Berg Plummer Johnson & Raval, LLP, we help life insurance beneficiaries challenge claim denials and force insurance companies to honor their contractual obligations to pay claims.
-    `
-},
+//     Probate Court Fees
+//     Probate in California begins with court fees, which are like the entry ticket to the probate process. These fees are set by the state and vary depending on the estate’s value. For instance, for an estate valued at $150,000, the court fee might be a few hundred dollars. As the estate value increases, so do these fees, reaching into the thousands for larger estates. These fees are unavoidable and are the first step in the probate journey.
 
-{
-    TITLE: "What To Do If a Life Insurance Policy Claim Is Denied",
-    LINK: "https://ravaltriallaw.com/policy-denied/",
+//     Understanding the Costs for Attorney Fees
+//     Attorney fees in probate can be significant but are essential for facing the process. In California, attorney fees for probate are determined by a statutory formula. They’re calculated as a percentage of the estate’s total value. For example, an estate worth $200,000 might incur attorney fees of around $7,000. These fees pay for the legal guidance and professional needed to ensure the estate is managed and distributed correctly.
 
-    CONTENT: `
-    Life insurance is usually purchased to make sure a beneficiary has some financial means if the policyholder should die. Life insurance contracts promise to pay a beneficiary in a timely manner upon proof of death and compliance with policy terms and conditions.
+//     Compensating for Time and Effort of Executor Fees
+//     The executor of an estate, who is responsible for managing and finalizing the deceased’s affairs, is also entitled to compensation. This compensation is typically a percentage of the estate’s value, similar to attorney fees. For an estate valued at $300,000, the executor’s fee might be about $9,000. This fee compensates the executor for their time, effort, and the responsibilities they undertake in administering the estate.
 
-However, because insurance companies would rather not pay out any more than is necessary, they will look very closely at the circumstances of the policyholder’s death and try to determine if there is any way to avoid paying the life insurance benefit.
+//     A Lesser-Known Expense 
+//     In some cases, executors may be required to post a bond before they can administer the estate. This bond acts as insurance to protect the beneficiaries against possible mismanagement of the estate. The cost of the bond varies based on the estate’s size and the specifics of the case.
 
-Life insurance companies are heavily regulated in Texas and are expected to evaluate claims in good faith and deal fairly with claimants. When companies unfairly delay or deny legitimate claims, beneficiaries have the right to challenge those decisions.
+//     Appraisal and Business Valuation Fees 
+//     Estates often contain various assets, from real estate to business interests, all of which need to be appraised. Appraisal fees are paid to professionals who determine the value of these assets. Similarly, if the estate includes business interests, business valuation professionals are hired, and their fees also add to the probate costs.
 
-Why Insurance Companies Deny Life Insurance Claims
-Companies reserve the right to deny paying life insurance benefits if certain policy conditions are not met by the policyholder or the beneficiaries. When a life insurance company denies a claim for benefits it is usually for one of the following reasons:
+//     Costs for Managing and Selling Real Estate 
+//     If the estate includes real estate that needs to be managed or sold, there are additional costs involved. These can consist of expenses for maintaining the property, real estate agent commissions, and any costs related to selling the property, like repairs or staging.
 
-Premium payments were not made: If the policyholder missed paying the premiums, the policy may have lapsed. However, if only a payment or two were recently missed, there may be a window of opportunity to resolve the matter.
-Death occurred under contestable circumstances: Contestable circumstances are one of the most common reasons for a life insurance claim denial. Every policy is different and may have unique exclusions or specific contestable timeframes. Generally, if a person’s death is ruled a suicide or they were involved in illegal activity at the time of death, a life insurance policy claim may be denied.
-Information was misrepresented on the application for coverage: In some cases, a claim may be denied if the information on the application is thought to be false. For example, if the policyholder inflated their income or failed to disclose any prior health concerns.
-Exclusion of coverage applies: Life insurance policies will cover most forms of death. However, many policies will exclude certain high-risk behaviors and activities. For example, a policy may not cover death attributed to substance abuse or skydiving.
-Speaking to an experienced life insurance lawyer can help you understand the details of your denial and pursue any opportunity to appeal the decision.
+//     Accounting Fees and Tax Preparation
+//     Managing an estate’s financial affairs often requires professional accounting services. Accountants may be needed to prepare final tax returns for the deceased and the estate. These services come with fees, which are deducted from the estate’s assets.
 
-Life Insurance Claims Denied During the Contestability Period
-Life insurance policies in Texas have a two-year contestability period. That means if a policyholder dies within two years of purchasing a life insurance policy, the issuing insurance company has the right to investigate the circumstances of the death and may be able to deny paying benefits.
+//     Miscellaneous Probate Costs 
+//     There are also miscellaneous costs to consider, like court filing fees for various documents, costs for certified copies of court documents, and postage and mailing expenses. While individually small, these costs can add up.
 
-The contestability period is intended to give insurance companies the opportunity to detect fraudulent claims. There is also a standard exclusion in life insurance policies denying coverage if a policyholder dies by suicide during the contestability period. A life insurance claim might also be denied if it is discovered that the policyholder provided inaccurate information on the application for coverage.
+//     Avoiding or Minimizing Probate Costs through Estate Planning 
+//     Many of these probate costs can be reduced or even eliminated with proper estate planning. Tools like living trusts, joint ownership, and proper beneficiary designations on retirement accounts and life insurance policies can help bypass the probate process. It’s worth exploring these options to preserve more of your estate for your beneficiaries.
 
-Once the contestability period has expired, the only way an insurance company can legally deny paying benefits other than for non-payment of premiums or an applicable policy exclusion is to show the policyholder intentionally provided false information that was significant to underwriting the risk.
+//     The Role of an Estate Planning Attorney 
+//     As an estate planning attorney, my role is to guide you through these complexities. I can help you understand the potential costs of probate for your estate and work with you to develop strategies to minimize these costs. Effective estate planning can save your beneficiaries time, money, and stress.
 
-Life Insurance Claim Denial for Misrepresentation on the Application for Coverage
-The Texas Insurance Code says a misrepresentation on a life insurance application will not void coverage unless:
+//     The probate process in California can be daunting, especially considering the various costs involved. However, with the right guidance and planning, you can make informed decisions to protect your estate’s value and ensure your wishes are honored. If you’d like to learn more or need assistance with estate planning, I’m here to help. Contact me at (805) 244-5291 or visit our website for a free initial strategy session. Together, we can create a plan that suits your family’s needs and brings you peace of mind.
 
-It is of a material fact
-It affects the risks assumed
-Material facts with regard to life insurance will be the personal information requested on the life insurance application. Risks are rated based on the answers given. If the information provided is inaccurate, the appropriate premiums will not be charged, and a risk may be underwritten that would not otherwise be eligible for coverage.
+//     Posted in Probate
+//     `
+// },
 
-The law further states that a life insurance claim cannot be denied based on a misrepresentation in the application after the two-year contestability period unless the misrepresentation was:
+// {
+//     TITLE: "I’m Not Rich. Do I Need an Estate Plan?",
+//     LINK: "https://ridleylawoffices.com/im-not-rich-do-i-need-estate-plan/",
+//     CONTENT: `
+//  One of the most common myths about estate planning I hear over and over again is, “I don’t have any money. Why would I need an estate plan?”
 
-Material to the risk; and
-Intentionally made
-The specific requirement that a misrepresentation be intentional to void a life insurance claim after the contestability period led some insurance companies to believe a misrepresentation during the contestability period only had to be material to the risk in order to deny a life insurance claim.
+// It is easy to understand why someone might think this – after all, estate planning is for rich people, right?
 
-The Texas Supreme Court recently clarified the issue of an applicant’s intent when misrepresentations are made in life insurance applications in an opinion published on April 28, 2023:
+// This is a dangerous myth!
+// In fact, it is often people with minimal assets who need estate planning the most. Confused?
 
-“Adhering to our precedent, we therefore hold that insurers must plead and prove intent to deceive to avoid contractual liability based on a misrepresentation in an application for life insurance, whether the policy is contestable or not.”
+// Let me give you an example:
 
- Thus, a life insurance claim cannot be denied at any time for a misrepresentation in the insurance application unless it can be proven the misrepresentation was made with the intent to deceive the insurance company into issuing the policy.
+// Nathan had $10,000 in his checking account. He didn’t have an estate plan because, until recently, he thought estate planning was only for people who were rich.
 
-Typical Exclusions of Coverage in Life Insurance Policies
-Texas law allows life insurance companies to settle life insurance claims for less than the face amount of the policy when a policyholder’s death occurs in any of the following ways:
+// One day he was injured at work. He became incapacitated, and was no longer able to manage his finances on his own. He needed to access the money in his checking account to pay for the medical bills.
 
-By suicide during the contestability period
-Engaging in a hazardous occupation
-Engaging in aviation activities
-The occupations which are considered hazardous and the prohibited aviation activities must be explicitly stated in the policy.
+// Nathan’s adult daughter tried to access the account, but the bank told him she didn’t have legal authority to access it. By the way, if Nathan had been married and his wife’s name wasn’t on the account, the Bank would have told his wife the same thing.
 
-How to Challenge an Insurance Company when a Life Insurance Claim is Denied
-When a life insurance claim is made, it means someone has died, and often family members are still struggling with their loss when they receive the claim denial. The insurance company’s actions can cause additional suffering during an already difficult time. The beneficiaries can usually appeal the insurance company’s decision but will have to provide additional evidence to get the insurance company to change its position.
+// Nathan’s daughter did finally get access to the account, but only after going through an extremely difficult and costly court process called “probate.” Nathan’s daughter had to get court permission before she could act on her father’s behalf. That took a lot of time and ate up much of the $10,000.
 
-Insurance companies are required to provide written reasons for denying coverage. If the reason for the denial is non-payment of premiums, the insurance company likely has the right to deny coverage. Similarly, if the cause of death is excluded by the policy terms, the insurance company may have a valid reason for rejecting the claim. Challenging these denials requires a detailed investigation into the circumstances and the help of an experience life insurance claims denial lawyer.
+// Billionaires like Elon Musk and Warren Buffett would be just fine if this happened to them.
 
-Claiming the policyholder misrepresented information in the insurance application is a common reason given by life insurance companies when denying a claim. But in order to avoid paying a life insurance claim, the misrepresentation must be both material (related to the risk being underwritten) and intentional (wanting the insurance company to rely on the false information).
+// Nathan, however, had to pay for filing fees and attorney fees and his daughter was really worried throughout the entire process.
 
-Proving the mental state of someone who is unavailable to question can be difficult for an insurance company, and the evidence must be compelling for a court to rule in favor of denying payment of life insurance benefits.
+// Incredible as it sounds, it was exponentially more important for Nathan to have an estate plan in this case than it is for someone like Elon Musk.
 
-Courts and juries don’t like insurance companies trying to get out of paying covered claims. Unless the misrepresented information would have caused the insurance company to decline the risk in the first place, a life insurance benefit will likely be payable less any additional premium that would have been charged if the insurer had accurate information when assessing the risk.
+// This is a heartbreaking example of how quickly things can get messy without basic planning in place – and how the importance of estate planning has little to do with how much money you have.
 
-Don’t Risk Losing Life Insurance Benefits
-Life insurance proceeds are often needed to provide for surviving family members. Delays and denials by insurance companies can cause unnecessary hardships and may indicate an insurance company acted in bad faith.
+// If you are interested in learning how estate planning can save your family time, money, and heartache, start by scheduling your free planning session with me online here or by calling me at (805) 244-5291.
 
-A Houston insurance litigation attorney whose practice is to help beneficiaries who have had life insurance claims denied knows how to investigate the reasons given for denial and get the information necessary to persuade an insurance company to pay a legitimate life insurance claim without further delay. Contact us today and find out how Berg Plummer Johnson & Raval, LLP can help with your denied life insurance claim.
-    `,
-},
+// We will cover the biggest fears when it comes to estate planning, how to protect your family and your assets, how to get started, how much it will cost, and much more.
 
-{
-    TITLE: "Can Insurance Companies Deny Cancer Treatment?",
-    LINK: "https://ravaltriallaw.com/deny-cancer-treatment/",
+// I know this is a lot to take in! Feel free to hit reply with any questions at all. Eric Ridley Attorney at Law Law Office of Eric ridleyeric@ridleylawoffices.com(805) 244-5291www.ridleylawoffices.com
 
-    CONTENT: `
-    The answer to the question of “Can insurance companies deny cancer treatment?” is often different from the answer to the question of “Do insurance companies deny cancer treatment?”
+// This is a scary scenario that can be easily avoided. The first step is to learn more by calling me right now. I will guide you as to the path, for you to make the best decisions for your family.
+//     `,
+// },
 
-    Although federal law often prohibits insurance companies from denying certain vital cancer treatments, patients are often forced to fight for coverage. In some cases, patients may even end up paying for the necessary treatment out of their own pockets because they cannot afford to lose time waiting to receive an insurer’s authorization before beginning treatment. Some patients may be forced to take legal action against their insurance company to get the vital coverage they need. One of the most common reasons why cancer patients must fight insurance companies is that they have been denied coverage for proton beam therapy treatment.
+// {
+//     TITLE: "Can Insurance Companies Deny Cancer Treatment?",
+//     LINK: "https://ravaltriallaw.com/deny-cancer-treatment/",
+
+//     CONTENT: `
+//     The answer to the question of “Can insurance companies deny cancer treatment?” is often different from the answer to the question of “Do insurance companies deny cancer treatment?”
+
+//     Although federal law often prohibits insurance companies from denying certain vital cancer treatments, patients are often forced to fight for coverage. In some cases, patients may even end up paying for the necessary treatment out of their own pockets because they cannot afford to lose time waiting to receive an insurer’s authorization before beginning treatment. Some patients may be forced to take legal action against their insurance company to get the vital coverage they need. One of the most common reasons why cancer patients must fight insurance companies is that they have been denied coverage for proton beam therapy treatment.
     
-    Federal Law Places Requirements on Health Insurance Companies
-    The Affordable Care Act made numerous changes in the law that governs how and when insurance companies must cover illnesses like cancer. Health insurance providers are no longer able to deny coverage on account of pre-existing conditions, nor can they impose yearly or lifetime caps on the amount of coverage that they provide. Insurance plans must cover essential health benefits that include cancer treatments.
+//     Federal Law Places Requirements on Health Insurance Companies
+//     The Affordable Care Act made numerous changes in the law that governs how and when insurance companies must cover illnesses like cancer. Health insurance providers are no longer able to deny coverage on account of pre-existing conditions, nor can they impose yearly or lifetime caps on the amount of coverage that they provide. Insurance plans must cover essential health benefits that include cancer treatments.
     
-    In practice, insurance companies push the limits as far as they can to save themselves money. It is, unfortunately, all too common for patients to either have to fight to get the coverage they need or have it denied altogether.
+//     In practice, insurance companies push the limits as far as they can to save themselves money. It is, unfortunately, all too common for patients to either have to fight to get the coverage they need or have it denied altogether.
     
-    Health Insurance Companies Have Often Flouted the Law
-    A relatively recent survey by the Texas Medical Association revealed that roughly one in every four people have had coverage for treatment prescribed by their doctor denied by an insurance company, notwithstanding the requirements of the Affordable Care Act. This includes people who have critically needed life-saving cancer treatment. Some patients’ conditions grew worse after having been denied the treatment or taking the time to fight the denial of coverage.
+//     Health Insurance Companies Have Often Flouted the Law
+//     A relatively recent survey by the Texas Medical Association revealed that roughly one in every four people have had coverage for treatment prescribed by their doctor denied by an insurance company, notwithstanding the requirements of the Affordable Care Act. This includes people who have critically needed life-saving cancer treatment. Some patients’ conditions grew worse after having been denied the treatment or taking the time to fight the denial of coverage.
     
-    Insurance companies give many reasons for their denial of coverage of certain medical treatments to save themselves money at the expense of cancer patients, including:
+//     Insurance companies give many reasons for their denial of coverage of certain medical treatments to save themselves money at the expense of cancer patients, including:
     
-    The cancer treatment is medically unnecessary
-    The treatment is experimental in nature
-    The specific provider of the treatment is out of the insurer’s network
-    To insurance companies, it does not matter that a doctor has recommended a treatment or that it may save the patient’s life. All that matters is that a cancer treatment may be expensive and will hurt the insurance company’s bottom line. Patients are already facing a tough battle in their fight against cancer. Unfortunately, they may also be forced to fight another battle: getting their insurance company to authorize payment for the treatment of that cancer.
+//     The cancer treatment is medically unnecessary
+//     The treatment is experimental in nature
+//     The specific provider of the treatment is out of the insurer’s network
+//     To insurance companies, it does not matter that a doctor has recommended a treatment or that it may save the patient’s life. All that matters is that a cancer treatment may be expensive and will hurt the insurance company’s bottom line. Patients are already facing a tough battle in their fight against cancer. Unfortunately, they may also be forced to fight another battle: getting their insurance company to authorize payment for the treatment of that cancer.
     
-    Cancer treatments such as proton beam therapy are prescribed out of medical necessity. Presumably, they would meet the requirements for coverage under the Affordable Care Act. In a dispute with your insurer, the burden of proof may shift to you to prove that proton beam therapy is both a recognized treatment and medically necessary. Even if you can prove both with ease, you can still expect a fight on your hands.
+//     Cancer treatments such as proton beam therapy are prescribed out of medical necessity. Presumably, they would meet the requirements for coverage under the Affordable Care Act. In a dispute with your insurer, the burden of proof may shift to you to prove that proton beam therapy is both a recognized treatment and medically necessary. Even if you can prove both with ease, you can still expect a fight on your hands.
     
-    You Can Contest the Insurance Company’s Denial of Your Cancer Treatment
-    Under the law, you have a right to challenge the denial of cancer treatments. Unfortunately, the appeals process takes time, and time may not be on your side when you are undergoing treatment for cancer. Nonetheless, you owe it to yourself and your family to fight as hard as you can for all the necessary and required treatments. Before filing your appeal, you should closely review the exact language of your health insurance policy because recent changes to federal law allow for policies that are less comprehensive in nature. In addition, you can and should consult an insurance coverage lawyer during the administrative appeals process.
+//     You Can Contest the Insurance Company’s Denial of Your Cancer Treatment
+//     Under the law, you have a right to challenge the denial of cancer treatments. Unfortunately, the appeals process takes time, and time may not be on your side when you are undergoing treatment for cancer. Nonetheless, you owe it to yourself and your family to fight as hard as you can for all the necessary and required treatments. Before filing your appeal, you should closely review the exact language of your health insurance policy because recent changes to federal law allow for policies that are less comprehensive in nature. In addition, you can and should consult an insurance coverage lawyer during the administrative appeals process.
     
-    Before you appeal your insurer’s decision to deny your cancer treatment, you should take several steps that can increase your chances of success, including:
-    Gathering documentation that conclusively shows that the treatment is medically necessary
-    Compiling additional medical records that detail your medical history and the prior course(s) of your treatment(s)
-    Contacting your medical providers to help obtain supportive evidence of medical necessity
-    Consulting with an insurance lawyer who can advise you on the appeals process
-    Insurance companies are required to offer an internal appeals process wherein you can contest the denial of benefits. However, without legal representation, the internal appeals process can become  a rubber stamp of the initial decision that was made. Insurance companies rarely take an objective look at their own decisions, even though there may be legal consequences for decisions that violate the law.
+//     Before you appeal your insurer’s decision to deny your cancer treatment, you should take several steps that can increase your chances of success, including:
+//     Gathering documentation that conclusively shows that the treatment is medically necessary
+//     Compiling additional medical records that detail your medical history and the prior course(s) of your treatment(s)
+//     Contacting your medical providers to help obtain supportive evidence of medical necessity
+//     Consulting with an insurance lawyer who can advise you on the appeals process
+//     Insurance companies are required to offer an internal appeals process wherein you can contest the denial of benefits. However, without legal representation, the internal appeals process can become  a rubber stamp of the initial decision that was made. Insurance companies rarely take an objective look at their own decisions, even though there may be legal consequences for decisions that violate the law.
     
-    You Can Take Your Case to Court if Necessary
-    There is an additional external check on the conduct of insurance companies. You can always take your insurance company to court and file a lawsuit to compel it to cover your cancer treatment. In the meantime, you would need to retain legal counsel and go through the entire court process and win your case. A court would provide an objective review of whether your cancer treatment would be required under federal law.
+//     You Can Take Your Case to Court if Necessary
+//     There is an additional external check on the conduct of insurance companies. You can always take your insurance company to court and file a lawsuit to compel it to cover your cancer treatment. In the meantime, you would need to retain legal counsel and go through the entire court process and win your case. A court would provide an objective review of whether your cancer treatment would be required under federal law.
     
-    In addition, state law also serves as a constraint on an insurance company’s behavior. If the insurance company has unreasonably denied your coverage, it could be subject to a bad faith lawsuit. Further, if there are many people who have had the same treatment denied, a class action lawsuit against the insurance company may even be possible. For example, Aetna recently settled a class action lawsuit alleging that it wrongfully denied cancer treatments. A class of 142 patients who were wrongfully denied proton beam therapy treatments received a total of $3.4 million.
+//     In addition, state law also serves as a constraint on an insurance company’s behavior. If the insurance company has unreasonably denied your coverage, it could be subject to a bad faith lawsuit. Further, if there are many people who have had the same treatment denied, a class action lawsuit against the insurance company may even be possible. For example, Aetna recently settled a class action lawsuit alleging that it wrongfully denied cancer treatments. A class of 142 patients who were wrongfully denied proton beam therapy treatments received a total of $3.4 million.
     
-    In another case, a judge lambasted United Healthcare for its “immoral and barbaric” conduct in denying coverage for proton beam therapy treatment. The judge, who was himself a cancer survivor, stated that “it is undisputed among legitimate medical experts that proton radiation therapy is not experimental and causes much less collateral damage than traditional radiation.”
+//     In another case, a judge lambasted United Healthcare for its “immoral and barbaric” conduct in denying coverage for proton beam therapy treatment. The judge, who was himself a cancer survivor, stated that “it is undisputed among legitimate medical experts that proton radiation therapy is not experimental and causes much less collateral damage than traditional radiation.”
     
-    You can and should fight back when your insurance company has wrongfully denied your cancer treatment. Not only can you legally force it to cover your treatment, but you may win additional damages in court. Also, fighting back could lead to negative news headlines for insurance companies and cause them public relations and reputational nightmares. An experienced insurance claims denial attorney knows how to leverage the court of public opinion to help support your legal battle against your health insurance company.
-    `
-},
+//     You can and should fight back when your insurance company has wrongfully denied your cancer treatment. Not only can you legally force it to cover your treatment, but you may win additional damages in court. Also, fighting back could lead to negative news headlines for insurance companies and cause them public relations and reputational nightmares. An experienced insurance claims denial attorney knows how to leverage the court of public opinion to help support your legal battle against your health insurance company.
+//     `
+// },
 
-{
-    TITLE: "Why Government Plans Are Exempt From ERISA",
-    LINK: "https://ravaltriallaw.com/why-government-plans-are-exempt-from-erisa/",
+// {
+//     TITLE: "Why Government Plans Are Exempt From ERISA",
+//     LINK: "https://ravaltriallaw.com/why-government-plans-are-exempt-from-erisa/",
 
-    CONTENT: `
-    If you have been denied benefits provided through an employer-sponsored plan, your claim will generally fall under the Employee Retirement Income Security Act (ERISA). ERISA is a federal law that governs most employee benefit plans. While ERISA was originally enacted to safeguard employees’ retirement and pension benefits, its reach and scope has been expanded over the years.
+//     CONTENT: `
+//     If you have been denied benefits provided through an employer-sponsored plan, your claim will generally fall under the Employee Retirement Income Security Act (ERISA). ERISA is a federal law that governs most employee benefit plans. While ERISA was originally enacted to safeguard employees’ retirement and pension benefits, its reach and scope has been expanded over the years.
 
-But not all employee benefit plans fall under ERISA. When Congress crafted ERISA, it wanted to reduce abuses in the system for private employee pensions. However, it decided that state and local governments should be free to decide the best way to protect their employees. This became an established part of the law. Under ERISA, a government plan means any plan “established or maintained” by the federal government, a state government or political subdivision, or by any agency or instrumentality of any of the foregoing. 29 U.S.C. §1002(32). Courts have defined “established” to include plans created under a collective bargaining agreement between a government unit and a union.
+// But not all employee benefit plans fall under ERISA. When Congress crafted ERISA, it wanted to reduce abuses in the system for private employee pensions. However, it decided that state and local governments should be free to decide the best way to protect their employees. This became an established part of the law. Under ERISA, a government plan means any plan “established or maintained” by the federal government, a state government or political subdivision, or by any agency or instrumentality of any of the foregoing. 29 U.S.C. §1002(32). Courts have defined “established” to include plans created under a collective bargaining agreement between a government unit and a union.
 
-This means that employees who fall under the government plan exemption are not subject to ERISA. There are many reasons why it is beneficial to get out from ERISA’s reach. Like other states, Texas has laws governing life, accidental death, disability, and health insurance that are more fair to insurance claimants and allow them to sue an insurance company for breach of contract, insurance bad faith, and punitive damages. Emotional distress damages and other damages caused by insurance company’s bad faith may be recoverable under Texas law but are not recoverable in ERISA cases.
+// This means that employees who fall under the government plan exemption are not subject to ERISA. There are many reasons why it is beneficial to get out from ERISA’s reach. Like other states, Texas has laws governing life, accidental death, disability, and health insurance that are more fair to insurance claimants and allow them to sue an insurance company for breach of contract, insurance bad faith, and punitive damages. Emotional distress damages and other damages caused by insurance company’s bad faith may be recoverable under Texas law but are not recoverable in ERISA cases.
 
-Determining whether a matter is governed by ERISA can be a complex process, but this is one factor to keep in mind when a plan may be established or maintained by the government. If you have been denied ERISA benefits, a Houston ERISA attorney at Berg Plummer Johnson & Raval, LLP can help you file a case and recover the compensation you deserve. For more information on filing an ERISA claim, call our firm today at (713) 526-0200 or contact us online to schedule a consultation. Our lawyers offer unique, cost-effective fee arrangements and will fight for your rights throughout the entire duration of your case.
-    `
-},
+// Determining whether a matter is governed by ERISA can be a complex process, but this is one factor to keep in mind when a plan may be established or maintained by the government. If you have been denied ERISA benefits, a Houston ERISA attorney at Berg Plummer Johnson & Raval, LLP can help you file a case and recover the compensation you deserve. For more information on filing an ERISA claim, call our firm today at (713) 526-0200 or contact us online to schedule a consultation. Our lawyers offer unique, cost-effective fee arrangements and will fight for your rights throughout the entire duration of your case.
+//     `
+// },
 
-{
-    TITLE: "The Mental Health Parity Act Explained And Why It Matters",
-    LINK: "https://ravaltriallaw.com/why-government-plans-are-exempt-from-erisa/",
+// {
+//     TITLE: "The Mental Health Parity Act Explained And Why It Matters",
+//     LINK: "https://ravaltriallaw.com/why-government-plans-are-exempt-from-erisa/",
 
-    CONTENT: `
-    Mental illness affects a significant number of Americans, and many of them are not able to get the treatment they need. Even when health plans cover mental health benefits, they can be harder to access and less comprehensive than other types of health benefits.
+//     CONTENT: `
+//     Mental illness affects a significant number of Americans, and many of them are not able to get the treatment they need. Even when health plans cover mental health benefits, they can be harder to access and less comprehensive than other types of health benefits.
 
-    The Mental Health Parity Act (MHPA) of 1996 was the original legislative attempt to force providers of group health insurance for employees to furnish the same levels of coverage for mental health benefits as were provided for medical / surgical (M/S) benefits.
+//     The Mental Health Parity Act (MHPA) of 1996 was the original legislative attempt to force providers of group health insurance for employees to furnish the same levels of coverage for mental health benefits as were provided for medical / surgical (M/S) benefits.
     
-    Prior to the enactment of the MHPA, health benefit providers had been slow to recognize that mental health disorders were as important in terms of needing effective treatment as physical health conditions. Federal legislation over the years has expanded the scope of the MHPA to press health benefit providers to make mental health treatment as accessible as other health benefits.
+//     Prior to the enactment of the MHPA, health benefit providers had been slow to recognize that mental health disorders were as important in terms of needing effective treatment as physical health conditions. Federal legislation over the years has expanded the scope of the MHPA to press health benefit providers to make mental health treatment as accessible as other health benefits.
     
-    Though improvements in access to mental health treatment are being made, parity with access to M/S benefits has not been achieved, and legislative efforts to enforce compliance by health benefit plan providers continue.
+//     Though improvements in access to mental health treatment are being made, parity with access to M/S benefits has not been achieved, and legislative efforts to enforce compliance by health benefit plan providers continue.
     
-    Mental Illness and Substance Use in America
-    According to the Substance Abuse and Mental Health Services Administration (SAMHSA) annual survey on mental illness and substance use levels, one in four adults – over 83 million Americans – had a mental illness. More than 12 million adults had serious thoughts of suicide, and 1.7 million attempted to take their lives.
+//     Mental Illness and Substance Use in America
+//     According to the Substance Abuse and Mental Health Services Administration (SAMHSA) annual survey on mental illness and substance use levels, one in four adults – over 83 million Americans – had a mental illness. More than 12 million adults had serious thoughts of suicide, and 1.7 million attempted to take their lives.
     
-    Over 46 million people ages 12 and above met the criteria for having a substance use disorder, with 30 million people classified as having an alcohol use disorder and 24 million people classified as having a drug use disorder. The highest incidence of substance use disorder was among young adults ages 18 to 25.
+//     Over 46 million people ages 12 and above met the criteria for having a substance use disorder, with 30 million people classified as having an alcohol use disorder and 24 million people classified as having a drug use disorder. The highest incidence of substance use disorder was among young adults ages 18 to 25.
     
-    The Mental Health Parity and Addiction Equity Act (MHPAEA)
-    The MHPAEA (Parity Law) was passed in 2008 and added addiction diseases to the mental health parity requirement. The Parity Law requires group health coverage providers to make financial requirements and treatment limitations no more restrictive for mental health or substance use disorders (MH / SUD) than for other medical and surgical benefits.
+//     The Mental Health Parity and Addiction Equity Act (MHPAEA)
+//     The MHPAEA (Parity Law) was passed in 2008 and added addiction diseases to the mental health parity requirement. The Parity Law requires group health coverage providers to make financial requirements and treatment limitations no more restrictive for mental health or substance use disorders (MH / SUD) than for other medical and surgical benefits.
     
-    The Affordable Care Act (ACA)
-    Effective in 2014, the ACA expanded the reach of mental health and substance use disorder parity to small group and individual health plan providers and made MH / SUD coverage mandatory as an essential health benefit under the affected plans.
+//     The Affordable Care Act (ACA)
+//     Effective in 2014, the ACA expanded the reach of mental health and substance use disorder parity to small group and individual health plan providers and made MH / SUD coverage mandatory as an essential health benefit under the affected plans.
 
-    Latest Developments in Mental Health Parity Law
-    Recognizing how much work still remains to achieve mental health parity, the Department of Labor, along with HHS and the Treasury Department, have proposed a rule designed to make parity a reality for more people seeking MH / SUD services.
+//     Latest Developments in Mental Health Parity Law
+//     Recognizing how much work still remains to achieve mental health parity, the Department of Labor, along with HHS and the Treasury Department, have proposed a rule designed to make parity a reality for more people seeking MH / SUD services.
     
-    The proposed rule would require group health plan providers to present actual data showing how a person’s access to treatment is affected by the limitations placed on benefits. Attention will focus on how provider networks are constructed and whether they promote access to benefits.
+//     The proposed rule would require group health plan providers to present actual data showing how a person’s access to treatment is affected by the limitations placed on benefits. Attention will focus on how provider networks are constructed and whether they promote access to benefits.
     
-    The rule would also change how NQTL criteria are analyzed for purposes of compliance and set forth required content elements for analysis.
+//     The rule would also change how NQTL criteria are analyzed for purposes of compliance and set forth required content elements for analysis.
     
-    Parity in Texas
-    Under the Texas Administrative Code, a health benefit plan that provides both M / S and MH / SUD benefits must comply with the following regarding lifetime aggregate or annual dollar limit restrictions:
+//     Parity in Texas
+//     Under the Texas Administrative Code, a health benefit plan that provides both M / S and MH / SUD benefits must comply with the following regarding lifetime aggregate or annual dollar limit restrictions:
     
-    If there are no limits or limits on less than one-third of the medical/surgical benefits, there can be no limits on MH / SUD benefits.
-    If there are limits on at least two-thirds of M / S benefits, they must be applied in a way that does not distinguish mental health / substance use disorders, or there must not be a more restrictive limit on MH / SUD benefits.
-    Non-quantitative treatment limitations imposed on MH / SUD benefits must be similar to and applied no more stringently than NQTL applied to M / S benefits.
+//     If there are no limits or limits on less than one-third of the medical/surgical benefits, there can be no limits on MH / SUD benefits.
+//     If there are limits on at least two-thirds of M / S benefits, they must be applied in a way that does not distinguish mental health / substance use disorders, or there must not be a more restrictive limit on MH / SUD benefits.
+//     Non-quantitative treatment limitations imposed on MH / SUD benefits must be similar to and applied no more stringently than NQTL applied to M / S benefits.
     
-    What You Can Do if a Parity Violation is Suspected with Regard to MH / SUD Benefits
-    Under current federal and state laws, many but not all health benefit plans are required to provide MH / SUD benefits. If your health plan has benefits for MH / SUD, they must be as easy to access as your other medical benefits. Any limitations on mental health benefits can be no more restrictive than the limitations on M / S benefits.
+//     What You Can Do if a Parity Violation is Suspected with Regard to MH / SUD Benefits
+//     Under current federal and state laws, many but not all health benefit plans are required to provide MH / SUD benefits. If your health plan has benefits for MH / SUD, they must be as easy to access as your other medical benefits. Any limitations on mental health benefits can be no more restrictive than the limitations on M / S benefits.
     
-    If you’ve had an insurance claim for mental health or substance use treatment denied and you believe the treatment limitations violate parity requirements, Berg Plummer Johnson & Raval, LLP may be able to help you get compensation. Our Texas health insurance lawyers have decades of experience helping clients obtain the benefits they are entitled to. In Houston, contact Berg Plummer Johnson & Raval, LLP to discuss your health benefit plan and how to get your claim covered.
-    `
-},
+//     If you’ve had an insurance claim for mental health or substance use treatment denied and you believe the treatment limitations violate parity requirements, Berg Plummer Johnson & Raval, LLP may be able to help you get compensation. Our Texas health insurance lawyers have decades of experience helping clients obtain the benefits they are entitled to. In Houston, contact Berg Plummer Johnson & Raval, LLP to discuss your health benefit plan and how to get your claim covered.
+//     `
+// },
 
 
 ],
@@ -622,7 +576,7 @@ competition = {
     COMPETITION: [{
         NAME: 'Sample Lawyers',
         SITE: 'bergplummer.com',
-        BLOG_PAGE: 'bergplummer.com/blog',
+        COMP_SITE: 'bergplummer.com/blog',
         TRAFFIC: [1200, 1400, 1300, 1500],
         RANKING_FOR: ['Dallas asset protection', 'Asset protection firms near me', 'Estate protection attorneys'],
         RECENT_BLOGS: [
@@ -642,7 +596,7 @@ competition = {
       {
         NAME: 'Sample Lawyers 2',
         SITE: 'injuryattorneyofdallas.com',
-        BLOG_PAGE: 'injuryattorneyofdallas.com/blog',
+        COMP_SITE: 'injuryattorneyofdallas.com/blog',
         TRAFFIC: [2650, 2550, 2700, 2650],
         RANKING_FOR: ['Texas rental attorneys', 'Real estate lawyers close by', 'Asset protection attorneys'],
         RECENT_BLOGS: [

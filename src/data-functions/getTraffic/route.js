@@ -1,9 +1,8 @@
-const axios = require('axios');
+import axios from 'axios';
 
-async function getTraffic(domains) {
-
+export default async function getTraffic(domains) {
   const bulkTrafficUrl = 'https://api.dataforseo.com/v3/dataforseo_labs/google/historical_bulk_traffic_estimation/live';
-  const rankedTrafficUrl = 'https://api.dataforseo.com/v3/dataforseo_labs/google/ranked_keywords/live'
+  const rankedTrafficUrl = 'https://api.dataforseo.com/v3/dataforseo_labs/google/ranked_keywords/live';
   
   try {
     const postData = [{
@@ -24,7 +23,6 @@ async function getTraffic(domains) {
 
     // const organicSearches = bulkTrafficResponse.result.items.organic;
 
-
     const rankedKeywordResponse = await axios({
         method: 'post',
         url: rankedTrafficUrl,
@@ -37,7 +35,6 @@ async function getTraffic(domains) {
 
     const rankedSearches = rankedKeywordResponse.result.items[0].monthly_searches;
 
-    
     const trafficData = {
       TRAFFIC: rankedSearches.map(item => ({
         year: item.year,
