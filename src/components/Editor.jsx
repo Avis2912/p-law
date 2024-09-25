@@ -106,9 +106,9 @@ function BlogEditor({ text, setText, isGenerating, boxWidth, boxHeight, wordCoun
           width: boxWidth,
           height: boxHeight,
           marginBottom: 18,
-          border: '1px solid #ccc',
-          borderRadius: '4px',
-          backgroundColor: isGenerating ? '#f0f0f0' : 'white',
+          border: '0px solid #ccc',
+          // borderRadius: '4px',
+          // backgroundColor: isGenerating ? '#f0f0f0' : 'white',
           opacity: '1',
           transition: 'ease-in-out 0.3s',
         }}
