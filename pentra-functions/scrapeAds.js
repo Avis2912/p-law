@@ -1,6 +1,7 @@
 "use server"
 
 import { chromium } from 'playwright-core';
+import * as functions from 'firebase-functions';
 
 export async function scrapeGoogleAdsLibrary(keyword) {
   const browser = await chromium.launch({ headless: true }); 
@@ -64,3 +65,18 @@ export async function scrapeGoogleAdsLibrary(keyword) {
 
   return result;
 }
+
+exports.scrapeAds = functions.https.onRequest(async (req, res) => {
+  const keyword = req.query.keyword;
+  if (!keyword) {
+    res.status(400).send('Keyword is required');
+    return;
+  }
+
+  try {
+    const result = await scrapeGoogleAdsLibrary(keyword);
+    res.status(200).send(result);
+  } catch (error) {
+    res.status(500).send(error.toString());
+  }
+});

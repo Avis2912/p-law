@@ -1,19 +1,14 @@
-import { chromium } from 'playwright-core';
-import { NextResponse } from 'next/server';
+const express = require('express');
+const { chromium } = require('playwright-core');
 
-export async function POST(request) {
-  const { keyword } = await request.json();
-  
-  if (!keyword) {
-    return NextResponse.json({ error: 'Keyword is required' }, { status: 400 });
-  }
+const app = express();
+const port = 3040;
 
-  const result = await scrapeGoogleAdsLibrary(keyword);
-  return NextResponse.json(result);
-}
+app.use(express.json());
 
 async function scrapeGoogleAdsLibrary(keyword) {
-  const browser = await chromium.launch({ headless: true }); 
+  console.log('Scraping Google Ads Library for:', keyword);
+  const browser = await chromium.launch({ headless: true });
   const page = await browser.newPage();
   const result = {
     SPEND: '',
@@ -74,3 +69,21 @@ async function scrapeGoogleAdsLibrary(keyword) {
 
   return result;
 }
+
+app.post('/scrape', async (req, res) => {
+  const { keyword } = req.body;
+  if (!keyword) {
+    return res.status(400).send({ error: 'Keyword is required' });
+  }
+
+  try {
+    const result = await scrapeGoogleAdsLibrary(keyword);
+    return res.send(result);
+  } catch (error) {
+    return res.status(500).send({ error: 'Failed to scrape Google Ads Library' });
+  }
+});
+
+app.listen(port, () => {
+  console.log(`API server running at http://localhost:${port}`);
+});

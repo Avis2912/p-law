@@ -14,7 +14,7 @@ import getBlogs from 'src/data-functions/getBlogs/route';
 import getJobs from 'src/data-functions/getJobs/route';
 import getReviews from 'src/data-functions/getReviews/route';
 import getTraffic from 'src/data-functions/getTraffic/route';
-// import getAds from 'src/data-functions/getAds/route.js';
+import getAds from 'src/data-functions/getAds/route';
 
 // export { getBlogs, getJobs, getReviews, getTraffic, getAds };
 
@@ -98,7 +98,7 @@ export default function ListsView() {
   const fetchCompetitorData = async () => {
     competition.map(async (competitor) => {
       if (competition.COMP_SITE) {
-
+        console.log('Fetching data for:', competitor.COMP_SITE);
       } else {console.log ('NO SITE for this competitor');}
     });
   }

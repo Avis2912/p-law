@@ -1,10 +1,10 @@
-import fetch from 'node-fetch';
+const fetch = require('node-fetch');
 
-const BASE_URL = 'http://localhost:3030'; // Replace with your actual base URL
+const BASE_URL = 'http://localhost:3040'; // Ensure this matches the port your server is running on
 
-export default async function scrapeGoogleAdsLibrary(keyword) {
+async function scrapeGoogleAdsLibrary(keyword) {
   try {
-    const response = await fetch(`${BASE_URL}/api/scrape`, {
+    const response = await fetch(`${BASE_URL}/scrape`, { // Ensure this matches the endpoint defined in api.js
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -27,7 +27,10 @@ export default async function scrapeGoogleAdsLibrary(keyword) {
   } catch (error) {
     console.error('Error:', error);
   }
+  return null;
 }
 
 // Example usage
 scrapeGoogleAdsLibrary('flair.ai');
+
+module.exports = scrapeGoogleAdsLibrary;

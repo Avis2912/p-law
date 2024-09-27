@@ -14,7 +14,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import Button from '@mui/material/Button';
-import { CardActionArea } from '@mui/material';
+import { CardActionArea, CardMedia } from '@mui/material';
 import Chart from 'react-apexcharts';
 
 // import { deleteList } from './view/delete-function'
@@ -92,9 +92,14 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
     }
   ];
 
-  const cardClick = async () => {
-    // DROP IT DOWN
-  }
+  const adData = [
+    { id: 1, imageUrl: 'https://tpc.googlesyndication.com/archive/simgad/16467954415080738021', title: 'Ad Title 1' },
+    { id: 2, imageUrl: 'https://tpc.googlesyndication.com/archive/simgad/16730817389731017995', title: 'Ad Title 2' },
+    // { id: 3, imageUrl: 'https://via.placeholder.com/200', title: 'Ad Title 3' },
+    // { id: 4, imageUrl: 'https://via.placeholder.com/200', title: 'Ad Title 4' },
+    // { id: 5, imageUrl: 'https://via.placeholder.com/200', title: 'Ad Title 5' },
+    // { id: 6, imageUrl: 'https://via.placeholder.com/200', title: 'Ad TItle 6' },
+  ];
 
   return (
     <Grid xs={12} sm={latestPostLarge ? 12 : 6} md={latestPostLarge ? 1 : 12} >
@@ -306,11 +311,50 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
       width: '680px', borderRadius: '5.5px', transition: '0.3s all',
       top: '20px', left: '330px', p: '23px', pt: '18px', position: 'absolute', 
       backgroundColor: 'white', border: `1.0px solid ${theme.palette.primary.navBg}`,
-      display: 'flex', justifyContent: 'center', alignItems: 'center'})}>
+      display: 'flex', justifyContent: 'center', alignItems: 'center',
+      paddingTop: '50px', overflow: 'auto'})}>
+
+      <Grid container spacing={2}>
+        {adData.map((ad) => (
+          <Grid item xs={6} key={ad.id}>
+            <Card sx={{ 
+              display: 'flex', 
+              flexDirection: 'column', 
+              borderRadius: '4px', 
+              width: '300px', 
+              backgroundColor: 'lightgrey',
+              height: 'auto' 
+            }}>
+              <Box sx={{ 
+                width: '100%', 
+                paddingTop: '56.25%', // 16:9 aspect ratio
+                position: 'relative' 
+              }}>
+                <CardMedia
+                  component="img"
+                  image={ad.imageUrl}
+                  alt={ad.title}
+                  sx={{ 
+                    position: 'absolute', 
+                    top: 0, 
+                    left: 0, 
+                    width: '100%', 
+                    height: '100%', 
+                    objectFit: 'contain' 
+                  }}
+                />
+              </Box>
+              <Box sx={{ backgroundColor: 'white', p: 1, textAlign: 'center' }}>
+                {ad.title}
+              </Box>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
         
 
-        <Card sx={(theme)=>({ height: '37.5px', width: '235px', borderRadius: '0px', borderBottomRightRadius: '2.5px',
-      backgroundColor: theme.palette.primary.navBg, position: 'absolute', display: 'flex',
+      <Card sx={(theme)=>({ position: 'absolute', height: '37.5px', width: '235px', borderRadius: '0px', 
+      borderBottomRightRadius: '2.5px', backgroundColor: theme.palette.primary.navBg, display: 'flex',
       left: '0px', top: '0px', justifyContent: 'center', alignItems: 'center', })}>
       <Typography sx={{ fontSize: '16px', fontWeight: '500', color: 'white', letterSpacing: '-0.5px',}}>
        $14,250 - Estimated Spend </Typography></Card>
