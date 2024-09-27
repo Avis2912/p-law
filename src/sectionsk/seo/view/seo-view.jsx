@@ -775,7 +775,7 @@ const modules = {
       width: '40px', paddingLeft: '28px', minWidth: '10px',})}
       onClick={() => {if (sources.length !== 0) {setIsSourcesOpen(!isSourcesOpen);}}} />}
 
-      <Card sx={(theme) => ({position: 'absolute', top: '122px', right: '54px', height: '362.5px', width: '460px', 
+      <Card sx={(theme) => ({position: 'absolute', top: '92px', right: '54px', height: '362.5px', width: '460px', 
       display: isSourcesOpen ? 'block' : 'none', zIndex: 100, backgroundColor: 'white', padding: '0px', 
       border: `1.5px solid ${theme.palette.primary.navBg}`, borderRadius: '4px', boxShadow: 'none', overflow: 'auto'})}>
         
