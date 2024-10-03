@@ -1,8 +1,16 @@
 const express = require('express');
+const cors = require('cors');
 const { chromium } = require('playwright-core');
 
 const app = express();
 const port = 3040;
+
+// Configure CORS
+app.use(cors({
+  origin: 'http://localhost:3030', // Allow only your frontend origin
+  methods: ['POST', 'GET', 'OPTIONS'], // Allowed methods
+  allowedHeaders: ['Content-Type'] // Allowed headers
+}));
 
 app.use(express.json());
 
@@ -53,13 +61,12 @@ async function scrapeGoogleAdsLibrary(keyword) {
       console.error('No creative-preview elements found');
     }
 
-    //GET SPYFU DATA
     await page.goto(`https://www.spyfu.com/overview/domain?query=${keyword}`);
     await page.waitForTimeout(2000);
 
     const estGoogleSpend = await page.$eval('div[data-test="valueC"]', div => div.textContent || '$0.00');
     console.log('Estimated Google Spend:', estGoogleSpend);
-    result.SPEND = estGoogleSpend;
+    result.SPEND = estGoogleSpend.trim() || '';
 
   } catch (error) {
     console.error('Error scraping Google Ads Library:', error);

@@ -10,13 +10,7 @@ import Card from '@mui/material/Card';
 import { db, auth } from 'src/firebase-config/firebase';
 import { getDocs, getDoc, addDoc, collection, doc, updateDoc } from 'firebase/firestore';
 
-import getBlogs from 'src/data-functions/getBlogs/route';
-import getJobs from 'src/data-functions/getJobs/route';
-import getReviews from 'src/data-functions/getReviews/route';
-import getTraffic from 'src/data-functions/getTraffic/route';
-import getAds from 'src/data-functions/getAds/route';
-
-// export { getBlogs, getJobs, getReviews, getTraffic, getAds };
+import getCompData from 'src/data-functions/getCompData';
 
 import Iconify from 'src/components/iconify';
 import { useState, useEffect } from 'react';

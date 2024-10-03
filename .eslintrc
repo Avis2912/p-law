@@ -54,6 +54,7 @@
     "no-restricted-syntax": "off",
     "no-await-in-loop": "off",
     "spaced-comment": "off",
+    "no-else-return": "off",
     
     "no-alert": 0,
     "camelcase": 0,

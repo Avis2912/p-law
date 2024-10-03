@@ -22,13 +22,15 @@ export default async function getReviews(keyword) {
     const taskId = response.data.tasks[0].id;
     console.log(`Task ID: ${taskId}`);
   
-    setTimeout(async () => {
-      const results = await fetchResults(taskId);
-      console.log('Results:', results);
-    }, 10000);
+    // Convert setTimeout to a Promise
+    await new Promise(resolve => setTimeout(resolve, 15000));
+    
+    const results = await fetchResults(taskId);
+    return results;
 
   } catch (error) {
-    console.error('Error posting task:', error.response.data);
+    console.error('Error posting task:', error.response?.data || error);
+    return [];
   }
 }
 
@@ -43,13 +45,23 @@ async function fetchResults(taskId) {
       }
     });
 
-    const reviews = response.data.tasks[0].result[0].items;
+    const reviews = response.data.tasks[0].result[0].items
+    .map(item => ({
+      NAME: item.profile_name,
+      PFP: item.profile_image_url,
+      RATING: item.rating.value,
+      REVIEW: item.review_text,
+      REVIEW_URL: item.review_url,
+      DATE: item.time_age
+    })) || [];
+
     console.log('Reviews:', reviews);
     return reviews;
+
   } catch (error) {
-    console.error('Error fetching results:', error.response.data);
+    console.error('Error fetching results:', error.response?.data || error);
     return [];
   }
 }
 
-getReviews('ravaltriallaw.com');
+// getReviews('ravaltriallaw.com');

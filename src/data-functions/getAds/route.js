@@ -1,10 +1,13 @@
-const fetch = require('node-fetch');
+const BASE_URL = 'http://localhost:3040';
 
-const BASE_URL = 'http://localhost:3040'; // Ensure this matches the port your server is running on
+export default async function getAds(keyword) {
+  if (!keyword) {
+    console.error('No keyword provided');
+    return [];
+  }
 
-async function scrapeGoogleAdsLibrary(keyword) {
   try {
-    const response = await fetch(`${BASE_URL}/scrape`, { // Ensure this matches the endpoint defined in api.js
+    const response = await fetch(`${BASE_URL}/scrape`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -12,25 +15,35 @@ async function scrapeGoogleAdsLibrary(keyword) {
       body: JSON.stringify({ keyword }),
     });
 
-    // Log the response status and body for debugging
+    // Log the response status for debugging
     console.log('Response Status:', response.status);
+    
+    // Get the response as text first
     const responseBody = await response.text();
     console.log('Response Body:', responseBody);
 
+    // Check if the response was successful
     if (!response.ok) {
-      throw new Error('Network response was not ok');
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const result = JSON.parse(responseBody);
-    console.log(result);
-    return result;
+    // Try to parse the response body
+    let result;
+    try {
+      result = JSON.parse(responseBody);
+    } catch (parseError) {
+      console.error('Error parsing JSON:', parseError);
+      throw new Error('Invalid JSON response from server');
+    }
+
+    console.log('Parsed result:', result);
+    return result || [];
+
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error in scrapeGoogleAdsLibrary:', error.message);
+    // Return empty array instead of null to maintain consistency with other data fetching functions
+    return [];
   }
-  return null;
 }
 
-// Example usage
-scrapeGoogleAdsLibrary('flair.ai');
-
-module.exports = scrapeGoogleAdsLibrary;
+// scrapeGoogleAdsLibrary('flair.ai');

@@ -95,10 +95,10 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
   const adData = [
     { id: 1, imageUrl: 'https://tpc.googlesyndication.com/archive/simgad/16467954415080738021', title: 'Ad Title 1' },
     { id: 2, imageUrl: 'https://tpc.googlesyndication.com/archive/simgad/16730817389731017995', title: 'Ad Title 2' },
-    // { id: 3, imageUrl: 'https://via.placeholder.com/200', title: 'Ad Title 3' },
-    // { id: 4, imageUrl: 'https://via.placeholder.com/200', title: 'Ad Title 4' },
-    // { id: 5, imageUrl: 'https://via.placeholder.com/200', title: 'Ad Title 5' },
-    // { id: 6, imageUrl: 'https://via.placeholder.com/200', title: 'Ad TItle 6' },
+    { id: 3, imageUrl: 'https://via.placeholder.com/200', title: 'Ad Title 3' },
+    { id: 4, imageUrl: 'https://via.placeholder.com/200', title: 'Ad Title 4' },
+    { id: 5, imageUrl: 'https://via.placeholder.com/200', title: 'Ad Title 5' },
+    { id: 6, imageUrl: 'https://via.placeholder.com/200', title: 'Ad TItle 6' },
   ];
 
   return (
@@ -306,60 +306,63 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
 
       </List></>}
 
-      {(selectedOption === 2) && <><Card sx={(theme) => ({ 
-      height: isElongated && selectedOption === 2 ? '300px' : '240px', 
-      width: '680px', borderRadius: '5.5px', transition: '0.3s all',
-      top: '20px', left: '330px', p: '23px', pt: '18px', position: 'absolute', 
-      backgroundColor: 'white', border: `1.0px solid ${theme.palette.primary.navBg}`,
-      display: 'flex', justifyContent: 'center', alignItems: 'center',
-      paddingTop: '50px', overflow: 'auto'})}>
-
-      <Grid container spacing={2}>
-        {adData.map((ad) => (
-          <Grid item xs={6} key={ad.id}>
-            <Card sx={{ 
-              display: 'flex', 
-              flexDirection: 'column', 
-              borderRadius: '4px', 
-              width: '300px', 
-              backgroundColor: 'lightgrey',
-              height: 'auto' 
-            }}>
-              <Box sx={{ 
-                width: '100%', 
-                paddingTop: '56.25%', // 16:9 aspect ratio
-                position: 'relative' 
-              }}>
-                <CardMedia
-                  component="img"
-                  image={ad.imageUrl}
-                  alt={ad.title}
-                  sx={{ 
-                    position: 'absolute', 
-                    top: 0, 
-                    left: 0, 
-                    width: '100%', 
-                    height: '100%', 
-                    objectFit: 'contain' 
-                  }}
-                />
-              </Box>
-              <Box sx={{ backgroundColor: 'white', p: 1, textAlign: 'center' }}>
-                {ad.title}
-              </Box>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-        
-
-      <Card sx={(theme)=>({ position: 'absolute', height: '37.5px', width: '235px', borderRadius: '0px', 
-      borderBottomRightRadius: '2.5px', backgroundColor: theme.palette.primary.navBg, display: 'flex',
-      left: '0px', top: '0px', justifyContent: 'center', alignItems: 'center', })}>
-      <Typography sx={{ fontSize: '16px', fontWeight: '500', color: 'white', letterSpacing: '-0.5px',}}>
-       $14,250 - Estimated Spend </Typography></Card>
-      
-      </Card></>}
+      {selectedOption === 2 && (
+        <Card sx={(theme) => ({
+            height: isElongated && selectedOption === 2 ? '300px' : '240px',
+            width: '680px', borderRadius: '5.5px', transition: '0.3s all',
+            top: '20px', left: '330px',p: '23px', pt: '18px',
+            position: 'absolute',backgroundColor: 'white',
+            border: `1.0px solid ${theme.palette.primary.navBg}`,display: 'flex',
+            flexDirection: 'column', overflow: 'hidden', })}
+        >
+          <Box sx={{ flexGrow: 1, overflow: 'auto', mt: '32px' }}>
+            <Grid container spacing={2} sx={{ p: 2 }}>
+              {adData.map((ad) => (
+                <Grid item xs={6} key={ad.id}>
+                  <Card sx={{
+                    display: 'flex', flexDirection: 'column',
+                    borderRadius: '4px', width: '300px',
+                    backgroundColor: 'lightgrey',height: 'auto'
+                  }}>
+                    <Box sx={{
+                      width: '100%', paddingTop: '56.25%',  position: 'relative'
+                    }}>
+                      <CardMedia component="img"  image={ad.imageUrl} alt={ad.title}
+                        sx={{
+                          position: 'absolute', top: 0, left: 0,
+                          width: '100%', height: '100%',
+                          objectFit: 'contain'
+                        }}
+                      />
+                    </Box>
+                    <Box sx={{ backgroundColor: 'white', p: 1, textAlign: 'center' }}>
+                      {ad.title}
+                    </Box>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+          
+          <Card sx={(theme) => ({
+            position: 'absolute',
+            height: '37.5px',
+            width: '235px',
+            borderRadius: '0px',
+            borderBottomRightRadius: '2.5px',
+            backgroundColor: theme.palette.primary.navBg,
+            display: 'flex',
+            left: '0px',
+            top: '0px',
+            justifyContent: 'center',
+            alignItems: 'center',
+          })}>
+            <Typography sx={{ fontSize: '16px', fontWeight: '500', color: 'white', letterSpacing: '-0.5px' }}>
+              $14,250 - Estimated Spend
+            </Typography>
+          </Card>
+        </Card>
+      )}
 
       {selectedOption === 4 && <>
       
@@ -424,6 +427,9 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
           key={index} 
           sx={{ borderBottom: '0.1px solid #c2c1c0',
           justifyContent: 'space-between'}}>          
+
+          <img src={review.PFP} style={{ width: 26, height: 26, marginRight: 13.5, borderRadius: 50 }} alt='' />
+
           <ListItemText primary={review.REVIEW} sx={{fontWeight: '900', height: '32.5px', display: 'flex', alignItems: 'center'}}/>
 
           <Button variant="contained" color="primary" sx={(theme) => ({height: '32px', width: 'auto', cursor: 'default', boxShadow: 'none',

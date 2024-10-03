@@ -1,8 +1,8 @@
 // import fetch from 'node-fetch';
 
-export default async function getLatestPosts() {
+export default async function getLatestPosts(site) {
   try {
-    const response = await fetch('https://ravaltriallaw.com/wp-json/wp/v2/posts');
+    const response = await fetch(`https://${site}/wp-json/wp/v2/posts`);
     const posts = await response.json();
 
     const blogsRetrieved = posts.map(post => ({
@@ -23,4 +23,4 @@ export default async function getLatestPosts() {
   }
 }
 
-getLatestPosts();
+// getLatestPosts('ravaltriallaw.com');
