@@ -251,257 +251,214 @@ const updateLeads = async () => {
 let newUserMoment = true;
 
 if (newUserMoment) {
-newUser(docName = 'Morvay Consulting',
+newUser(docName = 'People360',
 
 firmInfo = {
-    CONTACT_US: "https://www.morvayconsulting.com/contact",
-    NAME: "Morvay Consulting",
-    LOCATION: "New York, NY",
+    CONTACT_US: "https://www.people360ai.com/demo",
+    NAME: "People360",
+    LOCATION: "Dallas, TX",
     DESCRIPTION: 
-    `Morvay Consulting Group specializes in providing Executive Sponsorship services to law firms, accounting firms, and other professional services firms.
-     They focus on helping clients maximize their project return on investment (ROI) through dedicated consulting support. The firm emphasizes investing in people, encouraging employees, and creating an environment that allows for learning from failures to build cohesive and trusting teams. 
-     Morvay Consulting Group offers strategic guidance and support to help professional services firms improve their operations and achieve measurable results. 
+    `People360, formerly known as Insala, is a leading provider of innovative workplace solutions designed to enhance individual and organizational potential.
+     With over 28 years of industry experience, People360 offers a comprehensive suite of services including THRIVE, which empowers employees to excel in their roles; HIVE, which fosters community and professional relationships; and DIVE, which facilitates data-driven decision-making. The platform emphasizes integrated solutions that leverage predictive AI capabilities to support people operations in today's dynamic work environment.
+     By moving beyond traditional approaches, People360 aims to transform how organizations manage talent and foster growth, making it a pivotal player in the future of workplace solutions.
     `,  
     IMAGE: `
-https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/user_imgs%2Fdecentral%20(43).png?alt=media&token=d2484ce1-ac1d-4b15-9b94-8067f16652d1
+https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/misc_images%2Fimage_2024-10-11_122444459.png?alt=media&token=f80ebde8-1584-4f1c-ae72-a40647e6a980
 `,
     MODEL: 2,
     PLAN: "Full Suite Plan",
 },
 
 keywords = {
-    KEYWORDS: "Executive Sponsorship, Consulting Services, Professional Services Consulting, Law Firm Consulting, Accounting Firm Consulting, Project ROI, Consulting Support, Strategic Guidance, Operations Improvement, Measurable Results, Team Building, Employee Encouragement, Learning from Failures, Consulting Group, New York Consulting, Consulting Firm NY, Consulting Services NY, Professional Services Firm Consulting, Consulting for Law Firms, Consulting for Accounting Firms",
-    LAST_DATE: "25/09/24",
+    KEYWORDS: "Workplace Solutions, Employee Empowerment, Community Building, Professional Relationships, Data-Driven Decision Making, Predictive AI, People Operations, Talent Management, Organizational Growth, Innovative Solutions, THRIVE, HIVE, DIVE, Industry Experience, Integrated Solutions, Dynamic Work Environment, Transformative Approaches, Future of Work, Dallas Consulting, Comprehensive Services, Strategic Guidance, Consulting Support, Professional Services, Measurable Results, Team Building, Employee Development, Learning from Failures, Consulting Firm, Workplace Innovation",
+    LAST_DATE: "15/10/24",
 },
 
-smallBlog = [0],
+smallBlog = [0, 1],
 
 bigBlog = [
 {
-    TITLE: "Executive Sponsorship: A Case Study",
-    LINK: `https://ridleylawoffices.com/why-is-a-living-trust-important/`,
+    TITLE: "How Mentoring Is Helping Solve The Labor Shortage",
+    LINK: `https://www.people360ai.com/blog/what-is-corporate-mentoring-0-1`,
     CONTENT: `
-Executive Sponsorship
-Transforming a Stalled ERP Implementation into a Resounding Success  
-In the rapidly evolving landscape of law and accounting firms, effective project management and streamlined operations are paramount. Morvay Consulting Group, led by Jacob Morvay, specializes in rescuing and revitalizing complex projects that have gone off track using the Executive Sponsorship model of project management. This case study showcases the successful turnaround of a stalled ERP implementation utilizing the Executive Sponsorship method.
+The labor shortage has become a pressing issue for businesses across industries, with many struggling to find and retain skilled workers. As companies search for innovative solutions to address this challenge, mentoring has emerged as a powerful strategy for attracting, developing, and retaining talent. 
 
-Background
-The firm had embarked on an ambitious project to upgrade its ERP system from a legacy platform in place for over 10 years to a new platform, while also implementing a new paperless billing solution. However, midway through, the project had come to a complete halt, with work paused indefinitely. The situation was dire, with multiple challenges threatening the project's success.
+In this article, we'll explore how mentoring programs are playing a crucial role in helping businesses navigate the labor shortage and build a strong, sustainable workforce. 
 
-Challenges
-Despite having strong support from firm leadership, the project had stalled. The first step was to determine why.
+Bridging the Skills Gap
+One of the key drivers of the labor shortage is the growing mismatch between the skills that employers need and the skills that job seekers possess. Mentoring programs offer a solution by providing opportunities for employees to develop new skills, gain valuable experience, and bridge the skills gap. By pairing less experienced employees with more experienced mentors, businesses can facilitate knowledge transfer, skills development, and on-the-job training, helping employees acquire the skills they need to succeed in their roles and contribute to the organization's success. 
 
-Team Dynamics
-The project team was understaffed, and existing team members were not collaborating effectively. People were worried about individual consequences for bad decisions versus overall project success.
+Attracting and Retaining Talent
+In today's competitive job market, attracting and retaining top talent is more challenging than ever. Mentoring programs can give businesses a competitive edge by offering employees valuable opportunities for professional growth, career advancement, and personal development. Employees are more likely to stay with a company that invests in their development and provides opportunities for mentorship and growth. By implementing mentoring programs, businesses can not only attract top talent but also retain their existing employees, reducing turnover and building a loyal, engaged workforce. 
 
-Vendor Relationships
-The project relied heavily on third party vendor support to implement the solution. The vendor relationships had deteriorated due to changing timelines and targets. The vendors did not trust the team, and the team did not trust the vendors.
+Accelerating Onboarding and Integration
+The labor shortage has exacerbated the challenges of onboarding and integrating new employees into the workforce. Mentoring programs can help businesses overcome these challenges by providing new hires with access to experienced mentors who can guide them through the onboarding process, answer questions, and help them acclimate to their new roles and responsibilities. By accelerating the onboarding and integration process, mentoring programs enable new employees to become productive members of the team more quickly, reducing the time and resources required to get them up to speed. 
 
-Written Plan and Goals
-There was no formal project plan specifying key deadlines, deliverables, and goals. Individual teams were working on different parts of the project without a view to the overall goals, because they were not clearly established.
+Promoting Diversity and Inclusion
+Diversity and inclusion are increasingly important priorities for businesses seeking to create a more equitable and inclusive workplace. Mentoring programs can play a critical role in promoting diversity and inclusion by providing opportunities for employees from underrepresented groups to connect, learn, and grow. By pairing employees from diverse backgrounds with mentors who can offer guidance, support, and advocacy, businesses can create a more inclusive and supportive work environment where all employees feel valued, respected, and empowered to succeed. 
 
-Approach
-By focusing on bringing people together to work towards a common goal, while ensuring they had the resources to be successful, the project began to turn around.
+Fostering a Culture of Learning and Development
+In today's rapidly evolving business landscape, continuous learning and development are essential for staying competitive and adapting to change. Mentoring programs foster a culture of learning and development by providing employees with opportunities to acquire new skills, expand their knowledge, and grow professionally. 
 
-Listening and Understanding
-The first step was to ask open questions and listen to the concerns of different groups within the firm. The approach for the internal finance team was a focus on team building, encouraging mutual support and collaboration. For the HR and IT teams, the start was to assess their level of  integration with the project and quickly establish strong working relationships with the other teams, fostering a collaborative environment.
+By investing in mentoring programs, businesses demonstrate their commitment to employee development and create a culture where learning is valued and encouraged, helping employees stay engaged, motivated, and fulfilled in their roles. 
 
-By pausing the project to reassess the situation, engaging with all vendors to understand their perspectives, and adjusting vendor relationships as needed, the firm developed a comprehensive project plan with stakeholder buy-in.
+In conclusion, the labor shortage presents significant challenges for businesses, but mentoring programs offer a powerful solution for attracting, developing, and retaining talent. By bridging the skills gap, attracting and retaining top talent, accelerating onboarding and integration, promoting diversity and inclusion, and fostering a culture of learning and development, mentoring programs enable businesses to navigate the labor shortage successfully and build a strong, sustainable workforce for the future. 
 
-Engaging Leadership
-The team worked closely with the firm’s attorney leadership to define what success would look like and helped them understand the additional financial investments needed. By collaborating with them to develop a clear communication strategy, the firm ensured all stakeholders were informed and aligned.
-
-Leadership moved to a role of supporting the project as cheerleaders and enforcers, rather than getting involved in daily decisions. It was impressed upon leadership the importance of using the solutions themselves to set an example.
-
-Building Culture and Collaboration
-Team members were identified into three groups: proactive supporters of the project, persuadable adversaries, and active resistors. Clear expectations were set for all groups, and the project teams were balanced to include both supporters and persuadable adversaries. Resistors were coached  to adopt the necessary changes. 
-
-The firm created clear roles and responsibilities within the team, with a robust structure to raise concerns and objections. This allowed team members to feel heard and valued. The firm assigned specific team members to particular parts of the project, significantly increasing their independent decision-making authority. They empowered those closest to the functions to lead decision-making, ensuring the best outcomes for the project.
-
-Defining Success
-The firm set clear and measurable goals for the team as a whole, and for individual contributors. This helped team members understand their role within the project while also focusing on the larger institutional goals. Having defined goals allows team members to self-assess, increasing confidence.
-
-Building Trust and Engagement
-The firm instituted regular meetings for managers and their teams, provided opportunities for junior members to take on bigger roles, and ensured continuous feedback. They  organized social activities to foster personal connections among team members, and encouraged open communication, promoting a culture of experimentation and support.
-
-To trust in others, you must first trust yourself. It was essential to conduct an honest assessments of team members' skills relative to their roles and brought in third-party help to supplement and support areas where internal capabilities were lacking.
-
-Technology and Vendor Adjustments
-The firm replaced the outdated paperless billing solution with a new vendor offering a proactive partnership and a superior product. They used the feedback from project vendors to change the approach and better utilize their skills,  which was one of the major contributors to finishing the project under budget.
-
-Results
-The ERP implementation and the firm-wide launch of paperless billing were completed 9 months ahead of the original schedule. The new paperless billing solution improved the efficiency and speed of client billing, leading to a record high billing and collection year for the firm.
-
-Measuring Success
-There are many ways to measure success; meeting your project goals is just one of them. In addition to going live ahead of schedule and under budget, the firm recognized longer-term cultural change that ensured strong overall adoption.
-
-Stakeholder Advocacy
-Many skeptical partners became advocates through understanding their concerns and addressing them effectively. As a result, they became advocates of the new system. Strong senior leadership from the firm’s attorney leaders was integral to the partner adoption.
-
-Team Culture Transformation
-The team developed a strong sense of ownership, knowing that their collaborative efforts were crucial to the project’s success. There was a noticeable improvement in interpersonal relationships and enhanced collaboration, both within the finance function and across the firm, which continued after the project ended.
-
-Conclusion
-The firm had embarked on an ambitious project to upgrade its ERP system from a legacy platform in place for over 10 years to a new platform, while also implementing a new paperless billing solution. However, midway through, the project had come to a complete halt, with work paused indefinitely. The situation was dire, with multiple challenges threatening the project's success.
-
-Want to Learn More? Contact us.
-
-Name
-(required)
-First Name
-Last Name
-Email
-(required)
-Message
-Send
-
-
+If you are interested in developing your mentoring program or  receiving a demo of our products along with pricing information please reach out to successteam@insala.com today.
     `,
 },
-// {
-//     TITLE: "What Are The Costs Associated With Probate In California?",
-//     LINK: `https://ridleylawoffices.com/what-are-the-costs-associated-with-probate-in-california/`,
-//     CONTENT: `
-//     What Are The Costs Associated With Probate In California?
-//     Sep 24, 2024
-//     Hi, I’m Eric Ridley, an estate planning lawyer based in California. Today, let’s unravel the often complex and misunderstood topic of probate costs in California. Understanding these costs is crucial for anyone involved in estate planning or handling an estate after a loved one’s passing. So, let’s dive in and make sense of it together.
+{
+    TITLE: "Now Is The Time To Start Your Mentoring Program",
+    LINK: `https://www.people360ai.com/blog/what-is-corporate-mentoring-0-0-0-0-0-0-0-0-0-0-0`,
+    CONTENT: `
+    In today's rapidly changing landscape, organizations face numerous challenges, from attracting and retaining top talent to fostering a culture of continuous learning and development. 
 
-//     Probate Court Fees
-//     Probate in California begins with court fees, which are like the entry ticket to the probate process. These fees are set by the state and vary depending on the estate’s value. For instance, for an estate valued at $150,000, the court fee might be a few hundred dollars. As the estate value increases, so do these fees, reaching into the thousands for larger estates. These fees are unavoidable and are the first step in the probate journey.
+One proven strategy for addressing these challenges and driving organizational success is the implementation of a mentoring program. With the current business climate presenting both opportunities and obstacles, now is the perfect time for businesses to start their mentoring programs and reap the benefits they offer. 
 
-//     Understanding the Costs for Attorney Fees
-//     Attorney fees in probate can be significant but are essential for facing the process. In California, attorney fees for probate are determined by a statutory formula. They’re calculated as a percentage of the estate’s total value. For example, an estate worth $200,000 might incur attorney fees of around $7,000. These fees pay for the legal guidance and professional needed to ensure the estate is managed and distributed correctly.
+Addressing Remote Work Challenges
+The shift to remote work brought about by the COVID-19 pandemic has highlighted the need for new approaches to employee development and support. Remote employees may feel disconnected from their colleagues and lack access to traditional forms of mentorship and guidance. A mentoring program provides a valuable solution by offering remote-friendly mentoring opportunities that allow employees to connect, learn, and grow regardless of their physical location. By starting a mentoring program now, businesses can support their remote workforce and ensure that employees have access to the guidance and support they need to thrive in a remote work environment. 
 
-//     Compensating for Time and Effort of Executor Fees
-//     The executor of an estate, who is responsible for managing and finalizing the deceased’s affairs, is also entitled to compensation. This compensation is typically a percentage of the estate’s value, similar to attorney fees. For an estate valued at $300,000, the executor’s fee might be about $9,000. This fee compensates the executor for their time, effort, and the responsibilities they undertake in administering the estate.
+Nurturing Leadership Talent
+As businesses navigate the complexities of today's business landscape, strong leadership is more important than ever. A mentoring program provides a powerful platform for nurturing leadership talent within the organization. By pairing emerging leaders with experienced mentors, businesses can provide valuable guidance, support, and development opportunities that help future leaders unlock their full potential. Starting a mentoring program now allows businesses to identify and develop the next generation of leaders, ensuring that they have the leadership talent they need to drive organizational success both now and in the future. 
 
-//     A Lesser-Known Expense 
-//     In some cases, executors may be required to post a bond before they can administer the estate. This bond acts as insurance to protect the beneficiaries against possible mismanagement of the estate. The cost of the bond varies based on the estate’s size and the specifics of the case.
+Fostering Diversity and Inclusion
+Diversity and inclusion have become top priorities for businesses seeking to create a more equitable and inclusive workplace. A mentoring program can play a key role in fostering diversity and inclusion by providing opportunities for employees from diverse backgrounds to connect, learn from each other, and access valuable support and guidance. By starting a mentoring program now, businesses can take proactive steps to promote diversity and inclusion within their organization, creating a workplace where all employees feel valued, supported, and empowered to succeed. 
 
-//     Appraisal and Business Valuation Fees 
-//     Estates often contain various assets, from real estate to business interests, all of which need to be appraised. Appraisal fees are paid to professionals who determine the value of these assets. Similarly, if the estate includes business interests, business valuation professionals are hired, and their fees also add to the probate costs.
+Supporting Employee Well-Being
+Employee well-being has emerged as a critical concern for businesses as they seek to support their employees during challenging times. A mentoring program can contribute to employee well-being by providing opportunities for employees to connect with mentors who can offer guidance, support, and a listening ear. By starting a mentoring program now, businesses can demonstrate their commitment to supporting employee well-being and provide employees with valuable resources and support systems to help them navigate the challenges they may face. 
 
-//     Costs for Managing and Selling Real Estate 
-//     If the estate includes real estate that needs to be managed or sold, there are additional costs involved. These can consist of expenses for maintaining the property, real estate agent commissions, and any costs related to selling the property, like repairs or staging.
+Driving Organizational Performance
+Ultimately, a mentoring program can drive organizational performance by fostering a culture of learning, development, and collaboration. By providing employees with access to mentors who can offer guidance, feedback, and support, businesses can help employees develop new skills, overcome challenges, and achieve their full potential. Starting a mentoring program now allows businesses to lay the groundwork for long-term success by investing in their employees and creating a culture where learning and growth are valued and encouraged. 
 
-//     Accounting Fees and Tax Preparation
-//     Managing an estate’s financial affairs often requires professional accounting services. Accountants may be needed to prepare final tax returns for the deceased and the estate. These services come with fees, which are deducted from the estate’s assets.
+In today's dynamic business environment, the benefits of a mentoring program are more relevant and impactful than ever. 
 
-//     Miscellaneous Probate Costs 
-//     There are also miscellaneous costs to consider, like court filing fees for various documents, costs for certified copies of court documents, and postage and mailing expenses. While individually small, these costs can add up.
+By starting a mentoring program now, businesses can address remote work challenges, nurture leadership talent, foster diversity and inclusion, support employee well-being, and drive organizational performance. With the right strategy and support, a mentoring program can be a powerful tool for driving employee development, engagement, and organizational success.  
 
-//     Avoiding or Minimizing Probate Costs through Estate Planning 
-//     Many of these probate costs can be reduced or even eliminated with proper estate planning. Tools like living trusts, joint ownership, and proper beneficiary designations on retirement accounts and life insurance policies can help bypass the probate process. It’s worth exploring these options to preserve more of your estate for your beneficiaries.
+Now is the time for businesses to take action and start their mentoring programs to unlock the full potential of their employees and achieve their business goals. 
 
-//     The Role of an Estate Planning Attorney 
-//     As an estate planning attorney, my role is to guide you through these complexities. I can help you understand the potential costs of probate for your estate and work with you to develop strategies to minimize these costs. Effective estate planning can save your beneficiaries time, money, and stress.
+To learn more about how Insala can help you unlock the full potential of your mentoring program, contact our Sales Team at successteam@insala.com.
+    `
+},
 
-//     The probate process in California can be daunting, especially considering the various costs involved. However, with the right guidance and planning, you can make informed decisions to protect your estate’s value and ensure your wishes are honored. If you’d like to learn more or need assistance with estate planning, I’m here to help. Contact me at (805) 244-5291 or visit our website for a free initial strategy session. Together, we can create a plan that suits your family’s needs and brings you peace of mind.
+{
+    TITLE: "7 Tips To Improve Your Corporate Mentoring Program",
+    LINK: "https://www.people360ai.com/blog/what-is-corporate-mentoring-0-0-0-0-0-0-0-0-0-0",
+    CONTENT: `
+Corporate mentoring programs have been driving business revenue higher for decades. To achieve effective revenue results, it's essential to ensure that your mentoring program is well-designed, effectively implemented, and continuously evaluated. 
 
-//     Posted in Probate
-//     `
-// },
+In this comprehensive guide, we'll explore seven actionable tips to help you enhance the effectiveness of your corporate mentoring program and maximize its impact on your organization. 
 
-// {
-//     TITLE: "I’m Not Rich. Do I Need an Estate Plan?",
-//     LINK: "https://ridleylawoffices.com/im-not-rich-do-i-need-estate-plan/",
-//     CONTENT: `
-//  One of the most common myths about estate planning I hear over and over again is, “I don’t have any money. Why would I need an estate plan?”
+Define Clear Objectives and Goals
+The first step to improving your corporate mentoring program is to define clear objectives and goals. What do you hope to achieve through the program? Are you aiming to develop leadership skills, improve employee retention, or enhance diversity and inclusion? By clearly defining your objectives, you provide a roadmap for the program and ensure that all stakeholders are aligned on its purpose and intended outcomes. 
 
-// It is easy to understand why someone might think this – after all, estate planning is for rich people, right?
+Focus on Mentor-Mentee Matching
+Effective mentor-mentee matching is crucial for the success of a mentoring program. Take the time to thoughtfully pair mentors and mentees based on factors such as career goals, interests, personality, and communication style. Consider leveraging tools such as the Insala Mentoring Readiness program to assess participants' readiness for mentoring and facilitate successful matches. By ensuring compatibility between mentors and mentees, you set the stage for productive and meaningful mentoring relationships. 
 
-// This is a dangerous myth!
-// In fact, it is often people with minimal assets who need estate planning the most. Confused?
+Provide Comprehensive Training and Support
+Both mentors and mentees require training and support to maximize the value of their mentoring experience. Offer comprehensive training on topics such as communication skills, goal setting, feedback, and conflict resolution. Additionally, provide ongoing support and resources to help participants navigate challenges and make the most of their mentoring relationships. The Insala Mentoring Readiness program can serve as a valuable resource to prepare participants for their mentoring journey and equip them with the skills and knowledge they need to succeed. 
 
-// Let me give you an example:
+Establish Clear Expectations
+Setting clear expectations is essential for guiding the mentoring relationship and ensuring that both mentors and mentees understand their roles and responsibilities. Clearly outline the goals of the mentoring program, the frequency and format of meetings, and the expectations for communication and feedback. Provide participants with a mentoring agreement or handbook that outlines these expectations and serves as a reference throughout the program. 
 
-// Nathan had $10,000 in his checking account. He didn’t have an estate plan because, until recently, he thought estate planning was only for people who were rich.
+Foster Open Communication
+Open communication is key to building trust and rapport between mentors and mentees. Encourage participants to communicate openly and honestly with each other, sharing their goals, challenges, and successes. Establish regular check-ins or meetings to provide opportunities for dialogue and feedback. By fostering a culture of open communication, you create a supportive environment where participants feel comfortable sharing their thoughts and experiences. 
 
-// One day he was injured at work. He became incapacitated, and was no longer able to manage his finances on his own. He needed to access the money in his checking account to pay for the medical bills.
+Measure and Evaluate Program Effectiveness
+Regularly measuring and evaluating the effectiveness of your mentoring program is essential for identifying areas for improvement and making data-driven decisions. Collect feedback from participants through surveys, interviews, or focus groups to gain insights into their experiences and satisfaction with the program. Track key metrics such as participant engagement, skill development, and career advancement to gauge program success. Use these insights to make informed adjustments and enhancements to your mentoring program. 
 
-// Nathan’s adult daughter tried to access the account, but the bank told him she didn’t have legal authority to access it. By the way, if Nathan had been married and his wife’s name wasn’t on the account, the Bank would have told his wife the same thing.
+Celebrate Success and Continuously Improve
+Finally, don't forget to celebrate the successes of your mentoring program and recognize the achievements of participants. Whether it's highlighting success stories in company newsletters or hosting recognition events, acknowledging the impact of mentoring can help reinforce its value and encourage continued participation. Additionally, embrace a culture of continuous improvement by soliciting feedback from participants and stakeholders and using this feedback to make ongoing enhancements to your mentoring program. 
 
-// Nathan’s daughter did finally get access to the account, but only after going through an extremely difficult and costly court process called “probate.” Nathan’s daughter had to get court permission before she could act on her father’s behalf. That took a lot of time and ate up much of the $10,000.
+In conclusion, by implementing these seven tips, you can take your corporate mentoring program to the next level and unlock its full potential to drive employee development and organizational success. 
 
-// Billionaires like Elon Musk and Warren Buffett would be just fine if this happened to them.
+From defining clear objectives and goals to fostering open communication and continuously evaluating program effectiveness, each tip plays a crucial role in enhancing the effectiveness of your mentoring initiatives. And by leveraging resources such as the Insala Mentoring Readiness program, you can ensure that participants are well-prepared for their mentoring journey and set up for success from the start. 
 
-// Nathan, however, had to pay for filing fees and attorney fees and his daughter was really worried throughout the entire process.
+Ready to take your corporate mentoring program to the next level?
 
-// Incredible as it sounds, it was exponentially more important for Nathan to have an estate plan in this case than it is for someone like Elon Musk.
+To learn more about how Insala can help you unlock the full potential of your mentoring program, contact our Sales Team at successteam@insala.com.
+    `,
+},
 
-// This is a heartbreaking example of how quickly things can get messy without basic planning in place – and how the importance of estate planning has little to do with how much money you have.
+{
+    TITLE: "Can Insurance Companies Deny Cancer Treatment?",
+    LINK: "https://ravaltriallaw.com/deny-cancer-treatment/",
 
-// If you are interested in learning how estate planning can save your family time, money, and heartache, start by scheduling your free planning session with me online here or by calling me at (805) 244-5291.
+    CONTENT: `
+    The answer to the question of “Can insurance companies deny cancer treatment?” is often different from the answer to the question of “Do insurance companies deny cancer treatment?”
 
-// We will cover the biggest fears when it comes to estate planning, how to protect your family and your assets, how to get started, how much it will cost, and much more.
-
-// I know this is a lot to take in! Feel free to hit reply with any questions at all. Eric Ridley Attorney at Law Law Office of Eric ridleyeric@ridleylawoffices.com(805) 244-5291www.ridleylawoffices.com
-
-// This is a scary scenario that can be easily avoided. The first step is to learn more by calling me right now. I will guide you as to the path, for you to make the best decisions for your family.
-//     `,
-// },
-
-// {
-//     TITLE: "Can Insurance Companies Deny Cancer Treatment?",
-//     LINK: "https://ravaltriallaw.com/deny-cancer-treatment/",
-
-//     CONTENT: `
-//     The answer to the question of “Can insurance companies deny cancer treatment?” is often different from the answer to the question of “Do insurance companies deny cancer treatment?”
-
-//     Although federal law often prohibits insurance companies from denying certain vital cancer treatments, patients are often forced to fight for coverage. In some cases, patients may even end up paying for the necessary treatment out of their own pockets because they cannot afford to lose time waiting to receive an insurer’s authorization before beginning treatment. Some patients may be forced to take legal action against their insurance company to get the vital coverage they need. One of the most common reasons why cancer patients must fight insurance companies is that they have been denied coverage for proton beam therapy treatment.
+    Although federal law often prohibits insurance companies from denying certain vital cancer treatments, patients are often forced to fight for coverage. In some cases, patients may even end up paying for the necessary treatment out of their own pockets because they cannot afford to lose time waiting to receive an insurer’s authorization before beginning treatment. Some patients may be forced to take legal action against their insurance company to get the vital coverage they need. One of the most common reasons why cancer patients must fight insurance companies is that they have been denied coverage for proton beam therapy treatment.
     
-//     Federal Law Places Requirements on Health Insurance Companies
-//     The Affordable Care Act made numerous changes in the law that governs how and when insurance companies must cover illnesses like cancer. Health insurance providers are no longer able to deny coverage on account of pre-existing conditions, nor can they impose yearly or lifetime caps on the amount of coverage that they provide. Insurance plans must cover essential health benefits that include cancer treatments.
+    Federal Law Places Requirements on Health Insurance Companies
+    The Affordable Care Act made numerous changes in the law that governs how and when insurance companies must cover illnesses like cancer. Health insurance providers are no longer able to deny coverage on account of pre-existing conditions, nor can they impose yearly or lifetime caps on the amount of coverage that they provide. Insurance plans must cover essential health benefits that include cancer treatments.
     
-//     In practice, insurance companies push the limits as far as they can to save themselves money. It is, unfortunately, all too common for patients to either have to fight to get the coverage they need or have it denied altogether.
+    In practice, insurance companies push the limits as far as they can to save themselves money. It is, unfortunately, all too common for patients to either have to fight to get the coverage they need or have it denied altogether.
     
-//     Health Insurance Companies Have Often Flouted the Law
-//     A relatively recent survey by the Texas Medical Association revealed that roughly one in every four people have had coverage for treatment prescribed by their doctor denied by an insurance company, notwithstanding the requirements of the Affordable Care Act. This includes people who have critically needed life-saving cancer treatment. Some patients’ conditions grew worse after having been denied the treatment or taking the time to fight the denial of coverage.
+    Health Insurance Companies Have Often Flouted the Law
+    A relatively recent survey by the Texas Medical Association revealed that roughly one in every four people have had coverage for treatment prescribed by their doctor denied by an insurance company, notwithstanding the requirements of the Affordable Care Act. This includes people who have critically needed life-saving cancer treatment. Some patients’ conditions grew worse after having been denied the treatment or taking the time to fight the denial of coverage.
     
-//     Insurance companies give many reasons for their denial of coverage of certain medical treatments to save themselves money at the expense of cancer patients, including:
+    Insurance companies give many reasons for their denial of coverage of certain medical treatments to save themselves money at the expense of cancer patients, including:
     
-//     The cancer treatment is medically unnecessary
-//     The treatment is experimental in nature
-//     The specific provider of the treatment is out of the insurer’s network
-//     To insurance companies, it does not matter that a doctor has recommended a treatment or that it may save the patient’s life. All that matters is that a cancer treatment may be expensive and will hurt the insurance company’s bottom line. Patients are already facing a tough battle in their fight against cancer. Unfortunately, they may also be forced to fight another battle: getting their insurance company to authorize payment for the treatment of that cancer.
+    The cancer treatment is medically unnecessary
+    The treatment is experimental in nature
+    The specific provider of the treatment is out of the insurer’s network
+    To insurance companies, it does not matter that a doctor has recommended a treatment or that it may save the patient’s life. All that matters is that a cancer treatment may be expensive and will hurt the insurance company’s bottom line. Patients are already facing a tough battle in their fight against cancer. Unfortunately, they may also be forced to fight another battle: getting their insurance company to authorize payment for the treatment of that cancer.
     
-//     Cancer treatments such as proton beam therapy are prescribed out of medical necessity. Presumably, they would meet the requirements for coverage under the Affordable Care Act. In a dispute with your insurer, the burden of proof may shift to you to prove that proton beam therapy is both a recognized treatment and medically necessary. Even if you can prove both with ease, you can still expect a fight on your hands.
+    Cancer treatments such as proton beam therapy are prescribed out of medical necessity. Presumably, they would meet the requirements for coverage under the Affordable Care Act. In a dispute with your insurer, the burden of proof may shift to you to prove that proton beam therapy is both a recognized treatment and medically necessary. Even if you can prove both with ease, you can still expect a fight on your hands.
     
-//     You Can Contest the Insurance Company’s Denial of Your Cancer Treatment
-//     Under the law, you have a right to challenge the denial of cancer treatments. Unfortunately, the appeals process takes time, and time may not be on your side when you are undergoing treatment for cancer. Nonetheless, you owe it to yourself and your family to fight as hard as you can for all the necessary and required treatments. Before filing your appeal, you should closely review the exact language of your health insurance policy because recent changes to federal law allow for policies that are less comprehensive in nature. In addition, you can and should consult an insurance coverage lawyer during the administrative appeals process.
+    You Can Contest the Insurance Company’s Denial of Your Cancer Treatment
+    Under the law, you have a right to challenge the denial of cancer treatments. Unfortunately, the appeals process takes time, and time may not be on your side when you are undergoing treatment for cancer. Nonetheless, you owe it to yourself and your family to fight as hard as you can for all the necessary and required treatments. Before filing your appeal, you should closely review the exact language of your health insurance policy because recent changes to federal law allow for policies that are less comprehensive in nature. In addition, you can and should consult an insurance coverage lawyer during the administrative appeals process.
     
-//     Before you appeal your insurer’s decision to deny your cancer treatment, you should take several steps that can increase your chances of success, including:
-//     Gathering documentation that conclusively shows that the treatment is medically necessary
-//     Compiling additional medical records that detail your medical history and the prior course(s) of your treatment(s)
-//     Contacting your medical providers to help obtain supportive evidence of medical necessity
-//     Consulting with an insurance lawyer who can advise you on the appeals process
-//     Insurance companies are required to offer an internal appeals process wherein you can contest the denial of benefits. However, without legal representation, the internal appeals process can become  a rubber stamp of the initial decision that was made. Insurance companies rarely take an objective look at their own decisions, even though there may be legal consequences for decisions that violate the law.
+    Before you appeal your insurer’s decision to deny your cancer treatment, you should take several steps that can increase your chances of success, including:
+    Gathering documentation that conclusively shows that the treatment is medically necessary
+    Compiling additional medical records that detail your medical history and the prior course(s) of your treatment(s)
+    Contacting your medical providers to help obtain supportive evidence of medical necessity
+    Consulting with an insurance lawyer who can advise you on the appeals process
+    Insurance companies are required to offer an internal appeals process wherein you can contest the denial of benefits. However, without legal representation, the internal appeals process can become  a rubber stamp of the initial decision that was made. Insurance companies rarely take an objective look at their own decisions, even though there may be legal consequences for decisions that violate the law.
     
-//     You Can Take Your Case to Court if Necessary
-//     There is an additional external check on the conduct of insurance companies. You can always take your insurance company to court and file a lawsuit to compel it to cover your cancer treatment. In the meantime, you would need to retain legal counsel and go through the entire court process and win your case. A court would provide an objective review of whether your cancer treatment would be required under federal law.
+    You Can Take Your Case to Court if Necessary
+    There is an additional external check on the conduct of insurance companies. You can always take your insurance company to court and file a lawsuit to compel it to cover your cancer treatment. In the meantime, you would need to retain legal counsel and go through the entire court process and win your case. A court would provide an objective review of whether your cancer treatment would be required under federal law.
     
-//     In addition, state law also serves as a constraint on an insurance company’s behavior. If the insurance company has unreasonably denied your coverage, it could be subject to a bad faith lawsuit. Further, if there are many people who have had the same treatment denied, a class action lawsuit against the insurance company may even be possible. For example, Aetna recently settled a class action lawsuit alleging that it wrongfully denied cancer treatments. A class of 142 patients who were wrongfully denied proton beam therapy treatments received a total of $3.4 million.
+    In addition, state law also serves as a constraint on an insurance company’s behavior. If the insurance company has unreasonably denied your coverage, it could be subject to a bad faith lawsuit. Further, if there are many people who have had the same treatment denied, a class action lawsuit against the insurance company may even be possible. For example, Aetna recently settled a class action lawsuit alleging that it wrongfully denied cancer treatments. A class of 142 patients who were wrongfully denied proton beam therapy treatments received a total of $3.4 million.
     
-//     In another case, a judge lambasted United Healthcare for its “immoral and barbaric” conduct in denying coverage for proton beam therapy treatment. The judge, who was himself a cancer survivor, stated that “it is undisputed among legitimate medical experts that proton radiation therapy is not experimental and causes much less collateral damage than traditional radiation.”
+    In another case, a judge lambasted United Healthcare for its “immoral and barbaric” conduct in denying coverage for proton beam therapy treatment. The judge, who was himself a cancer survivor, stated that “it is undisputed among legitimate medical experts that proton radiation therapy is not experimental and causes much less collateral damage than traditional radiation.”
     
-//     You can and should fight back when your insurance company has wrongfully denied your cancer treatment. Not only can you legally force it to cover your treatment, but you may win additional damages in court. Also, fighting back could lead to negative news headlines for insurance companies and cause them public relations and reputational nightmares. An experienced insurance claims denial attorney knows how to leverage the court of public opinion to help support your legal battle against your health insurance company.
-//     `
-// },
+    You can and should fight back when your insurance company has wrongfully denied your cancer treatment. Not only can you legally force it to cover your treatment, but you may win additional damages in court. Also, fighting back could lead to negative news headlines for insurance companies and cause them public relations and reputational nightmares. An experienced insurance claims denial attorney knows how to leverage the court of public opinion to help support your legal battle against your health insurance company.
+    `
+},
 
-// {
-//     TITLE: "Why Government Plans Are Exempt From ERISA",
-//     LINK: "https://ravaltriallaw.com/why-government-plans-are-exempt-from-erisa/",
+{
+    TITLE: "The Big 3 Questions To Answer Before Creating Your Corporate Mentoring Program",
+    LINK: "https://www.people360ai.com/blog/what-is-corporate-mentoring-0-0-0-0-0-0-0-0",
 
-//     CONTENT: `
-//     If you have been denied benefits provided through an employer-sponsored plan, your claim will generally fall under the Employee Retirement Income Security Act (ERISA). ERISA is a federal law that governs most employee benefit plans. While ERISA was originally enacted to safeguard employees’ retirement and pension benefits, its reach and scope has been expanded over the years.
+    CONTENT: `
+Implementing a corporate mentoring program can be a game-changer for organizations, offering numerous benefits such as enhanced employee development, improved retention rates, and increased productivity. However, before diving into the creation of a mentoring program, it's essential to lay the groundwork by answering some critical questions. 
 
-// But not all employee benefit plans fall under ERISA. When Congress crafted ERISA, it wanted to reduce abuses in the system for private employee pensions. However, it decided that state and local governments should be free to decide the best way to protect their employees. This became an established part of the law. Under ERISA, a government plan means any plan “established or maintained” by the federal government, a state government or political subdivision, or by any agency or instrumentality of any of the foregoing. 29 U.S.C. §1002(32). Courts have defined “established” to include plans created under a collective bargaining agreement between a government unit and a union.
+In this article, we will explore the big three questions that organizations should address before embarking on the journey of creating a corporate mentoring program. 
 
-// This means that employees who fall under the government plan exemption are not subject to ERISA. There are many reasons why it is beneficial to get out from ERISA’s reach. Like other states, Texas has laws governing life, accidental death, disability, and health insurance that are more fair to insurance claimants and allow them to sue an insurance company for breach of contract, insurance bad faith, and punitive damages. Emotional distress damages and other damages caused by insurance company’s bad faith may be recoverable under Texas law but are not recoverable in ERISA cases.
+What Are Your Objectives and Goals?
+The first step in creating a successful corporate mentoring program is to clearly define your objectives and goals. What do you hope to achieve through the program? Are you aiming to develop future leaders, enhance diversity and inclusion, or improve employee engagement and retention? By identifying your specific objectives and goals, you can tailor your mentoring program to address the unique needs and priorities of your organization. 
 
-// Determining whether a matter is governed by ERISA can be a complex process, but this is one factor to keep in mind when a plan may be established or maintained by the government. If you have been denied ERISA benefits, a Houston ERISA attorney at Berg Plummer Johnson & Raval, LLP can help you file a case and recover the compensation you deserve. For more information on filing an ERISA claim, call our firm today at (713) 526-0200 or contact us online to schedule a consultation. Our lawyers offer unique, cost-effective fee arrangements and will fight for your rights throughout the entire duration of your case.
-//     `
-// },
+For example, if your goal is to develop future leaders, you may focus on pairing high-potential employees with experienced leaders who can provide guidance and mentorship. On the other hand, if your objective is to enhance diversity and inclusion, you may prioritize matching mentees from underrepresented groups with mentors who can offer support and advocacy. 
+
+Who Will Participate in the Program?
+Another crucial question to consider is who will participate in the mentoring program. Will it be open to all employees, or will it target specific groups such as new hires, high-potential employees, or emerging leaders? Understanding your target audience will help you design a mentoring program that meets their unique needs and preferences. 
+
+Additionally, consider the role of mentors in the program. Will mentors be volunteers from within the organization, or will they be assigned by management? What criteria will you use to select mentors? By carefully considering these questions, you can ensure that both mentors and mentees are well-suited to the program and motivated to actively participate. 
+
+How Will You Measure Success?
+Finally, it's essential to establish clear metrics for measuring the success of your corporate mentoring program. What key performance indicators (KPIs) will you use to evaluate the effectiveness of the program? Will you track metrics such as participant satisfaction, mentor-mentee match quality, skill development, or career advancement? 
+
+In addition to quantitative metrics, consider incorporating qualitative feedback mechanisms to gather insights from participants about their experiences with the program. Regular surveys, focus groups, or one-on-one interviews can provide valuable feedback that can inform program improvements and enhancements. 
+
+In conclusion, before embarking on the creation of a corporate mentoring program, it's crucial to answer the big three questions: What are your objectives and goals? Who will participate in the program? How will you measure success? 
+
+By carefully considering these questions and laying the groundwork for your mentoring initiative, you can ensure that your program is well-designed, effectively implemented, and poised to deliver meaningful benefits to both participants and the organization as a whole. 
+
+At Insala, we understand the importance of strategic planning in creating successful corporate mentoring programs. Our comprehensive mentoring solutions empower organizations to design, implement, and manage mentoring programs that drive employee development, engagement, and organizational success. 
+
+To learn more about how Insala can help you implement a successful mentoring program, contact our sales team at successteam@insala.com.   
+    `
+},
 
 // {
 //     TITLE: "The Mental Health Parity Act Explained And Why It Matters",
@@ -574,7 +531,7 @@ chatInfo = {
 competition = {
     LAST_DATE: "03/31/24",
     COMPETITION: [{
-        NAME: 'Sample Lawyers',
+        NAME: 'Sample Firm',
         SITE: 'bergplummer.com',
         COMP_SITE: 'bergplummer.com/blog',
         TRAFFIC: [1200, 1400, 1300, 1500],
@@ -594,7 +551,7 @@ competition = {
         }
       },
       {
-        NAME: 'Sample Lawyers 2',
+        NAME: 'Sample Firm 2',
         SITE: 'injuryattorneyofdallas.com',
         COMP_SITE: 'injuryattorneyofdallas.com/blog',
         TRAFFIC: [2650, 2550, 2700, 2650],
