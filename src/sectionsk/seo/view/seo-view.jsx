@@ -207,8 +207,10 @@ const modules = {
       if (currentMode === "Generate") {
         if (isBrowseWeb || isAdvancedBrowseWeb) {
           setLoadIndicator(['Browsing The Web', 30]);
-          if (isAdvancedBrowseWeb) {browseTextResponse = await browseWeb(browseText); console.log('BROWSE RESPONSE:', browseTextResponse);}
-          else {browseTextResponse = JSON.stringify((await browseWeb(browseText)).hits.map(({snippet, title, link}) => ({title, snippet, link})))};
+          if (isAdvancedBrowseWeb) {browseTextResponse = await browseWeb(browseText, isUseInternalLinks); console.log('BROWSE RESPONSE:', browseTextResponse);}
+          else {browseTextResponse = JSON.stringify((await browseWeb(browseText, isUseInternalLinks))
+            // .hits.map(({snippet, title, link}) => ({title, snippet, link}))
+          )};
         };
           messages.push({
           "role": "user", 
@@ -311,6 +313,8 @@ const modules = {
 
     const generationText = currentMode === "Build Outline" ? 'Building Outline': 'Generating Article'; setLoadIndicator([generationText, 60]);
 
+    console.log('BROWSETEXTRESPONSE IN SEO-VIEW:', JSON.stringify(JSON.parse(browseTextResponse)), isUseInternalLinks);
+
     const claudeResponse = await fetch('https://us-central1-pentra-claude-gcp.cloudfunctions.net/gcp-claudeAPI', {
           method: 'POST',
           headers: {
@@ -328,7 +332,7 @@ const modules = {
 
         IMPORTANT INSTRUCTIONS:
         - FORMATTING: Wrap titles in <${titleTag}> and sub-titles in <h3> tags. Wrap all paragraphs (and everything else that should have a line after) in <p> tags. Use b tags only in same-line text or 'title: paragraph'. Use numbers if you decide to add a list not ul tags.
-        - TABLES: Always include (2/3 column) table(s). Add in this syntax:
+        - TABLES: Always include table(s) with 2 or 3 columns. Add in this syntax:
 
           <div class="quill-better-table-wrapper">
             <table class="quill-better-table" style="width: 600px;">
@@ -358,9 +362,10 @@ const modules = {
         - ${style !== "Unstyled" && `STYLE: This blog post MUST be written in the ${style} style.`}
         - ${isMentionCaseLaw && `CASE LAW: Reference case law in the blog post when necessary.`}
         - ${isReferenceGiven && `USEFUL DATA: Refer to the following text and use as applicable: ${referenceText}`}
-        - ${contactUsLink && `CONTACT US LINK AT END: Use this contact us link with <a> tags toward the end if applicable: ${contactUsLink}`}
-        - ${isUseInternalLinks && `LINK TO RELEVANT POSTS: Use <a> tags to add link(s) to relevant blog posts from the firm wherever applicable: ${internalLinks}.`}
-        - ${browseTextResponse !== "" && `WEB RESULTS: Consider using the following web information I got from leading websites: ${browseTextResponse}`}
+        - ${contactUsLink && `CONTACT US LINK AT END: Use this contact us link with <a> tags toward the end if applicable: ${contactUsLink}`} 
+        - ${browseTextResponse !== "" && `WEB RESULTS: Consider using the following web information I got from leading websites: ${isUseInternalLinks ? JSON.stringify(JSON.parse(browseTextResponse)[1]) : browseTextResponse}.`}
+        - ${isUseInternalLinks && `LINKS TO OTHER SOURCES: ALWAYS ADD THESE. Use <a> tags to to tag a few phrases and add links to relevant blog posts from non-law-firm sources from the following list wherever applicable: ${JSON.stringify(JSON.parse(browseTextResponse)[0].hits)}.`}
+        - LINK TO INTERNAL BLOGS: Use <a> tags to to tag phrases and add links to relevant blog posts from the urls of the following list wherever applicable: ${internalLinks}.
         - NEVER OUTPUT ANYTHING other than the blog content. DONT START BY DESCRIBING WHAT YOURE OUTPUTING, JUST OUTPUT. DONT OUTPUT INACCURATE INFORMATION.
       
         </instruction>
@@ -372,6 +377,7 @@ const modules = {
         : `<role>You are Pentra AI, a legal expert and an expert SEO blog writer for ${firmName}. ${firmDescription}.</role>` 
       }`
     }), });
+
 
     const elongationPrompt = `
     <instruction>
@@ -588,7 +594,7 @@ const modules = {
   }
 
 
-  const browseWeb = async (prompt) => {
+  const browseWeb = async (prompt, isAddLinks = false) => {
 
     const youUrl = `https://us-central1-pentra-claude-gcp.cloudfunctions.net/youAPIFunction`;
     const apiKey = '7cc375a9-d226-4d79-b55d-b1286ddb4609<__>1P4FjdETU8N2v5f458P2BaEp-Pu3rUjGEYkI4jh';
@@ -648,16 +654,19 @@ const modules = {
     model: modelKeys[1], messages: [{role: "user", content: `Give me 10-14 comprehensive and detailed key points for the web results
     given below, SPECIFICALLY in the context of ${blogTitle}. DONT DEVIATE. DATA: ${JSON.stringify(results)} `}],})});
 
+    return (isAddLinks ? [results, claudeKeyPoints.text()] : claudeKeyPoints.text())
 
     } else {
 
-    return fetch(youUrl, options)
+    const youResult = await fetch(youUrl, options)
     .then(response => response.json())
     .then(data => {console.log(data); setSources(data.hits); setDoneSourcing(true); return data;})
     .catch(err => {console.error(err); return err;});
+
+    return isAddLinks ? [youResult, youResult] : youResult;
     
-  } return (claudeKeyPoints.text());
   }
+}
 
   const [editorState, setEditorState] = React.useState(() =>
     EditorState.createWithContent(ContentState.createFromText('Hello'))
@@ -943,7 +952,7 @@ const modules = {
 
           <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => {setIsUseInternalLinks(!isUseInternalLinks)}}
         sx={(theme) => ({backgroundColor: isUseInternalLinks ? theme.palette.primary.green : 'grey', '&:hover': { backgroundColor: theme.palette.primary.green, },})}>
-        Internal Links </Button>
+        Cite Sources </Button>
 
         </Stack> 
 
