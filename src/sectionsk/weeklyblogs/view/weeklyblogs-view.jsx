@@ -172,8 +172,8 @@ export default function BlogView() {
       data = await fetch(url, { method: 'POST', headers, body: payload })
       .then(response => response.json())
       .catch(error => console.error('Error:', error));      
-      while (counter < 3) {
-        if (data.tasks[0].result[0].items[rIndex].source_url === undefined) {rIndex = Math.floor(Math.random() * 3); console.log('rerunn serp img, undefined: ', data.tasks[0].result[0].items[rIndex].source_url, 'img desc: ', description);} else {tempUrl = data.tasks[0].result[0].items[rIndex].source_url; console.log('img not undefined: ', tempUrl, 'img desc: ', description); break;};
+      while (counter < 5) {
+        if (data.tasks[0].result[0].items[rIndex].source_url === undefined) {rIndex = Math.floor(Math.random() * 4); console.log('rerunn serp img, undefined: ', data.tasks[0].result[0].items[rIndex].source_url, 'img desc: ', description);} else {tempUrl = data.tasks[0].result[0].items[rIndex].source_url; console.log('img not undefined: ', tempUrl, 'img desc: ', description); break;};
       counter += 1; }
 
       resultImg = `<img src="${tempUrl}" alt="${description}"/>`;

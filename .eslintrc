@@ -55,6 +55,7 @@
     "no-await-in-loop": "off",
     "spaced-comment": "off",
     "no-else-return": "off",
+    "no-nested-ternary": "off",
     
     "no-alert": 0,
     "camelcase": 0,

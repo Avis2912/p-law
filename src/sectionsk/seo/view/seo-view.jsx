@@ -112,7 +112,8 @@ const modules = {
   let boxHeight; const boxWidth = 'calc(100%)';
   if (isReferenceGiven) { boxHeight = 'calc(77.5% - 220px)';} 
   else if (wordCount < 300) { boxHeight = 'calc(77.5% - 51.5px)'; }
-  else { boxHeight = 'auto' } // else { boxHeight = '450px' }
+  // else { boxHeight = 'auto' } 
+  else { boxHeight = '450px' }
 
   // const editor = useMemo(() => withHistory(withReact(createEditor())), []);
   // const [value, setValue] = useState([
@@ -313,7 +314,7 @@ const modules = {
 
     const generationText = currentMode === "Build Outline" ? 'Building Outline': 'Generating Article'; setLoadIndicator([generationText, 60]);
 
-    console.log('BROWSETEXTRESPONSE IN SEO-VIEW:', JSON.stringify(JSON.parse(browseTextResponse)), isUseInternalLinks);
+    console.log('BROWSETEXTRESPONSE IN SEO-VIEW:', isAdvancedBrowseWeb ? JSON.stringify(browseTextResponse)[1] : JSON.stringify(JSON.parse(browseTextResponse)), isUseInternalLinks);
 
     const claudeResponse = await fetch('https://us-central1-pentra-claude-gcp.cloudfunctions.net/gcp-claudeAPI', {
           method: 'POST',
@@ -363,8 +364,8 @@ const modules = {
         - ${isMentionCaseLaw && `CASE LAW: Reference case law in the blog post when necessary.`}
         - ${isReferenceGiven && `USEFUL DATA: Refer to the following text and use as applicable: ${referenceText}`}
         - ${contactUsLink && `CONTACT US LINK AT END: Use this contact us link with <a> tags toward the end if applicable: ${contactUsLink}`} 
-        - ${browseTextResponse !== "" && `WEB RESULTS: Consider using the following web information I got from leading websites: ${isUseInternalLinks ? JSON.stringify(JSON.parse(browseTextResponse)[1]) : browseTextResponse}.`}
-        - ${isUseInternalLinks && `LINKS TO OTHER SOURCES: ALWAYS ADD THESE. Use <a> tags to to tag a few phrases and add links to relevant blog posts from non-law-firm sources from the following list wherever applicable: ${JSON.stringify(JSON.parse(browseTextResponse)[0].hits)}.`}
+        - ${browseTextResponse !== "" && `WEB RESULTS: Consider using the following web information I got from leading websites: ${isUseInternalLinks ? (isAdvancedBrowseWeb ? JSON.stringify(browseTextResponse)[1] : JSON.stringify(JSON.parse(browseTextResponse)[1])) : browseTextResponse}.`}
+        - ${isUseInternalLinks && `LINKS TO OTHER SOURCES: ALWAYS ADD THESE. Use <a> tags to to tag a few phrases and add links to relevant blog posts from non-law-firm sources from the following list wherever applicable: ${isAdvancedBrowseWeb ? JSON.stringify(browseTextResponse)[1] : JSON.stringify(JSON.parse(browseTextResponse)[0].hits)}.`}
         - LINK TO INTERNAL BLOGS: Use <a> tags to to tag phrases and add links to relevant blog posts from the urls of the following list wherever applicable: ${internalLinks}.
         - NEVER OUTPUT ANYTHING other than the blog content. DONT START BY DESCRIBING WHAT YOURE OUTPUTING, JUST OUTPUT. DONT OUTPUT INACCURATE INFORMATION.
       
@@ -543,8 +544,10 @@ const modules = {
       data = await fetch(url, { method: 'POST', headers, body: payload })
       .then(response => response.json())
       .catch(error => console.error('Error:', error));      
-      while (counter < 3) {
-        if (data.tasks[0].result[0].items[rIndex].source_url === undefined) {rIndex = Math.floor(Math.random() * 3); console.log('rerunn serp img, undefined: ', data.tasks[0].result[0].items[rIndex].source_url, 'img desc: ', description);} else {tempUrl = data.tasks[0].result[0].items[rIndex].source_url; console.log('img not undefined: ', tempUrl, 'img desc: ', description); break;};
+
+      // UNDERSTAND THIS STUFF
+      while (counter < 5) {
+        if (data.tasks[0].result[0].items[rIndex].source_url === undefined) {rIndex = Math.floor(Math.random() * 4); console.log('rerunn serp img, undefined: ', data.tasks[0].result[0].items[rIndex].source_url, 'img desc: ', description);} else {tempUrl = data.tasks[0].result[0].items[rIndex].source_url; console.log('img defined!: ', tempUrl, 'img desc: ', description); break;};
       counter += 1; }
 
       if (isFirst) {return fetchBrandImage(description, tempUrl);}

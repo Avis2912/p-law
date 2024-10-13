@@ -251,26 +251,27 @@ const updateLeads = async () => {
 let newUserMoment = true;
 
 if (newUserMoment) {
-newUser(docName = 'People360',
+newUser(docName = 'Stejkowski Law',
 
 firmInfo = {
-    CONTACT_US: "https://www.people360ai.com/demo",
-    NAME: "People360",
-    LOCATION: "Dallas, TX",
+    CONTACT_US: "https://www.stejlaw.com/appointments/ola/services/free-15-minute-consultation",
+    NAME: "Stejkowski Law",
+    LOCATION: "Illinois, IL",
     DESCRIPTION: 
-    `People360, formerly known as Insala, is a leading provider of innovative workplace solutions designed to enhance individual and organizational potential.
-     With over 28 years of industry experience, People360 offers a comprehensive suite of services including THRIVE, which empowers employees to excel in their roles; HIVE, which fosters community and professional relationships; and DIVE, which facilitates data-driven decision-making. The platform emphasizes integrated solutions that leverage predictive AI capabilities to support people operations in today's dynamic work environment.
-     By moving beyond traditional approaches, People360 aims to transform how organizations manage talent and foster growth, making it a pivotal player in the future of workplace solutions.
+    `The Stejkowski Law Firm, LLC is a general practice law office located in Bourbonnais, Illinois, established in 2010 and led by attorney David Stejkowski.
+The firm specializes in commercial real estate transactions, business entity formation, estate planning, wills, and trusts, offering personalized services with a focus on building enduring client relationships.
+David Stejkowski, the principal attorney, brings decades of experience since 1993, providing direct access to clients without intermediaries and emphasizing a client-centered approach with limited caseloads to ensure quality service.
+The firm is highly regarded by clients for its expertise, dedication, clear communication, and ability to navigate complex legal matters while offering reasonable rates and comprehensive support in estate planning and commercial real estate law.
     `,  
     IMAGE: `
-https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/misc_images%2Fimage_2024-10-11_122444459.png?alt=media&token=f80ebde8-1584-4f1c-ae72-a40647e6a980
+https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/pp%20images%2Fdecentral%20(44).png?alt=media&token=58da9bd2-b0d5-4038-a543-2157d0248734
 `,
     MODEL: 2,
     PLAN: "Full Suite Plan",
 },
 
 keywords = {
-    KEYWORDS: "Workplace Solutions, Employee Empowerment, Community Building, Professional Relationships, Data-Driven Decision Making, Predictive AI, People Operations, Talent Management, Organizational Growth, Innovative Solutions, THRIVE, HIVE, DIVE, Industry Experience, Integrated Solutions, Dynamic Work Environment, Transformative Approaches, Future of Work, Dallas Consulting, Comprehensive Services, Strategic Guidance, Consulting Support, Professional Services, Measurable Results, Team Building, Employee Development, Learning from Failures, Consulting Firm, Workplace Innovation",
+    KEYWORDS: "Commercial Real Estate, Business Formation, Estate Planning, Wills and Trusts, Client Relationships, Legal Expertise, Personalized Services, Illinois Law Firm, Attorney David Stejkowski, Client-Centered Approach, Legal Support, Real Estate Transactions, Comprehensive Legal Services, Experienced Attorney, Bourbonnais Law Office",
     LAST_DATE: "15/10/24",
 },
 
@@ -425,85 +426,6 @@ To learn more about how Insala can help you unlock the full potential of your me
     You can and should fight back when your insurance company has wrongfully denied your cancer treatment. Not only can you legally force it to cover your treatment, but you may win additional damages in court. Also, fighting back could lead to negative news headlines for insurance companies and cause them public relations and reputational nightmares. An experienced insurance claims denial attorney knows how to leverage the court of public opinion to help support your legal battle against your health insurance company.
     `
 },
-
-{
-    TITLE: "The Big 3 Questions To Answer Before Creating Your Corporate Mentoring Program",
-    LINK: "https://www.people360ai.com/blog/what-is-corporate-mentoring-0-0-0-0-0-0-0-0",
-
-    CONTENT: `
-Implementing a corporate mentoring program can be a game-changer for organizations, offering numerous benefits such as enhanced employee development, improved retention rates, and increased productivity. However, before diving into the creation of a mentoring program, it's essential to lay the groundwork by answering some critical questions. 
-
-In this article, we will explore the big three questions that organizations should address before embarking on the journey of creating a corporate mentoring program. 
-
-What Are Your Objectives and Goals?
-The first step in creating a successful corporate mentoring program is to clearly define your objectives and goals. What do you hope to achieve through the program? Are you aiming to develop future leaders, enhance diversity and inclusion, or improve employee engagement and retention? By identifying your specific objectives and goals, you can tailor your mentoring program to address the unique needs and priorities of your organization. 
-
-For example, if your goal is to develop future leaders, you may focus on pairing high-potential employees with experienced leaders who can provide guidance and mentorship. On the other hand, if your objective is to enhance diversity and inclusion, you may prioritize matching mentees from underrepresented groups with mentors who can offer support and advocacy. 
-
-Who Will Participate in the Program?
-Another crucial question to consider is who will participate in the mentoring program. Will it be open to all employees, or will it target specific groups such as new hires, high-potential employees, or emerging leaders? Understanding your target audience will help you design a mentoring program that meets their unique needs and preferences. 
-
-Additionally, consider the role of mentors in the program. Will mentors be volunteers from within the organization, or will they be assigned by management? What criteria will you use to select mentors? By carefully considering these questions, you can ensure that both mentors and mentees are well-suited to the program and motivated to actively participate. 
-
-How Will You Measure Success?
-Finally, it's essential to establish clear metrics for measuring the success of your corporate mentoring program. What key performance indicators (KPIs) will you use to evaluate the effectiveness of the program? Will you track metrics such as participant satisfaction, mentor-mentee match quality, skill development, or career advancement? 
-
-In addition to quantitative metrics, consider incorporating qualitative feedback mechanisms to gather insights from participants about their experiences with the program. Regular surveys, focus groups, or one-on-one interviews can provide valuable feedback that can inform program improvements and enhancements. 
-
-In conclusion, before embarking on the creation of a corporate mentoring program, it's crucial to answer the big three questions: What are your objectives and goals? Who will participate in the program? How will you measure success? 
-
-By carefully considering these questions and laying the groundwork for your mentoring initiative, you can ensure that your program is well-designed, effectively implemented, and poised to deliver meaningful benefits to both participants and the organization as a whole. 
-
-At Insala, we understand the importance of strategic planning in creating successful corporate mentoring programs. Our comprehensive mentoring solutions empower organizations to design, implement, and manage mentoring programs that drive employee development, engagement, and organizational success. 
-
-To learn more about how Insala can help you implement a successful mentoring program, contact our sales team at successteam@insala.com.   
-    `
-},
-
-// {
-//     TITLE: "The Mental Health Parity Act Explained And Why It Matters",
-//     LINK: "https://ravaltriallaw.com/why-government-plans-are-exempt-from-erisa/",
-
-//     CONTENT: `
-//     Mental illness affects a significant number of Americans, and many of them are not able to get the treatment they need. Even when health plans cover mental health benefits, they can be harder to access and less comprehensive than other types of health benefits.
-
-//     The Mental Health Parity Act (MHPA) of 1996 was the original legislative attempt to force providers of group health insurance for employees to furnish the same levels of coverage for mental health benefits as were provided for medical / surgical (M/S) benefits.
-    
-//     Prior to the enactment of the MHPA, health benefit providers had been slow to recognize that mental health disorders were as important in terms of needing effective treatment as physical health conditions. Federal legislation over the years has expanded the scope of the MHPA to press health benefit providers to make mental health treatment as accessible as other health benefits.
-    
-//     Though improvements in access to mental health treatment are being made, parity with access to M/S benefits has not been achieved, and legislative efforts to enforce compliance by health benefit plan providers continue.
-    
-//     Mental Illness and Substance Use in America
-//     According to the Substance Abuse and Mental Health Services Administration (SAMHSA) annual survey on mental illness and substance use levels, one in four adults – over 83 million Americans – had a mental illness. More than 12 million adults had serious thoughts of suicide, and 1.7 million attempted to take their lives.
-    
-//     Over 46 million people ages 12 and above met the criteria for having a substance use disorder, with 30 million people classified as having an alcohol use disorder and 24 million people classified as having a drug use disorder. The highest incidence of substance use disorder was among young adults ages 18 to 25.
-    
-//     The Mental Health Parity and Addiction Equity Act (MHPAEA)
-//     The MHPAEA (Parity Law) was passed in 2008 and added addiction diseases to the mental health parity requirement. The Parity Law requires group health coverage providers to make financial requirements and treatment limitations no more restrictive for mental health or substance use disorders (MH / SUD) than for other medical and surgical benefits.
-    
-//     The Affordable Care Act (ACA)
-//     Effective in 2014, the ACA expanded the reach of mental health and substance use disorder parity to small group and individual health plan providers and made MH / SUD coverage mandatory as an essential health benefit under the affected plans.
-
-//     Latest Developments in Mental Health Parity Law
-//     Recognizing how much work still remains to achieve mental health parity, the Department of Labor, along with HHS and the Treasury Department, have proposed a rule designed to make parity a reality for more people seeking MH / SUD services.
-    
-//     The proposed rule would require group health plan providers to present actual data showing how a person’s access to treatment is affected by the limitations placed on benefits. Attention will focus on how provider networks are constructed and whether they promote access to benefits.
-    
-//     The rule would also change how NQTL criteria are analyzed for purposes of compliance and set forth required content elements for analysis.
-    
-//     Parity in Texas
-//     Under the Texas Administrative Code, a health benefit plan that provides both M / S and MH / SUD benefits must comply with the following regarding lifetime aggregate or annual dollar limit restrictions:
-    
-//     If there are no limits or limits on less than one-third of the medical/surgical benefits, there can be no limits on MH / SUD benefits.
-//     If there are limits on at least two-thirds of M / S benefits, they must be applied in a way that does not distinguish mental health / substance use disorders, or there must not be a more restrictive limit on MH / SUD benefits.
-//     Non-quantitative treatment limitations imposed on MH / SUD benefits must be similar to and applied no more stringently than NQTL applied to M / S benefits.
-    
-//     What You Can Do if a Parity Violation is Suspected with Regard to MH / SUD Benefits
-//     Under current federal and state laws, many but not all health benefit plans are required to provide MH / SUD benefits. If your health plan has benefits for MH / SUD, they must be as easy to access as your other medical benefits. Any limitations on mental health benefits can be no more restrictive than the limitations on M / S benefits.
-    
-//     If you’ve had an insurance claim for mental health or substance use treatment denied and you believe the treatment limitations violate parity requirements, Berg Plummer Johnson & Raval, LLP may be able to help you get compensation. Our Texas health insurance lawyers have decades of experience helping clients obtain the benefits they are entitled to. In Houston, contact Berg Plummer Johnson & Raval, LLP to discuss your health benefit plan and how to get your claim covered.
-//     `
-// },
 
 
 ],
