@@ -251,27 +251,26 @@ const updateLeads = async () => {
 let newUserMoment = true;
 
 if (newUserMoment) {
-newUser(docName = 'Stejkowski Law',
+newUser(docName = 'Burn Law',
 
 firmInfo = {
-    CONTACT_US: "https://www.stejlaw.com/appointments/ola/services/free-15-minute-consultation",
-    NAME: "Stejkowski Law",
-    LOCATION: "Illinois, IL",
+    CONTACT_US: "https://edwardharringtonheyburn.com",
+    NAME: "Burn Law",
+    LOCATION: "Philadelphia, PA",
     DESCRIPTION: 
-    `The Stejkowski Law Firm, LLC is a general practice law office located in Bourbonnais, Illinois, established in 2010 and led by attorney David Stejkowski.
-The firm specializes in commercial real estate transactions, business entity formation, estate planning, wills, and trusts, offering personalized services with a focus on building enduring client relationships.
-David Stejkowski, the principal attorney, brings decades of experience since 1993, providing direct access to clients without intermediaries and emphasizing a client-centered approach with limited caseloads to ensure quality service.
-The firm is highly regarded by clients for its expertise, dedication, clear communication, and ability to navigate complex legal matters while offering reasonable rates and comprehensive support in estate planning and commercial real estate law.
+    `Heyburn Law is a legal firm that specializes in various areas of law, including commercial litigation and personal injury.
+The firm is known for its commitment to providing personalized legal services tailored to the needs of its clients. With a team of experienced attorneys, Heyburn Law focuses on achieving favorable outcomes through strategic legal representation.
+Their reputation is built on a foundation of integrity, professionalism, and a client-centered approach.
     `,  
     IMAGE: `
-https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/pp%20images%2Fdecentral%20(44).png?alt=media&token=58da9bd2-b0d5-4038-a543-2157d0248734
+https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/misc_images%2Fdecentral%20(45).png?alt=media&token=c4fea7ed-fcfd-4621-a516-6d3c842afad0
 `,
     MODEL: 2,
     PLAN: "Full Suite Plan",
 },
 
 keywords = {
-    KEYWORDS: "Commercial Real Estate, Business Formation, Estate Planning, Wills and Trusts, Client Relationships, Legal Expertise, Personalized Services, Illinois Law Firm, Attorney David Stejkowski, Client-Centered Approach, Legal Support, Real Estate Transactions, Comprehensive Legal Services, Experienced Attorney, Bourbonnais Law Office",
+    KEYWORDS: "Commercial Litigation, Personal Injury, Legal Services, Experienced Attorneys, Strategic Legal Representation, Client-Centered Approach, Integrity, Professionalism, Philadelphia Law Firm, Heyburn Law, Personalized Legal Services, Favorable Outcomes, Legal Expertise, Commitment to Clients, Legal Firm Reputation",
     LAST_DATE: "15/10/24",
 },
 
@@ -279,151 +278,148 @@ smallBlog = [0, 1],
 
 bigBlog = [
 {
-    TITLE: "How Mentoring Is Helping Solve The Labor Shortage",
-    LINK: `https://www.people360ai.com/blog/what-is-corporate-mentoring-0-1`,
+    TITLE: "Michigan Supreme Court Decision: Daher v. Prime Healthcare Services-Garden City, LLC – A Comparison with New Jersey Law on Wrongful Death",
+    LINK: `https://edwardharringtonheyburn-com-859775.hostingersite.com/michigan-supreme-court-decision-daher-v-prime-healthcare-services-garden-city-llc-a-comparison-with-new-jersey-law-on-wrongful-death/`,
     CONTENT: `
-The labor shortage has become a pressing issue for businesses across industries, with many struggling to find and retain skilled workers. As companies search for innovative solutions to address this challenge, mentoring has emerged as a powerful strategy for attracting, developing, and retaining talent. 
+Introduction
 
-In this article, we'll explore how mentoring programs are playing a crucial role in helping businesses navigate the labor shortage and build a strong, sustainable workforce. 
+In the landmark case of Daher v. Prime Healthcare Services-Garden City, LLC, the Michigan Supreme Court addressed the scope of recoverable damages under the state’s wrongful death act (WDA), specifically whether damages for lost future earnings are permissible. This case highlights critical differences between Michigan’s wrongful death laws and those in New Jersey, offering a comprehensive understanding of how wrongful death claims are treated in these two jurisdictions.
 
-Bridging the Skills Gap
-One of the key drivers of the labor shortage is the growing mismatch between the skills that employers need and the skills that job seekers possess. Mentoring programs offer a solution by providing opportunities for employees to develop new skills, gain valuable experience, and bridge the skills gap. By pairing less experienced employees with more experienced mentors, businesses can facilitate knowledge transfer, skills development, and on-the-job training, helping employees acquire the skills they need to succeed in their roles and contribute to the organization's success. 
+Case Background
 
-Attracting and Retaining Talent
-In today's competitive job market, attracting and retaining top talent is more challenging than ever. Mentoring programs can give businesses a competitive edge by offering employees valuable opportunities for professional growth, career advancement, and personal development. Employees are more likely to stay with a company that invests in their development and provides opportunities for mentorship and growth. By implementing mentoring programs, businesses can not only attract top talent but also retain their existing employees, reducing turnover and building a loyal, engaged workforce. 
+Nawal Daher and Mohamad Jomaa, as co-personal representatives of their son Jawad Jumaa’s estate, filed a lawsuit against Prime Healthcare Services-Garden City, LLC, and the attending physicians for negligence and medical malpractice. Thirteen-year-old Jawad was misdiagnosed with torticollis and later died from bacterial meningitis. The plaintiffs sought damages under the WDA, including for lost future earnings.
 
-Accelerating Onboarding and Integration
-The labor shortage has exacerbated the challenges of onboarding and integrating new employees into the workforce. Mentoring programs can help businesses overcome these challenges by providing new hires with access to experienced mentors who can guide them through the onboarding process, answer questions, and help them acclimate to their new roles and responsibilities. By accelerating the onboarding and integration process, mentoring programs enable new employees to become productive members of the team more quickly, reducing the time and resources required to get them up to speed. 
+Michigan Supreme Court’s Analysis
 
-Promoting Diversity and Inclusion
-Diversity and inclusion are increasingly important priorities for businesses seeking to create a more equitable and inclusive workplace. Mentoring programs can play a critical role in promoting diversity and inclusion by providing opportunities for employees from underrepresented groups to connect, learn, and grow. By pairing employees from diverse backgrounds with mentors who can offer guidance, support, and advocacy, businesses can create a more inclusive and supportive work environment where all employees feel valued, respected, and empowered to succeed. 
+Justice Viviano, writing for a unanimous court, reaffirmed the precedent set by Baker v. Slack, which held that damages for lost earning capacity are not available under the WDA. The court emphasized that neither the 1971 nor the 1985 amendments to the WDA altered this exclusion. The court’s decision underscored that recoverable damages under the WDA are limited to:
 
-Fostering a Culture of Learning and Development
-In today's rapidly evolving business landscape, continuous learning and development are essential for staying competitive and adapting to change. Mentoring programs foster a culture of learning and development by providing employees with opportunities to acquire new skills, expand their knowledge, and grow professionally. 
+1. Medical and funeral expenses
 
-By investing in mentoring programs, businesses demonstrate their commitment to employee development and create a culture where learning is valued and encouraged, helping employees stay engaged, motivated, and fulfilled in their roles. 
+2. Pain and suffering of the deceased
 
-In conclusion, the labor shortage presents significant challenges for businesses, but mentoring programs offer a powerful solution for attracting, developing, and retaining talent. By bridging the skills gap, attracting and retaining top talent, accelerating onboarding and integration, promoting diversity and inclusion, and fostering a culture of learning and development, mentoring programs enable businesses to navigate the labor shortage successfully and build a strong, sustainable workforce for the future. 
+3. Loss of financial support
 
-If you are interested in developing your mentoring program or  receiving a demo of our products along with pricing information please reach out to successteam@insala.com today.
+4. Loss of society and companionship
+
+Comparison with New Jersey Wrongful Death Law
+
+New Jersey’s wrongful death statute provides a more expansive scope of recoverable damages compared to Michigan. Key differences include:
+
+1. Lost Future Earnings: Unlike Michigan, New Jersey explicitly allows for the recovery of lost future earnings. The New Jersey Wrongful Death Act permits compensation for the economic value of the decedent’s life, which includes future earnings and financial contributions the decedent would have provided to their dependents.
+
+2. Non-Economic Damages: Both states allow for the recovery of non-economic damages such as loss of companionship. However, New Jersey also permits recovery for the loss of household services and guidance, reflecting a broader interpretation of compensatory damages.
+
+3. Pain and Suffering: New Jersey allows for the recovery of damages for the decedent’s conscious pain and suffering before death under the Survival Act, a distinction that is more restrictive in Michigan’s wrongful death framework.
+
+4. Mental Anguish and Emotional Distress: New Jersey excludes recovery for mental anguish and emotional distress under its wrongful death act but allows it under the Survival Act, provided specific criteria are met. Michigan does not generally permit these types of damages under its wrongful death act.
+
+Practical Implications
+
+The Michigan Supreme Court’s decision in Daher v. Prime Healthcare Services-Garden City, LLC, underscores the state’s conservative approach to wrongful death damages, specifically excluding lost future earnings. This contrasts sharply with New Jersey’s more liberal stance, which allows for comprehensive economic recovery, including lost future earnings.
+
+Legal practitioners in Michigan must navigate these constraints and advise their clients accordingly, focusing on the types of damages that are explicitly permitted. Conversely, attorneys in New Jersey can pursue a broader range of compensatory damages for their clients, reflecting the state’s more inclusive legislative framework.
+
+Conclusion
+
+The Michigan Supreme Court’s ruling in Daher v. Prime Healthcare Services-Garden City, LLC, reinforces the limited scope of recoverable damages under the state’s wrongful death act, emphasizing statutory and historical interpretations. In comparison, New Jersey’s wrongful death statute provides a more extensive range of recoverable damages, including lost future earnings and various non-economic contributions. Understanding these differences is crucial for legal professionals handling wrongful death claims in these states, ensuring that they effectively advocate for their clients’ rights within the respective legal frameworks.
     `,
 },
 {
-    TITLE: "Now Is The Time To Start Your Mentoring Program",
-    LINK: `https://www.people360ai.com/blog/what-is-corporate-mentoring-0-0-0-0-0-0-0-0-0-0-0`,
+    TITLE: "Federal Judge Rules New Jersey’s AR-15 Ban Unconstitutional",
+    LINK: `https://edwardharringtonheyburn-com-859775.hostingersite.com/federal-judge-rules-new-jerseys-ar-15-ban-unconstitutional/`,
     CONTENT: `
-    In today's rapidly changing landscape, organizations face numerous challenges, from attracting and retaining top talent to fostering a culture of continuous learning and development. 
+    Introduction
+In a landmark decision, a federal judge has ruled that New Jersey’s ban on AR-15 rifles is unconstitutional. This ruling, which challenges the state’s strict gun control measures, has significant implications for Second Amendment rights and state-level firearm regulations.
 
-One proven strategy for addressing these challenges and driving organizational success is the implementation of a mentoring program. With the current business climate presenting both opportunities and obstacles, now is the perfect time for businesses to start their mentoring programs and reap the benefits they offer. 
+Case Background
+New Jersey implemented a ban on AR-15 rifles as part of its broader efforts to regulate assault weapons and reduce gun violence. The AR-15, a popular semi-automatic rifle, has been at the center of national debates on gun control, often associated with its use in several high-profile mass shootings.
 
-Addressing Remote Work Challenges
-The shift to remote work brought about by the COVID-19 pandemic has highlighted the need for new approaches to employee development and support. Remote employees may feel disconnected from their colleagues and lack access to traditional forms of mentorship and guidance. A mentoring program provides a valuable solution by offering remote-friendly mentoring opportunities that allow employees to connect, learn, and grow regardless of their physical location. By starting a mentoring program now, businesses can support their remote workforce and ensure that employees have access to the guidance and support they need to thrive in a remote work environment. 
+Legal Issues
+The central legal issue in this case revolves around the Second Amendment, which protects an individual’s right to keep and bear arms. Plaintiffs argued that the AR-15 ban infringed upon this constitutional right, claiming that the rifle is commonly owned for lawful purposes such as self-defense and sporting.
 
-Nurturing Leadership Talent
-As businesses navigate the complexities of today's business landscape, strong leadership is more important than ever. A mentoring program provides a powerful platform for nurturing leadership talent within the organization. By pairing emerging leaders with experienced mentors, businesses can provide valuable guidance, support, and development opportunities that help future leaders unlock their full potential. Starting a mentoring program now allows businesses to identify and develop the next generation of leaders, ensuring that they have the leadership talent they need to drive organizational success both now and in the future. 
+Court’s Decision
+The federal judge ruled in favor of the plaintiffs, stating that New Jersey’s ban on AR-15 rifles was indeed unconstitutional. The judge emphasized that the AR-15 is widely owned and used by law-abiding citizens, and therefore, its prohibition violates the Second Amendment. However, the ruling did uphold New Jersey’s cap on magazine capacities, limiting them to 10 rounds.
 
-Fostering Diversity and Inclusion
-Diversity and inclusion have become top priorities for businesses seeking to create a more equitable and inclusive workplace. A mentoring program can play a key role in fostering diversity and inclusion by providing opportunities for employees from diverse backgrounds to connect, learn from each other, and access valuable support and guidance. By starting a mentoring program now, businesses can take proactive steps to promote diversity and inclusion within their organization, creating a workplace where all employees feel valued, supported, and empowered to succeed. 
+Implications
+This decision marks a significant victory for gun rights advocates and sets a precedent for similar legal challenges in other states with restrictive gun laws. The ruling may prompt a re-evaluation of existing and proposed firearm regulations, balancing public safety concerns with constitutional rights.
 
-Supporting Employee Well-Being
-Employee well-being has emerged as a critical concern for businesses as they seek to support their employees during challenging times. A mentoring program can contribute to employee well-being by providing opportunities for employees to connect with mentors who can offer guidance, support, and a listening ear. By starting a mentoring program now, businesses can demonstrate their commitment to supporting employee well-being and provide employees with valuable resources and support systems to help them navigate the challenges they may face. 
+Conclusion
 
-Driving Organizational Performance
-Ultimately, a mentoring program can drive organizational performance by fostering a culture of learning, development, and collaboration. By providing employees with access to mentors who can offer guidance, feedback, and support, businesses can help employees develop new skills, overcome challenges, and achieve their full potential. Starting a mentoring program now allows businesses to lay the groundwork for long-term success by investing in their employees and creating a culture where learning and growth are valued and encouraged. 
+The federal court’s ruling against New Jersey’s AR-15 ban underscores the ongoing legal and political battles over gun control in the United States. As states grapple with finding effective measures to curb gun violence, this case highlights the complex interplay between state regulations and constitutional freedoms.
 
-In today's dynamic business environment, the benefits of a mentoring program are more relevant and impactful than ever. 
+References:
 
-By starting a mentoring program now, businesses can address remote work challenges, nurture leadership talent, foster diversity and inclusion, support employee well-being, and drive organizational performance. With the right strategy and support, a mentoring program can be a powerful tool for driving employee development, engagement, and organizational success.  
-
-Now is the time for businesses to take action and start their mentoring programs to unlock the full potential of their employees and achieve their business goals. 
-
-To learn more about how Insala can help you unlock the full potential of your mentoring program, contact our Sales Team at successteam@insala.com.
-    `
-},
-
-{
-    TITLE: "7 Tips To Improve Your Corporate Mentoring Program",
-    LINK: "https://www.people360ai.com/blog/what-is-corporate-mentoring-0-0-0-0-0-0-0-0-0-0",
-    CONTENT: `
-Corporate mentoring programs have been driving business revenue higher for decades. To achieve effective revenue results, it's essential to ensure that your mentoring program is well-designed, effectively implemented, and continuously evaluated. 
-
-In this comprehensive guide, we'll explore seven actionable tips to help you enhance the effectiveness of your corporate mentoring program and maximize its impact on your organization. 
-
-Define Clear Objectives and Goals
-The first step to improving your corporate mentoring program is to define clear objectives and goals. What do you hope to achieve through the program? Are you aiming to develop leadership skills, improve employee retention, or enhance diversity and inclusion? By clearly defining your objectives, you provide a roadmap for the program and ensure that all stakeholders are aligned on its purpose and intended outcomes. 
-
-Focus on Mentor-Mentee Matching
-Effective mentor-mentee matching is crucial for the success of a mentoring program. Take the time to thoughtfully pair mentors and mentees based on factors such as career goals, interests, personality, and communication style. Consider leveraging tools such as the Insala Mentoring Readiness program to assess participants' readiness for mentoring and facilitate successful matches. By ensuring compatibility between mentors and mentees, you set the stage for productive and meaningful mentoring relationships. 
-
-Provide Comprehensive Training and Support
-Both mentors and mentees require training and support to maximize the value of their mentoring experience. Offer comprehensive training on topics such as communication skills, goal setting, feedback, and conflict resolution. Additionally, provide ongoing support and resources to help participants navigate challenges and make the most of their mentoring relationships. The Insala Mentoring Readiness program can serve as a valuable resource to prepare participants for their mentoring journey and equip them with the skills and knowledge they need to succeed. 
-
-Establish Clear Expectations
-Setting clear expectations is essential for guiding the mentoring relationship and ensuring that both mentors and mentees understand their roles and responsibilities. Clearly outline the goals of the mentoring program, the frequency and format of meetings, and the expectations for communication and feedback. Provide participants with a mentoring agreement or handbook that outlines these expectations and serves as a reference throughout the program. 
-
-Foster Open Communication
-Open communication is key to building trust and rapport between mentors and mentees. Encourage participants to communicate openly and honestly with each other, sharing their goals, challenges, and successes. Establish regular check-ins or meetings to provide opportunities for dialogue and feedback. By fostering a culture of open communication, you create a supportive environment where participants feel comfortable sharing their thoughts and experiences. 
-
-Measure and Evaluate Program Effectiveness
-Regularly measuring and evaluating the effectiveness of your mentoring program is essential for identifying areas for improvement and making data-driven decisions. Collect feedback from participants through surveys, interviews, or focus groups to gain insights into their experiences and satisfaction with the program. Track key metrics such as participant engagement, skill development, and career advancement to gauge program success. Use these insights to make informed adjustments and enhancements to your mentoring program. 
-
-Celebrate Success and Continuously Improve
-Finally, don't forget to celebrate the successes of your mentoring program and recognize the achievements of participants. Whether it's highlighting success stories in company newsletters or hosting recognition events, acknowledging the impact of mentoring can help reinforce its value and encourage continued participation. Additionally, embrace a culture of continuous improvement by soliciting feedback from participants and stakeholders and using this feedback to make ongoing enhancements to your mentoring program. 
-
-In conclusion, by implementing these seven tips, you can take your corporate mentoring program to the next level and unlock its full potential to drive employee development and organizational success. 
-
-From defining clear objectives and goals to fostering open communication and continuously evaluating program effectiveness, each tip plays a crucial role in enhancing the effectiveness of your mentoring initiatives. And by leveraging resources such as the Insala Mentoring Readiness program, you can ensure that participants are well-prepared for their mentoring journey and set up for success from the start. 
-
-Ready to take your corporate mentoring program to the next level?
-
-To learn more about how Insala can help you unlock the full potential of your mentoring program, contact our Sales Team at successteam@insala.com.
+CBS News Report on the Ruling
+Second Amendment of the United States Constitution
+This article provides an analysis of the recent ruling on New Jersey’s AR-15 ban, reflecting the broader national conversation on gun rights and regulations.
     `,
 },
 
 {
-    TITLE: "Can Insurance Companies Deny Cancer Treatment?",
-    LINK: "https://ravaltriallaw.com/deny-cancer-treatment/",
+    TITLE: "New Developments in Young Thug’s YSL RICO Trial: Judge held second secret ex parte meeting",
+    LINK: "https://edwardharringtonheyburn-com-859775.hostingersite.com/new-developments-in-young-thugs-ysl-rico-trial-judge-held-second-secret-ex-parte-meeting/",
 
     CONTENT: `
-    The answer to the question of “Can insurance companies deny cancer treatment?” is often different from the answer to the question of “Do insurance companies deny cancer treatment?”
+ July 31, 2024
+Edward Harrington Heyburn
+The ongoing RICO trial involving rapper Young Thug and the alleged YSL street gang has recently seen significant judicial changes and motions. Here’s an update on the key events and what they mean for the trial:
 
-    Although federal law often prohibits insurance companies from denying certain vital cancer treatments, patients are often forced to fight for coverage. In some cases, patients may even end up paying for the necessary treatment out of their own pockets because they cannot afford to lose time waiting to receive an insurer’s authorization before beginning treatment. Some patients may be forced to take legal action against their insurance company to get the vital coverage they need. One of the most common reasons why cancer patients must fight insurance companies is that they have been denied coverage for proton beam therapy treatment.
-    
-    Federal Law Places Requirements on Health Insurance Companies
-    The Affordable Care Act made numerous changes in the law that governs how and when insurance companies must cover illnesses like cancer. Health insurance providers are no longer able to deny coverage on account of pre-existing conditions, nor can they impose yearly or lifetime caps on the amount of coverage that they provide. Insurance plans must cover essential health benefits that include cancer treatments.
-    
-    In practice, insurance companies push the limits as far as they can to save themselves money. It is, unfortunately, all too common for patients to either have to fight to get the coverage they need or have it denied altogether.
-    
-    Health Insurance Companies Have Often Flouted the Law
-    A relatively recent survey by the Texas Medical Association revealed that roughly one in every four people have had coverage for treatment prescribed by their doctor denied by an insurance company, notwithstanding the requirements of the Affordable Care Act. This includes people who have critically needed life-saving cancer treatment. Some patients’ conditions grew worse after having been denied the treatment or taking the time to fight the denial of coverage.
-    
-    Insurance companies give many reasons for their denial of coverage of certain medical treatments to save themselves money at the expense of cancer patients, including:
-    
-    The cancer treatment is medically unnecessary
-    The treatment is experimental in nature
-    The specific provider of the treatment is out of the insurer’s network
-    To insurance companies, it does not matter that a doctor has recommended a treatment or that it may save the patient’s life. All that matters is that a cancer treatment may be expensive and will hurt the insurance company’s bottom line. Patients are already facing a tough battle in their fight against cancer. Unfortunately, they may also be forced to fight another battle: getting their insurance company to authorize payment for the treatment of that cancer.
-    
-    Cancer treatments such as proton beam therapy are prescribed out of medical necessity. Presumably, they would meet the requirements for coverage under the Affordable Care Act. In a dispute with your insurer, the burden of proof may shift to you to prove that proton beam therapy is both a recognized treatment and medically necessary. Even if you can prove both with ease, you can still expect a fight on your hands.
-    
-    You Can Contest the Insurance Company’s Denial of Your Cancer Treatment
-    Under the law, you have a right to challenge the denial of cancer treatments. Unfortunately, the appeals process takes time, and time may not be on your side when you are undergoing treatment for cancer. Nonetheless, you owe it to yourself and your family to fight as hard as you can for all the necessary and required treatments. Before filing your appeal, you should closely review the exact language of your health insurance policy because recent changes to federal law allow for policies that are less comprehensive in nature. In addition, you can and should consult an insurance coverage lawyer during the administrative appeals process.
-    
-    Before you appeal your insurer’s decision to deny your cancer treatment, you should take several steps that can increase your chances of success, including:
-    Gathering documentation that conclusively shows that the treatment is medically necessary
-    Compiling additional medical records that detail your medical history and the prior course(s) of your treatment(s)
-    Contacting your medical providers to help obtain supportive evidence of medical necessity
-    Consulting with an insurance lawyer who can advise you on the appeals process
-    Insurance companies are required to offer an internal appeals process wherein you can contest the denial of benefits. However, without legal representation, the internal appeals process can become  a rubber stamp of the initial decision that was made. Insurance companies rarely take an objective look at their own decisions, even though there may be legal consequences for decisions that violate the law.
-    
-    You Can Take Your Case to Court if Necessary
-    There is an additional external check on the conduct of insurance companies. You can always take your insurance company to court and file a lawsuit to compel it to cover your cancer treatment. In the meantime, you would need to retain legal counsel and go through the entire court process and win your case. A court would provide an objective review of whether your cancer treatment would be required under federal law.
-    
-    In addition, state law also serves as a constraint on an insurance company’s behavior. If the insurance company has unreasonably denied your coverage, it could be subject to a bad faith lawsuit. Further, if there are many people who have had the same treatment denied, a class action lawsuit against the insurance company may even be possible. For example, Aetna recently settled a class action lawsuit alleging that it wrongfully denied cancer treatments. A class of 142 patients who were wrongfully denied proton beam therapy treatments received a total of $3.4 million.
-    
-    In another case, a judge lambasted United Healthcare for its “immoral and barbaric” conduct in denying coverage for proton beam therapy treatment. The judge, who was himself a cancer survivor, stated that “it is undisputed among legitimate medical experts that proton radiation therapy is not experimental and causes much less collateral damage than traditional radiation.”
-    
-    You can and should fight back when your insurance company has wrongfully denied your cancer treatment. Not only can you legally force it to cover your treatment, but you may win additional damages in court. Also, fighting back could lead to negative news headlines for insurance companies and cause them public relations and reputational nightmares. An experienced insurance claims denial attorney knows how to leverage the court of public opinion to help support your legal battle against your health insurance company.
+Judge Recusal and New Appointment
+Judge Ural Glanville, who had been overseeing the trial, was recused following a controversial ex parte meeting in June. The meeting, held without the defense present, involved Judge Glanville, prosecutors, and a witness, leading to accusations of bias and a lack of transparency. Superior Court Judge Rachel Krause ruled that, to maintain public confidence in the judicial system, Glanville should be removed from the case.
+
+Judge Shukura Ingram has now taken over the case. Ingram has a background in both criminal and civil cases and has emphasized the need for maintaining decorum and professionalism in the courtroom. She has instituted new rules, such as prohibiting food and earbuds in the courtroom and setting strict hours for court sessions.
+
+Recent Motions and Hearings
+The trial resumed with major motions being heard, including a renewed bond request for Young Thug. His attorneys argue that he should be granted a bond due to his strong community ties, lack of flight risk, and harsh jail conditions. They propose strict monitoring and house arrest as conditions for his release.
+
+Additionally, motions for mistrial have been filed by co-defendants, citing concerns about fairness and judicial conduct. The prosecution has also sought to restrict defense attorneys from making public comments to the media, aiming to ensure a fair trial.
+
+Impact and Future of the Trial
+Judge Ingram’s appointment and the recent motions have added complexity to an already lengthy and high-profile trial. The case, which began in November 2023, has been marked by numerous delays and contentious legal battles. The trial is expected to continue at a brisk pace under Judge Ingram’s supervision, though it remains uncertain how long it will ultimately take to reach a conclusion.
+
+For further details, you can follow the live updates and watch the trial proceedings on 11Alive or The Fader.
+
+Here is the law on when it is appropriate for a judge to conduct an ex parte hearing or meeting.
+
+Legal Brief on Ex Parte Communications in Georgia
+Introduction
+This brief addresses the circumstances under which a judge in Georgia may appropriately engage in an ex parte meeting with a party’s attorney. Ex parte communications, which involve discussions with one party without the presence of the opposing party, are generally disfavored in the judicial system to maintain fairness and impartiality. However, there are specific situations where such communications may be permitted under Georgia law.
+
+Legal Framework
+The primary sources governing ex parte communications in Georgia include the Georgia Code of Judicial Conduct, statutory provisions, and case law interpretations.
+
+Georgia Code of Judicial Conduct
+The Georgia Code of Judicial Conduct provides the foundational guidelines for judges regarding ex parte communications. Rule 2.9 of the Code specifically addresses this issue:
+
+Rule 2.9(A): “A judge shall not initiate, permit, or consider ex parte communications, or consider other communications made to the judge outside the presence of the parties or their lawyers, concerning a pending or impending matter, except as follows: (1) When circumstances require it, ex parte communication for scheduling, administrative purposes, or emergencies that do not deal with substantive matters or issues on the merits is permitted, provided: (a) the judge reasonably believes that no party will gain a procedural or tactical advantage as a result of the ex parte communication, and (b) the judge makes provision promptly to notify all other parties of the substance of the ex parte communication and allows an opportunity to respond.”
+Rule 2.9(B): “A judge may obtain the written advice of a disinterested expert on the law applicable to a proceeding before the judge, if the judge gives advance notice to the parties of the person to be consulted and the subject matter of the advice and affords the parties reasonable opportunity to object and respond to the notice and to the advice received.”
+Rule 2.9(C): “A judge may consult with court staff and court officials whose functions are to aid the judge in carrying out the judge’s adjudicative responsibilities, or with other judges, provided the judge makes reasonable efforts to avoid receiving factual information that is not part of the record.”
+These rules establish that ex parte communications are generally prohibited unless they fall within specific exceptions for administrative purposes, emergencies, or obtaining expert legal advice.
+
+Statutory Provisions
+Georgia statutory law also touches on the issue of ex parte communications, emphasizing the necessity for judicial impartiality and fairness.
+
+O.C.G.A. § 15-1-8: This statute underscores the importance of judicial conduct free from bias or prejudice, implicitly supporting the restrictions on ex parte communications to avoid any appearance of impropriety.
+Case Law
+Georgia case law provides further clarification on the application of these rules and statutes in various contexts.
+
+State v. Belt: In this case, the Supreme Court of Georgia held that a judge’s ex parte communication with one party without notifying the other party could lead to a violation of the due process rights of the uninformed party. The court emphasized that such communications must be limited to non-substantive matters and should be disclosed promptly to all parties.
+In re Inquiry Concerning Judge Harvey: This judicial disciplinary case reiterated the importance of avoiding ex parte communications that could create an appearance of bias or favoritism. The Georgia Judicial Qualifications Commission found that Judge Harvey’s ex parte meetings with one party’s attorney, which included substantive discussions about the case, were inappropriate and violated the Code of Judicial Conduct.
+Permissible Ex Parte Communications
+Under the established legal framework, the following scenarios may permit ex parte communications:
+
+Administrative Matters: Judges may engage in ex parte communications for scheduling and other administrative purposes, provided no party gains an advantage and all parties are promptly informed.
+Emergency Situations: In emergencies, judges may have ex parte communications if it is necessary to address immediate issues that cannot wait for a formal hearing.
+Expert Legal Advice: Judges may seek written advice from a disinterested expert on the law applicable to a case, with prior notice and opportunity for parties to respond.
+Consultation with Court Staff: Judges may consult with court staff and officials, provided they avoid receiving information outside the official record.
+Conclusion
+Ex parte communications in Georgia are heavily regulated to ensure judicial impartiality and fairness. While generally prohibited, they are allowed in specific, narrowly defined circumstances primarily for administrative, emergency, or consultative purposes. Judges must adhere strictly to the guidelines provided by the Georgia Code of Judicial Conduct, statutory provisions, and relevant case law to avoid any appearance of bias or impropriety.
+
+References
+Georgia Code of Judicial Conduct, Rule 2.9
+O.C.G.A. § 15-1-8
+State v. Belt
+In re Inquiry Concerning Judge Harvey
     `
 },
 

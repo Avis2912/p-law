@@ -112,8 +112,8 @@ const modules = {
   let boxHeight; const boxWidth = 'calc(100%)';
   if (isReferenceGiven) { boxHeight = 'calc(77.5% - 220px)';} 
   else if (wordCount < 300) { boxHeight = 'calc(77.5% - 51.5px)'; }
-  // else { boxHeight = 'auto' } 
-  else { boxHeight = '450px' }
+  else { boxHeight = 'auto' } 
+  // else { boxHeight = '450px' }
 
   // const editor = useMemo(() => withHistory(withReact(createEditor())), []);
   // const [value, setValue] = useState([
