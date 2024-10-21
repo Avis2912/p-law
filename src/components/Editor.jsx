@@ -50,7 +50,8 @@ function BlogEditor({ text, setText, isGenerating, boxWidth, boxHeight, wordCoun
               ['bold', 'italic', 'underline'],
               [{ list: 'ordered' }, { list: 'bullet' }],
               ['link'],
-              ['table']
+              ['table'],
+              ['image']
             ],
             table: false,
             'better-table': {
@@ -203,7 +204,7 @@ function BlogEditor({ text, setText, isGenerating, boxWidth, boxHeight, wordCoun
               }
             }}
           >
-            <Iconify icon={isReplacingImage ? 'line-md:loading-loop' : 'material-symbols:image-search'} sx={{ mr: '7px', mb: '1px', height: '18px', width: '18px' }} />
+            <Iconify icon={isReplacingImage ? 'line-md:loading-loop' : 'ph:images-square-light'} sx={{ mr: '7px', mb: '1px', height: '20px', width: '20px' }} />
           </span>
         )}
         {wordCount > 1 ? `    ${wordCount} Words` : ''}
