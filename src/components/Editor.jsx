@@ -6,21 +6,36 @@ import 'quill/dist/quill.snow.css';
 import QuillBetterTable from 'quill-better-table';
 import 'quill-better-table/dist/quill-better-table.css';
 
+import Iconify from 'src/components/iconify';
+import { Icon } from '@iconify/react';
+
 Quill.register({
   'modules/better-table': QuillBetterTable
 }, true);
 
-function BlogEditor({ text, setText, isGenerating, boxWidth, boxHeight, wordCount }) {
+function BlogEditor({ text, setText, isGenerating, boxWidth, boxHeight, wordCount, replaceImage }) {
   const quillRef = useRef(null);
   const editorRef = useRef(null);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [isReplacingImage, setIsReplacingImage] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImageDesc, setSelectedImageDesc] = useState(null);
+  const lastSelectedImageRef = useRef(null);
+  const lastSelectedImageDescRef = useRef(null);
 
   const cleanHtml = (html) => {
-      // Remove all whitespace between tags
-      html = html.replace(/>\s+</g, '><');
-      // Replace empty <p> tags with <p><br></p>
-      return html.replace(/<p>\s*<\/p>/gi, '<p><br></p>').trim();
+    // Remove all whitespace between tags
+    html = html.replace(/>\s+</g, '><');
+    // Replace empty <p> tags with <p><br></p>
+    return html.replace(/<p>\s*<\/p>/gi, '<p><br></p>').trim();
   };
+
+  const stripHtml = (html) => {
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    return div.textContent || div.innerText || '';
+  };
+
   useEffect(() => {
     console.log('BlogEditor mounted. Initial text:', text);
 
@@ -65,6 +80,39 @@ function BlogEditor({ text, setText, isGenerating, boxWidth, boxHeight, wordCoun
           setText(cleanHtml(content));
         });
 
+        editorRef.current.on('selection-change', (range) => {
+          if (range && range.length > 0) {
+            const delta = editorRef.current.getContents(range.index, range.length);
+            const selectedHtml = delta.reduce((html, op) => {
+              if (op.insert && typeof op.insert === 'string') {
+                html += op.insert;
+              } else if (op.insert && op.insert.image) {
+                html += `<img src="${op.insert.image}" alt="${op.attributes.alt || ''}">`;
+              }
+              return html;
+            }, '');
+            console.log('Selected HTML:', selectedHtml);
+
+            const imgMatches = selectedHtml.match(/<img\s+[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*>/i);
+            if (imgMatches) {
+              const imgSrc = imgMatches[1];
+              const imgAlt = imgMatches[2];
+              setSelectedImage(imgSrc);
+              setSelectedImageDesc(imgAlt);
+              lastSelectedImageRef.current = imgSrc;
+              lastSelectedImageDescRef.current = imgAlt;
+              console.log('Selected Image Src:', imgSrc);
+              console.log('Selected Image Alt:', imgAlt);
+            } else {
+              setSelectedImage(null);
+              setSelectedImageDesc(null);
+            }
+          } else {
+            setSelectedImage(null);
+            setSelectedImageDesc(null);
+          }
+        });
+
         setIsInitialized(true);
         console.log('Quill editor initialized');
       } catch (error) {
@@ -76,10 +124,48 @@ function BlogEditor({ text, setText, isGenerating, boxWidth, boxHeight, wordCoun
       console.log('BlogEditor unmounting');
       if (editorRef.current) {
         editorRef.current.off('text-change');
+        editorRef.current.off('selection-change');
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setText]);
+
+
+  const handleImageReplacement = async (imgDesc, imgSrc) => {
+    
+    setIsReplacingImage(true);
+    const newImg = await replaceImage(imgDesc, imgSrc);
+    console.log('New img: ', newImg)
+    
+      console.log('in1')
+      const editor = editorRef.current;
+      const editorHtml = editor.root.innerHTML;
+
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = editorHtml;
+
+      // Find the image with the matching src
+      const imgToReplace = tempDiv.querySelector(`img[src="${imgSrc}"]`);
+      if (imgToReplace) {
+        console.log('in2')
+
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(newImg, 'text/html');
+        const imgElement = doc.querySelector('img');
+        const imgSrc0 = imgElement.getAttribute('src');
+        console.log('Image src: ', imgSrc0);
+        
+        console.log('New img: ', imgSrc0)
+        imgToReplace.src = imgSrc0; 
+        
+        editor.root.innerHTML = tempDiv.innerHTML;
+
+        console.log('Image replaced successfully');
+      } else {
+        console.log('Image not found in editor');
+    }
+    setIsReplacingImage(false);
+  };
 
   useEffect(() => {
     if (isInitialized && editorRef.current) {
@@ -95,9 +181,28 @@ function BlogEditor({ text, setText, isGenerating, boxWidth, boxHeight, wordCoun
 
   return (
     <>
+                
       <Typography sx={{ position: 'relative', fontSize: '14px', fontFamily: 'Arial', height: 0,
-          top: 12.5, right: 13.5, letterSpacing: '-0.25px', fontWeight: '600', textAlign: 'right' }}>
-        {wordCount > 1 ? `${wordCount} Words` : ''}
+                        top: 22.5, right: 13.5, letterSpacing: '-0.25px', fontWeight: '600', textAlign: 'right', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+        
+        {(selectedImage || lastSelectedImageRef.current) && (
+          <span role="button" tabIndex={0}
+            style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleImageReplacement(lastSelectedImageDescRef.current, lastSelectedImageRef.current);
+            }}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.stopPropagation();
+                handleImageReplacement(lastSelectedImageDescRef.current, lastSelectedImageRef.current);
+              }
+            }}
+          >
+            <Iconify icon={isReplacingImage ? 'line-md:loading-loop' : 'material-symbols:image-search'} sx={{ mr: '7px', mb: '1px', height: '18px', width: '18px' }} />
+          </span>
+        )}
+        {wordCount > 1 ? `    ${wordCount} Words` : ''}
       </Typography>
 
       <div
@@ -106,9 +211,7 @@ function BlogEditor({ text, setText, isGenerating, boxWidth, boxHeight, wordCoun
           width: boxWidth,
           height: boxHeight,
           marginBottom: 18,
-          border: '0px solid #ccc',
-          // borderRadius: '4px',
-          // backgroundColor: isGenerating ? '#f0f0f0' : 'white',
+          border: '1px solid #ccc',
           opacity: '1',
           transition: 'ease-in-out 0.3s',
         }}
@@ -124,6 +227,7 @@ BlogEditor.propTypes = {
   boxWidth: PropTypes.string,
   boxHeight: PropTypes.string,
   wordCount: PropTypes.number,
+  replaceImage: PropTypes.func.isRequired,
 };
 
 export default BlogEditor;

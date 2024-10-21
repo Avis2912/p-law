@@ -97,6 +97,7 @@ const modules = {
   const [expandedSource, setExpandedSource] = useState(null);
   const [doneSourcing, setDoneSourcing] = useState(true);
   const [sources, setSources] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const [isWpDropdownOpen, setIsWpDropdownOpen] = useState(false);
   const [isWpIntegrated, setIsWpIntegrated] = useState(false);
@@ -114,45 +115,6 @@ const modules = {
   else if (wordCount < 300) { boxHeight = 'calc(77.5% - 51.5px)'; }
   else { boxHeight = 'auto' } 
   // else { boxHeight = '450px' }
-
-  // const editor = useMemo(() => withHistory(withReact(createEditor())), []);
-  // const [value, setValue] = useState([
-  //   {
-  //     type: "paragraph",
-  //     children: [
-  //       { text: "This is editable " },
-  //       { text: "rich", bold: true },
-  //       { text: " text, " },
-  //       { text: "much", italic: true },
-  //       { text: " better than a " },
-  //       { text: "<textarea>", code: true },
-  //       { text: "!" }
-  //     ]
-  //   },
-  //   {
-  //     type: "paragraph",
-  //     children: [
-  //       {
-  //         text:
-  //           "Since it's rich text, you can do things like turn a selection of text "
-  //       },
-  //       { text: "bold", bold: true },
-  //       {
-  //         text:
-  //           ", or add a semantically rendered block quote in the middle of the page, like this:"
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     type: "block-quote",
-  //     children: [{ text: "A wise quote." }]
-  //   },
-  //   {
-  //     type: "paragraph",
-  //     children: [{ text: "Try it out for yourself!" }]
-  //   }
-  // ]);
-
 
   useEffect(() => {
     setWordCount(text.split(' ').length);
@@ -314,7 +276,7 @@ const modules = {
 
     const generationText = currentMode === "Build Outline" ? 'Building Outline': 'Generating Article'; setLoadIndicator([generationText, 60]);
 
-    console.log('BROWSETEXTRESPONSE IN SEO-VIEW:', isAdvancedBrowseWeb ? JSON.stringify(browseTextResponse)[1] : JSON.stringify(JSON.parse(browseTextResponse)), isUseInternalLinks);
+    if (isBrowseWeb) {console.log('BROWSETEXTRESPONSE IN SEO-VIEW:', isAdvancedBrowseWeb ? JSON.stringify(browseTextResponse)[1] : JSON.stringify(JSON.parse(browseTextResponse)), isUseInternalLinks);}
 
     const claudeResponse = await fetch('https://us-central1-pentra-claude-gcp.cloudfunctions.net/gcp-claudeAPI', {
           method: 'POST',
@@ -463,138 +425,155 @@ const modules = {
 
   };
 
+  const fetchBrandImage = async (imgDescription, webPic='', imagelessText) => { // 1.5c per image
+    let resultImg = null;
+    const h1Title = (imagelessText.match(new RegExp(`<${titleTag}>(.*?)</${titleTag}>`)) || [])[1];
+    const formattedDate = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
+    const timeToRead = Math.ceil(imagelessText.split(' ').length / 200);
+    let firmSite = ''; try {firmSite = new URL(contactUsLink).hostname.replace(/^www\./, '');} catch (e) {console.error(e);}      
+  
+    await fetch('https://api.templated.io/v1/render', {
+      method: 'POST',
+      body: JSON.stringify({
+        "template" : '88e62b0b-9879-4d56-af23-1b32afbf1457',
+        "layers" : {
+          "primary-text" : {
+            "text" : h1Title,
+          },
+          "shape-0" : {
+            "fill": customColor,
+          },
+          "firm-name" : {
+            "text": firmName,
+          },
+          "firm-site" : {
+            "text": firmSite,
+          },
+          "firm-img": {
+            "image_url" : firmImage,
+          },
+          "date-today" : {
+            "text": formattedDate,
+          },
+          "read-time" : {
+            "text": `  ${timeToRead} MIN READ`,
+          },
+          "primary-img" : {
+              "image_url": webPic,
+          },
+        }
+      }),
+      headers: {
+        'Content-Type' : 'application/json',
+        'Authorization' : `Bearer ${import.meta.env.VITE_TEMPLATED_API_KEY}`
+      }
+    })
+    .then(response => {if(!response.ok){console.log('Network response was not ok')};   return response.json(); })
+    .then(data => {console.log('templated data: ', data); resultImg = `<img src="${data.render_url}" alt="Branded Image" style="max-width: 100%;"/>`;})
+    .catch(error => {console.error('Error:', error);});
+  
+    return resultImg;
+  }
+  
+  const fetchImage = async (description, isFirst=false, imagelessText='', replaceImgUrl=null) => {
+    
+    const isReplace = replaceImgUrl !== null; let resultImg = null;  
+    const url = "https://api.dataforseo.com/v3/serp/google/images/live/advanced";
+    const payload = JSON.stringify([{
+        keyword: `${description}`,
+        location_code: 2826, language_code: "en",
+        device: "desktop", os: "windows", depth: 100,
+        search_param: imagesSettings === 'Free' ? "&tbs=sur:cl" : ``,
+    }]);
+  
+    const headers = {
+        'Authorization': 'Basic YXZpcm94NEBnbWFpbC5jb206NTEwNjUzYzA0ODkyNjBmYg==',
+        'Content-Type': 'application/json'
+    };
+  
+    let counter = 0; let data = null; let tempUrl; let rIndex = 0;
+    data = await fetch(url, { method: 'POST', headers, body: payload })
+    .then(response => response.json())
+    .catch(error => console.error('Error:', error));      
+  
+    while (counter < 5) {
+      const currentItem = data.tasks[0].result[0].items[rIndex];
+      if (currentItem.source_url === undefined || (isReplace && currentItem.source_url === replaceImgUrl)) {
+        rIndex = Math.floor(Math.random() * 5); // Ensure it picks from one of the 5 items
+        console.log('rerunn serp img, undefined OR same as replaceImgUrl: ', currentItem.source_url, 'img desc: ', description);
+      } else {
+        tempUrl = currentItem.source_url;
+        console.log('img defined and not same as replaceImgUrl!: ', tempUrl, 'img desc: ', description);
+        break;
+      }
+      counter += 1;
+    }
+    
+    if (isFirst) {return fetchBrandImage(description, tempUrl, imagelessText);}
+    resultImg = `<img src="${tempUrl}" alt="${description}" style="max-width: 100%;" />`;
+
+    return resultImg;
+  };
+  
   const addImages = async (imagelessText) => {
     const regex = /\/\/Image: (.*?)\/\//g;
     const matches = [...imagelessText.matchAll(regex)];
     const descriptions = matches.map(match => match[1]);
-
+  
     let imagefullText = imagelessText;
-
-    const fetchBrandImage = async (imgDescription, webPic='') => { // 1.5c per image
-      
-      let resultImg = null;
-      const h1Title = (imagelessText.match(new RegExp(`<${titleTag}>(.*?)</${titleTag}>`)) || [])[1];
-      const formattedDate = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
-      const timeToRead = Math.ceil(imagelessText.split(' ').length / 200);
-      let firmSite = ''; try {firmSite = new URL(contactUsLink).hostname.replace(/^www\./, '');} catch (e) {console.error(e);}      
-      // const templatedBgImage = await fetchImage(`HD Background Image for ${blogTitle}`, true);
-
-      await fetch('https://api.templated.io/v1/render', {
-        method: 'POST',
-        body: JSON.stringify({
-          "template" : '88e62b0b-9879-4d56-af23-1b32afbf1457',
-          "layers" : {
-            "primary-text" : {
-              "text" : h1Title,
-            },
-            "shape-0" : {
-              "fill": customColor,
-            },
-            "firm-name" : {
-              "text": firmName,
-            },
-            "firm-site" : {
-              "text": firmSite,
-            },
-            "firm-img": {
-              "image_url" : firmImage,
-            },
-            "date-today" : {
-              "text": formattedDate,
-            },
-            "read-time" : {
-              "text": `  ${timeToRead} MIN READ`,
-            },
-            "primary-img" : {
-                "image_url": webPic,
-            },
-
-          }
-        }),
-        headers: {
-          'Content-Type' : 'application/json',
-          'Authorization' : `Bearer ${import.meta.env.VITE_TEMPLATED_API_KEY}`
-        }
-      })
-      .then(response => {if(!response.ok){console.log('Network response was not ok')};   return response.json(); })
-      .then(data => {console.log('templated data: ', data); resultImg = `<img src="${data.render_url}" alt="Branded Image" style="max-width: 100%;"/>`;})
-      .catch(error => {console.error('Error:', error);});
-
-      return resultImg;
-    }
-
-    
-    const fetchImage = async (description, isFirst=false) => {
-      let resultImg = null; 
-      const url = "https://api.dataforseo.com/v3/serp/google/images/live/advanced";
-      const payload = JSON.stringify([{
-          keyword: `${description}`,
-          location_code: 2826, language_code: "en",
-          device: "desktop", os: "windows", depth: 100,
-          search_param: imagesSettings === 'Free' ? "&tbs=sur:cl" : ``,
-      }]);
-
-      const headers = {
-          'Authorization': 'Basic YXZpcm94NEBnbWFpbC5jb206NTEwNjUzYzA0ODkyNjBmYg==',
-          'Content-Type': 'application/json'
-      };
-
-      let counter = 0; let data = null; let tempUrl; let rIndex = 0;
-      // eslint-disable-next-line no-await-in-loop
-      data = await fetch(url, { method: 'POST', headers, body: payload })
-      .then(response => response.json())
-      .catch(error => console.error('Error:', error));      
-
-      // UNDERSTAND THIS STUFF
-      while (counter < 5) {
-        if (data.tasks[0].result[0].items[rIndex].source_url === undefined) {rIndex = Math.floor(Math.random() * 4); console.log('rerunn serp img, undefined: ', data.tasks[0].result[0].items[rIndex].source_url, 'img desc: ', description);} else {tempUrl = data.tasks[0].result[0].items[rIndex].source_url; console.log('img defined!: ', tempUrl, 'img desc: ', description); break;};
-      counter += 1; }
-
-      if (isFirst) {return fetchBrandImage(description, tempUrl);}
-      resultImg = `<img src="${tempUrl}" alt="${description}" style="max-width: 100%;" />`;
-
-      return resultImg;
-    };
-
+  
     const imageTags = [];
-
+  
     for (let i = 0; i < descriptions.length; i += 3) {
       const batch = descriptions.slice(i, i + 3);
-      // eslint-disable-next-line no-await-in-loop 
       const batchImageTags = await Promise.all(batch.map((item, index) => fetchImage(item, index === -1))); 
       imageTags.push(...batchImageTags); 
       
       if (i + 3 < descriptions.length) {
-        // eslint-disable-next-line no-await-in-loop
         await new Promise(resolve => setTimeout(resolve, 2000));
       }
     }
-
+  
     const h1Title0 = (imagelessText.match(new RegExp(`<${titleTag}>(.*?)</${titleTag}>`)) || [])[1];
     if (isUseThumbnail) {
-
-    const backgroundFormattedTitle = await fetch('https://us-central1-pentra-claude-gcp.cloudfunctions.net/gcp-claudeAPI', {
-      method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ 
-      model: modelKeys[2], messages: [{role: "user", content: `
-      Based on '${h1Title0}' give me a distilled two word phrase with the three words attached at the end being HD background image. 
-      ONLY output the phrase. SAY NOTHING ELSE. Example: 'UI/UX trends in HR 2024' = 'UI/UX background image' `}],})});
-    console.log(backgroundFormattedTitle);
-    console.log('BACKGROUND FORMATTED TITLE: ', backgroundFormattedTitle.text());
-    // const brandImage = await fetchImage(backgroundFormattedTitle.text(), true);
-
-    const brandImage = await fetchImage(`HD Background Image for ${blogTitle}`, true);
+      const backgroundFormattedTitle = await fetch('https://us-central1-pentra-claude-gcp.cloudfunctions.net/gcp-claudeAPI', {
+        method: 'POST', 
+        headers: {'Content-Type': 'application/json'}, 
+        body: JSON.stringify({ 
+          model: modelKeys[2], 
+          messages: [{
+            role: "user", 
+            content: `Based on '${h1Title0}' give me a distilled two word phrase with the three words attached at the end being HD background image. ONLY output the phrase. SAY NOTHING ELSE. Example: 'UI/UX trends in HR 2024' = 'UI/UX background image'`
+          }],
+        })
+      });
+      console.log(backgroundFormattedTitle);
+      console.log('BACKGROUND FORMATTED TITLE: ', backgroundFormattedTitle.text());
+  
+      const brandImage = await fetchImage(`HD Background Image for ${blogTitle}`, true, imagelessText);
       
-    imagefullText = imagelessText.replace(new RegExp(`(</${titleTag}>)`), `$1${brandImage}`);
+      imagefullText = imagelessText.replace(new RegExp(`(</${titleTag}>)`), `$1${brandImage}`);
     }
-
+  
     matches.forEach((match, index) => {
       if (imageTags[index]) {
         imagefullText = imagefullText.replace(match[0], imageTags[index]);
       }
     });
-
+  
     return imagefullText;
   }
+  
+  const replaceImage = async (imgDesc, imgSrc) => {
+    console.log('replacing image: ', imgDesc, imgSrc);
+    let newImg = '';
+    await fetchImage(imgDesc, false, '', imgSrc).then((newImg0) => {
+      newImg = newImg0;
+      console.log('fetched image tag: ', newImg);
+    });
+    console.log('fetched image tag: ', newImg);
+    return newImg;
+  };
 
 
   const browseWeb = async (prompt, isAddLinks = false) => {
@@ -927,7 +906,8 @@ const modules = {
             `}</style>
 
         <BlogEditor text={text} setText={setText} isGenerating={isGenerating}
-        boxHeight={boxHeight} boxWidth={boxWidth} wordCount={wordCount}/>
+        boxHeight={boxHeight} boxWidth={boxWidth} wordCount={wordCount}
+        replaceImage={replaceImage} />
 
       
         <Stack direction="row" spacing={2} >
