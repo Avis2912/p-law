@@ -425,11 +425,11 @@ const modules = {
 
   };
 
-  const fetchBrandImage = async (imgDescription, webPic='', imagelessText) => { // 1.5c per image
+  const fetchBrandImage = async (imgDescription, webPic='', imagelessText, isReplacing=false, headerDesc='', headerTimeToRead='') => { // 1.5c per image
     let resultImg = null;
-    const h1Title = (imagelessText.match(new RegExp(`<${titleTag}>(.*?)</${titleTag}>`)) || [])[1];
+    const h1Title = isReplacing ? headerDesc : (imagelessText.match(new RegExp(`<${titleTag}>(.*?)</${titleTag}>`)) || [])[1];
     const formattedDate = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
-    const timeToRead = Math.ceil(imagelessText.split(' ').length / 200);
+    const timeToRead = isReplacing ? headerTimeToRead : Math.ceil(imagelessText.split(' ').length / 200);
     let firmSite = ''; try {firmSite = new URL(contactUsLink).hostname.replace(/^www\./, '');} catch (e) {console.error(e);}      
   
     await fetch('https://api.templated.io/v1/render', {
@@ -468,8 +468,8 @@ const modules = {
         'Authorization' : `Bearer ${import.meta.env.VITE_TEMPLATED_API_KEY}`
       }
     })
-    .then(response => {if(!response.ok){console.log('Network response was not ok')};   return response.json(); })
-    .then(data => {console.log('templated data: ', data); resultImg = `<img src="${data.render_url}" alt="Branded Image" style="max-width: 100%;"/>`;})
+    .then(response => {if(!response.ok){console.log('Network response was not ok')};  return response.json(); })
+    .then(data => {console.log('templated data: ', data); resultImg = `<img src="${data.render_url}" alt="${h1Title} | ${timeToRead}" style="max-width: 100%;" />`;})
     .catch(error => {console.error('Error:', error);});
   
     return resultImg;
@@ -564,13 +564,24 @@ const modules = {
     return imagefullText;
   }
   
-  const replaceImage = async (imgDesc, imgSrc) => {
+  const replaceImage = async (imgDesc, imgSrc, isHeaderImg=false, headerTimeToRead='5') => {
     console.log('replacing image: ', imgDesc, imgSrc);
     let newImg = '';
-    await fetchImage(imgDesc, false, '', imgSrc).then((newImg0) => {
-      newImg = newImg0;
-      console.log('fetched image tag: ', newImg);
-    });
+
+    if (isHeaderImg) {
+
+      const bgImg = await fetchImage(imgDesc, false, '', imgSrc); let newWebPic = '';
+      const imgTag = bgImg.match(/<img\s+[^>]*src="([^"]*)"\s+alt="([^"]*)"/i);
+      if (imgTag) { newWebPic = imgTag[1];  console.log('new webpic:', newWebPic); }
+
+      newImg = await fetchBrandImage(imgDesc, newWebPic, '', true, imgDesc, headerTimeToRead);
+
+    } else { 
+      await fetchImage(imgDesc, false, '', imgSrc).then((fetchedImg) => {
+      newImg = fetchedImg;
+      }); 
+    }
+
     console.log('fetched image tag: ', newImg);
     return newImg;
   };

@@ -22,6 +22,7 @@ function BlogEditor({ text, setText, isGenerating, boxWidth, boxHeight, wordCoun
   const [selectedImageDesc, setSelectedImageDesc] = useState(null);
   const lastSelectedImageRef = useRef(null);
   const lastSelectedImageDescRef = useRef(null);
+  const lastSelectedImageIdRef = useRef(null);
 
   const cleanHtml = (html) => {
     // Remove all whitespace between tags
@@ -93,7 +94,7 @@ function BlogEditor({ text, setText, isGenerating, boxWidth, boxHeight, wordCoun
             }, '');
             console.log('Selected HTML:', selectedHtml);
 
-            const imgMatches = selectedHtml.match(/<img\s+[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*>/i);
+            const imgMatches = selectedHtml.match(/<img\s+[^>]*src="([^"]*)"\s*alt="([^"]*)"\s*[^>]*>/i);
             if (imgMatches) {
               const imgSrc = imgMatches[1];
               const imgAlt = imgMatches[2];
@@ -134,7 +135,10 @@ function BlogEditor({ text, setText, isGenerating, boxWidth, boxHeight, wordCoun
   const handleImageReplacement = async (imgDesc, imgSrc) => {
     
     setIsReplacingImage(true);
-    const newImg = await replaceImage(imgDesc, imgSrc);
+    const isHeaderImg = imgSrc.includes('https://templated');
+    const [headerDesc, headerTimeToRead] = imgDesc.split('|').map(part => part.trim()) || ['', ''];
+
+    const newImg = await replaceImage(isHeaderImg ? headerDesc : imgDesc, imgSrc, isHeaderImg, headerTimeToRead);
     console.log('New img: ', newImg)
     
       console.log('in1')
