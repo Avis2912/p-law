@@ -17,6 +17,7 @@ export const WeeklyBlogsPage = lazy(() => import('src/pages/weeklyblogs'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 export const AccountPage = lazy(() => import('src/pages/account'));
 export const LeadsPage = lazy(() => import('src/pages/leads'));
+export const QueuePage = lazy(() => import('src/pages/queue'));
 export const AnalyticsPage = lazy(() => import('src/pages/analytics'));
 
 
@@ -41,6 +42,7 @@ export default function Router() {
         { path: 'keywords', element: <KeywordsPage /> },
         { path: 'seo', element: <SeoPage /> },
         { path: 'blog', element: <BlogPage /> },
+        { path: 'queue', element: <QueuePage /> },
         { path: 'weeklyblogs', element: <WeeklyBlogsPage /> },
         { path: 'posts', element: <PostsPage /> },
         { path: 'competition', element: <CompetitionPage /> },

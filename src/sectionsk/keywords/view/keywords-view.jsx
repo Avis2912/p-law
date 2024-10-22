@@ -235,11 +235,11 @@ export default function BlogView() {
         {`Return in ~5 minutes and they'll be ready!`}
       </Typography> </>}
 
-      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={1.5}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={isAddNewMode || isSearchMode ? 0.25 : 1.0}>
 
         <PageTitle title={isSearchMode ? 'Search New Keywords' : 'Keywords Being Tracked'} />
         
-        <Stack direction="row" spacing={2} mb={2}>
+        <Stack direction="row" spacing={2} mb={2.5}>
 
         {/* {planName === 'Trial Plan' && <Button variant="contained" onClick={() => {handleOpen()}}
       sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: theme.palette.primary.navBg, },
@@ -272,7 +272,7 @@ export default function BlogView() {
 
         {!isNewPost && <Button variant="contained" color="inherit" startIcon={<Iconify icon={isSearchMode ? "charm:cross" : "bx:search"} />} 
         onClick={() => {setIsSearchMode(!isSearchMode)}} sx={(theme) => ({backgroundColor: theme.palette.primary.black})}>
-          {isSearchMode ? `Search New` : `Search New`}
+          {isSearchMode ? `Find New` : `Find New`}
         </Button>}
 
       </Stack></Stack>

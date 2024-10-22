@@ -19,7 +19,7 @@ import { db, auth } from 'src/firebase-config/firebase';
 import getCompData from 'src/data-functions/getCompData';
 
 export default function CompetitionDialog ({
-  isDialogOpen, handleClose }) {
+  isDialogOpen, handleClose, competition, setCompetition }) {
 
   const [error, setError] = React.useState(null);
 
@@ -34,40 +34,44 @@ export default function CompetitionDialog ({
     }  
     handleClose();
 
-    try {
-      const firmDatabase = collection(db, 'firms');
-      const data = await getDocs(firmDatabase);
-      const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
-      const firmDoc = data.docs.find((docc) => docc.id === userDoc.data().FIRM);
+    setTimeout(() => {
 
-      if (firmDoc) {  
-        const firmDocRef = doc(db, 'firms', firmDoc.id);
-        const competition = firmDoc.data().COMPETITION.COMPETITION || [];
+    }, 10000);
 
-        const compData = await getCompData(competitorSite);
+    // try {
+    //   const firmDatabase = collection(db, 'firms');
+    //   const data = await getDocs(firmDatabase);
+    //   const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
+    //   const firmDoc = data.docs.find((docc) => docc.id === userDoc.data().FIRM);
 
-        const newCompetitor = {
-          NAME: competitorName,
-          COMP_SITE: competitorSite,
-          ...compData
-        };
+    //   if (firmDoc) {  
+    //     const firmDocRef = doc(db, 'firms', firmDoc.id);
+    //     const competition = firmDoc.data().COMPETITION.COMPETITION || [];
 
-        const existingIndex = competition.findIndex(item => item.COMP_SITE === competitorSite || item.COMP_SITE.includes(competitorSite));
+    //     const compData = await getCompData(competitorSite);
 
-        if (existingIndex !== -1) {
-          competition[existingIndex] = newCompetitor;
-        } else {
-          competition.push(newCompetitor);
-        }
+    //     const newCompetitor = {
+    //       NAME: competitorName,
+    //       COMP_SITE: competitorSite,
+    //       ...compData
+    //     };
 
-        await updateDoc(firmDocRef, { "COMPETITION.COMPETITION": competition });
-        console.log('Competitor added/updated successfully');
-      } else {
-        console.error('Firm document does not exist');
-      }
-    } catch (err) {
-      console.error('Error updating competitor data:', err);
-    }
+    //     const existingIndex = competition.findIndex(item => item.COMP_SITE === competitorSite || item.COMP_SITE.includes(competitorSite));
+
+    //     if (existingIndex !== -1) {
+    //       competition[existingIndex] = newCompetitor;
+    //     } else {
+    //       competition.push(newCompetitor);
+    //     }
+
+    //     await updateDoc(firmDocRef, { "COMPETITION.COMPETITION": competition });
+    //     console.log('Competitor added/updated successfully');
+    //   } else {
+    //     console.error('Firm document does not exist');
+    //   }
+    // } catch (err) {
+    //   console.error('Error updating competitor data:', err);
+    // }
   };
 
   return (
@@ -119,4 +123,7 @@ export default function CompetitionDialog ({
 CompetitionDialog.propTypes = {
   isDialogOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
+  competition: PropTypes.any,
+  setCompetition: PropTypes.func,
+  // firmName: PropTypes.string,
 };

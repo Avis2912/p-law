@@ -204,7 +204,7 @@ function BlogEditor({ text, setText, isGenerating, boxWidth, boxHeight, wordCoun
               }
             }}
           >
-            <Iconify icon={isReplacingImage ? 'line-md:loading-loop' : 'ph:images-square-light'} sx={{ mr: '7px', mb: '1px', height: '20px', width: '20px' }} />
+            <Iconify icon={isReplacingImage ? 'line-md:loading-loop' : 'ph:images-square-light'} sx={{ mr: '7.5px', mb: '1px', height: '20px', width: '20px' }} />
           </span>
         )}
         {wordCount > 1 ? `    ${wordCount} Words` : ''}

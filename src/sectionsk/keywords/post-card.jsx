@@ -48,40 +48,40 @@ export default function PostCard({ keyword, data, index, setWeeklyKeywords }) {
 
   const cardColor = '#0072b1';
   
-const options = {
-  chart: {
-    id: 'basic-bar',
-    toolbar: { show: false }
-  },
-  dataLabels: { enabled: false },
-  markers: {
-    size: 4,
-    hover: { size: 7 }
-  },
-  xaxis: {
-    categories: monthlyData.map(item => item.month),
-    labels: { show: false },
-    axisBorder: { show: false },
-    axisTicks: { show: false },
-    crosshairs: { show: false }
-  },
-  yaxis: { labels: { show: false } },
-  stroke: { curve: 'smooth' },
-  fill: {
-    type: 'gradient',
-    gradient: {
-      shade: 'light',
-      type: 'vertical',
-      shadeIntensity: 0.4,
-      inverseColors: true,
-      opacityFrom: 1,
-      opacityTo: 0.3,
-      stops: [0, 100]
-    }
-  },
-  grid: { show: false },
-  legend: { show: false }
-};
+  const options = {
+    chart: {
+      id: 'basic-bar',
+      toolbar: { show: false }
+    },
+    dataLabels: { enabled: false },
+    markers: {
+      size: 3.5,
+      hover: { size: 7 }
+    },
+    xaxis: {
+      categories: monthlyData.map(item => item.month),
+      labels: { show: false },
+      axisBorder: { show: false },
+      axisTicks: { show: false },
+      crosshairs: { show: false }
+    },
+    yaxis: { labels: { show: false } },
+    stroke: { curve: 'smooth', width: 3.25 },
+    fill: {
+      type: 'gradient',
+      gradient: {
+        shade: 'light',
+        type: 'vertical',
+        shadeIntensity: 0.4,
+        inverseColors: true,
+        opacityFrom: 0.5,
+        opacityTo: 0.3,
+        stops: [0, 100]
+      }
+    },
+    grid: { show: false },
+    legend: { show: false }
+  };
 
   const series = [
     {
@@ -116,7 +116,7 @@ const options = {
       message={<span style={{ width: '80px', height: '50px' }}>Copied!</span>}
       style={{ marginTop: '0px', zIndex: 9999999 }} /> */}
 
-      <Card sx = {{ height: 222.5, borderRadius: '8px', border: '2.5px solid', borderColor: cardColor }} onClick={() => handleClick()}>
+      <Card sx = {{ height: 202.5, borderRadius: '6px', border: '2.5px solid', borderColor: cardColor }} onClick={() => handleClick()}>
         
       <Stack sx={{width: '100%', zIndex: 1, height: 44.25, backgroundColor: cardColor, 
       justifyContent: "space-between", userSelect: 'none', position: 'absolute'}}>
@@ -153,12 +153,12 @@ const options = {
 
       </Stack>
 
-      <Stack sx={{width: '100%', zIndex: 125, height: 23.5, backgroundColor: 'white', bottom: '0px',
+      <Stack sx={{width: '100%', zIndex: 125, height: 13.5, backgroundColor: 'white', bottom: '0px',
       justifyContent: "space-between", userSelect: 'none', position: 'absolute'}} />
 
       {!isNew &&
-      <Chart options={options} series={series} type="area" width={300} height={171} 
-      style={{backgroundColor: 'white', marginTop: '40.5px',}} />}
+      <Chart options={options} series={series} type="area" width={300} height={147} 
+      style={{backgroundColor: 'white', marginTop: '50px',}} />}
 
       {isNew && 
       <Typography sx={{position: 'relative', top: '99.75px', userSelect: 'none', color: 'grey',

@@ -97,7 +97,7 @@ export default function PostCard({ platform, content, index, isGen }) {
       message={<span style={{ width: '80px', height: '50px' }}>Copied!</span>}
       style={{ marginTop: '0px', zIndex: 9999999 }} /> */}
 
-      <Card sx = {{ height: 450, borderRadius: '8px', border: '2.5px solid', borderColor: platformColors[platform] }} onClick={() => handleClick()}>
+      <Card sx = {{ height: 450, borderRadius: '6px', border: '2.0px solid', borderColor: platformColors[platform] }} onClick={() => handleClick()}>
         
       <Stack sx={{width: '100%', height: 50, backgroundColor: platformColors[platform], justifyContent: "space-between"}}>
         <Stack direction="row" spacing={2}>
