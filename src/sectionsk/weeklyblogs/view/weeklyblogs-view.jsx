@@ -263,11 +263,11 @@ export default function BlogView() {
         {`Return in ~5 minutes and they'll be ready!`}
       </Typography> </>}
 
-      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={1.5}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={1.1}>
 
-        <PageTitle title={`${isNewPost ? 'Create New Posts' : 'Weekly Blog Idea Drafts'}`} />    
+        <PageTitle title={`${isNewPost ? 'Create New Posts' : 'Curated Weekly Drafts'}`} />    
         
-        <Stack direction="row" spacing={2} mb={2}>
+        <Stack direction="row" spacing={2} mb={2.25}>
         {isNewPost && (<>
 
         <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} 

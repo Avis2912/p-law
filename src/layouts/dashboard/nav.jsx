@@ -104,7 +104,7 @@ export default function Nav({ openNav, onCloseNav }) {
 <Stack component="nav" spacing={1} sx={{ px: 2 }}>
   {navConfig.map((item, index) => (
 <React.Fragment key={item.title}>
-  <NavItem item={item} sx={index === 3 ? { marginBottom: '50px' } : {}} />
+  <NavItem item={item} sx={index === 3 ? { marginBottom: '0px' } : {}} />
       {/* {index === 3 && 
         <Divider sx={{ 
           width: '30%', 
@@ -121,7 +121,7 @@ export default function Nav({ openNav, onCloseNav }) {
   );
 
   const renderUpgrade = (
-    <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
+    <Box sx={{ px: 2.5, pb: 0, mt: 10 }}>
       {/* <Stack alignItems="center" spacing={3} sx={{ pt: 5, borderRadius: 2, position: 'relative' }}>
         <Box
           component="img"
@@ -230,7 +230,7 @@ function NavItem({ item }) {
       component={RouterLink}
       href={item.path}
       sx={{
-        minHeight: 48,
+        minHeight: 47.5,
         borderRadius: 0.75,
         width: '96%',
         left: '5.5px',

@@ -3,49 +3,83 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
-import { getDoc, doc } from 'firebase/firestore';
 import { db, auth } from 'src/firebase-config/firebase';
 import { useNavigate } from 'react-router-dom';
+import { getDocs, getDoc, doc, updateDoc } from 'firebase/firestore';
 import PageTitle from 'src/components/PageTitle';
 import Iconify from 'src/components/iconify';
 import QueueItem from '../queue-item';
 import QueueDate from '../queue-date';
+import EmptyList from '../empty-list';
 
 const BlogView = () => {
   const navigate = useNavigate();
   const [isUpdateTime, setIsUpdateTime] = useState(false);
   const [plan, setPlan] = useState('Trial Plan');
   const [weeklyBlogs, setWeeklyBlogs] = useState([]);
-  const [selectedList, setSelectedList] = useState('Scheduled');
+  const [selectedList, setSelectedList] = useState('Published');
+  const [queueData, setQueueData] = useState({    
+    SCHEDULED: [],
+    PUBLISHED: [
+      { date: '10/24/24', title: 'Content Marketing Trends', content: '', time: '4:30 PM', posts: [] },
+      { date: '10/24/24', title: '10 New Organic Marketing Trends', content: '', time: '5:30 PM', posts: [] },
+      { date: '10/25/24', title: 'How to Create A+ Legal SEO Content', content: '', time: '5:30 PM', posts: [] },
+      { date: '10/26/24', title: 'Law Firm Growth, Explained Simply', content: '', time: '6:30 PM', posts: [] },
+    ],
+    DRAFTS: []
+  });
 
-  // Sample data grouped by Scheduled, Published, and Drafts
-  const sampleData = {
-    Scheduled: [
-      { date: '2024-10-22', content: 'The Future of Remote Work', time: '11:30 AM' },
-      { date: '2024-10-23', content: 'How to Build a Personal Brand', time: '10:00 AM' },
-      { date: '2024-10-24', content: 'Artificial Intelligence in Business', time: '9:30 AM' }
-    ],
-    Published: [
-      { date: '2024-10-22', content: '10 Tips for Effective Social Media Marketing', time: '9:00 AM' },
-      { date: '2024-10-24', content: 'Content Marketing Trends', time: '4:30 PM' }
-    ],
-    Drafts: [
-      { date: '2024-10-22', content: 'Understanding Cryptocurrency Basics', time: '2:00 PM' },
-      { date: '2024-10-23', content: 'SEO Strategies for 2024', time: '3:00 PM' },
-      { date: '2024-10-24', content: 'Email Marketing Best Practices', time: '1:00 PM' }
-    ]
-  };
+  useEffect(() => {
+    const getFirmData = async () => {
+      try {
+        const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email)); 
+        if (userDoc.exists()) {
+          const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
+          if (firmDoc.exists()) {
+            await setQueueData(firmDoc.data().QUEUE);
+          }
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    // getFirmData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const buttonLabels = ['Published', 'Scheduled', 'Drafts'];
   const icons = ['iconamoon:send-thin', 'octicon:clock-24', 'mynaui:edit-one'];
 
+  const groupByDate = (items) => items.reduce((acc, item) => {
+    const date = item.date;
+    if (!acc[date]) {
+      acc[date] = [];
+    }
+    acc[date].push(item);
+    return acc;
+  }, {});
+
+  const sortedGroupedItems = (items) => {
+    const grouped = groupByDate(items);
+    const sortedDates = Object.keys(grouped).sort((a, b) => {
+      const parseDate = (dateString) => {
+        const [month, day, year] = dateString.split('/').map(Number);
+        return new Date(`20${year}`, month - 1, day); // Adjust year to 4 digits
+      };
+      return parseDate(a) - parseDate(b);
+    });
+
+    return sortedDates.map(date => ({ date, items: grouped[date] }));
+  };
+
   return (
     <Container>
-      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={0.75}>
+      <Stack direction="row" mb={-0.75} alignItems="center" justifyContent="space-between">
         <PageTitle title={`${selectedList === buttonLabels[2] ? 'Draft' : selectedList} Posts`} />
         <Stack direction="row" spacing={2} mb={2}>
           <div style={{ 
-            display: 'flex', borderRadius: 5.5, 
+            display: 'flex', borderRadius: 6, 
             width: 369, height: 37.5, 
             borderWidth: 0.5, borderStyle: 'solid' 
           }}>
@@ -71,23 +105,29 @@ const BlogView = () => {
         </Stack>
       </Stack>
 
-      <Grid container spacing={1.4}>
-        {sampleData[selectedList].map((item, idx) => (
-          <Grid item xs={12} key={idx}>
-            {item.content && (
-              <>
-                <QueueDate date={item.date} />
-                <QueueItem
-                  content={item.content}
-                  time={item.time}
-                  tab={selectedList}
-                  selectedList={selectedList}
-                />
-              </>
-            )}
-          </Grid>
-        ))}
-      </Grid>
+      {queueData[selectedList.toUpperCase()].length === 0 ?
+        <EmptyList selectedList={selectedList} />
+        : <Grid container spacing={1.5}>
+          {sortedGroupedItems(queueData[selectedList.toUpperCase()])
+            .map((group, idx) => (
+              <React.Fragment key={idx}>
+                <Grid item xs={12}>
+                  <QueueDate date={group.date} />
+                </Grid>
+                {group.items.map((item, itemIdx) => (
+                  <Grid item xs={12} key={itemIdx}>
+                    <QueueItem
+                      title={item.title}
+                      time={item.time}
+                      tab={selectedList}
+                      selectedList={selectedList}
+                    />
+                  </Grid>
+                ))}
+              </React.Fragment>
+            ))}
+        </Grid>
+      }
     </Container>
   );
 };

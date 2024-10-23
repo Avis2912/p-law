@@ -1,16 +1,20 @@
 import React from 'react';
 import Typography from '@mui/material/Typography';
+import PropTypes from 'prop-types';
 
 const QueueDate = ({ date }) => {
     const formatDate = (dateString) => {
-        // Create date object and force it to respect the input date without timezone shifts
-        const inputDate = new Date(dateString);
-        inputDate.setMinutes(inputDate.getMinutes() + inputDate.getTimezoneOffset());
+        // Parse the date string in MM/DD/YY format
+        const [month, day, year] = dateString.split('/').map(Number);
+        const inputDate = new Date(`20${year}`, month - 1, day); // Adjust year to 4 digits
         
-        // Create today and tomorrow dates at midnight for comparison
+        // Create today, yesterday, and tomorrow dates at midnight for comparison
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         
+        const yesterday = new Date(today);
+        yesterday.setDate(today.getDate() - 1);
+
         const tomorrow = new Date(today);
         tomorrow.setDate(today.getDate() + 1);
         
@@ -20,6 +24,8 @@ const QueueDate = ({ date }) => {
 
         if (compareDate.getTime() === today.getTime()) {
             return 'Today';
+        } else if (compareDate.getTime() === yesterday.getTime()) {
+            return 'Yesterday';
         } else if (compareDate.getTime() === tomorrow.getTime()) {
             return 'Tomorrow';
         } else {
@@ -39,8 +45,8 @@ const QueueDate = ({ date }) => {
                 fontWeight: 400,
                 fontSize: '22px',
                 letterSpacing: '-0.5px',
-                marginTop: 0,
-                marginBottom: 3.5,
+                marginTop: 1.25,
+                marginBottom: 2.45,
                 color: '#242122'
             }}
         >
@@ -50,3 +56,7 @@ const QueueDate = ({ date }) => {
 };
 
 export default QueueDate;
+
+QueueDate.propTypes = {
+    date: PropTypes.string.isRequired
+};

@@ -25,7 +25,7 @@ import Iconify from 'src/components/iconify';
 import { db } from 'src/firebase-config/firebase';
 import { deleteDoc, doc } from 'firebase/firestore';
 
-export default function PostCard({ competitorName, indexedBlogs, orgData, jobData, reviewData, traffic, rankingFor, siteLink, index2 }) {
+export default function PostCard({ competitorName, indexedBlogs, orgData, jobData, reviewData, traffic, rankingFor, siteLink, isReplacing, index2 }) {
 
   const latestPostLarge = index2 === -10;
   const latestPost = index2 === -10 || index2 === -20;
@@ -479,5 +479,6 @@ PostCard.propTypes = {
   reviewData: PropTypes.any,
   competitorName: PropTypes.string,
   siteLink: PropTypes.any,
+  isReplacing: PropTypes.bool,
   index2: PropTypes.any,
 };

@@ -144,6 +144,7 @@ export default function ListsView() {
                 competitorName={value.NAME} 
                 siteLink={value.COMP_SITE}
                 listId={0} 
+                isReplacing
                 index2={index} 
               />
               )
@@ -162,6 +163,7 @@ export default function ListsView() {
                 competitorName={value.NAME} 
                 siteLink={value.COMP_SITE}
                 listId={index} 
+                isReplacing={false}
                 index2={index} 
               />
             );

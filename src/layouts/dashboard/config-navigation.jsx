@@ -18,23 +18,23 @@ const navConfig = [
     icon: icon('ic_blog'),
   },
   {
-    title: 'Weekly Blogs',
+    title: 'Content Pane',
     path: '/weeklyblogs',
     icon: icon('ic_blog'),
   },
   {
-    title: 'Social Posts',
+    title: 'Social Pane',
     path: '/posts',
     icon: icon('ic_blog'),
   },
   {
-    title: 'SEO Research',
+    title: 'SEO Strategy',
     path: '/keywords',
     icon: icon('ic_blog'),
   },
   {
-    title: 'Site Leads',
-    path: '/leads',
+    title: 'Competition',
+    path: '/competition',
     icon: icon('ic_user'),
   },
   {
@@ -43,9 +43,14 @@ const navConfig = [
     icon: icon('ic_user'),
   },
   {
-    title: 'Competition',
-    path: '/competition',
+    title: 'Site Leads',
+    path: '/leads',
     icon: icon('ic_user'),
+  },
+  {
+    title: 'Post Queue',
+    path: '/queue',
+    icon: icon('ic_blog'),
   },
   {
     title: 'My Account',

@@ -116,7 +116,7 @@ export default function PostCard({ keyword, data, index, setWeeklyKeywords }) {
       message={<span style={{ width: '80px', height: '50px' }}>Copied!</span>}
       style={{ marginTop: '0px', zIndex: 9999999 }} /> */}
 
-      <Card sx = {{ height: 202.5, borderRadius: '6px', border: '2.5px solid', borderColor: cardColor }} onClick={() => handleClick()}>
+      <Card sx = {{ height: 202.5, borderRadius: '5.5px', border: '1.75px solid', borderColor: cardColor }} onClick={() => handleClick()}>
         
       <Stack sx={{width: '100%', zIndex: 1, height: 44.25, backgroundColor: cardColor, 
       justifyContent: "space-between", userSelect: 'none', position: 'absolute'}}>
@@ -153,7 +153,7 @@ export default function PostCard({ keyword, data, index, setWeeklyKeywords }) {
 
       </Stack>
 
-      <Stack sx={{width: '100%', zIndex: 125, height: 13.5, backgroundColor: 'white', bottom: '0px',
+      <Stack sx={{width: '100%', zIndex: 125, height: 17.5, backgroundColor: 'white', bottom: '0px',
       justifyContent: "space-between", userSelect: 'none', position: 'absolute'}} />
 
       {!isNew &&

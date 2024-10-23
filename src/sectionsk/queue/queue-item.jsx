@@ -4,8 +4,9 @@ import PropTypes from 'prop-types';
 import { Button, Box, Typography, IconButton } from '@mui/material';
 import Iconify from 'src/components/iconify';
 
-const QueueItem = ({ content, time, tab, selectedList }) => {
+const QueueItem = ({ title, content, time, tab, selectedList, posts }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [socialBtnHover, setSocialBtnHover] = useState(false);
 
   if (tab !== selectedList) {
     return null;
@@ -28,17 +29,19 @@ const QueueItem = ({ content, time, tab, selectedList }) => {
   const hexToRgba = (hex, alpha = 1) => {
     const hexValue = hex.replace('#', '');
     const bigint = parseInt(hexValue, 16);
+    /* eslint-disable no-bitwise */
     const r = (bigint >> 16) & 255;
     const g = (bigint >> 8) & 255;
     const b = bigint & 255;
-
+    /* eslint-enable no-bitwise */
+  
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
   };
 
   const getBgColor = (tabby) => {
     switch (tabby) {
       case 'Published':
-        return hexToRgba('#db4d62', 0.08);
+        return hexToRgba('#ff5e76', 0.075);
       case 'Scheduled':
         return hexToRgba('#2196F3', 0.08);
       case 'Drafts':
@@ -48,16 +51,14 @@ const QueueItem = ({ content, time, tab, selectedList }) => {
     }
   };
 
-  const [socialBtnHover, setSocialBtnHover] = useState(false);
-
   return (
     <Box
       sx={{
         display: 'flex',
         alignItems: 'center',
         backgroundColor: getBgColor(tab),
-        borderRadius: 1, p: 2, mb: 2,
-        // transition: 'all 0.2s ease-out',
+        borderRadius: 1, p: 2, mb: 1,
+        transition: 'transform 0.3s ease-out',
         ...(isHovered && {
           backgroundColor: (theme) => `${getBgColor(tab).replace('0.08', '0.12')}`,
           transform: 'translateY(-1px)',
@@ -88,7 +89,7 @@ const QueueItem = ({ content, time, tab, selectedList }) => {
             fontSize: '17px',
           }}
         >
-          {content}
+          {title}
         </Typography>
       </Box>
 
@@ -105,7 +106,7 @@ const QueueItem = ({ content, time, tab, selectedList }) => {
       </Typography>
 
       <Box sx={{ ml: 2, display: 'flex', gap: 1 }}>
-        {tab === 'Drafts' && (
+        {tab !== 'Published' && (
           <IconButton
             size="small"
             onMouseEnter={() => setIsHovered(true)}
@@ -118,7 +119,7 @@ const QueueItem = ({ content, time, tab, selectedList }) => {
           <Iconify icon="material-symbols:delete-outline" />
         </IconButton>
         <Button size="small"
-            style={{borderRadius: '5px', height: socialBtnHover ? '35px' : '30px', backgroundColor: '#404040',  color: 'white', minWidth: '30px', transition: 'all 0.25s ease-out',
+            style={{borderRadius: '5px', height: socialBtnHover ? '36px' : '30px', backgroundColor: '#404040',  color: 'white', minWidth: '30px', transition: 'all 0.25s ease-out',
               width: socialBtnHover ? 'auto' : '30px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: socialBtnHover ? 5 : 5,
               paddingLeft: socialBtnHover ? '10px' : '0px', paddingRight: socialBtnHover ? '10px' : '0px',
             }}
@@ -133,10 +134,12 @@ const QueueItem = ({ content, time, tab, selectedList }) => {
 };
 
 QueueItem.propTypes = {
-  content: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  content: PropTypes.string,
   time: PropTypes.string.isRequired,
   tab: PropTypes.string.isRequired,
-  selectedList: PropTypes.string.isRequired
+  selectedList: PropTypes.string.isRequired,
+  posts: PropTypes.array,
 };
 
 export default QueueItem;
