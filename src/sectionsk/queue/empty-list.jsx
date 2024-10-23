@@ -9,9 +9,9 @@ import Iconify from 'src/components/iconify';
 const EmptyList = ({ selectedList }) => {
 
     const graphicList = {
-        Published: '/public/assets/images/general/drafts.png',
-        Scheduled: '/public/assets/images/general/drafts.png',
-        Drafts: '/public/assets/images/general/drafts.png'
+        Published: 'https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/misc_images%2Fdrafts.png?alt=media&token=324937d7-e620-46c0-bb05-32f7143664d2',
+        Scheduled: 'https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/misc_images%2Fdrafts.png?alt=media&token=324937d7-e620-46c0-bb05-32f7143664d2',
+        Drafts: 'https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/misc_images%2Fdrafts.png?alt=media&token=324937d7-e620-46c0-bb05-32f7143664d2'
     };
 
     const [onHover, setOnHover] = useState(false);

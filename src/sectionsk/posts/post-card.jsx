@@ -121,17 +121,27 @@ export default function PostCard({ platform, content, index, isGen }) {
       <ReactQuill 
         value={content}
         modules={{ toolbar: false }}
+        className="custom-quill"
         style={{ 
           width: '100%', 
           height: '396px', 
           marginBottom: '50px', 
-          border: '0px solid #ccc',
+          border: 'none',
           borderRadius: '0px', 
           backgroundColor: isGen ? 'lightgrey' : 'white',
           opacity: '0.85',
           transition: '0.75s ease',
         }}
       />
+      
+      <style>{`
+        .custom-quill .ql-container {
+          border: none !important;
+        }
+        .custom-quill .ql-editor {
+          border: none !important;
+        }
+      `}</style>
 
           
       </Card>

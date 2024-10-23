@@ -28,50 +28,50 @@ export default function CompetitionDialog ({
   const [competitorBlogPage, setCompetitorBlogPage] = React.useState('');
 
   const addCompetitor = async () => {
+    
     if (!competitorName || !competitorSite) { 
       setError('Please fill out all fields.'); 
       return;
-    }  
-    handleClose();
+    }  handleClose();
 
-    setTimeout(() => {
+    // setTimeout(() => {
+    //   console.log('Adding Competitor...')
+    // }, 10000);
 
-    }, 10000);
+    try {
+      const firmDatabase = collection(db, 'firms');
+      const data = await getDocs(firmDatabase);
+      const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
+      const firmDoc = data.docs.find((docc) => docc.id === userDoc.data().FIRM);
 
-    // try {
-    //   const firmDatabase = collection(db, 'firms');
-    //   const data = await getDocs(firmDatabase);
-    //   const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
-    //   const firmDoc = data.docs.find((docc) => docc.id === userDoc.data().FIRM);
+      if (firmDoc) {  
+        const firmDocRef = doc(db, 'firms', firmDoc.id);
 
-    //   if (firmDoc) {  
-    //     const firmDocRef = doc(db, 'firms', firmDoc.id);
-    //     const competition = firmDoc.data().COMPETITION.COMPETITION || [];
+        const compData = await getCompData(competitorSite);
 
-    //     const compData = await getCompData(competitorSite);
+        // const newCompetitor = {
+        //   NAME: competitorName,
+        //   COMP_SITE: competitorSite,
+        //   ...compData
+        // };
 
-    //     const newCompetitor = {
-    //       NAME: competitorName,
-    //       COMP_SITE: competitorSite,
-    //       ...compData
-    //     };
+        // const existingIndex = competition.findIndex(item => item.COMP_SITE === competitorSite || item.COMP_SITE.includes(competitorSite));
 
-    //     const existingIndex = competition.findIndex(item => item.COMP_SITE === competitorSite || item.COMP_SITE.includes(competitorSite));
+        // if (existingIndex !== -1) {
+        //   competition[existingIndex] = newCompetitor;
+        // } else {
+        //   competition.push(newCompetitor);
+        // }
 
-    //     if (existingIndex !== -1) {
-    //       competition[existingIndex] = newCompetitor;
-    //     } else {
-    //       competition.push(newCompetitor);
-    //     }
-
-    //     await updateDoc(firmDocRef, { "COMPETITION.COMPETITION": competition });
-    //     console.log('Competitor added/updated successfully');
-    //   } else {
-    //     console.error('Firm document does not exist');
-    //   }
-    // } catch (err) {
-    //   console.error('Error updating competitor data:', err);
-    // }
+        // await updateDoc(firmDocRef, { "COMPETITION.COMPETITION": competition });
+        // console.log('Competitor added/updated successfully');
+        
+      } else {
+        console.error('Firm document does not exist');
+      }
+    } catch (err) {
+      console.error('Error updating competitor data:', err);
+    }
   };
 
   return (
