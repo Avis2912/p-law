@@ -216,7 +216,7 @@ function BlogEditor({ text, setText, isGenerating, boxWidth, boxHeight, wordCoun
           width: boxWidth,
           height: boxHeight,
           marginBottom: 18,
-          border: '1px solid #ccc',
+          border: '0px solid #ccc',
           opacity: '1',
           transition: 'ease-in-out 0.3s',
         }}
