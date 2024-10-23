@@ -34,7 +34,11 @@ const updateFirmsWithQueue = async () => {
 
         firmsSnapshot.forEach(doc => {
             const firmRef = doc.ref;
-            batch.update(firmRef, { QUEUE: queueData, COMPETITION: competitionData, STRATEGY: strategyData });
+            batch.update(firmRef, { 
+                QUEUE: queueData, 
+                // COMPETITION: competitionData,
+                STRATEGY: strategyData 
+            });
         });
 
         await batch.commit();
