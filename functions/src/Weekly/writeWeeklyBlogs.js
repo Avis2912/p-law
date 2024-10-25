@@ -78,9 +78,7 @@ export const writeWeeklyBlogs = async (
             IMPORTANT INSTRUCTIONS:
             - TOPIC: This post is on ${titleArray[i]}. Use exactly this title.
             - FORMATTING: Wrap titles in <h1> and sub-titles in <h2> tags. Wrap all paragraphs (and everything else that should have a line after) in <p> tags. Use b tags only in same-line text or 'title: paragraph'.
-            - PERSPECTIVE: Don't refer to yourself in the post. Explain how your firm ${firmNameInt} can help, but only at the end. 
-            - WORD RANGE: this post should be 1000+ WORDS LONG.
-            - TABLES: Consider using table(s) in the following format:
+            - TABLES: Always include table(s) with 2 or 3 columns. Add in this syntax (which is only 1 column for example's sake):
 
             <div class="quill-better-table-wrapper">
                 <table class="quill-better-table" style="width: 600px;">
@@ -103,10 +101,12 @@ export const writeWeeklyBlogs = async (
                 <p></p>
             </div>
 
+            - WORD RANGE: this post should be 1000+ WORDS LONG.
             - IMAGES: blog post should contain 2-3 images. Please add representations of them in this format: //Image: {Image Description}//. 
             Consider putting them right after h2 titles. Make sure these are evenly spaced out in the post and with specific descriptions.
-            - FACTS & LAW: Reference data & law in the blog post if & when necessary. Dont make things up.
+            - SPECIFICITY: Be as specific and detailed as possible. Don't be repetitive and ramble.
             - LINK TO RELEVANT POSTS: Use <a> tags to add link(s) to relevant blog posts from the firm wherever applicable: ${internalLinksInt}.
+            - PERSPECTIVE: Don't EVER refer to yourself in the post. Explain how your firm ${firmNameInt} can help, but ONLY at the end. 
             - CONTACT US LINK AT END: Use this contact us link with <a> tags at the end: ${contactUsLinkInt}
             - NEVER OUTPUT ANYTHING other than the blog content. DONT START BY DESCRIBING WHAT YOURE OUTPUTING, JUST OUTPUT. 
 
@@ -130,7 +130,6 @@ export const writeWeeklyBlogs = async (
             // - ${isReferenceGiven && `USEFUL DATA: Refer to the following text and use as applicable: ${referenceText}`}
             // - ${browseTextResponse !== "" && `WEB RESULTS: Consider using the following web information I got from an LLM for the prompt ${browseText}: ${browseTextResponse}`}
             // - ${style !== "Unstyled" && `STYLE: This blog post should be written in the ${style} style.`}
-
 
         ] })
         });

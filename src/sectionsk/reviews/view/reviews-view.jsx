@@ -175,7 +175,7 @@ export default function UserPage() {
       <PageTitle title="Invite Clients To Review"/>
 
       <Stack direction="row" spacing={2} mb={2}>
-      <Button target="_blank" href="https://tally.so/r/mBxLkR" variant="contained" startIcon={<Iconify icon="streamline:business-card-solid" sx={{height: '18.5px'}}/>}
+      <Button target="_blank" href="https://tally.so/r/3j9PDR" variant="contained" startIcon={<Iconify icon="streamline:business-card-solid" sx={{height: '18.5px'}}/>}
       sx={(theme)=>({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: theme.palette.primary.navBg, }})} >
        Request Platform</Button> 
        <Button variant="contained" onClick={() => {setIsDialogOpen(true);}}

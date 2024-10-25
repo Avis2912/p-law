@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import Card from '@mui/material/Card';
+import Creating from 'src/components/Creating';
 
 import { db, auth } from 'src/firebase-config/firebase';
 import { getDocs, getDoc, addDoc, collection, doc, updateDoc } from 'firebase/firestore';
@@ -115,7 +116,7 @@ export default function ListsView() {
 
           <Button variant="contained" onClick={() => {}}
           sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, cursor: 'default', fontWeight: '600', '&:hover': { backgroundColor: theme.palette.primary.navBg, },})}>
-            {!isUpdateTime ? `${timeToUpdate} Days Left` : 'Report Update Coming Soon'}
+            {!isUpdateTime ? `Updated This Week` : 'Report Update Coming Soon'}
           </Button>
           <Button
             variant="contained"
@@ -127,6 +128,9 @@ export default function ListsView() {
           </Button>
         </Stack>
       </Stack>
+
+      {/* {isUpdateTime && <Creating text='Updating Competitor Data' imgUrl='https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/Screenshot%202024-10-23%20at%208.24.40%E2%80%AFPM.png?alt=media&token=5ab083be-c894-4927-8148-5521749c3861' />} */}
+
       <Grid container spacing={3}>
         {Object.entries(competition).map(([key, value], index) => {
           if (typeof value === 'object' && value !== null) {

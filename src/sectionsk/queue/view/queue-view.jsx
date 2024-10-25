@@ -21,10 +21,10 @@ const BlogView = () => {
   const [queueData, setQueueData] = useState({    
     SCHEDULED: [],
     PUBLISHED: [
-      { date: '10/24/24', title: 'Content Marketing Trends', content: '', time: '4:30 PM', posts: [] },
-      { date: '10/24/24', title: '10 New Organic Marketing Trends', content: '', time: '5:30 PM', posts: [] },
-      { date: '10/25/24', title: 'How to Create A+ Legal SEO Content', content: '', time: '5:30 PM', posts: [] },
-      { date: '10/26/24', title: 'Law Firm Growth, Explained Simply', content: '', time: '6:30 PM', posts: [] },
+      // { date: '10/24/24', title: 'Content Marketing Trends', content: '', time: '4:30 PM', posts: [] },
+      // { date: '10/24/24', title: '10 New Organic Marketing Trends', content: '', time: '5:30 PM', posts: [] },
+      // { date: '10/25/24', title: 'How to Create A+ Legal SEO Content', content: '', time: '5:30 PM', posts: [] },
+      // { date: '10/26/24', title: 'Law Firm Growth, Explained Simply', content: '', time: '6:30 PM', posts: [] },
     ],
     DRAFTS: []
   });

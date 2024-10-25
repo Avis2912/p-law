@@ -5,9 +5,11 @@ import { Typography } from '@mui/material';
 import 'quill/dist/quill.snow.css';
 import QuillBetterTable from 'quill-better-table';
 import 'quill-better-table/dist/quill-better-table.css';
-
 import Iconify from 'src/components/iconify';
 import { Icon } from '@iconify/react';
+
+import BasicTooltip from './BasicTooltip';
+
 
 Quill.register({
   'modules/better-table': QuillBetterTable
@@ -190,7 +192,7 @@ function BlogEditor({ text, setText, isGenerating, boxWidth, boxHeight, wordCoun
       <Typography sx={{ position: 'relative', fontSize: '14px', fontFamily: 'Arial', height: 0,
                         top: 22.5, right: 13.5, letterSpacing: '-0.25px', fontWeight: '600', textAlign: 'right', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
         
-        {(selectedImage || lastSelectedImageRef.current) && (
+        <BasicTooltip title="Replace an Image">
           <span role="button" tabIndex={0}
             style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
             onClick={(e) => {
@@ -206,7 +208,8 @@ function BlogEditor({ text, setText, isGenerating, boxWidth, boxHeight, wordCoun
           >
             <Iconify icon={isReplacingImage ? 'line-md:loading-loop' : 'ph:images-square-light'} sx={{ mr: '7.5px', mb: '1px', height: '20px', width: '20px' }} />
           </span>
-        )}
+        </BasicTooltip>
+
         {wordCount > 1 ? `    ${wordCount} Words` : ''}
       </Typography>
 

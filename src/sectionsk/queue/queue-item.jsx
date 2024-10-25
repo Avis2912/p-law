@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Box, Typography, IconButton } from '@mui/material';
 import Iconify from 'src/components/iconify';
+import CreateSocial from 'src/components/CreateSocial';
 
 const QueueItem = ({ title, content, time, tab, selectedList, posts }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -99,36 +100,15 @@ const QueueItem = ({ title, content, time, tab, selectedList, posts }) => {
           textAlign: 'right',
           fontWeight: 600,
           color: 'text.secondary',
-          flexShrink: 0
+          flexShrink: 0,
+          marginRight: 2,
         }}
       >
         {time}
       </Typography>
 
-      <Box sx={{ ml: 2, display: 'flex', gap: 1 }}>
-        {tab !== 'Published' && (
-          <IconButton
-            size="small"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-          >
-            <Iconify icon="material-symbols:edit-outline" />
-          </IconButton>
-        )}
-        <IconButton size="small">
-          <Iconify icon="material-symbols:delete-outline" />
-        </IconButton>
-        <Button size="small"
-            style={{borderRadius: '5px', height: socialBtnHover ? '36px' : '30px', backgroundColor: '#404040',  color: 'white', minWidth: '30px', transition: 'all 0.25s ease-out',
-              width: socialBtnHover ? 'auto' : '30px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: socialBtnHover ? 5 : 5,
-              paddingLeft: socialBtnHover ? '10px' : '0px', paddingRight: socialBtnHover ? '10px' : '0px',
-            }}
-            onMouseEnter={() => setSocialBtnHover(true)}
-            onMouseLeave={() => setSocialBtnHover(false)}>
-              <Iconify icon="mynaui:sparkles-solid" height="17px" width="17px" />
-              {socialBtnHover && <span style={{ marginLeft: '5px' }}>Create Social Posts</span>}
-        </Button>
-      </Box>
+      <CreateSocial content={content} isExpanding />
+
     </Box>
   );
 };

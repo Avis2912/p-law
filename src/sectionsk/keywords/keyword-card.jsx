@@ -33,7 +33,7 @@ import { isEmpty } from 'lodash';
 
 // ----------------------------------------------------------------------
 
-export default function PostCard({ keyword, data, index, setWeeklyKeywords }) {
+export default function PostCard({ keyword, data, index, setWeeklyKeywords, isTrending=false }) {
 
   let isNew = false; let isNone = false;
   if (JSON.stringify(data) === JSON.stringify([-1, -1, -1, -1])) {isNew = true;}
@@ -46,7 +46,7 @@ export default function PostCard({ keyword, data, index, setWeeklyKeywords }) {
     { month: format(currentMonth, 'MMMM'), value: data[3] },
   ];
 
-  const cardColor = '#0072b1';
+  const cardColor = isTrending ? '#2c3747' : '#0072b1';
   
   const options = {
     chart: {
@@ -121,17 +121,22 @@ export default function PostCard({ keyword, data, index, setWeeklyKeywords }) {
       <Stack sx={{width: '100%', zIndex: 1, height: 44.25, backgroundColor: cardColor, 
       justifyContent: "space-between", userSelect: 'none', position: 'absolute'}}>
         <Stack direction="row" spacing={2}>
+
+        {isTrending && <Iconify icon="noto:fire" sx={{left: '10.25px', top: '9.85px', height: '22px', width: '22px', position: 'absolute', color: 'white', opacity: '0.9',}}
+          onClick={async () => {}}/>}
+
         <Typography sx={{color: 'white', p: 1.2, pt: 1.0, pl: 1.75, fontSize: '18px', fontWeight: '800',
         fontFamily: 'sans-serif', display: 'flex', alignItems: 'center',}} >
-        <span style={{overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+        <span style={{overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginLeft: isTrending ? 9 : 0,
           width: '30ch', display: 'inline-block', fontFamily: 'DM Serif Display', letterSpacing: '0.35px'}}>
           {keyword}
         </span>
         </Typography> 
         </Stack>
-        {/* <Iconify icon="mdi:linkedin" sx={{mr: 0.45, mb: 0.15, height: '26px', width: '26px'}}/> */}
-        <Iconify icon="uil:trash" sx={{right: '11.5px', top: '9.85px', height: '22px', width: '22px', position: 'absolute', color: 'white', cursor: 'pointer', opacity: '0.9'}}
-          onClick={async () => {deleteKeyword()}}/>
+        
+        {!isTrending && <Iconify icon="uil:trash" sx={{right: '11.5px', top: '9.85px', height: '22px', width: '22px', position: 'absolute', color: 'white', cursor: 'pointer', opacity: '0.9'}}
+          onClick={async () => {deleteKeyword()}}/>}
+
         {/* <Iconify icon={isCopied ? "mingcute:clipboard-fill" : "mingcute:clipboard-line"} 
           sx={{right: '13px', top: '11.5px', height: '26px', width: '26px', position: 'absolute', color: 'white', cursor: 'pointer', opacity: '0.9'}}
           onClick={async () => {setIsCopied(true); copyText(content);}}/> */}
@@ -183,4 +188,5 @@ PostCard.propTypes = {
   data: PropTypes.object,
   index: PropTypes.number,
   setWeeklyKeywords: PropTypes.func,
+  isTrending: PropTypes.bool,
 };

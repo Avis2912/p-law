@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import Dialog from '@mui/material/Dialog';
 import Card from '@mui/material/Card';
 import Box from '@mui/material/Box';
+import Creating from 'src/components/Creating';
 
 import { db, auth } from 'src/firebase-config/firebase';
 import { useState, useEffect, useCallback } from 'react';
@@ -16,6 +17,7 @@ import { getDownloadURL, ref, getStorage, uploadBytes } from 'firebase/storage';
 import PageTitle from 'src/components/PageTitle';
 import Iconify from 'src/components/iconify';
 import { modelKeys } from 'src/genData/models';
+import { templates } from 'src/genData/templates';
 
 // eslint-disable-next-line import/no-relative-packages
 import { writeWeeklyPosts } from '../../../../functions/src/Weekly/writeWeeklyPosts';
@@ -67,21 +69,8 @@ export default function BlogView() {
 
 
   const updateDays = 7;
-  const templates = [
-    { title: 'Legal', titleType: true, imgType: false, isCaps: false, id: 'f360d9d3-434e-489c-8502-9026c541df8b', thumbnail: 'https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/templates%2FScreenshot%202024-05-03%20at%2012.02.08%E2%80%AFAM.png?alt=media&token=f207e707-10cc-4b5b-ac64-0d7f285adb62' },
-    { title: 'Legal', titleType: false, imgType: false, isCaps: false, id: '5972339a-bd3c-4608-ad00-0e02dc887195', thumbnail: 'https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/templates%2FScreenshot%202024-05-03%20at%2012.39.27%E2%80%AFAM.png?alt=media&token=60a63e69-5e4c-415f-b5a8-3aeda19ef83a' },
-    { title: 'Legal', titleType: true, imgType: true, isCaps: false, id: '78ff1eaa-ed4f-44e6-82a8-730aa0952499', thumbnail: 'https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/templates%2FScreenshot%202024-05-14%20at%202.58.33%E2%80%AFAM.png?alt=media&token=17decfe5-6a2b-415f-91b3-7fd7cc67b55e' },
-    { title: 'Legal', titleType: true, imgType: true, isCaps: false, id: 'b678796f-976a-4f2c-8350-57e4a64029f1', thumbnail: 'https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/templates%2FScreenshot%202024-05-09%20at%203.02.07%E2%80%AFAM.png?alt=media&token=7507c8a5-4f0d-4d00-a6bb-3754ad3a3fd0' },
-
-    { title: 'Legal', titleType: true, imgType: true, isCaps: true, id: '256576e6-4634-4ed1-9b2e-07e9be11e996', thumbnail: 'https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/templates%2FScreenshot%202024-05-14%20at%203.00.11%E2%80%AFAM.png?alt=media&token=e91ad2c6-c7ef-40fb-97e0-a389385fa5e3' },
-
-    { title: 'Legal', titleType: true, imgType: true, isCaps: true, id: '75ebc6ac-b11c-4452-8537-20a3e5fd5ddd', thumbnail: 'https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/templates%2FScreenshot%202024-05-02%20at%2011.57.08%E2%80%AFPM.png?alt=media&token=4317ded0-cf03-412d-a02d-0479e89353e8' },
-    { title: 'Legal', titleType: true, imgType: true, isCaps: false, id: '4cc38a38-534f-4e5b-82ed-11be890d9c72', thumbnail: 'https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/templates%2FScreenshot%202024-05-03%20at%2012.40.44%E2%80%AFAM.png?alt=media&token=e2b34e55-e641-4bfe-9e99-a0eff84bdb08' },
-    { title: 'Legal', titleType: false, imgType: true, isCaps: false, id: '26564e2c-7af5-4a21-b5f8-0d6b5a96715a', thumbnail: 'https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/templates%2FScreenshot%202024-05-09%20at%202.54.05%E2%80%AFAM.png?alt=media&token=3a166a19-fcac-41b1-aee2-02b69c7e3efe' },
-  ]
-
-  // PAGE LOAD FUNCTIONS
-
+  
+  // FUNCTIONS
 
   const addImages = async (posts, imagesSettings='All') => {
     const regex = /\/\/Image: (.*?)\/\//g; 
@@ -435,17 +424,6 @@ export default function BlogView() {
         @import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap);
       </style>
 
-      {isUpdateTime && <>
-      <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, position: 'absolute', 
-      top: '325px', left: 'calc(50% + 185px)', transform: 'translateX(-50%)', letterSpacing: '1.05px',  
-      fontWeight: 800, fontSize: '60.75px'}}> 
-        🧱 Writing Posts...
-      </Typography>
-      <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, position: 'absolute', 
-      top: '407.5px', left: 'calc(50% + 185px)', transform: 'translateX(-50%)', letterSpacing: '-0.05px',  fontWeight: 500, fontSize: '25.75px'}}> 
-        {`Return in ~5 minutes and they'll be ready!`}
-      </Typography> </>}
-
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={isNewPost ? 0.5 : 1.0}>
         
       <PageTitle title={`${isNewPost ? 'Create New Posts' : 'Weekly Social Media Posts'}`} />    
@@ -521,6 +499,8 @@ export default function BlogView() {
           {isNewPost ? 'Close Creator' : ' New Post'}
         </Button>
       </Stack></Stack>
+
+      {isUpdateTime && <Creating text='Currently Writing Posts' imgUrl='https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/Screenshot%202024-10-23%20at%208.02.33%E2%80%AFPM.png?alt=media&token=d9626f9e-1edf-4ae8-ba1d-dc407dd512d7' />}
 
       {isNewPost ? <>
       <Stack mb={3} direction="row" alignItems="center" justifyContent="space-between"

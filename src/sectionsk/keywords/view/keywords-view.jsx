@@ -9,6 +9,7 @@ import Card from '@mui/material/Card';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
+import Creating from 'src/components/Creating';
 
 import { db, auth } from 'src/firebase-config/firebase';
 import { useState, useEffect, useCallback } from 'react';
@@ -17,7 +18,8 @@ import { getDownloadURL, ref, getStorage } from 'firebase/storage'; // Import ne
 
 import PageTitle from 'src/components/PageTitle';
 import Iconify from 'src/components/iconify';
-import PostCard from '../post-card';
+import ComingSoon from 'src/components/ComingSoon';
+import PostCard from '../keyword-card';
 
 const isImagesOn = true;
 const modelKeys = {
@@ -51,6 +53,8 @@ export default function BlogView() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDialogOpen2, setIsDialogOpen2] = useState(false);
 
+  const [selectedList, setSelectedList] = useState('Tracked');
+
   const [searchResults, setSearchResults] = useState([
   // { KEYWORD: 'Campaign Manager', TRAFFIC: '3300', COMPETITION: 'LOW', PREVDATA: [-1, -1, -1, -1] },
   // { KEYWORD: 'Political Consultant', TRAFFIC: '2800', COMPETITION: 'MEDIUM', PREVDATA: [-1, -1, -1, -1] },
@@ -58,6 +62,8 @@ export default function BlogView() {
   // { KEYWORD: 'Public Relations Specialist', TRAFFIC: '1600', COMPETITION: 'LOW', PREVDATA: [-1, -1, -1, -1] },
   // { KEYWORD: 'Policy Analyst', TRAFFIC: '18300', COMPETITION: 'HIGH', PREVDATA: [-1, -1, -1, -1] },
   ]);
+
+  const [strategyData, setStrategyData] = useState({});
 
   const updateDays = 14;
   const competitionLevels = { LOW: 'Low Competition', MEDIUM: 'Avg Competition', HIGH: 'High Competition' };
@@ -218,28 +224,23 @@ export default function BlogView() {
 
   }
 
+  const buttonLabels = ['Strategy', 'Tracked',];
+  const icons = ['material-symbols-light:chess', 'clarity:bullseye-line'];
+
   return (
     <Container>
       <style>
         @import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap);
       </style>
 
-      {isUpdateTime && <>
-      <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, position: 'absolute', 
-      top: '325px', left: 'calc(50% + 185px)', transform: 'translateX(-50%)', letterSpacing: '1.05px',  
-      fontWeight: 800, fontSize: '60.75px'}}> 
-        🧱 Tracking Now...
-      </Typography>
-      <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, position: 'absolute', 
-      top: '407.5px', left: 'calc(50% + 185px)', transform: 'translateX(-50%)', letterSpacing: '-0.05px',  fontWeight: 500, fontSize: '25.75px'}}> 
-        {`Return in ~5 minutes and they'll be ready!`}
-      </Typography> </>}
+      {isUpdateTime && <Creating text='Updating All SEO Data' imgUrl='https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/image_2024-10-23_202020994.png?alt=media&token=799383a7-7d68-4c2d-8af2-835616badb7b' />}
 
-      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={isAddNewMode || isSearchMode ? 0.25 : 1.0}>
 
-        <PageTitle title={isSearchMode ? 'Search New Keywords' : 'Keywords Being Tracked'} />
+      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={isAddNewMode || isSearchMode ? 0.25 : 1.25}>
+
+        <PageTitle title={isSearchMode ? 'Search New Keywords' : (selectedList === 'Strategy' ? 'Firm Content Strategy' : 'Tracking Keywords')} />
         
-        <Stack direction="row" spacing={2} mb={2.5}>
+        <Stack direction="row" spacing={2} mb={2.25}>
 
         {/* {planName === 'Trial Plan' && <Button variant="contained" onClick={() => {handleOpen()}}
       sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: theme.palette.primary.navBg, },
@@ -253,7 +254,7 @@ export default function BlogView() {
         <Button variant="contained" onClick={() => {}}
         sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, cursor: 'default', fontWeight: '600',
         '&:hover': {backgroundColor: theme.palette.primary.navBg,}})}>
-          {!isUpdateTime ? `${timeToUpdate} Days Left` : 'Update In Progress'}
+          {!isUpdateTime ? (selectedList === 'Strategy' ? `Created This Week` : `Updated This Week`) : 'Update In Progress'}
         </Button>
         </>)}
 
@@ -265,15 +266,42 @@ export default function BlogView() {
         </Button>
         </>)}
 
-        {!isSearchMode && <Button variant="contained" color="inherit" startIcon={<Iconify icon={isAddNewMode ? "charm:cross" : "eva:plus-fill"} />} onClick={() => {setIsAddNewMode(!isAddNewMode)}}
+        {/* {!isSearchMode && <Button variant="contained" color="inherit" startIcon={<Iconify icon={isAddNewMode ? "charm:cross" : "eva:plus-fill"} />} onClick={() => {setIsAddNewMode(!isAddNewMode)}}
         sx={(theme) => ({backgroundColor: theme.palette.primary.black})}>
           {isAddNewMode ? 'Add New' : 'Add New'}
-        </Button>}
+        </Button>} */}
 
-        {!isNewPost && <Button variant="contained" color="inherit" startIcon={<Iconify icon={isSearchMode ? "charm:cross" : "bx:search"} />} 
+        {!isNewPost && selectedList==='Tracked' && <Button variant="contained" color="inherit" startIcon={<Iconify icon={isSearchMode ? "charm:cross" : "bx:search"} />} 
         onClick={() => {setIsSearchMode(!isSearchMode)}} sx={(theme) => ({backgroundColor: theme.palette.primary.black})}>
           {isSearchMode ? `Find New` : `Find New`}
         </Button>}
+
+        <Stack direction="row" spacing={2} mb={2}>
+          <div style={{ 
+            display: 'flex', borderRadius: 7, 
+            width: 246, height: 37.5, 
+            borderWidth: 0.5, borderStyle: 'solid' 
+          }}>
+            {buttonLabels.map((label, index) => (
+              <Button
+                key={label}
+                startIcon={<Iconify icon={icons[index]} height="16.5px" width="16.5px" marginRight="-1.75px" />}
+                style={{
+                  width: 123, color: selectedList === label ? 'white' : '#242122',
+                  backgroundColor: selectedList === label ? '#242122' : 'transparent',
+                  fontWeight: 700, transition: 'all 0.25s ease-out', borderRadius: 0,
+                  borderTopLeftRadius: index === 0 ? 6 : 0, borderBottomLeftRadius: index === 0 ? 6 : 0,
+                  borderTopRightRadius: index === buttonLabels.length - 1 ? 6 : 0, borderBottomRightRadius: index === buttonLabels.length - 1 ? 6 : 0,
+                  border: '0px solid #242122', borderRightWidth: index === buttonLabels.length - 1 ? 0 : 0.5,
+                  cursor: 'pointer', fontSize: 15, letterSpacing: '-0.25px',
+                }}
+                onClick={() => setSelectedList(label)}
+              >
+                {label}
+              </Button>
+            ))}
+          </div>
+        </Stack>
 
       </Stack></Stack>
 

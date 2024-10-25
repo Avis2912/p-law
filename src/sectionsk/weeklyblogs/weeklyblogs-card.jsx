@@ -6,11 +6,12 @@ import Card from '@mui/material/Card';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
+import Tooltip from '@mui/material/Tooltip';
 import { alpha } from '@mui/material/styles';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom'; 
-
+import CreateSocial from 'src/components/CreateSocial';
 import 'react-quill/dist/quill.snow.css'; // import styles
 
 import { auth } from 'src/firebase-config/firebase';
@@ -41,6 +42,7 @@ export default function PostCard({ platform, content, index, isGen }) {
   }
 
   const [isCopied, setIsCopied] = useState(false);
+  const [socialBtnHover, setSocialBtnHover] = useState(false);
 
   const [blogTitle, setBlogTitle] = useState('');
   const [blogDesc, setBlogDesc] = useState('');
@@ -96,30 +98,19 @@ export default function PostCard({ platform, content, index, isGen }) {
         {blogDesc}</Typography>
       </Card>
 
+      <Stack sx={{position: 'absolute', top: 340, width: '90%', height: '38px', justifyContent: "space-between", 
+       display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px',
+      }}>
+
+      <CreateSocial content={content}/>
             
       <Button variant="contained" startIcon={<Iconify icon="iconoir:post" />}
-      sx={(theme) => ({position: 'absolute', top: '340px', width: '90%', height: '38px', borderRadius: '5px',
+      sx={(theme) => ({width: '100%', height: 'auto', borderRadius: '5px',
       fontSize: '15px', fontWeight: '700', backgroundColor: theme.palette.primary.navBg, '&hover': {backgroundColor: theme.palette.primary.navBg}})}
       onClick={() => navigate(`/blog?blogID=${index}`)}>
-      Start Working</Button>
+      {!false && `Start Working`}</Button>
 
-
-    {/* 
-      <ReactQuill 
-        value={content}
-        modules={{ toolbar: false }}
-        style={{ 
-          width: '100%', 
-          height: '396px', 
-          marginBottom: '50px', 
-          border: '0px solid #ccc',
-          borderRadius: '0px', 
-          backgroundColor: isGen ? 'lightgrey' : 'white',
-          opacity: '0.85',
-          transition: '0.75s ease',
-        }}
-      /> */}
-
+      </Stack>
           
       </Card>
     </Grid>

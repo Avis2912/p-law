@@ -21,6 +21,7 @@ import BlogEditor from 'src/components/Editor';
 import WpDialog from 'src/components/WpDialog';
 import ComingSoon from 'src/components/ComingSoon';
 import PageTitle from 'src/components/PageTitle';
+import BasicTooltip from 'src/components/BasicTooltip';
 import { Page } from 'openai/pagination';
 import { modelKeys } from 'src/genData/models';
 
@@ -695,6 +696,7 @@ const modules = {
       '&:hover': { backgroundColor: theme.palette.primary.green, }, })}>
       {wordRange} </Button>
 
+      <BasicTooltip title='Number of Images'>
       <Button variant="contained" endIcon={<Iconify icon="ph:images-bold" />} 
       onClick={() => {
         switch (imageCount) {
@@ -708,24 +710,27 @@ const modules = {
         }
       }}
       sx={(theme) => ({ backgroundColor: theme.palette.primary.green, display: isWpDropdownOpen ? 'none' : 'flex',
-      '&:hover': { backgroundColor: theme.palette.primary.green, }, })}>
+      '&:hover': { backgroundColor: theme.palette.primary.green, }, height: '40px' })}>
         {imageCount.replace(" Images", "")}
-      </Button>
+      </Button> </BasicTooltip>
 
+      <BasicTooltip title='Browse The Web'>
       <Button variant="contained"
       sx={(theme) => ({backgroundColor: theme.palette.primary.green, '&:hover': { backgroundColor: theme.palette.primary.green, },
-      width: '40px', justifyContent: 'center', alignItems: 'center', minWidth: '10px', display: isWpDropdownOpen ? 'none' : 'flex',})}
+      width: '40px', height: '40px', justifyContent: 'center', alignItems: 'center', minWidth: '10px', display: isWpDropdownOpen ? 'none' : 'flex',})}
       onClick={() => {setIsBrowseWeb(!isBrowseWeb);}}>
         <Iconify icon= {isBrowseWeb ? "mdi:web" : "mdi:web-cancel"} sx={{minHeight: '18.25px', minWidth: '18.25px'}}/>
-      </Button>
+      </Button> </BasicTooltip>
 
+      <BasicTooltip title='Header Image' end>
       <Button variant="contained"
       sx={(theme) => ({backgroundColor: theme.palette.primary.green, '&:hover': { backgroundColor: theme.palette.primary.green, },
-      width: '40px', justifyContent: 'center', alignItems: 'center', minWidth: '10px', display: isWpDropdownOpen ? 'none' : 'flex',})}
+      width: '40px', height: '40px', justifyContent: 'center', alignItems: 'center', minWidth: '10px', display: isWpDropdownOpen ? 'none' : 'flex',})}
       onClick={() => {setIsUseThumbnail(!isUseThumbnail);}}>
         <Iconify icon= {isUseThumbnail ? "material-symbols:thumbnail-bar" : "material-symbols:thumbnail-bar-outline"} sx={{minHeight: '18.25px', minWidth: '18.25px'}}/>
-      </Button>
+      </Button> </BasicTooltip>
 
+      <BasicTooltip title='Writing Style' end>
       <Button variant="contained" startIcon={<Iconify icon="material-symbols:emoji-food-beverage" sx={{height: '18px'}}/>} 
       onClick={() => {
         switch (style) {
@@ -739,8 +744,8 @@ const modules = {
         }
       }}
       sx={(theme) => ({ backgroundColor: theme.palette.primary.green, display: isWpDropdownOpen ? 'none' : 'flex',
-      '&:hover': { backgroundColor: theme.palette.primary.green, }, })}>        
-      {style} </Button>
+      '&:hover': { backgroundColor: theme.palette.primary.green, }, height: '40px' })}>        
+      {style} </Button> </BasicTooltip>
 
       {isWpDropdownOpen && <Button variant="contained" startIcon={<Iconify icon="teenyicons:text-document-solid" sx={{height: '13.25px'}}/>} 
       onClick={() => {setIsComingSoon(true);}}
@@ -772,7 +777,8 @@ const modules = {
       '&:hover': { backgroundColor: theme.palette.primary.navBg, }, })}>        
       {(isWpDropdownOpen ? `Close` : `Publish`)} </Button>}
 
-      {isBrowseWeb && sources.length !== 0 && <Button variant="contained" startIcon={<Iconify icon= {doneSourcing ? "map:search" : "line-md:downloading-loop"} sx={{height: '18px'}}/>}  
+      {isBrowseWeb && sources.length !== 0 && 
+      <Button variant="contained" startIcon={<Iconify icon= {doneSourcing ? "map:search" : "line-md:downloading-loop"} sx={{height: '18px'}}/>}  
       sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: theme.palette.primary.navBg, },
       width: '40px', paddingLeft: '28px', minWidth: '10px',})}
       onClick={() => {if (sources.length !== 0) {setIsSourcesOpen(!isSourcesOpen);}}} />}
@@ -926,27 +932,34 @@ const modules = {
         <Button variant="contained" sx={(theme) => ({backgroundColor: theme.palette.primary.black, '&:hover': { backgroundColor: theme.palette.primary.black, }, cursor: 'default'})}>
         Power Tools <Iconify icon="eva:arrow-right-fill" /></Button>
                   
-        <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => {setIsAdvancedBrowseWeb(!isAdvancedBrowseWeb); setIsReferenceGiven(false);}}
-        sx={(theme) => ({backgroundColor: isAdvancedBrowseWeb ? theme.palette.primary.green : 'grey', '&:hover': { backgroundColor: theme.palette.primary.green, border: "2.5px solid darkgreen" },
-        maxHeight: '36.0px',
-        border: isAdvancedBrowseWeb ? "2.5px solid darkgreen" : '2.5px solid grey'})}>
-        Do Deep Research </Button>
+        <BasicTooltip title='Learn In-Depth from Online Sources'>
+          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => {setIsAdvancedBrowseWeb(!isAdvancedBrowseWeb); setIsReferenceGiven(false);}}
+            sx={(theme) => ({backgroundColor: isAdvancedBrowseWeb ? theme.palette.primary.green : 'grey', '&:hover': { backgroundColor: theme.palette.primary.green, border: "2.5px solid darkgreen" },
+            maxHeight: '36.0px',
+            border: isAdvancedBrowseWeb ? "2.5px solid darkgreen" : '2.5px solid grey'})}>
+            Deep Research
+          </Button>
+        </BasicTooltip>
 
+        <BasicTooltip title='Write in Your Blog Writing Style'>
         <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => {setIsMimicBlogStyle(!isMimicBlogStyle)}}
         sx={(theme) => ({backgroundColor: isMimicBlogStyle ? theme.palette.primary.green : 'grey', '&:hover': { backgroundColor: theme.palette.primary.green, },})}>
-        Mimic Firm Blogs </Button>
+        Mimic Firm Blogs </Button> </BasicTooltip>
 
+        <BasicTooltip title='Cite External Sources'>
+        <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => {setIsUseInternalLinks(!isUseInternalLinks)}}
+        sx={(theme) => ({backgroundColor: isUseInternalLinks ? theme.palette.primary.green : 'grey', '&:hover': { backgroundColor: theme.palette.primary.green, },})}>
+        Cite Sources </Button> </BasicTooltip>
+
+        <BasicTooltip title='Experimental  -  Cite Case Law'>
         <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => {setIsMentionCaseLaw(!isMentionCaseLaw)}}
         sx={(theme) => ({backgroundColor: isMentionCaseLaw ? theme.palette.primary.green : 'grey', '&:hover': { backgroundColor: theme.palette.primary.green, },})}>
-        Mention Cases </Button>
+        Mention Cases </Button> </BasicTooltip>
 
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => {setIsReferenceGiven(!isReferenceGiven); setIsBrowseWeb(false);}}
+        <BasicTooltip title='Add Your Own Data'>
+        <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => {setIsReferenceGiven(!isReferenceGiven); setIsBrowseWeb(false);}}
         sx={(theme) => ({backgroundColor: isReferenceGiven ? theme.palette.primary.green : 'grey', '&:hover': { backgroundColor: theme.palette.primary.green, },})}>
-        New Data </Button>
-
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => {setIsUseInternalLinks(!isUseInternalLinks)}}
-        sx={(theme) => ({backgroundColor: isUseInternalLinks ? theme.palette.primary.green : 'grey', '&:hover': { backgroundColor: theme.palette.primary.green, },})}>
-        Cite Sources </Button>
+        New Data </Button> </BasicTooltip>
 
         </Stack> 
 
