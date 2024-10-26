@@ -78,27 +78,53 @@ export const writeWeeklyBlogs = async (
             IMPORTANT INSTRUCTIONS:
             - TOPIC: This post is on ${titleArray[i]}. Use exactly this title.
             - FORMATTING: Wrap titles in <h1> and sub-titles in <h2> tags. Wrap all paragraphs (and everything else that should have a line after) in <p> tags. Use b tags only in same-line text or 'title: paragraph'.
-            - TABLES: Always include table(s) with 2 or 3 columns. Add in this syntax (which is only 1 column for example's sake):
+            - TABLES: Always include table(s) with 2 or 3 columns. Add in this syntax:
 
             <div class="quill-better-table-wrapper">
                 <table class="quill-better-table" style="width: 600px;">
-                <colgroup>
-                    <col width="300"> <col width="300">
-                </colgroup>
-                <tbody>
-                    <tr data-row="row-1" height="45">
-                    <td data-row="row-1" rowspan="1" colspan="1">
-                        <p class="qlbt-cell-line" data-row="row-1" data-cell="cell-xc52" data-rowspan="1" data-colspan="1">Hey whats popping</p>
-                    </td>
-                    </tr>
-                    <tr data-row="row-2" height="45">
-                    <td data-row="row-2" rowspan="1" colspan="1">
-                        <p class="qlbt-cell-line" data-row="row-2" data-cell="cell-ywlw" data-rowspan="1" data-colspan="1"></p>
-                    </td>
-                    </tr>
-                </tbody>
+                    <colgroup>
+                        <col width="300">
+                        <col width="300">
+                    </colgroup>
+                    <tbody>
+                        <tr data-row="row-1" height="45">
+                            <td data-row="row-1" rowspan="1" colspan="1">
+                                <p class="qlbt-cell-line" data-row="row-1" data-cell="cell-xc52" data-rowspan="1" data-colspan="1">
+                                    <strong>Estate Value</strong>
+                                </p>
+                            </td>
+                            <td data-row="row-1" rowspan="1" colspan="1">
+                                <p class="qlbt-cell-line" data-row="row-1" data-cell="cell-xc53" data-rowspan="1" data-colspan="1">
+                                    <strong>Probate Requirement</strong>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr data-row="row-2" height="45">
+                            <td data-row="row-2" rowspan="1" colspan="1">
+                                <p class="qlbt-cell-line" data-row="row-2" data-cell="cell-ywlw" data-rowspan="1" data-colspan="1">
+                                    Under $100,000
+                                </p>
+                            </td>
+                            <td data-row="row-2" rowspan="1" colspan="1">
+                                <p class="qlbt-cell-line" data-row="row-2" data-cell="cell-ywlx" data-rowspan="1" data-colspan="1">
+                                    Small Estate Affidavit
+                                </p>
+                            </td>
+                        </tr>
+                        <tr data-row="row-3" height="45">
+                            <td data-row="row-3" rowspan="1" colspan="1">
+                                <p class="qlbt-cell-line" data-row="row-3" data-cell="cell-zxlw" data-rowspan="1" data-colspan="1">
+                                    $100,000 or more
+                                </p>
+                            </td>
+                            <td data-row="row-3" rowspan="1" colspan="1">
+                                <p class="qlbt-cell-line" data-row="row-3" data-cell="cell-zxlx" data-rowspan="1" data-colspan="1">
+                                    Full Probate Process
+                                </p>
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
-                <p></p>
             </div>
 
             - WORD RANGE: this post should be 1000+ WORDS LONG.
@@ -106,7 +132,7 @@ export const writeWeeklyBlogs = async (
             Consider putting them right after h2 titles. Make sure these are evenly spaced out in the post and with specific descriptions.
             - SPECIFICITY: Be as specific and detailed as possible. Don't be repetitive and ramble.
             - LINK TO RELEVANT POSTS: Use <a> tags to add link(s) to relevant blog posts from the firm wherever applicable: ${internalLinksInt}.
-            - PERSPECTIVE: Don't EVER refer to yourself in the post. Explain how your firm ${firmNameInt} can help, but ONLY at the end. 
+            - PERSPECTIVE: Don't ever, EVER refer to yourself in the post, this should be written in third-person-perspective. Explain how 'we at ${firmNameInt}' can help, but ONLY at the end. 
             - CONTACT US LINK AT END: Use this contact us link with <a> tags at the end: ${contactUsLinkInt}
             - NEVER OUTPUT ANYTHING other than the blog content. DONT START BY DESCRIBING WHAT YOURE OUTPUTING, JUST OUTPUT. 
 

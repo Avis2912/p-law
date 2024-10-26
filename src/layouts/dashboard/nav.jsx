@@ -178,6 +178,7 @@ export default function Nav({ openNav, onCloseNav }) {
       sx={{
         flexShrink: { lg: 0 },
         width: { lg: 1.00 * NAV.WIDTH },
+        
         backgroundColor: 'primary.navBg',
         position: 'relative',
       }}

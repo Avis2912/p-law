@@ -8,10 +8,7 @@ import Avatar from '@mui/material/Avatar';
 import { alpha } from '@mui/material/styles';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
-
-import { Editor, EditorState } from 'draft-js';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css'; // import styles
+import BasicTooltip from 'src/components/BasicTooltip';
 
 import { LineChart, Area, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import Chart from 'react-apexcharts';
@@ -33,7 +30,11 @@ import { isEmpty } from 'lodash';
 
 // ----------------------------------------------------------------------
 
-export default function PostCard({ keyword, data, index, setWeeklyKeywords, isTrending=false }) {
+export default function PostCard({ keyword, data, index, setWeeklyKeywords, trackNewKeyword, 
+  isTrending=false, isTrendingTracked=false,
+ }) {
+
+  const [isTrendingTrackedInt, setIsTrendingTrackedInt] = useState(isTrendingTracked);
 
   let isNew = false; let isNone = false;
   if (JSON.stringify(data) === JSON.stringify([-1, -1, -1, -1])) {isNew = true;}
@@ -108,13 +109,8 @@ export default function PostCard({ keyword, data, index, setWeeklyKeywords, isTr
   }
 
   return (
-    <Grid xs={12} sm={latestPostLarge ? 12 : 6} md={latestPostLarge ? 3 : 4}>
+    <Grid xs={12} sm={latestPostLarge ? 12 : 6} md={latestPostLarge ? 3 : 4} sx={{}}>
       <style>@import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap);</style>
-          
-      {/* <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'center',}}
-      open={open} autoHideDuration={3000} onClose={handleCloseAlert} 
-      message={<span style={{ width: '80px', height: '50px' }}>Copied!</span>}
-      style={{ marginTop: '0px', zIndex: 9999999 }} /> */}
 
       <Card sx = {{ height: 202.5, borderRadius: '5.5px', border: '1.75px solid', borderColor: cardColor }} onClick={() => handleClick()}>
         
@@ -136,6 +132,10 @@ export default function PostCard({ keyword, data, index, setWeeklyKeywords, isTr
         
         {!isTrending && <Iconify icon="uil:trash" sx={{right: '11.5px', top: '9.85px', height: '22px', width: '22px', position: 'absolute', color: 'white', cursor: 'pointer', opacity: '0.9'}}
           onClick={async () => {deleteKeyword()}}/>}
+
+        {isTrending && <BasicTooltip title="Track Keyword" >
+          <Iconify icon={isTrendingTrackedInt ? "mdi:tick" : "fluent:add-24-regular"} sx={{right: '11.5px', top: '10.85px', height: '22px', width: '22px', position: 'absolute', color: 'white', cursor: 'pointer', opacity: '0.9'}}
+          onClick={async () => {trackNewKeyword(keyword, data); setIsTrendingTrackedInt(true)}}/></BasicTooltip>}
 
         {/* <Iconify icon={isCopied ? "mingcute:clipboard-fill" : "mingcute:clipboard-line"} 
           sx={{right: '13px', top: '11.5px', height: '26px', width: '26px', position: 'absolute', color: 'white', cursor: 'pointer', opacity: '0.9'}}
@@ -188,5 +188,7 @@ PostCard.propTypes = {
   data: PropTypes.object,
   index: PropTypes.number,
   setWeeklyKeywords: PropTypes.func,
+  trackNewKeyword: PropTypes.func,
   isTrending: PropTypes.bool,
+  isTrendingTracked: PropTypes.bool,
 };

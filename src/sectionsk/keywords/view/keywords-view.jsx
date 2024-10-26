@@ -20,19 +20,13 @@ import PageTitle from 'src/components/PageTitle';
 import Iconify from 'src/components/iconify';
 import ComingSoon from 'src/components/ComingSoon';
 import PostCard from '../keyword-card';
+import StrategyItem from './strategy-item';
 
-const isImagesOn = true;
-const modelKeys = {
-1: 'claude-3-haiku-20240307',
-2: 'claude-3-sonnet-20240229',
-3: 'claude-3-sonnet-20240229'} 
-// 3: 'claude-3-opus-20240229'} 
 
 // ----------------------------------------------------------------------
 
 export default function BlogView() {
 
-  const [keywordToAdd, setKeywordToAdd] = useState('');
   const [keywordToSearch, setKeywordToSearch] = useState('');
   const [isSearchMode, setIsSearchMode] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
@@ -49,10 +43,6 @@ export default function BlogView() {
   const [weeklyKeywords, setWeeklyKeywords] = useState([]);
   const [firmName, setFirmName] = useState(null);
   const [firmDescription, setFirmDescription] = useState(null);
-  const [isAddNewMode, setIsAddNewMode] = useState(false);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [isDialogOpen2, setIsDialogOpen2] = useState(false);
-
   const [selectedList, setSelectedList] = useState('Tracked');
 
   const [searchResults, setSearchResults] = useState([
@@ -63,14 +53,31 @@ export default function BlogView() {
   // { KEYWORD: 'Policy Analyst', TRAFFIC: '18300', COMPETITION: 'HIGH', PREVDATA: [-1, -1, -1, -1] },
   ]);
 
-  const [strategyData, setStrategyData] = useState({});
+  const [strategyData, setStrategyData] = useState({
+    STRATEGY: {
+      TOPICS: [
+        { title: 'Public Relations Specialist', keywords: ['Public Relations Specialist', 'Public Relations Manager', 'Public Relations Coordinator', 'Public Relations Director', 'Public Relations Consultant'] },
+        { title: 'Policy Analyst', keywords: ['Policy Analyst', 'Policy Researcher', 'Policy Coordinator', 'Policy Director', 'Policy Consultant'] },
+        { title: 'Fundraising Coordinator', keywords: ['Fundraising Coordinator', 'Fundraising Manager', 'Fundraising Director', 'Fundraising Consultant'] },
+        { title: 'Campaign Manager', keywords: ['Campaign Manager', 'Campaign Coordinator', 'Campaign Director', 'Campaign Consultant'] },
+      ]
+    },
+    TRENDING: [
+        { keyword: 'Public Relations Specialist', data: [600, 1400, 1600, 1900] },
+        { keyword: 'Policy Analyst', data: [1200, 1700, 1900, 2200] },
+        { keyword: 'Fundraising Coordinator', data: [2000, 2200, 2400, 3500] },
+        { keyword: 'Campaign Manager', data: [500, 2700, 2900, 3200] },
+        { keyword: 'Political Consultant', data: [3500, 3200, 3400, 3700] },
+        { keyword: 'Public Relations Specialist', data: [200, 1400, 1600, 1900] },
+    ]
+  });
+
+  const [openedTopic, setOpenedTopic] = useState(null);
 
   const updateDays = 14;
   const competitionLevels = { LOW: 'Low Competition', MEDIUM: 'Avg Competition', HIGH: 'High Competition' };
   const [isClicked, setIsClicked] = useState([]);
 
-  const handleOpen = () => {setIsDialogOpen(true);};
-  const handleClose = () => {setIsDialogOpen(false);};
 
   const writeWeeklyKeywords = useCallback(async (key="") => {
 
@@ -114,6 +121,7 @@ export default function BlogView() {
     }).catch(error => console.error('Error:', error));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
 
   useEffect(() => {
         
@@ -165,20 +173,14 @@ export default function BlogView() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isNewPost, genPostPlatform]);
   
-  
-  const handleClickRoute = () => {
-    setIsNewPost(!isNewPost);
-    if (genPostPlatform) {setGenPostPlatform(null)} 
-    else {setGenPostPlatform("LinkedIn")};
-  }
 
   const trackNewKeyword = async (newKeyword, newData=[-1, -1, -1, -1]) => {
-    setWeeklyKeywords([{ keyword: newKeyword, data: newData }, ...weeklyKeywords]); setKeywordToAdd('');
+    setWeeklyKeywords([{ keyword: newKeyword, data: newData }, ...weeklyKeywords]); 
     const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email)); 
     const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
     if (firmDoc.exists()) {
       const firmData = firmDoc.data();
-      await updateDoc(doc(db, 'firms', userDoc.data().FIRM), { 'WEEKLY_KEYWORDS.KEYWORDS': [{ keyword: newKeyword, data: [0, 0, 0, 0] }, ...weeklyKeywords] });
+      await updateDoc(doc(db, 'firms', userDoc.data().FIRM), { 'WEEKLY_KEYWORDS.KEYWORDS': [{ keyword: newKeyword, data: newData }, ...weeklyKeywords] });
     } 
   }
 
@@ -224,8 +226,8 @@ export default function BlogView() {
 
   }
 
-  const buttonLabels = ['Strategy', 'Tracked',];
-  const icons = ['material-symbols-light:chess', 'clarity:bullseye-line'];
+  const buttonLabels = ['Tracked',];
+  const icons = ['clarity:bullseye-line'];
 
   return (
     <Container>
@@ -235,26 +237,18 @@ export default function BlogView() {
 
       {isUpdateTime && <Creating text='Updating All SEO Data' imgUrl='https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/image_2024-10-23_202020994.png?alt=media&token=799383a7-7d68-4c2d-8af2-835616badb7b' />}
 
-
-      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={isAddNewMode || isSearchMode ? 0.25 : 1.25}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={isSearchMode ? 0.25 : 1.25}>
 
         <PageTitle title={isSearchMode ? 'Search New Keywords' : (selectedList === 'Strategy' ? 'Firm Content Strategy' : 'Tracking Keywords')} />
         
         <Stack direction="row" spacing={2} mb={2.25}>
 
-        {/* {planName === 'Trial Plan' && <Button variant="contained" onClick={() => {handleOpen()}}
-      sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: theme.palette.primary.navBg, },
-      width: 'auto', display: 'flex', justifyContent: 'center', minWidth: '10px',})}>
-        <Iconify icon="teenyicons:tick-circle-solid" sx={{height: '16px', width: '16px', 
-        color: 'white', marginRight: '8px'}}/>
-        Activate Keywords
-      </Button>} */}
 
        {!isSearchMode && (<>
         <Button variant="contained" onClick={() => {}}
         sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, cursor: 'default', fontWeight: '600',
         '&:hover': {backgroundColor: theme.palette.primary.navBg,}})}>
-          {!isUpdateTime ? (selectedList === 'Strategy' ? `Created This Week` : `Updated This Week`) : 'Update In Progress'}
+          {!isUpdateTime ? (selectedList === 'Strategy' ? `Strategy Curated This Week` : `Updated This Week`) : 'Update In Progress'}
         </Button>
         </>)}
 
@@ -266,11 +260,6 @@ export default function BlogView() {
         </Button>
         </>)}
 
-        {/* {!isSearchMode && <Button variant="contained" color="inherit" startIcon={<Iconify icon={isAddNewMode ? "charm:cross" : "eva:plus-fill"} />} onClick={() => {setIsAddNewMode(!isAddNewMode)}}
-        sx={(theme) => ({backgroundColor: theme.palette.primary.black})}>
-          {isAddNewMode ? 'Add New' : 'Add New'}
-        </Button>} */}
-
         {!isNewPost && selectedList==='Tracked' && <Button variant="contained" color="inherit" startIcon={<Iconify icon={isSearchMode ? "charm:cross" : "bx:search"} />} 
         onClick={() => {setIsSearchMode(!isSearchMode)}} sx={(theme) => ({backgroundColor: theme.palette.primary.black})}>
           {isSearchMode ? `Find New` : `Find New`}
@@ -279,7 +268,7 @@ export default function BlogView() {
         <Stack direction="row" spacing={2} mb={2}>
           <div style={{ 
             display: 'flex', borderRadius: 7, 
-            width: 246, height: 37.5, 
+            width: 123, height: 37.5, 
             borderWidth: 0.5, borderStyle: 'solid' 
           }}>
             {buttonLabels.map((label, index) => (
@@ -305,44 +294,76 @@ export default function BlogView() {
 
       </Stack></Stack>
 
-      {isAddNewMode && !isSearchMode && (<>
-        <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" mt={0} mb={3}>
+
+      {isSearchMode && (<>
+      <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" mt={0} mb={3}>
+      
+      <TextField value={keywordToSearch} size="large"
+      onChange={(e) => setKeywordToSearch(e.target.value)}
+      placeholder='Enter A Keyword' sx={{width: '100%', mt: 0, }} /> 
+
+      <Button onClick={() => {if (searchLimit - searchesMade > 0) {searchNewKeyword(keywordToSearch)}}}
+      variant="contained" color="inherit" 
+      sx={{fontSize: "15.5px", letterSpacing: '-0px', height: '55px', width: '155px', cursor: 'pointer'}}>
+        Search {/* <Iconify icon="bx:search" sx={{fontSize: "10px", m: '5px'}}/> */}
+      </Button>
+
+      </Stack>
+      </>)}
+
+
+      {!isSearchMode && selectedList === 'Strategy' && 
+      <Card sx={{backgroundColor: 'white', height: '575px', width: '97.5%', p: '25px',
+      borderRadius: '3.5px', marginBottom: '35px', border: '1.5px solid #e8e8e8' }}>
         
-        <TextField value={keywordToAdd} size="large"
-        onChange={(e) => setKeywordToAdd(e.target.value)}
-        placeholder='New Keyword' sx={{width: '100%', mt: 0, }} /> 
-
-        <Button onClick={() => {trackNewKeyword(keywordToAdd)}}
-        variant="contained" color="inherit" 
-        sx={{height: '55px', width: '215px', cursor: 'pointer'}}>
-          <Iconify icon="eva:plus-fill" sx={{mr: '10px'}}/>
-          Track Keyword 
-        </Button>
-
-        </Stack>
-       </>)}
-
-       {isSearchMode && (<>
-        <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" mt={0} mb={3}>
+      <Stack direction="column" spacing={0} alignItems="left" justifyContent="center">
+      
+        <Typography sx={{ fontFamily: "Times New Roman", marginBottom: '15px',
+          letterSpacing: '-0.45px',  fontWeight: 500, fontSize: '24.75px',}}>
+          Focus, This Month
+        </Typography>
+      
+        <Grid container spacing={2} sx={{marginBottom: 3}}>
+          {strategyData.STRATEGY.TOPICS.map((topic, index) => (
+            <Grid item xs={12} sm={6} key={index} sx={{ display: openedTopic === null || openedTopic === index ? 'block' : 'none' }}>
+              <StrategyItem 
+                title={topic.title} 
+                keywords={topic.keywords} 
+                index={index} 
+                openedTopic={openedTopic} 
+                setOpenedTopic={setOpenedTopic} 
+              />
+            </Grid>
+          ))}
+        </Grid>
+      
+        <Typography sx={{ fontFamily: "Times New", marginBottom: '8px',
+          letterSpacing: '-0.45px',  fontWeight: 200, fontSize: '20.75px', mt: -2 }}>
+          Long Term Strategy - 
+        </Typography>
+      
+        <Typography sx={{ fontFamily: "Times New", 
+          letterSpacing: '-0.45px',  fontWeight: 200, fontSize: '20.75px',}}>
+          Currently Ranking For 
+        </Typography>
+      
+      </Stack>
         
-        <TextField value={keywordToSearch} size="large"
-        onChange={(e) => setKeywordToSearch(e.target.value)}
-        placeholder='Enter A Keyword' sx={{width: '100%', mt: 0, }} /> 
-
-        <Button onClick={() => {if (searchLimit - searchesMade > 0) {searchNewKeyword(keywordToSearch)}}}
-        variant="contained" color="inherit" 
-        sx={{fontSize: "15.5px", letterSpacing: '-0px', height: '55px', width: '155px', cursor: 'pointer'}}>
-          Search
-          {/* <Iconify icon="bx:search" sx={{fontSize: "10px", m: '5px'}}/> */}
-        </Button>
-
-        </Stack>
-       </>)}
+      </Card>}
 
 
-      {!isSearchMode && <Grid container spacing={3} sx={{width: '100%'}}>
+      {!isSearchMode && selectedList === 'Strategy' && <Grid container spacing={3} sx={{width: '100%'}}>
+          {strategyData.TRENDING.map(({ keyword, data }, index) => {
+            const isTrendingTracked = weeklyKeywords.some(weeklyKeyword => weeklyKeyword.keyword === keyword);
+            return (
+              <PostCard key={index} data={data} keyword={keyword} index={index} setWeeklyKeywords={setWeeklyKeywords} trackNewKeyword={trackNewKeyword} isTrending isTrendingTracked={isTrendingTracked} />
+            );
+          })}
+      </Grid>}
+
+      {!isSearchMode && selectedList === 'Tracked' && <Grid container spacing={3} sx={{width: '100%'}}>
         {weeklyKeywords.map(({ keyword, data }, index) => (
-          <PostCard key={index} data={data} keyword={keyword} index={index} setWeeklyKeywords={setWeeklyKeywords} />
+          <PostCard key={index} data={data} keyword={keyword} index={index} setWeeklyKeywords={setWeeklyKeywords} trackNewKeyword={trackNewKeyword} />
         ))}
       </Grid>}
 
@@ -385,29 +406,6 @@ export default function BlogView() {
         </Typography>}
         </Stack>
       </Card>}
-
-      <Dialog open={isDialogOpen} onClose={handleClose} 
-      PaperProps={{ style: { minHeight: '350px', minWidth: '500px', display: 'flex', flexDirection: "row" } }}>
-        <Card sx={{ width: '100%', height: '100%', backgroundColor: 'white', borderRadius: '0px', padding: '55px' }}>
-        <Typography sx={{ fontFamily: "DM Serif Display", mb: 0, lineHeight: '55px',
-        letterSpacing: '-0.45px',  fontWeight: 800, fontSize: '40.75px', marginBottom: '25px'}}> 
-        Please Move To A Plan</Typography>
-        <Typography sx={{ fontFamily: "serif", mb: 0, lineHeight: '55px', marginBottom: '33.5px',
-        letterSpacing: '0.25px',  fontWeight: 500, fontSize: '24.75px'}}> 
-        Keyword Research is <i>incredibly</i> expensive<br /> 
-        for Pentra to perform! Consequently, we are <br /> 
-        able to offer it only on a paid plan. If things <br /> 
-        change, you&apos;ll be the first to find out. <br /> 
-        </Typography>
-
-        <Button variant="contained" onClick={() => {}}
-        sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: theme.palette.primary.navBg, },
-        width: 'auto', display: 'flex', justifyContent: 'center', minWidth: '10px', cursor: 'default'})}>
-        <Iconify icon="ic:email" sx={{minHeight: '18px', minWidth: '18px', 
-        color: 'white', marginRight: '8px'}}/>
-        Reach out to us at pentra.hub@gmail.com
-        </Button></Card>
-      </Dialog>
 
     </Container>
   );

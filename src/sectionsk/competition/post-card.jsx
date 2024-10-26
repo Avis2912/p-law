@@ -106,7 +106,7 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
       <style> @import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap) </style>
       
       <Card sx={{ height: isElongated ? '340px' : '280px', borderRadius: '5.5px',
-      p: '23px', pt: '18px', transition: '0.3s all'}}>
+      p: '23px', pt: '18px', transition: '0.3s all', border: '0.25px solid #ccc'}}>
 
       <Stack spacing={1.45} direction="row" sx={{display: 'flex', alignItems: 'center',}}>
         <img src={`https://www.google.com/s2/favicons?domain=${siteLink}&sz=256`} alt=''
@@ -200,28 +200,29 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
 
       {selectedOption === 1 && <>
       
-      <Card sx={(theme) => ({ height: '240px', width: '465px', borderRadius: '5.5px',
+      <Card sx={(theme) => ({ height: '240px', width: '455px', borderRadius: '3.5px',
       top: '20px', left: '330px', p: '23px', pt: '18px', position: 'absolute', 
       backgroundColor: 'white', border: `1.0px solid ${theme.palette.primary.navBg}`,})}>
 
-      <Chart options={options} series={series} type="area" width={450} height={270} 
+      <Chart options={options} series={series} type="area" width={445} height={270} 
       style={{backgroundColor: 'white', position: 'absolute',
       left: '-1.5px', top: '-8px'}} />  
 
-      <Card sx={(theme)=>({ height: '37.5px', width: '95px', borderRadius: '0px', borderBottomRightRadius: '5.5px',
-      backgroundColor: theme.palette.primary.navBg, position: 'absolute', display: 'flex',
+      <Card sx={(theme)=>({ height: '37.5px', width: '95px', borderRadius: '0px', 
+      borderBottomRightRadius: '2px', backgroundColor: theme.palette.primary.navBg, position: 'absolute', display: 'flex',
       left: '0px', top: '0px', justifyContent: 'center', alignItems: 'center', })}>
       <Typography sx={{ fontSize: '16px', fontWeight: '500', color: 'white', letterSpacing: '-0.5px',}}>
       {`${traffic[traffic.length-1]}`} hits </Typography></Card>
       </Card>
       
       <Card sx={(theme) => ({ height: '240px', width: '195px', borderRadius: '5.5px',
-      top: '20px', left: '815px', pt: '18px', position: 'absolute', 
+      top: '20px', left: '806.5px', pt: '18px', position: 'absolute', 
       backgroundColor: 'white', border: `1.0px solid ${theme.palette.primary.navBg}`,})}>
 
       <Card sx={(theme)=>({ height: '37.5px', width: '194px', borderRadius: '0px', borderBottomRightRadius: '3.5px',
       backgroundColor: theme.palette.primary.navBg, position: 'absolute', display: 'flex',
       left: '0px', top: '0px', justifyContent: 'center', alignItems: 'center'})}>
+        
       <Typography sx={{ fontSize: '16px', fontWeight: '500', color: 'white', letterSpacing: '-0.5px',}}>
       Ranking Best For </Typography></Card>
 
@@ -265,25 +266,9 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
         Coming Soon
       </Typography>
 
-      {/* <List sx={(theme)=>({ width: '190px', height: 'auto', 
-        bgcolor: 'white', overflow: 'auto', position: 'absolute',
-        top: '38px', left: '0px', pt: '0px', pb: '0px',
-        p: '11px'})}>
-
-      {indexedBlogs.map((blog, index) => (
-        <ListItem 
-          key={index} 
-          sx={(theme)=>({ height: 'auto',justifyContent: 'space-between', textAlign: 'center', userSelect: 'none',
-          mb: '11px', borderRadius: '2.5px', p: '4.5px', backgroundColor: theme.palette.primary.lighter,})}>          
-          <ListItemText primary='Keyword' sx={{p: '0px', fontSize: '16px', }}/>
-        </ListItem>
-      ))}
-
-      </List> */}
-
       </Card>
 
-      <List sx={(theme)=>({ width: '460px', height: '240px', 
+      <List sx={(theme)=>({ width: '450px', height: '240px', 
         bgcolor: 'white', overflow: 'auto', 
         marginLeft: '38px',borderRadius: '5.5px', position: 'absolute',
         top: '20px', left: '510px', pt: '0px', pb: '0px',
@@ -309,7 +294,7 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
       {selectedOption === 2 && (
         <Card sx={(theme) => ({
             height: isElongated && selectedOption === 2 ? '300px' : '240px',
-            width: '680px', borderRadius: '5.5px', transition: '0.3s all',
+            width: '670px', borderRadius: '5.5px', transition: '0.3s all',
             top: '20px', left: '330px',p: '23px', pt: '18px',
             position: 'absolute',backgroundColor: 'white',
             border: `1.0px solid ${theme.palette.primary.navBg}`,display: 'flex',
@@ -321,7 +306,7 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
                 <Grid item xs={6} key={ad.id}>
                   <Card sx={{
                     display: 'flex', flexDirection: 'column',
-                    borderRadius: '4px', width: '300px',
+                    borderRadius: '4px', width: '285px',
                     backgroundColor: 'lightgrey',height: 'auto'
                   }}>
                     <Box sx={{
@@ -366,18 +351,18 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
 
       {selectedOption === 4 && <>
       
-      <List sx={(theme)=>({ width: '680px', height: '240px', 
+      <List sx={(theme)=>({ width: '670px', height: '240px', 
         bgcolor: 'white', overflow: 'auto', 
-        marginLeft: '38px',borderRadius: '5.5px', position: 'absolute',
+        marginLeft: '38px',borderRadius: '3.5px', position: 'absolute',
         top: '20px', left: '292px', pt: '0px', pb: '0px',
-        border: `1.0px solid ${theme.palette.primary.navBg}`,})}>
+        border: `0.25px solid ${theme.palette.primary.navBg}`,})}>
 
       {jobData.map((job, index) => (
         <ListItem 
           key={index} 
           sx={{ borderBottom: '0.1px solid #c2c1c0',
           justifyContent: 'space-between'}}>          
-          <ListItemText primary={job.TITLE} sx={{fontWeight: '900', height: '32.5px', display: 'flex', alignItems: 'center'}}/>
+          <ListItemText primary={job.TITLE} sx={{fontWeight: '900', height: '35.2px', display: 'flex', alignItems: 'center'}}/>
           
           <Button variant="contained" color="primary" sx={(theme) => ({height: '32px', width: 'auto', cursor: 'default', boxShadow: 'none',
           backgroundColor: theme.palette.primary.lighter, marginLeft: '10px', '&:hover': { backgroundColor: theme.palette.primary.lighter, boxShadow: 'none'},
@@ -416,11 +401,11 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
 
       {selectedOption === 5 && <>
       
-      <List sx={(theme)=>({ width: '680px', height: '240px', 
+      <List sx={(theme)=>({ width: '670px', height: '240px', 
         bgcolor: 'white', overflow: 'auto', 
-        marginLeft: '38px',borderRadius: '5.5px', position: 'absolute',
+        marginLeft: '38px',borderRadius: '3.5px', position: 'absolute',
         top: '20px', left: '292px', pt: '0px', pb: '0px',
-        border: `1.0px solid ${theme.palette.primary.navBg}`,})}>
+        border: `0.25px solid ${theme.palette.primary.navBg}`,})}>
 
       {reviewData.map((review, index) => (
         <ListItem 
@@ -430,7 +415,7 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
 
           <img src={review.PFP} style={{ width: 26, height: 26, marginRight: 13.5, borderRadius: 50 }} alt='' />
 
-          <ListItemText primary={review.REVIEW} sx={{fontWeight: '900', height: '32.5px', display: 'flex', alignItems: 'center'}}/>
+          <ListItemText primary={review.REVIEW} sx={{fontWeight: '900', height: '35.2px', display: 'flex', alignItems: 'center'}}/>
 
           <Button variant="contained" color="primary" sx={(theme) => ({height: '32px', width: 'auto', cursor: 'default', boxShadow: 'none',
           backgroundColor: theme.palette.primary.lighter, marginLeft: '10px', '&:hover': { backgroundColor: theme.palette.primary.lighter, boxShadow: 'none'},
