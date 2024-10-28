@@ -44,6 +44,7 @@ export default function BlogView() {
   const [firmName, setFirmName] = useState(null);
   const [firmDescription, setFirmDescription] = useState(null);
   const [selectedList, setSelectedList] = useState('Tracked');
+  const [isStrategyOpen, setIsStrategyOpen] = useState(false);
 
   const [searchResults, setSearchResults] = useState([
   // { KEYWORD: 'Campaign Manager', TRAFFIC: '3300', COMPETITION: 'LOW', PREVDATA: [-1, -1, -1, -1] },
@@ -226,16 +227,14 @@ export default function BlogView() {
 
   }
 
-  const buttonLabels = ['Tracked',];
-  const icons = ['clarity:bullseye-line'];
+  const buttonLabels = ['Strategy', 'Tracked',];
+  const icons = ['material-symbols-light:chess', 'clarity:bullseye-line'];
 
   return (
     <Container>
       <style>
         @import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap);
       </style>
-
-      {isUpdateTime && <Creating text='Updating All SEO Data' imgUrl='https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/image_2024-10-23_202020994.png?alt=media&token=799383a7-7d68-4c2d-8af2-835616badb7b' />}
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={isSearchMode ? 0.25 : 1.25}>
 
@@ -268,7 +267,7 @@ export default function BlogView() {
         <Stack direction="row" spacing={2} mb={2}>
           <div style={{ 
             display: 'flex', borderRadius: 7, 
-            width: 123, height: 37.5, 
+            width: 246, height: 37.5, 
             borderWidth: 0.5, borderStyle: 'solid' 
           }}>
             {buttonLabels.map((label, index) => (
@@ -294,6 +293,7 @@ export default function BlogView() {
 
       </Stack></Stack>
 
+      {isUpdateTime && <Creating text='Updating All SEO Data' imgUrl='https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/image_2024-10-23_202020994.png?alt=media&token=799383a7-7d68-4c2d-8af2-835616badb7b' />}
 
       {isSearchMode && (<>
       <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" mt={0} mb={3}>
@@ -313,17 +313,26 @@ export default function BlogView() {
 
 
       {!isSearchMode && selectedList === 'Strategy' && 
-      <Card sx={{backgroundColor: 'white', height: '575px', width: '97.5%', p: '25px',
+      <Card sx={{backgroundColor: 'white', height: isStrategyOpen ? '500px' : '297.5px', width: '97.5%', p: '25px',
       borderRadius: '3.5px', marginBottom: '35px', border: '1.5px solid #e8e8e8' }}>
         
       <Stack direction="column" spacing={0} alignItems="left" justifyContent="center">
       
+        <Stack direction="row" sx={{marginBottom: '20px'}} spacing={2} alignItems="start" justifyContent="space-between">
+
         <Typography sx={{ fontFamily: "Times New Roman", marginBottom: '15px',
           letterSpacing: '-0.45px',  fontWeight: 500, fontSize: '24.75px',}}>
-          Focus, This Month
+          This Week&apos;s Content Plan
         </Typography>
+
+        <Button variant="contained" color="inherit" startIcon={<Iconify icon="fluent:settings-16-filled" />} 
+        onClick={() => {}} sx={(theme) => ({backgroundColor: theme.palette.primary.black, height: 35})}>
+          Long-Term Strategy
+        </Button>
+
+        </Stack>
       
-        <Grid container spacing={2} sx={{marginBottom: 3}}>
+        <Grid container spacing={2} sx={{marginBottom: 1.1}}>
           {strategyData.STRATEGY.TOPICS.map((topic, index) => (
             <Grid item xs={12} sm={6} key={index} sx={{ display: openedTopic === null || openedTopic === index ? 'block' : 'none' }}>
               <StrategyItem 
@@ -337,15 +346,16 @@ export default function BlogView() {
           ))}
         </Grid>
       
-        <Typography sx={{ fontFamily: "Times New", marginBottom: '8px',
-          letterSpacing: '-0.45px',  fontWeight: 200, fontSize: '20.75px', mt: -2 }}>
-          Long Term Strategy - 
-        </Typography>
-      
-        <Typography sx={{ fontFamily: "Times New", 
-          letterSpacing: '-0.45px',  fontWeight: 200, fontSize: '20.75px',}}>
+        {/* <Typography sx={{ fontFamily: "Times New", 
+          letterSpacing: '-0.45px',  fontWeight: 200, fontSize: '24.75px',}}>
           Currently Ranking For 
-        </Typography>
+        </Typography> */}
+
+        <Button variant="contained" onClick={() => {}}
+        sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, cursor: 'default', fontWeight: '600',
+        width: 190, '&:hover': {backgroundColor: theme.palette.primary.navBg,}})}>
+          Currently Ranking For
+        </Button>
       
       </Stack>
         

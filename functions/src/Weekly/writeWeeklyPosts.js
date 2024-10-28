@@ -3,6 +3,8 @@ import { useCallback } from 'react';
 
 export const writeWeeklyPosts = async (bigBlogString, firmName, genPostPlatform, selectedModel, auth, db, modelKeys, addImages, isImagesOn) => {
     
+    const isUseBrandedWeeklyImages = true;
+    
     console.log('WEEKLY POSTS ACTIVATED');
     let tempPosts = []; const platforms = ["LinkedIn", "Facebook", "Instagram",];
     // const platforms = ["LinkedIn", "LinkedIn", "Facebook", "Facebook", "Instagram", "Instagram",]; 
@@ -64,7 +66,7 @@ export const writeWeeklyPosts = async (bigBlogString, firmName, genPostPlatform,
       } while (isError && tries < 3);
       console.log(textWithoutImages); let textWithImages = textWithoutImages;
       // eslint-disable-next-line no-await-in-loop
-      textWithImages = await addImages(textWithoutImages, 'Brand');
+      textWithImages = await addImages(textWithoutImages, isUseBrandedWeeklyImages ? 'Brand' : 'Web');
       // eslint-disable-next-line no-await-in-loop
       tempPosts = tempPosts.concat(textWithImages); console.log(`TEMP POSTS (${tempPlatform} DONE): `, tempPosts);
     };

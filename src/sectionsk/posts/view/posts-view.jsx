@@ -76,12 +76,19 @@ export default function BlogView() {
     const regex = /\/\/Image: (.*?)\/\//g; 
     const isTemplatesOn = imagesSettings === 'Brand' || imagesSettings === 'Brand & Web';
 
+    let firmNameInt; let firmDescriptionInt; let imagesSettingsInt; let contactUsLinkInt; let firmImageInt; let customColorInt;
+    const userDocInt = await getDoc(doc(db, 'users', auth.currentUser.email));
+    if (userDocInt.exists()) {const firmDoc = await getDoc(doc(db, 'firms', userDocInt.data().FIRM));
+    if (firmDoc.exists()) {firmNameInt = firmDoc.data().FIRM_INFO.NAME; firmDescriptionInt = firmDoc.data().FIRM_INFO.DESCRIPTION; customColorInt = firmDoc.data().CHAT_INFO.THEME;
+      imagesSettingsInt = firmDoc.data().SETTINGS.IMAGES; contactUsLinkInt = firmDoc.data().FIRM_INFO.CONTACT_US; firmImageInt = firmDoc.data().FIRM_INFO.IMAGE;}};
+
+
     const fetchBrandImage = async (imgDescription, post='') => { // 1.5c per image
       let resultImg = null; const randomTemplate = templates[selectedTemplates[Math.floor(Math.random() * selectedTemplates.length)]];
       const h2Title = randomTemplate.isCaps ? post.content.match(/<h2>(.*?)<\/h2>/)[1].toUpperCase() : post.content.match(/<h2>(.*?)<\/h2>/)[1]; const formattedDate = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
       const secondSentFirstPara = (post.content.match(/<p>(.*?)<\/p>/) || [''])[0].split('. ')[1].replace(/<\/?p>|<\/?b>/g, '') || (post.content.match(/<p>(.*?)<\/p>/) || [''])[0].split('. ')[0].replace(/<\/?p>|<\/?b>/g, '') || '';      
-      const timeToRead = Math.ceil(post.content.split(' ').length / 200); let firmSite = contactUsLink;
-      try {firmSite = new URL(contactUsLink).hostname.replace(/^www\./, '');} catch (e) {console.error(e);}
+      const timeToRead = Math.ceil(post.content.split(' ').length / 200); let firmSite = contactUsLinkInt;
+      try {firmSite = new URL(contactUsLinkInt).hostname.replace(/^www\./, '');} catch (e) {console.error(e);}
       const aiText = randomTemplate.titleType ? h2Title : `"${secondSentFirstPara}"`; let webPic = null;
       
       if (imagesSettings === 'Brand & Web' && Math.random() < 0.5) {return fetchWebImage(imgDescription);}
@@ -97,16 +104,16 @@ export default function BlogView() {
               "text" : customText === '' ? aiText : customText,
             },
             "shape-0" : {
-              "fill": customColor,
+              "fill": customColorInt,
             },
             "firm-name" : {
-              "text": firmName,
+              "text": firmNameInt,
             },
             "firm-site" : {
               "text": firmSite,
             },
             "firm-img": {
-              "image_url" : firmImage,
+              "image_url" : firmImageInt,
             },
             "date-today" : {
               "text": formattedDate,
@@ -156,9 +163,9 @@ export default function BlogView() {
       data = await fetch(url, { method: 'POST', headers, body: payload })
       .then(response => response.json())
       .catch(error => console.error('Error:', error));
-      while (counter < 3) {
+      while (counter < 5) {
         if (data.tasks[0].result[0].items[rIndex].source_url === undefined) {
-          rIndex = Math.floor(Math.random() * 3);
+          rIndex = Math.floor(Math.random() * 4);
           console.log('rerunn serp img, undefined: ', data.tasks[0].result[0].items[rIndex].source_url, 'img desc: ', description);
         } else {
           tempUrl = data.tasks[0].result[0].items[rIndex].source_url;
@@ -187,7 +194,7 @@ export default function BlogView() {
           console.log('POST CONTENT: ', post.content);
           const matches = [...imagefullText.matchAll(regex)];
           const descriptions = matches.map(match => match[1]);
-          const imageTags = await Promise.all(descriptions.map((desc, it) => new Promise(resolve => setTimeout(() => resolve(isTemplatesOn && isNewPost ? fetchBrandImage(desc, post) : fetchWebImage(desc)), it * 200))));
+          const imageTags = await Promise.all(descriptions.map((desc, it) => new Promise(resolve => setTimeout(() => resolve(isTemplatesOn ? fetchBrandImage(desc, post) : fetchWebImage(desc)), it * 200))));
           
           matches.forEach((match, index) => {
             if (imageTags[index]) {

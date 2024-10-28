@@ -70,6 +70,7 @@ export default function PostCard({ platform, content, index, isGen }) {
 
   const download = async (url) => {
     fetch(url).then(resp => resp.blob()).then(blob => {
+      console.log(url);
       const link = document.createElement('a');
       const blobUrl = URL.createObjectURL(blob);
   

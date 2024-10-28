@@ -253,8 +253,6 @@ export default function BlogView() {
         @import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap);
       </style>
 
-      {isUpdateTime && <Creating text='Currently Writing Blogs' imgUrl='https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/image_2024-10-23_201816734.png?alt=media&token=5b3cb682-fc18-4851-9c8f-1f1da74eadf8' />}
-
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={1.1}>
 
         <PageTitle title={`${isNewPost ? 'Create New Posts' : 'Curated Weekly Drafts'}`} />    
@@ -317,6 +315,8 @@ export default function BlogView() {
           Give Pentra AI Feedback
         </Button>
       </Stack></Stack>
+
+      {isUpdateTime && <Creating text='Currently Writing Blogs' imgUrl='https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/image_2024-10-23_201816734.png?alt=media&token=5b3cb682-fc18-4851-9c8f-1f1da74eadf8' />}
 
 
       <Grid container spacing={3} sx={{width: '100%'}}>
