@@ -266,7 +266,10 @@ export default function BlogView() {
   }
 
   const buttonLabels = ['Strategy', 'Tracked',];
-  const icons = ['material-symbols-light:chess', 'clarity:bullseye-line'];
+  const icons = [
+    // 'material-symbols-light:chess', 
+    'streamline:artificial-intelligence-spark-solid',
+    'clarity:bullseye-line'];
 
   return (
     <Container>
@@ -311,7 +314,8 @@ export default function BlogView() {
             {buttonLabels.map((label, index) => (
               <Button
                 key={label}
-                startIcon={<Iconify icon={icons[index]} height="16.5px" width="16.5px" marginRight="-1.75px" />}
+                startIcon={<Iconify icon={icons[index]} 
+                sx={{ height: label === 'Strategy' ? 14.25 : 16.5, width: label === 'Strategy' ? 14.25 : 16.5, }} marginRight="-1.75px" />}
                 style={{
                   width: 123, color: selectedList === label ? 'white' : '#242122',
                   backgroundColor: selectedList === label ? '#242122' : 'transparent',
@@ -321,7 +325,7 @@ export default function BlogView() {
                   border: '0px solid #242122', borderRightWidth: index === buttonLabels.length - 1 ? 0 : 0.5,
                   cursor: 'pointer', fontSize: 15, letterSpacing: '-0.25px',
                 }}
-                onClick={() => setSelectedList(label)}
+                onClick={() => {setSelectedList(label); if (label === 'Strategy') {setIsSearchMode(false);}}}
               >
                 {label}
               </Button>
@@ -370,7 +374,7 @@ export default function BlogView() {
           </span>}
         </Typography>
 
-        {!isStrategyOpen && <Button variant="contained" color="inherit" startIcon={<Iconify icon={isLongTermOpen ? "lets-icons:save-fill" : "fluent:settings-16-filled"} />} 
+        {!isStrategyOpen && <Button variant="contained" color="inherit" startIcon={<Iconify icon={isLongTermOpen ? "lets-icons:save-fill" : "fluent:settings-16-filled"}/>} 
         onClick={() => {saveLongTermGoals()}} sx={(theme) => ({backgroundColor: theme.palette.primary.black, 
         height: 35, position: 'absolute', top: 24, right: 25})}>
           {isLongTermOpen ? `Save AI Settings` : `Long-Term Strategy`}
@@ -385,7 +389,7 @@ export default function BlogView() {
         </Stack>
       
       {!isLongTermOpen && <>
-        <Grid container columnSpacing={3} rowSpacing={1.75} sx={{marginBottom: 1.3}} >
+        <Grid container columnSpacing={2.5} rowSpacing={1.55} sx={{marginBottom: 1.3}} >
           {strategyData.STRATEGY.TOPICS.map((topic, index) => (
             <Grid item xs={12} sm={openedTopic === null ? 6 : 12} key={index} sx={{ display: openedTopic === null || openedTopic === index ? 'block' : 'none' }}>
               <StrategyItem 

@@ -310,7 +310,7 @@ export default function BlogView() {
         </Button>
         </>)}
         
-        <Button variant="contained" color="inherit" startIcon={<Iconify icon="streamline:artificial-intelligence-spark-solid" sx={{height: '16px', width: '16px'}}/>}
+        <Button variant="contained" color="inherit" startIcon={<Iconify icon="ic:sharp-settings-suggest" sx={{height: '20px', width: '20px', mb: '2px'}}/>}
          onClick={() => {setIsFeedbackMode(true); handleOpen2();}} sx={(theme) => ({backgroundColor: theme.palette.primary.black})}>
           Give Pentra AI Feedback
         </Button>
