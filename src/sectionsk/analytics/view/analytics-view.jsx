@@ -60,6 +60,7 @@ export default function UserPage() {
           firm: firm.id,
           data: firm.data(),
         }));
+        console.log('FIRM DATA: ', leadsData);
         setAllFirms(leadsData);
       } catch (err) {
         console.log(err);
@@ -186,6 +187,7 @@ export default function UserPage() {
                     if (postDate.toDateString() === today.toDateString()) return 'Today'; if (postDate.toDateString() === yesterday.toDateString()) return 'Yesterday';
                   return match; })}` : '----------------------';  
                   const weeklyCount = firm.GEN_POSTS[0] ? `${firm.GEN_POSTS.filter(post => new Date(Object.keys(post)[0].split(' | ')[0]) >= sevenDaysAgo).length} This Week` : 'Unactivated';
+                  if (!firm.FIRM_INFO) return null;
                   return (
                       <UserTableRow
                         key={firm}

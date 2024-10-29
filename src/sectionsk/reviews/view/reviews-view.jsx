@@ -169,7 +169,7 @@ export default function UserPage() {
     <>
     <Container>
 
-    <Stack sx={{ mb: 1.5 }} justifyContent="space-between" direction="row" alignItems="center">
+    <Stack sx={{ mb: 1 }} justifyContent="space-between" direction="row" alignItems="center">
       <style>@import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap);</style>
       
       <PageTitle title="Invite Clients To Review"/>
@@ -193,7 +193,7 @@ export default function UserPage() {
     <Stack direction="column" spacing={2.25}>
 
 
-    <Card sx ={(theme) => ({ height: '110px', width: '100%', borderRadius: '11px', 
+    <Card sx ={(theme) => ({ height: '110px', width: '100%', borderRadius: '8px', 
     border: `1.5px solid ${theme.palette.primary.main}`})}>
         <Stack direction="row" sx ={{ justifyContent: 'center', alignItems: 'center', height: '100%',
       width: '100%', }} spacing={2}>
@@ -215,7 +215,7 @@ export default function UserPage() {
 
 
     <Stack direction="row" spacing={2.25} >
-     <Card sx ={(theme) => ({ height: 'auto', width: '70%', borderRadius: '11px',
+     <Card sx ={(theme) => ({ height: 'auto', width: '70%', borderRadius: '8px',
      border: `1.5px solid ${theme.palette.primary.lighter}`,  })}>
       <Stack
         direction="column"
@@ -249,7 +249,7 @@ export default function UserPage() {
       
       
       <Card sx ={(theme) => ({ border: `1.5px solid ${theme.palette.primary.lighter}`, height: 'auto', width: '30%', 
-      display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: '11px',})}>
+      display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: '8px',})}>
       <Typography sx={{ fontFamily: "DM Serif Display", letterSpacing: '-0.75px',  fontWeight: 500, fontSize: '32.75px', textAlign: 'center',
       position: "absolute", top: "70px", width: "200px"}}> 
                 {"Invite To Leave Review "}

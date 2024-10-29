@@ -12,14 +12,16 @@ export default function StrategyItem({ title, keywords, index, openedTopic, setO
   return (
     <Grid item xs={12} sm={6} md={openedTopic === index ? 12 : 6} sx={{ display: openedTopic === null || openedTopic === index ? 'block' : 'none' }}>
       <Card 
-        sx={{ 
-          height: openedTopic === index ? '100%' : 55.5, 
+        sx={(theme) =>  ({ 
+          height: openedTopic === index ? 332.5 : 51.5, 
           width: '100%', 
-          borderRadius: '5.5px', 
+          borderRadius: '4.5px', 
           border: '0px solid black', 
-          backgroundColor: 'pink', 
-          marginBottom: '5px' 
-        }} 
+          backgroundColor: theme.palette.primary.lighter, 
+          marginBottom: '5px',
+          transition: 'all 0.4s ease',
+          cursor: 'pointer',
+        })} 
         onClick={handleClick}
       >
         {/* Add your content here */}

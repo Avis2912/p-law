@@ -10,6 +10,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Creating from 'src/components/Creating';
+import BasicTooltip from 'src/components/BasicTooltip';
 
 import { db, auth } from 'src/firebase-config/firebase';
 import { useState, useEffect, useCallback } from 'react';
@@ -18,9 +19,11 @@ import { getDownloadURL, ref, getStorage } from 'firebase/storage'; // Import ne
 
 import PageTitle from 'src/components/PageTitle';
 import Iconify from 'src/components/iconify';
+import { Icon } from '@iconify/react';
 import ComingSoon from 'src/components/ComingSoon';
 import PostCard from '../keyword-card';
 import StrategyItem from './strategy-item';
+import LongTermItem from './long-term-item';
 
 
 // ----------------------------------------------------------------------
@@ -54,6 +57,9 @@ export default function BlogView() {
   // { KEYWORD: 'Policy Analyst', TRAFFIC: '18300', COMPETITION: 'HIGH', PREVDATA: [-1, -1, -1, -1] },
   ]);
 
+  const [isLongTermOpen, setIsLongTermOpen] = useState(false);
+  const [longTermKeywords, setLongTermKeywords] = useState([]);
+
   const [strategyData, setStrategyData] = useState({
     STRATEGY: {
       TOPICS: [
@@ -61,6 +67,20 @@ export default function BlogView() {
         { title: 'Policy Analyst', keywords: ['Policy Analyst', 'Policy Researcher', 'Policy Coordinator', 'Policy Director', 'Policy Consultant'] },
         { title: 'Fundraising Coordinator', keywords: ['Fundraising Coordinator', 'Fundraising Manager', 'Fundraising Director', 'Fundraising Consultant'] },
         { title: 'Campaign Manager', keywords: ['Campaign Manager', 'Campaign Coordinator', 'Campaign Director', 'Campaign Consultant'] },
+      ],
+      RANKING_FOR:[
+        { keyword: 'Public Relations Specialist', data: [600, 1400, 1600, 1900] },
+        { keyword: 'Policy Analyst', data: [1200, 1700, 1900, 2200] },
+        { keyword: 'Fundraising Coordinator', data: [2000, 2200, 2400, 3500] },
+        { keyword: 'Campaign Manager', data: [500, 2700, 2900, 3200] },
+        { keyword: 'Political Consultant', data: [3500, 3200, 3400, 3700] },
+        { keyword: 'Public Relations Specialist', data: [200, 1400, 1600, 1900] },
+      ],
+      LONG_TERM: [
+        { showup_for: 'Campaign Manager in Houston TX' },
+        { showup_for: 'Political Consultant in San Francisco CA' },
+        { showup_for: 'Fundraising Coordinator in New York NY' },
+        { showup_for: 'Public Relations Specialist in Chicago IL' },
       ]
     },
     TRENDING: [
@@ -78,6 +98,24 @@ export default function BlogView() {
   const updateDays = 14;
   const competitionLevels = { LOW: 'Low Competition', MEDIUM: 'Avg Competition', HIGH: 'High Competition' };
   const [isClicked, setIsClicked] = useState([]);
+
+  useEffect(() => {
+    if (openedTopic !== null) {setIsStrategyOpen(true);} else {setIsStrategyOpen(false);}
+  }, [openedTopic]);
+
+  useEffect(() => {
+    setLongTermKeywords(strategyData.STRATEGY.LONG_TERM);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const saveLongTermGoals = async () => {
+    if (!isLongTermOpen) {setIsLongTermOpen(true); return;}
+      const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
+      const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
+      if (firmDoc.exists()) {await updateDoc(doc(db, 'firms', userDoc.data().FIRM), { 'STRATEGY.STRATEGY.LONG_TERM': longTermKeywords });}
+      else {console.log('ERR: Firm document not found.');}
+      setIsLongTermOpen(false);
+  }
 
 
   const writeWeeklyKeywords = useCallback(async (key="") => {
@@ -140,7 +178,7 @@ export default function BlogView() {
             await setSearchesMade(firmDoc.data().WEEKLY_KEYWORDS.SEARCH_COUNT || 0)
 
             if (typeof firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS === 'string') { writeWeeklyKeywords(firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS); console.log('WRITING KEYWORDS 0');}
-            else {await setWeeklyKeywords(firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS || []); console.log('NOT A STRING');} 
+            else {await setWeeklyKeywords(firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS || []);} 
             
             if (firmDoc.data().WEEKLY_KEYWORDS.LAST_DATE === "") {return;}
             if (diffDays >= 1) { await setTimeToUpdate(diffDays); } else { setIsUpdateTime(true); writeWeeklyKeywords(); console.log('WRITING KEYWORDS'); setWeeklyKeywords([]); 
@@ -236,7 +274,7 @@ export default function BlogView() {
         @import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap);
       </style>
 
-      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={isSearchMode ? 0.25 : 1.25}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={isSearchMode ? 0.25 : 0.5}>
 
         <PageTitle title={isSearchMode ? 'Search New Keywords' : (selectedList === 'Strategy' ? 'Firm Content Strategy' : 'Tracking Keywords')} />
         
@@ -312,29 +350,44 @@ export default function BlogView() {
       </>)}
 
 
-      {!isSearchMode && selectedList === 'Strategy' && 
-      <Card sx={{backgroundColor: 'white', height: isStrategyOpen ? '500px' : '297.5px', width: '97.5%', p: '25px',
-      borderRadius: '3.5px', marginBottom: '35px', border: '1.5px solid #e8e8e8' }}>
+      {!isSearchMode && selectedList === 'Strategy' &&
+      <Card sx={{backgroundColor: 'white', height: isLongTermOpen ? '240px' : (isStrategyOpen ? '445px' : '345.5px'), width: '97.5%', p: '25px',
+      borderRadius: '5.5px', marginBottom: '25px', border: '1.25px solid #f0f0f0', transition: '0.35s ease' }}>
         
       <Stack direction="column" spacing={0} alignItems="left" justifyContent="center">
       
         <Stack direction="row" sx={{marginBottom: '20px'}} spacing={2} alignItems="start" justifyContent="space-between">
 
         <Typography sx={{ fontFamily: "Times New Roman", marginBottom: '15px',
-          letterSpacing: '-0.45px',  fontWeight: 500, fontSize: '24.75px',}}>
-          This Week&apos;s Content Plan
+          letterSpacing: '-0.95px',  fontWeight: 500, fontSize: '24.25px',}}>
+          {isLongTermOpen ? `Long Term, I Want To Rank Highest For` 
+          : <span style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>This Month&apos;s Content Plan
+            <BasicTooltip title="Using market data, long-term goals, & news">
+            <Iconify icon="mdi:sword-fight" height={24} width={24} sx={{ ml: 8.5, position: 'absolute', top: 30, color: 'gray' }} />
+            <Iconify icon="arcticons:emoji-web" height={23} width={23} sx={{ ml: 1, position: 'absolute', top: 31, color: 'gray' }} />
+            <Iconify icon="arcticons:my-brain" height={23} width={23} sx={{ ml: 4.70, position: 'absolute', top: 31, color: 'gray' }} />
+            </BasicTooltip>
+          </span>}
         </Typography>
 
-        <Button variant="contained" color="inherit" startIcon={<Iconify icon="fluent:settings-16-filled" />} 
-        onClick={() => {}} sx={(theme) => ({backgroundColor: theme.palette.primary.black, height: 35})}>
-          Long-Term Strategy
-        </Button>
+        {!isStrategyOpen && <Button variant="contained" color="inherit" startIcon={<Iconify icon={isLongTermOpen ? "lets-icons:save-fill" : "fluent:settings-16-filled"} />} 
+        onClick={() => {saveLongTermGoals()}} sx={(theme) => ({backgroundColor: theme.palette.primary.black, 
+        height: 35, position: 'absolute', top: 24, right: 25})}>
+          {isLongTermOpen ? `Save AI Settings` : `Long-Term Strategy`}
+        </Button>}
+
+        {isStrategyOpen && <Button variant="contained" color="inherit" startIcon={<Iconify icon="ion:caret-back" />} 
+        onClick={() => {setIsStrategyOpen(false); setOpenedTopic(null)}} sx={(theme) => ({backgroundColor: theme.palette.primary.black, 
+        height: 35, position: 'absolute', top: 24, right: 25})}>
+          Back To Monthly Plan
+        </Button>}
 
         </Stack>
       
-        <Grid container spacing={2} sx={{marginBottom: 1.1}}>
+      {!isLongTermOpen && <>
+        <Grid container columnSpacing={3} rowSpacing={1.75} sx={{marginBottom: 1.3}} >
           {strategyData.STRATEGY.TOPICS.map((topic, index) => (
-            <Grid item xs={12} sm={6} key={index} sx={{ display: openedTopic === null || openedTopic === index ? 'block' : 'none' }}>
+            <Grid item xs={12} sm={openedTopic === null ? 6 : 12} key={index} sx={{ display: openedTopic === null || openedTopic === index ? 'block' : 'none' }}>
               <StrategyItem 
                 title={topic.title} 
                 keywords={topic.keywords} 
@@ -345,17 +398,56 @@ export default function BlogView() {
             </Grid>
           ))}
         </Grid>
-      
-        {/* <Typography sx={{ fontFamily: "Times New", 
-          letterSpacing: '-0.45px',  fontWeight: 200, fontSize: '24.75px',}}>
-          Currently Ranking For 
-        </Typography> */}
+  
+        <Stack direction="row" spacing={2} alignItems="center">
 
-        <Button variant="contained" onClick={() => {}}
-        sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, cursor: 'default', fontWeight: '600',
-        width: 190, '&:hover': {backgroundColor: theme.palette.primary.navBg,}})}>
-          Currently Ranking For
-        </Button>
+
+        <Stack spacing={2}>
+
+
+          {!isStrategyOpen && <div direction="row" spacing={2} className="flex flex-wrap gap-2">
+            <Button variant="contained" onClick={() => {}}
+              sx={(theme) => ({
+                backgroundColor: theme.palette.primary.navBg, height: 35,
+                cursor: 'default', fontWeight: '600', boxShadow: 'none', marginRight: '14px',
+                borderRadius: '7px', width: 182, '&:hover': { backgroundColor: theme.palette.primary.navBg },
+                marginBottom: '15px' // Add spacing below the "Currently Ranking For" button
+              })}
+            >
+              Currently Ranking For:
+            </Button>
+            {strategyData.STRATEGY.RANKING_FOR.map((item, index) => (
+              <Button variant="contained" onClick={() => {}}
+                key={`${index}`}
+                sx={(theme) => ({
+                  backgroundColor: theme.palette.primary.lighter, cursor: 'default',
+                  fontWeight: '600', color: theme.palette.primary.navBg,
+                  boxShadow: 'none', borderRadius: '7px', width: 'auto', marginRight: '14px',
+                  '&:hover': { backgroundColor: theme.palette.primary.lighter, boxShadow: 'none' },
+                  marginBottom: '15px' // Add spacing between rows of ranking buttons
+                })}
+              >
+                {item.keyword}
+              </Button>
+            ))}
+          </div>}
+
+        </Stack>
+
+        </Stack> </>}
+
+        {isLongTermOpen && <Grid container columnSpacing={3} rowSpacing={1.75} sx={{marginBottom: 1.3}} >
+          {strategyData.STRATEGY.TOPICS.map((topic, index) => (
+            <Grid item xs={12} sm={openedTopic === null ? 6 : 12} key={index} sx={{ display: openedTopic === null || openedTopic === index ? 'block' : 'none' }}>
+              <LongTermItem 
+                index={index} 
+                isLongTermOpen={isLongTermOpen}
+                longTermKeywords={longTermKeywords}
+                setLongTermKeywords={setLongTermKeywords}
+              />
+            </Grid>
+          ))}
+        </Grid>}
       
       </Stack>
         
