@@ -136,7 +136,7 @@ export default function UserPage() {
           @import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap);
         </style>
 
-        <PageTitle title="All Website Leads"/>
+        <PageTitle title="Website Chatbot Leads"/>
 
         <Stack direction="row" mb={2} spacing={1.5} alignItems="center">
 
@@ -187,7 +187,7 @@ export default function UserPage() {
         <Iconify icon="fluent-emoji:white-question-mark" sx={{minHeight: '18px', minWidth: '18px', color: 'white'}}/>
       </Button> */}
 
-        <Card sx= {{ height: 64.5, width: 'auto', pt: 1.15, pl: 1.7, borderRadius: '11px'  }} justifyContent="left" alignItems="center">
+        <Card sx= {{ height: 64.5, width: 'auto', pt: 1.15, pl: 1.7, borderRadius: '8px'  }} justifyContent="left" alignItems="center">
          
         <Stack direction="row" spacing={0} >
         
@@ -214,7 +214,7 @@ export default function UserPage() {
 
       <Stack direction="row" spacing={3}>
 
-      <Card sx={{ borderRadius: '11px', width: isChatOpen ? '420px' : '100%', height: 617.5, transition: 'ease 0.3s' }}>
+      <Card sx={{ borderRadius: '8px', width: isChatOpen ? '420px' : '100%', height: 617.5, transition: 'ease 0.3s' }}>
         
 
         <Scrollbar>

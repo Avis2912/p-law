@@ -144,7 +144,7 @@ export default function StrategyItem({ title, keywords, index, openedTopic, setO
 
 
         {isOpened && <Card sx={(theme) => ({ position: 'absolute', padding: '10px', paddingTop: '0px', width: 'calc(100% - 450px)',
-          top: '18px', right: '18px', borderRadius: '3px', height: '326px', paddingBottom: '0px',
+          top: '18px', right: '18px', borderRadius: '4.5px', height: '326px', paddingBottom: '0px',
           backgroundColor: 'white', border: `0.75px solid ${theme.palette.primary.navBg}`,})}>
 
           <Card sx={(theme)=>({ width: '100%', padding: '13px', borderRadius: '0px',
