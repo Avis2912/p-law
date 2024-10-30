@@ -7,11 +7,9 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 3040;
 
-// Configure CORS with dynamic origin
+// Update CORS configuration
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? ['https://app.pentra.club'] // Replace with your Vercel domain
-    : ['http://localhost:3030', 'http://localhost:5173'], // Include both Vite's default port and your custom port
+  origin: ['https://app.pentra.club', 'http://localhost:3030', 'http://localhost:5173'],
   methods: ['POST', 'GET', 'OPTIONS'],
   allowedHeaders: ['Content-Type'],
   credentials: true
@@ -21,7 +19,21 @@ app.use(express.json());
 
 async function scrapeGoogleAdsLibrary(keyword) {
   console.log('Scraping Google Ads Library for:', keyword);
-  const browser = await chromium.launch({ headless: false });
+  
+  // Update browser launch config for Vercel
+  const browser = await chromium.launch({
+    headless: true,
+    args: [
+      '--disable-gpu',
+      '--disable-dev-shm-usage',
+      '--disable-setuid-sandbox',
+      '--no-first-run',
+      '--no-sandbox',
+      '--no-zygote',
+      '--single-process',
+    ]
+  });
+
   const page = await browser.newPage();
   const result = {
     SPEND: '',
@@ -51,15 +63,6 @@ async function scrapeGoogleAdsLibrary(keyword) {
 
     await page.waitForTimeout(1500);
 
-    // const suggestionContainer = await page.$('.suggestion-renderer-container');
-    // if (!suggestionContainer) {
-    //   console.log('No suggestion container found - returning empty results');
-    //   return {
-    //     SPEND: '',
-    //     ADS: []
-    //   };
-    // }
-    
     try {
       await page.click('.suggestion-renderer-container');
     } catch (error) {
@@ -70,7 +73,6 @@ async function scrapeGoogleAdsLibrary(keyword) {
       };
     }   
 
-    // await page.click('.suggestion-renderer-container');
     await page.waitForTimeout(1500);
     await page.evaluate(() => {window.scrollTo(0, document.body.scrollHeight);});
 
@@ -109,23 +111,30 @@ async function scrapeGoogleAdsLibrary(keyword) {
     result.SPEND = estGoogleSpend.trim() || '';
 
   } catch (error) {
-    console.error('Error during scraping:', error);
+    console.error('Detailed scraping error:', error);
+    throw error; // Propagate error for better debugging
   } finally {
     await browser.close();
   }
 
   return result;
 }
+
 app.post('/scrape', async (req, res) => {
   const { keyword } = req.body;
   if (!keyword) {
-    return res.status(400).send({ error: 'Keyword is required' });
+    return res.status(400).json({ error: 'Keyword is required' });
   }
+  
   try {
     const result = await scrapeGoogleAdsLibrary(keyword);
-    return res.send(result);
+    return res.json(result);
   } catch (error) {
-    return res.status(500).send({ error: 'Failed to scrape Google Ads Library' });
+    console.error('Server error:', error);
+    return res.status(500).json({ 
+      error: 'Failed to scrape Google Ads Library',
+      details: error.message 
+    });
   }
 });
 
