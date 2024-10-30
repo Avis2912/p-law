@@ -51,10 +51,6 @@ export default function BlogView() {
 
   const [searchResults, setSearchResults] = useState([
   // { KEYWORD: 'Campaign Manager', TRAFFIC: '3300', COMPETITION: 'LOW', PREVDATA: [-1, -1, -1, -1] },
-  // { KEYWORD: 'Political Consultant', TRAFFIC: '2800', COMPETITION: 'MEDIUM', PREVDATA: [-1, -1, -1, -1] },
-  // { KEYWORD: 'Fundraising Coordinator', TRAFFIC: '22100', COMPETITION: 'HIGH', PREVDATA: [-1, -1, -1, -1] },
-  // { KEYWORD: 'Public Relations Specialist', TRAFFIC: '1600', COMPETITION: 'LOW', PREVDATA: [-1, -1, -1, -1] },
-  // { KEYWORD: 'Policy Analyst', TRAFFIC: '18300', COMPETITION: 'HIGH', PREVDATA: [-1, -1, -1, -1] },
   ]);
 
   const [isLongTermOpen, setIsLongTermOpen] = useState(false);
@@ -64,14 +60,23 @@ export default function BlogView() {
   const [strategyData, setStrategyData] = useState({
     STRATEGY: {
       TOPICS: [
-        { title: 'Public Relationship Specialist', keywords: [
+        { title: 'Public Relationship Specialist', 
+          keywords: [
           {keyword: 'PR Specialist in Texas', data: [600, 1400, 1600, 1900], competition: 'LOW'},
           {keyword: 'PR Specialist in California', data: [1200, 1700, 1900, 2200], competition: 'MEDIUM'},
           {keyword: 'NYC PR Specialists', data: [2000, 2200, 2400, 3500], competition: 'HIGH'},
           {keyword: 'PR Specialist in Chicago', data: [500, 2700, 2900, 3200], competition: 'LOW'},
           {keyword: 'PR Specialist in Houston', data: [3500, 3200, 3400, 3700], competition: 'HIGH'},
           {keyword: 'PR Specialist in San Francisco', data: [200, 1400, 1600, 1900], competition: 'LOW'},
-        ] },
+        ],
+          news: [],
+          reasons: [
+            {reason: 'High demand for PR Specialists in NYC'}, 
+            {reason: 'Low competition for PR Specialists in Texas'},
+            {reason: 'Medium competition for PR Specialists in California'},
+            {reason: 'High competition for PR Specialists in Houston'},
+          ],
+      },
         { title: 'Policy Analyst', keywords: [
           {keyword: 'Policy Analyst in TX', data: [600, 1400, 1600, 1900], competition: 'LOW'},
           {keyword: 'Policy Analyst in CA', data: [1200, 1700, 1900, 2200], competition: 'MEDIUM'},
@@ -79,7 +84,15 @@ export default function BlogView() {
           {keyword: 'Policy Analyst in Chicago', data: [500, 2700, 2900, 3200], competition: 'LOW'},
           {keyword: 'Policy Analyst in Houston', data: [3500, 3200, 3400, 3700], competition: 'HIGH'},
           {keyword: 'Policy Analyst in San Francisco', data: [200, 1400, 1600, 1900], competition: 'LOW'},
-        ] },
+        ],
+        news: [],
+        reasons: [
+          {reason: 'High demand for PR Specialists in NYC'}, 
+          {reason: 'Low competition for PR Specialists in Texas'},
+          {reason: 'Medium competition for PR Specialists in California'},
+          {reason: 'High competition for PR Specialists in Houston'},
+        ],
+      },
         { title: 'Fundraising Coordinator', keywords: [
           {keyword: 'Fundraising Coordinator in TX', data: [600, 1400, 1600, 1900], competition: 'LOW'},
           {keyword: 'Fundraising Coordinator in CA', data: [1200, 1700, 1900, 2200], competition: 'MEDIUM'},
@@ -87,7 +100,15 @@ export default function BlogView() {
           {keyword: 'Fundraising Coordinator in Chicago', data: [500, 2700, 2900, 3200], competition: 'LOW'},
           {keyword: 'Fundraising Coordinator in Houston', data: [3500, 3200, 3400, 3700], competition: 'HIGH'},
           {keyword: 'Fundraising Coordinator in San Francisco', data: [200, 1400, 1600, 1900], competition: 'LOW'},
-         ] },
+         ],
+         news: [],
+         reasons: [
+           {reason: 'High demand for PR Specialists in NYC'}, 
+           {reason: 'Low competition for PR Specialists in Texas'},
+           {reason: 'Medium competition for PR Specialists in California'},
+           {reason: 'High competition for PR Specialists in Houston'},
+         ],
+        },
          { title: 'Campaign Manager', keywords: [
           {keyword: 'Campaign Manager in TX', data: [600, 1400, 1600, 1900], competition: 'LOW'},
           {keyword: 'Campaign Manager in CA', data: [1200, 1700, 1900, 2200], competition: 'MEDIUM'},
@@ -95,7 +116,18 @@ export default function BlogView() {
           {keyword: 'Campaign Manager in Chicago', data: [500, 2700, 2900, 3200], competition: 'LOW'},
           {keyword: 'Campaign Manager in Houston', data: [3500, 3200, 3400, 3700], competition: 'HIGH'},
           {keyword: 'Campaign Manager in San Francisco', data: [200, 1400, 1600, 1900], competition: 'LOW'},
-         ] },
+         ],
+         news: [
+          {title: 'Baylor University Shuts Down', url: 'https://www.baylor.edu/'},
+          {title: 'Texas A&M Wins Big', url: 'https://www.tamu.edu/'},
+         ],
+         reasons: [
+           {reason: 'High demand for PR Specialists in NYC'}, 
+           {reason: 'Low competition for PR Specialists in Texas'},
+           {reason: 'Medium competition for PR Specialists in California'},
+           {reason: 'High competition for PR Specialists in Houston'},
+         ],
+        },
       ],
       RANKING_FOR:[
         { keyword: 'Public Relations Specialist', data: [600, 1400, 1600, 1900] },
@@ -136,6 +168,21 @@ export default function BlogView() {
     setLongTermKeywords(strategyData.STRATEGY.LONG_TERM);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const itemIndexList = {1: 'First Week', 2: 'Second Week', 3: 'Third Week', 4: 'Fourth Week',};
+
+  const getCurrentWeekOfMonth = () => {
+    const currentDate = new Date();
+    const dayOfMonth = currentDate.getDate();
+    if (dayOfMonth <= 7) {return 1;
+    } else if (dayOfMonth <= 14) {return 2;
+    } else if (dayOfMonth <= 21) {return 3;
+    } else {return 4;}
+  };
+  
+  const currentWeek = getCurrentWeekOfMonth();
+  const isCurrentWeek = currentWeek === openedTopic + 1;
+  const weekName = isCurrentWeek ? 'This Week' : itemIndexList[openedTopic+1];
 
   const saveLongTermGoals = async () => {
     if (!isLongTermOpen) {setIsLongTermOpen(true); return;}
@@ -389,14 +436,14 @@ export default function BlogView() {
         
       <Stack direction="column" spacing={0} alignItems="left" justifyContent="center">
       
-        <Stack direction="row" sx={{marginBottom: '18px'}} spacing={2} alignItems="start" justifyContent="space-between">
+        <Stack direction="row" sx={{marginBottom: openedTopic !== null ? '16.5px' : '18px'}} spacing={2} alignItems="start" justifyContent="space-between">
 
         <Typography sx={{ fontFamily: "Times New Roman", marginBottom: '15px', 
           letterSpacing: '-0.95px',  fontWeight: 500, fontSize: '24.25px', userSelect: 'none'}}>
           {isLongTermOpen ? `Long Term, I Want To Rank Highest For` 
           :
           <span style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-            {openedTopic !== null ? `This Week's Content Topics` : `This Month's Content Plan`}
+            {openedTopic !== null ? `${weekName}'s Content Topics` : `This Month's Content Plan`}
             <BasicTooltip title="Draws from market, long-term goals, & news">
             <Iconify icon="mdi:sword-fight" height={24} width={24} sx={{ ml: 8.5, position: 'absolute', top: 30, color: 'gray', cursor: 'pointer' }} />
             <Iconify icon="arcticons:emoji-web" height={23} width={23} sx={{ ml: 1, position: 'absolute', top: 31, color: 'gray', cursor: 'pointer' }} />
@@ -429,6 +476,8 @@ export default function BlogView() {
                   index={index} 
                   openedTopic={openedTopic} 
                   setOpenedTopic={setOpenedTopic} 
+                  reasons={topic.reasons}
+                  news={topic.news}
                 />
               </Grid>
           ))}
@@ -453,34 +502,43 @@ export default function BlogView() {
             </Button>
             
             {strategyData.STRATEGY.RANKING_FOR.map((item, index) => (
-              <Button 
+               <Button 
                 variant="contained" 
-                onClick={() => {
-                  setExpandedButtons(prev => ({
-                    ...prev, [index]: !prev[index]
-                  }));
-                }}
                 key={`${index}`}
                 sx={(theme) => ({
                   backgroundColor: theme.palette.primary.lighter,
-                  cursor: 'pointer', fontWeight: '600',
-                  color: theme.palette.primary.navBg, boxShadow: 'none',
-                  borderRadius: '7px', marginRight: '14px',
-                  transition: 'width 0.3s ease', width: 'auto',
+                  cursor: 'pointer',
+                  fontWeight: '600',
+                  color: theme.palette.primary.navBg,
+                  boxShadow: 'none',
+                  borderRadius: '7px',
+                  marginRight: '14px',
+                  transition: 'all 0.7s ease',
+                  width: 'auto',
+                  '& .additional-content': {
+                    opacity: 0,
+                    width: 0,
+                    overflow: 'hidden',
+                    transition: 'all 0.7s ease',
+                    display: 'inline-block',
+                  },
                   '&:hover': { 
-                    backgroundColor: theme.palette.primary.lighter, boxShadow: 'none' 
+                    backgroundColor: theme.palette.primary.lighter,
+                    boxShadow: 'none',
+                    width: 'auto',
+                    '& .additional-content': {
+                      opacity: 1,
+                      width: 'auto',
+                      marginLeft: '5px',
+                    }
                   },
                   marginBottom: '15px'
                 })}
               >
                 {item.keyword}
-                {expandedButtons[index] && <>
-                <span style={{ fontWeight: 'bold', marginLeft: '5px',}}>
-                {item.data[0]}/mo</span>
-                {/* <span style={{ fontWeight: 'bold', marginLeft: '5px' }}>
-                Low</span> */}
-                </>}
-
+                <span className="additional-content" style={{ fontWeight: 'bold' }}>
+                  {item.data[0]}/mo
+                </span>
               </Button>
             ))}
         </div>}
