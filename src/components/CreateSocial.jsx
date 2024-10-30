@@ -113,12 +113,19 @@ export default function CreateSocial({ content, isMade = false, isExpanding = fa
         letterSpacing: '-0.25px',  fontWeight: 800, fontSize: '35.75px', marginBottom: '25px'}}> 
         New Posts Created</Typography>
 
-        <Stack direction="row" spacing={2} sx={{ justifyContent: 'space-between', marginBottom: '20px' }}>
-
-          <PostCard content={posts[0]} platform="LinkedIn" index={0} />
-          <PostCard content={posts[1]} platform="Facebook" index={0} />
-          <PostCard content={posts[2]} platform="Instagram" index={0} />
-
+        <Stack
+          direction="row"
+          spacing={2}
+          sx={{ justifyContent: 'space-between', marginBottom: '20px' }}
+        >
+          {posts.map((postContent, index) => (
+            <PostCard
+              key={index}
+              content={postContent}
+              platform={['LinkedIn', 'Facebook', 'Instagram'][index]}
+              index={index}
+            />
+          ))}
         </Stack>
 
         </DialogContent>

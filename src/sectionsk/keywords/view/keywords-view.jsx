@@ -184,6 +184,7 @@ export default function BlogView() {
   const currentWeek = getCurrentWeekOfMonth();
   const isCurrentWeek = currentWeek === openedTopic + 1;
   const weekName = isCurrentWeek ? 'This Week' : itemIndexList[openedTopic+1];
+  const currentMonthName = new Date().toLocaleString('default', { month: 'long' });
 
   const saveLongTermGoals = async () => {
     if (!isLongTermOpen) {setIsLongTermOpen(true); return;}
@@ -445,7 +446,7 @@ export default function BlogView() {
           {isLongTermOpen ? `Long Term, I Want To Rank Highest For` 
           :
           <span style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-            {openedTopic !== null ? `${weekName}'s Content Topics` : `This Month's Content Plan`}
+            {openedTopic !== null ? `${weekName}'s Content Topics` : `${currentMonthName}'s Weekly Content Plan`}
             <BasicTooltip title="Draws from market, long-term goals, & news">
             <Iconify icon="mdi:sword-fight" height={24} width={24} sx={{ ml: 8.5, position: 'absolute', top: 30, color: 'gray', cursor: 'pointer' }} />
             <Iconify icon="arcticons:emoji-web" height={23} width={23} sx={{ ml: 1, position: 'absolute', top: 31, color: 'gray', cursor: 'pointer' }} />
