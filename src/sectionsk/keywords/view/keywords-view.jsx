@@ -384,7 +384,7 @@ export default function BlogView() {
 
 
       {!isSearchMode && selectedList === 'Strategy' &&
-      <Card sx={{backgroundColor: 'white', height: isLongTermOpen ? '240px' : (isStrategyOpen ? '448px' : '345.5px'), width: '97.5%', p: '25px',
+      <Card sx={{backgroundColor: 'white', height: isLongTermOpen ? '240px' : (isStrategyOpen ? '477px' : '345.5px'), width: '97.5%', p: '25px',
       borderRadius: '5.5px', marginBottom: '25px', border: '2.25px solid #f0f0f0', transition: '0.35s ease' }}>
         
       <Stack direction="column" spacing={0} alignItems="left" justifyContent="center">
@@ -397,10 +397,10 @@ export default function BlogView() {
           :
           <span style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
             {openedTopic !== null ? `This Week's Content Topics` : `This Month's Content Plan`}
-            <BasicTooltip title="Draws from market data, long-term goals, & news">
-            <Iconify icon="mdi:sword-fight" height={24} width={24} sx={{ ml: 8.5, position: 'absolute', top: 30, color: 'gray' }} />
-            <Iconify icon="arcticons:emoji-web" height={23} width={23} sx={{ ml: 1, position: 'absolute', top: 31, color: 'gray' }} />
-            <Iconify icon="arcticons:my-brain" height={23} width={23} sx={{ ml: 4.70, position: 'absolute', top: 31, color: 'gray' }} />
+            <BasicTooltip title="Draws from market, long-term goals, & news">
+            <Iconify icon="mdi:sword-fight" height={24} width={24} sx={{ ml: 8.5, position: 'absolute', top: 30, color: 'gray', cursor: 'pointer' }} />
+            <Iconify icon="arcticons:emoji-web" height={23} width={23} sx={{ ml: 1, position: 'absolute', top: 31, color: 'gray', cursor: 'pointer' }} />
+            <Iconify icon="arcticons:my-brain" height={23} width={23} sx={{ ml: 4.70, position: 'absolute', top: 31, color: 'gray', cursor: 'pointer' }} />
             </BasicTooltip>
           </span>}
         </Typography>
@@ -475,7 +475,7 @@ export default function BlogView() {
               >
                 {item.keyword}
                 {expandedButtons[index] && <>
-                <span style={{ fontWeight: 'bold', marginLeft: '5px' }}>
+                <span style={{ fontWeight: 'bold', marginLeft: '5px',}}>
                 {item.data[0]}/mo</span>
                 {/* <span style={{ fontWeight: 'bold', marginLeft: '5px' }}>
                 Low</span> */}
