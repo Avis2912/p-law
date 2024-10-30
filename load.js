@@ -450,11 +450,33 @@ competition = {
     LAST_DATE: "03/31/24",
     COMPETITION: [{
         NAME: 'Sample Firm',
-        SITE: 'bergplummer.com',
-        COMP_SITE: 'bergplummer.com/blog',
-        TRAFFIC: [1200, 1400, 1300, 1500],
-        RANKING_FOR: ['Dallas asset protection', 'Asset protection firms near me', 'Estate protection attorneys'],
-        RECENT_BLOGS: [
+        COMP_SITE: 'bergplummer.com',
+        ADS: {
+            ADS: [],
+            SPEND: "$13,000"
+        },
+        TRAFFIC: 
+        {
+          TRAFFIC: [1200, 1400, 1300, 1500],
+          RANKING_FOR: [
+            {
+            KEYWORD: 'Dallas asset protection',
+            MONTHLY_SEARCHES: [1000, 1200, 1100, 1300],
+            EST_VOLUME: 1000, COMPETITION: 'LOW',
+            },
+            {
+            KEYWORD: 'Asset protection firms near me',
+            MONTHLY_SEARCHES: [800, 900, 1000, 1100],
+            EST_VOLUME: 800, COMPETITION: 'LOW',
+            },
+            {
+            KEYWORD: 'Estate protection attorneys',
+            MONTHLY_SEARCHES: [700, 800, 900, 1000],
+            EST_VOLUME: 700, COMPETITION: 'LOW',
+            }
+        ],
+        },
+        BLOGS: [
           { TITLE: 'How to Protect Short-Term Tental Assets', DATE: '09/12/21', LINK: 'test.com' },
           { TITLE: 'Effective Real Estate Investment Strategies', DATE: '09/15/21', LINK: 'example1.com' },
           { TITLE: 'Understanding The Best Legal Services for Financial Planning', DATE: '09/18/21', LINK: 'example2.com' },
@@ -463,31 +485,44 @@ competition = {
         JOBS: [
           { TITLE: 'Lawyer', POSTED: 'A Month Ago', LINK: 'hi.com' },
         ],
-        ORG: {
-          LINKEDIN: 'https://www.linkedin.com/',
-          FACEBOOK: 'N/A',
-        }
-      },
-      {
-        NAME: 'Sample Firm 2',
-        SITE: 'injuryattorneyofdallas.com',
-        COMP_SITE: 'injuryattorneyofdallas.com/blog',
-        TRAFFIC: [2650, 2550, 2700, 2650],
-        RANKING_FOR: ['Texas rental attorneys', 'Real estate lawyers close by', 'Asset protection attorneys'],
-        RECENT_BLOGS: [
-          { TITLE: 'How to Protect Short-Term Tental Assets', DATE: '09/12/21', LINK: 'test.com' },
-          { TITLE: 'Effective Real Estate Investment Strategies', DATE: '09/15/21', LINK: 'example1.com' },
-          { TITLE: 'Understanding The Best Legal Services for Financial Planning', DATE: '09/18/21', LINK: 'example2.com' },
-          { TITLE: 'The Importance of Insurance in Retirement Planning', DATE: '09/21/21', LINK: 'example3.com' },
-        ],
-        JOBS: [
-          { TITLE: 'Lawyer', POSTED: 'A Month Ago', LINK: 'hi.com' },
-        ],
-        ORG: {
-          LINKEDIN: 'https://www.linkedin.com/',
-          FACEBOOK: 'N/A',
-        }
-      }]
+        REVIEWS: [{
+          NAME: 'Tim Smith', REVIEW: 'Amar was of great help!',
+          PFP: "https://lh3.googleusercontent.com/a-/ALV-UjUfSRpYaFVPK4EjE-zcezcB-SgVZOGuVbZwO_dUN1ZDrFkg_Tnw=s40-c-rp-mo-br100",
+          RATING: 5, DATE: '09/12/21', REVIEW_URL: 'https://www.google.com/',
+        },
+        {
+          NAME: 'Jane Doe', REVIEW: 'Great service!',
+          PFP: "https://lh3.googleusercontent.com/a-/ALV-UjUfSRpYaFVPK4EjE-zcezcB-SgVZOGuVbZwO_dUN1ZDrFkg_Tnw=s40-c-rp-mo-br100",
+          RATING: 5, DATE: '09/12/21', REVIEW_URL: 'https://www.google.com/',
+        },
+        {
+          NAME: 'Stephan Time', REVIEW: 'John was very helpful!',
+          PFP: "https://lh3.googleusercontent.com/a-/ALV-UjUfSRpYaFVPK4EjE-zcezcB-SgVZOGuVbZwO_dUN1ZDrFkg_Tnw=s40-c-rp-mo-br100",
+          RATING: 5, DATE: '09/12/21',REVIEW_URL: 'https://www.google.com/',
+      }],
+     },
+
+    //   {
+    //     NAME: 'Sample Firm 2',
+    //     COMP_SITE: 'injuryattorneyofdallas.com',
+    //     TRAFFIC: [2650, 2550, 2700, 2650],
+    //     RANKING_FOR: ['Texas rental attorneys', 'Real estate lawyers close by', 'Asset protection attorneys'],
+    //     RECENT_BLOGS: [
+    //       { TITLE: 'How to Protect Short-Term Tental Assets', DATE: '09/12/21', LINK: 'test.com' },
+    //       { TITLE: 'Effective Real Estate Investment Strategies', DATE: '09/15/21', LINK: 'example1.com' },
+    //       { TITLE: 'Understanding The Best Legal Services for Financial Planning', DATE: '09/18/21', LINK: 'example2.com' },
+    //       { TITLE: 'The Importance of Insurance in Retirement Planning', DATE: '09/21/21', LINK: 'example3.com' },
+    //     ],
+    //     JOBS: [
+    //       { TITLE: 'Lawyer', POSTED: 'A Month Ago', LINK: 'hi.com' },
+    //     ],
+    //     ORG: {
+    //       LINKEDIN: 'https://www.linkedin.com/',
+    //       FACEBOOK: 'N/A',
+    //     }
+    //   }
+
+    ]
 },
 ); } else {console.log('skipped new user')};
 

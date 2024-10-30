@@ -2,7 +2,8 @@
 
 export default async function getLatestPosts(site) {
   try {
-    const response = await fetch(`https://${site}/wp-json/wp/v2/posts`);
+    const formattedSite = site.replace(/(^\w+:|^)\/\//, '');
+    const response = await fetch(`https://${formattedSite}/wp-json/wp/v2/posts`);
     const posts = await response.json();
 
     const blogsRetrieved = posts.map(post => ({

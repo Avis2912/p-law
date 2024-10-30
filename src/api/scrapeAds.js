@@ -16,7 +16,7 @@ app.use(express.json());
 
 async function scrapeGoogleAdsLibrary(keyword) {
   console.log('Scraping Google Ads Library for:', keyword);
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({ headless: false });
   const page = await browser.newPage();
   const result = {
     SPEND: '',

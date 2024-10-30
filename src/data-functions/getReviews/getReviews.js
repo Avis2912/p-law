@@ -3,11 +3,14 @@ import axios from 'axios';
 const apiUrl = 'https://api.dataforseo.com/v3/business_data/google/reviews/task_post';
 
 export default async function getReviews(keyword) {
+
+  const formattedKeyword = keyword.replace(/(^\w+:|^)\/\//, '');
+
   try {
     const postData = [{
       "location_name": "United States",
       "language_name": "English",
-      "keyword": keyword,
+      "keyword": formattedKeyword,
       "depth": 20,
       "sort_by": "newest"
     }];

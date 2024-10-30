@@ -17,9 +17,10 @@ import { collection, getDocs, getDoc, updateDoc, doc } from "firebase/firestore"
 import { db, auth } from 'src/firebase-config/firebase';
 
 import getCompData from 'src/data-functions/getCompData';
+import { set } from 'lodash';
 
 export default function CompetitionDialog ({
-  isDialogOpen, handleClose, competition, setCompetition }) {
+  isDialogOpen, handleClose, competition, setCompetition, isAddingCompetitor, setIsAddingCompetitor, }) {
 
   const [error, setError] = React.useState(null);
 
@@ -47,6 +48,8 @@ export default function CompetitionDialog ({
       if (firmDoc) {  
         const firmDocRef = doc(db, 'firms', firmDoc.id);
 
+        setIsAddingCompetitor(true);
+
         const compData = await getCompData(competitorSite);
 
         // const newCompetitor = {
@@ -72,6 +75,7 @@ export default function CompetitionDialog ({
     } catch (err) {
       console.error('Error updating competitor data:', err);
     }
+    setIsAddingCompetitor(false);
   };
 
   return (
@@ -126,4 +130,6 @@ CompetitionDialog.propTypes = {
   competition: PropTypes.any,
   setCompetition: PropTypes.func,
   // firmName: PropTypes.string,
+  isAddingCompetitor: PropTypes.bool,
+  setIsAddingCompetitor: PropTypes.func,
 };

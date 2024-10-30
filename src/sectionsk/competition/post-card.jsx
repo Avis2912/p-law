@@ -118,8 +118,6 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
         {competitorName}
         </Typography>
 
-        {/* <Iconify icon="bx:link" onClick={()=>{}} style={{ cursor: 'pointer',
-        width: '32px', height: '32px', marginRight: '20px' }} /> */}
       </Stack>
 
       <Stack spacing={1.55} direction="column" sx={{position: 'absolute',
@@ -231,12 +229,12 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
         top: '38px', left: '0px', pt: '0px', pb: '0px',
         p: '11px'})}>
 
-      {rankingFor.map((word, index) => (
+      {rankingFor.map((item, index) => (
         <ListItem 
           key={index} 
           sx={(theme)=>({ height: 'auto',justifyContent: 'space-between', textAlign: 'center', userSelect: 'none',
           mb: '11px', borderRadius: '2.5px', p: '4.5px', backgroundColor: theme.palette.primary.lighter,})}>          
-          <ListItemText primary={word} sx={{p: '0px', fontSize: '16px', }}/>
+          <ListItemText primary={item.KEYWORD} sx={{p: '0px', fontSize: '16px', }}/>
         </ListItem>
       ))}
 
@@ -364,27 +362,20 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
           justifyContent: 'space-between'}}>          
           <ListItemText primary={job.TITLE} sx={{fontWeight: '900', height: '35.2px', display: 'flex', alignItems: 'center'}}/>
           
-          <Button variant="contained" color="primary" sx={(theme) => ({height: '32px', width: 'auto', cursor: 'default', boxShadow: 'none',
+          {job.TYPE && <Button variant="contained" color="primary" sx={(theme) => ({height: '32px', width: 'auto', cursor: 'default', boxShadow: 'none',
           backgroundColor: theme.palette.primary.lighter, marginLeft: '10px', '&:hover': { backgroundColor: theme.palette.primary.lighter, boxShadow: 'none'},
           borderRadius: '5px', fontSize: '14px', color: theme.palette.primary.navBg})}>
-          {job.TYPE}</Button>
+          {job.TYPE}</Button>}
 
           <Button variant="contained" color="primary" sx={(theme) => ({height: '32px', width: 'auto', cursor: 'default', boxShadow: 'none',
           backgroundColor: theme.palette.primary.lighter, marginLeft: '10px', '&:hover': { backgroundColor: theme.palette.primary.lighter, boxShadow: 'none'},
           borderRadius: '5px', fontSize: '14px', color: theme.palette.primary.navBg})}>
           {job.POSTED}</Button>
 
-          <Button variant="contained" color="primary" sx={(theme) => ({height: '32px', width: 'auto', cursor: 'default', boxShadow: 'none',
+          {job.LOCATION && <Button variant="contained" color="primary" sx={(theme) => ({height: '32px', width: 'auto', cursor: 'default', boxShadow: 'none',
           backgroundColor: theme.palette.primary.lighter, marginLeft: '10px', '&:hover': { backgroundColor: theme.palette.primary.lighter, boxShadow: 'none'},
           borderRadius: '5px', fontSize: '14px', color: theme.palette.primary.navBg})}>
-          {job.LOCATION}</Button>
-
-          {/* <Button variant="contained" color="primary" sx={(theme) => ({height: '30px', maxWidth: '10px', p: '0px',
-          backgroundColor: theme.palette.primary.navBg, marginLeft: '10px', '&:hover': { backgroundColor: theme.palette.primary.navBg, },
-          borderRadius: '5px', fontSize: '14px'})} onClick={() => {
-            const url = job.LINK.startsWith('http://') || job.LINK.startsWith('https://') ? job.LINK : `http://${job.LINK}`;
-            window.open(url, '_blank');
-          }} /> */}
+          {job.LOCATION}</Button>}
 
           <Iconify icon="fluent:link-multiple-24-filled" sx={({height: '31.5px', width: '45px', p: '5.75px', cursor: 'pointer',
           backgroundColor: 'darkred', marginLeft: '11px', '&:hover': { backgroundColor: 'darkred', }, color: 'white',
@@ -426,20 +417,6 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
           backgroundColor: theme.palette.primary.lighter, marginLeft: '10px', '&:hover': { backgroundColor: theme.palette.primary.lighter, boxShadow: 'none'},
           borderRadius: '5px', fontSize: '14px', color: theme.palette.primary.navBg})}>
           {review.DATE}</Button>
-
-          {/* <Button variant="contained" color="primary" sx={(theme) => ({height: '30px', maxWidth: '10px', p: '0px',
-          backgroundColor: theme.palette.primary.navBg, marginLeft: '10px', '&:hover': { backgroundColor: theme.palette.primary.navBg, },
-          borderRadius: '5px', fontSize: '14px'})} onClick={() => {
-            const url = job.LINK.startsWith('http://') || job.LINK.startsWith('https://') ? job.LINK : `http://${job.LINK}`;
-            window.open(url, '_blank');
-          }} /> */}
-
-          {/* <Iconify icon="fluent:link-multiple-24-filled" sx={({height: '31.5px', width: '45px', p: '5.75px', cursor: 'pointer',
-          backgroundColor: 'darkred', marginLeft: '11px', '&:hover': { backgroundColor: 'darkred', }, color: 'white',
-          borderRadius: '5px', fontSize: '14px'})} onClick={() => {
-            const url = job.LINK.startsWith('http://') || job.LINK.startsWith('https://') ? job.LINK : `http://${job.LINK}`;
-            window.open(url, '_blank');
-          }}/> */}
 
         </ListItem>
       ))}

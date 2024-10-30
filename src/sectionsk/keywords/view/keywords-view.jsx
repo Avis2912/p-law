@@ -151,7 +151,8 @@ export default function BlogView() {
         { keyword: 'Campaign Manager', data: [500, 2700, 2900, 3200] },
         { keyword: 'Political Consultant', data: [3500, 3200, 3400, 3700] },
         { keyword: 'Public Relations Specialist', data: [200, 1400, 1600, 1900] },
-    ]
+    ], 
+    LAST_DATE: '10/25/24',
   });
 
   const [openedTopic, setOpenedTopic] = useState(null);
@@ -252,6 +253,7 @@ export default function BlogView() {
             await setPlanName(firmDoc.data().SETTINGS.PLAN);
             await setSearchLimit(firmDoc.data().WEEKLY_KEYWORDS.LIMIT || 15)
             await setSearchesMade(firmDoc.data().WEEKLY_KEYWORDS.SEARCH_COUNT || 0)
+            // await setStrategyData(firmDoc.data().STRATEGY || {});
 
             if (typeof firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS === 'string') { writeWeeklyKeywords(firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS); console.log('WRITING KEYWORDS 0');}
             else {await setWeeklyKeywords(firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS || []);} 
@@ -364,7 +366,7 @@ export default function BlogView() {
         <Button variant="contained" onClick={() => {}}
         sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, cursor: 'default', fontWeight: '600',
         '&:hover': {backgroundColor: theme.palette.primary.navBg,}})}>
-          {!isUpdateTime ? (selectedList === 'Strategy' ? `Strategy Curated This Week` : `Updated This Week`) : 'Update In Progress'}
+          {!isUpdateTime ? (selectedList === 'Strategy' ? `Strategy Updated This Week` : `Updated This Week`) : 'Update In Progress'}
         </Button>
         </>)}
 

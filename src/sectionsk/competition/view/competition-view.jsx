@@ -22,28 +22,13 @@ import PostCard from '../post-card';
 
 export default function ListsView() {
 
-  const [isAddingCompetitor, setAddingCompetitor] = useState(false);
+  const [isAddingCompetitor, setIsAddingCompetitor] = useState(false);
   const [newCompetitor, setNewCompetitor] = useState('');
   const [isUpdateTime, setIsUpdateTime] = useState(false);
   const [timeToUpdate, setTimeToUpdate] = useState(0);
 
   const [competition, setCompetition] = useState([]);
 
-  const [indexedBlogs, setIndexedBlogs] = useState();
-  const [indexedJobs, setIndexedJobs] = useState([
-    { TITLE: 'Campaign Manager', VIA: 'via ZipRecruiter', LOCATION: 'Dallas, TX', TYPE: 'Full Time', POSTED: 'A Month Ago', LINK: 'hi.com' },
-    { TITLE: 'Political Consultant', VIA: 'via Indeed', LOCATION: 'San Francisco, CA', TYPE: 'Part Time', POSTED: '2 Weeks Ago', LINK: 'hello.com' },
-    { TITLE: 'Fundraising Coordinator', VIA: 'via Glassdoor', LOCATION: 'New York, NY', TYPE: 'Full Time', POSTED: '3 Days Ago', LINK: 'hey.com' },
-    { TITLE: 'Public Relations Specialist', VIA: 'via LinkedIn', LOCATION: 'Chicago, IL', TYPE: 'Contract', POSTED: 'Yesterday', LINK: 'howdy.com' },
-    { TITLE: 'Policy Analyst', VIA: 'via Monster', LOCATION: 'Los Angeles, CA', TYPE: 'Full Time', POSTED: 'A Week Ago', LINK: 'greetings.com' },
-  ]);
-  const [reviews, setReviews] = useState([
-    { NAME: 'John Doe', DATE: '18 June 2024', RATING: 5, REVIEW: 'Great service, very professional.', PFP: 'https://www.w3schools.com/w3images/avatar2.png' },
-    { NAME: 'Jane Doe', DATE: '18 June 2024', RATING: 4, REVIEW: 'Good service, very professional.', PFP: 'https://www.w3schools.com/w3images/avatar2.png' },
-    { NAME: 'John Smith', DATE: '18 June 2024', RATING: 3, REVIEW: 'Okay service, professional.', PFP: 'https://www.w3schools.com/w3images/avatar2.png' },
-    { NAME: 'Jane Smith', DATE: '18 June 2024', RATING: 2, REVIEW: 'Bad service, unprofessional.', PFP: 'https://www.w3schools.com/w3images/avatar2.png' },
-    { NAME: 'John Johnson', DATE: '18 June 2024', RATING: 1, REVIEW: 'Terrible service, very unprofessional.', PFP: 'https://www.w3schools.com/w3images/avatar2.png' },
-  ]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDialogOpen2, setIsDialogOpen2] = useState(false);
   const [planName, setPlanName] = useState('');
@@ -63,7 +48,6 @@ export default function ListsView() {
             const lastDate = new Date(`20${lastDateParts[2]}/${lastDateParts[0]}/${lastDateParts[1]}`);
             const diffDays = updateDays - Math.ceil((new Date() - lastDate) / (1000 * 60 * 60 * 24));
             if (diffDays >= 1) {await setTimeToUpdate(diffDays)} else {setIsUpdateTime(true);} 
-            await setIndexedBlogs(firmDoc.data().BLOG_DATA.BIG_BLOG || []); 
           } else {
             alert('Error: Firm document not found.');
           }
@@ -87,6 +71,7 @@ export default function ListsView() {
   const handleClose2 = () => {setIsDialogOpen2(false);};
 
   const handleAddNewCompetitionClick = async () => {
+    if (isAddingCompetitor) {return;}
     handleOpen2(true);
   };
 
@@ -108,7 +93,7 @@ export default function ListsView() {
         </style>
 
         {isDialogOpen2 && <CompetitionDialog isDialogOpen={isDialogOpen2} handleClose={handleClose2} firmName='Raval Trial Law'
-        competition={competition} setCompetition={setCompetition} />}
+        competition={competition} setCompetition={setCompetition} isAddingCompetitor={isAddingCompetitor} setIsAddingCompetitor={setIsAddingCompetitor} />}
 
         <PageTitle title="Competition Analysis" />
 
@@ -120,11 +105,11 @@ export default function ListsView() {
           </Button>
           <Button
             variant="contained"
-            startIcon={<Iconify icon="eva:plus-fill" />}
+            startIcon={<Iconify icon={isAddingCompetitor ? "line-md:loading-loop" : "eva:plus-fill"} />}
             onClick={handleAddNewCompetitionClick}
-            sx={{ backgroundColor: 'black', ':hover': { backgroundColor: 'black' } }}
+            sx={{ backgroundColor: isAddingCompetitor ? '#333131' : 'black', ':hover': { backgroundColor: 'black' } }}
           >
-            Add New
+            {isAddingCompetitor ? `Adding Competitor` : `Add New`}
           </Button>
         </Stack>
       </Stack>
@@ -139,7 +124,6 @@ export default function ListsView() {
                 <PostCard 
                 key={index} 
                 traffic={0} 
-                linkedinData={[]} 
                 orgData={[]}
                 jobData={[]}
                 reviewData={[]}
@@ -156,14 +140,12 @@ export default function ListsView() {
             return (
               <PostCard 
                 key={index} 
-                traffic={value.TRAFFIC} 
-                linkedinData={value.ORG} 
-                orgData={value.ORG}
-                // jobData={value.JOBS}
-                jobData={indexedJobs}
-                reviewData={reviews}
-                indexedBlogs={value.RECENT_BLOGS}
-                rankingFor={value.RANKING_FOR} 
+                traffic={value.TRAFFIC.TRAFFIC} 
+                orgData={[]}
+                jobData={value.JOBS}
+                reviewData={value.REVIEWS}
+                indexedBlogs={value.BLOGS}
+                rankingFor={value.TRAFFIC.RANKING_FOR} 
                 competitorName={value.NAME} 
                 siteLink={value.COMP_SITE}
                 listId={index} 
