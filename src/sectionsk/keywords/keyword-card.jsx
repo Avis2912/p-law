@@ -47,7 +47,7 @@ export default function PostCard({ keyword, data, index, setWeeklyKeywords, trac
     { month: format(currentMonth, 'MMMM'), value: data[3] },
   ];
 
-  const cardColor = isTrending ? '#2c3747' : '#0072b1';
+  const cardColor = isTrending ? '#363b40' : '#0072b1';
   
   const options = {
     chart: {
@@ -112,7 +112,7 @@ export default function PostCard({ keyword, data, index, setWeeklyKeywords, trac
     <Grid xs={12} sm={latestPostLarge ? 12 : 6} md={latestPostLarge ? 3 : 4} sx={{}}>
       <style>@import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap);</style>
 
-      <Card sx = {{ height: 202.5, borderRadius: '5.5px', border: '1.75px solid', borderColor: cardColor }} onClick={() => handleClick()}>
+      <Card sx = {{ height: 202.5, borderRadius: '4.5px', border: '1.75px solid', borderColor: cardColor }} onClick={() => handleClick()}>
         
       <Stack sx={{width: '100%', zIndex: 1, height: 44.25, backgroundColor: cardColor, 
       justifyContent: "space-between", userSelect: 'none', position: 'absolute'}}>

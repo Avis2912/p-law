@@ -46,7 +46,7 @@ export default function BlogView() {
   const [weeklyKeywords, setWeeklyKeywords] = useState([]);
   const [firmName, setFirmName] = useState(null);
   const [firmDescription, setFirmDescription] = useState(null);
-  const [selectedList, setSelectedList] = useState('Tracked');
+  const [selectedList, setSelectedList] = useState('Strategy');
   const [isStrategyOpen, setIsStrategyOpen] = useState(false);
 
   const [searchResults, setSearchResults] = useState([
@@ -59,14 +59,43 @@ export default function BlogView() {
 
   const [isLongTermOpen, setIsLongTermOpen] = useState(false);
   const [longTermKeywords, setLongTermKeywords] = useState([]);
+  const [expandedButtons, setExpandedButtons] = useState({});
 
   const [strategyData, setStrategyData] = useState({
     STRATEGY: {
       TOPICS: [
-        { title: 'Public Relations Specialist', keywords: ['Public Relations Specialist', 'Public Relations Manager', 'Public Relations Coordinator', 'Public Relations Director', 'Public Relations Consultant'] },
-        { title: 'Policy Analyst', keywords: ['Policy Analyst', 'Policy Researcher', 'Policy Coordinator', 'Policy Director', 'Policy Consultant'] },
-        { title: 'Fundraising Coordinator', keywords: ['Fundraising Coordinator', 'Fundraising Manager', 'Fundraising Director', 'Fundraising Consultant'] },
-        { title: 'Campaign Manager', keywords: ['Campaign Manager', 'Campaign Coordinator', 'Campaign Director', 'Campaign Consultant'] },
+        { title: 'Public Relationship Specialist', keywords: [
+          {keyword: 'PR Specialist in Texas', data: [600, 1400, 1600, 1900], competition: 'LOW'},
+          {keyword: 'PR Specialist in California', data: [1200, 1700, 1900, 2200], competition: 'MEDIUM'},
+          {keyword: 'NYC PR Specialists', data: [2000, 2200, 2400, 3500], competition: 'HIGH'},
+          {keyword: 'PR Specialist in Chicago', data: [500, 2700, 2900, 3200], competition: 'LOW'},
+          {keyword: 'PR Specialist in Houston', data: [3500, 3200, 3400, 3700], competition: 'HIGH'},
+          {keyword: 'PR Specialist in San Francisco', data: [200, 1400, 1600, 1900], competition: 'LOW'},
+        ] },
+        { title: 'Policy Analyst', keywords: [
+          {keyword: 'Policy Analyst in TX', data: [600, 1400, 1600, 1900], competition: 'LOW'},
+          {keyword: 'Policy Analyst in CA', data: [1200, 1700, 1900, 2200], competition: 'MEDIUM'},
+          {keyword: 'NYC Policy Analyst', data: [2000, 2200, 2400, 3500], competition: 'HIGH'},
+          {keyword: 'Policy Analyst in Chicago', data: [500, 2700, 2900, 3200], competition: 'LOW'},
+          {keyword: 'Policy Analyst in Houston', data: [3500, 3200, 3400, 3700], competition: 'HIGH'},
+          {keyword: 'Policy Analyst in San Francisco', data: [200, 1400, 1600, 1900], competition: 'LOW'},
+        ] },
+        { title: 'Fundraising Coordinator', keywords: [
+          {keyword: 'Fundraising Coordinator in TX', data: [600, 1400, 1600, 1900], competition: 'LOW'},
+          {keyword: 'Fundraising Coordinator in CA', data: [1200, 1700, 1900, 2200], competition: 'MEDIUM'},
+          {keyword: 'NYC Fundraising Coordinator', data: [2000, 2200, 2400, 3500], competition: 'HIGH'},
+          {keyword: 'Fundraising Coordinator in Chicago', data: [500, 2700, 2900, 3200], competition: 'LOW'},
+          {keyword: 'Fundraising Coordinator in Houston', data: [3500, 3200, 3400, 3700], competition: 'HIGH'},
+          {keyword: 'Fundraising Coordinator in San Francisco', data: [200, 1400, 1600, 1900], competition: 'LOW'},
+         ] },
+         { title: 'Campaign Manager', keywords: [
+          {keyword: 'Campaign Manager in TX', data: [600, 1400, 1600, 1900], competition: 'LOW'},
+          {keyword: 'Campaign Manager in CA', data: [1200, 1700, 1900, 2200], competition: 'MEDIUM'},
+          {keyword: 'NYC Campaign Manager', data: [2000, 2200, 2400, 3500], competition: 'HIGH'},
+          {keyword: 'Campaign Manager in Chicago', data: [500, 2700, 2900, 3200], competition: 'LOW'},
+          {keyword: 'Campaign Manager in Houston', data: [3500, 3200, 3400, 3700], competition: 'HIGH'},
+          {keyword: 'Campaign Manager in San Francisco', data: [200, 1400, 1600, 1900], competition: 'LOW'},
+         ] },
       ],
       RANKING_FOR:[
         { keyword: 'Public Relations Specialist', data: [600, 1400, 1600, 1900] },
@@ -355,18 +384,20 @@ export default function BlogView() {
 
 
       {!isSearchMode && selectedList === 'Strategy' &&
-      <Card sx={{backgroundColor: 'white', height: isLongTermOpen ? '240px' : (isStrategyOpen ? '445px' : '345.5px'), width: '97.5%', p: '25px',
-      borderRadius: '5.5px', marginBottom: '25px', border: '1.25px solid #f0f0f0', transition: '0.35s ease' }}>
+      <Card sx={{backgroundColor: 'white', height: isLongTermOpen ? '240px' : (isStrategyOpen ? '448px' : '345.5px'), width: '97.5%', p: '25px',
+      borderRadius: '5.5px', marginBottom: '25px', border: '2.25px solid #f0f0f0', transition: '0.35s ease' }}>
         
       <Stack direction="column" spacing={0} alignItems="left" justifyContent="center">
       
-        <Stack direction="row" sx={{marginBottom: '20px'}} spacing={2} alignItems="start" justifyContent="space-between">
+        <Stack direction="row" sx={{marginBottom: '18px'}} spacing={2} alignItems="start" justifyContent="space-between">
 
-        <Typography sx={{ fontFamily: "Times New Roman", marginBottom: '15px',
-          letterSpacing: '-0.95px',  fontWeight: 500, fontSize: '24.25px',}}>
+        <Typography sx={{ fontFamily: "Times New Roman", marginBottom: '15px', 
+          letterSpacing: '-0.95px',  fontWeight: 500, fontSize: '24.25px', userSelect: 'none'}}>
           {isLongTermOpen ? `Long Term, I Want To Rank Highest For` 
-          : <span style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>This Month&apos;s Content Plan
-            <BasicTooltip title="Using market data, long-term goals, & news">
+          :
+          <span style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+            {openedTopic !== null ? `This Week's Content Topics` : `This Month's Content Plan`}
+            <BasicTooltip title="Draws from market data, long-term goals, & news">
             <Iconify icon="mdi:sword-fight" height={24} width={24} sx={{ ml: 8.5, position: 'absolute', top: 30, color: 'gray' }} />
             <Iconify icon="arcticons:emoji-web" height={23} width={23} sx={{ ml: 1, position: 'absolute', top: 31, color: 'gray' }} />
             <Iconify icon="arcticons:my-brain" height={23} width={23} sx={{ ml: 4.70, position: 'absolute', top: 31, color: 'gray' }} />
@@ -382,24 +413,24 @@ export default function BlogView() {
 
         {isStrategyOpen && <Button variant="contained" color="inherit" startIcon={<Iconify icon="ion:caret-back" />} 
         onClick={() => {setIsStrategyOpen(false); setOpenedTopic(null)}} sx={(theme) => ({backgroundColor: theme.palette.primary.black, 
-        height: 35, position: 'absolute', top: 24, right: 25})}>
+        height: 35, position: 'absolute', top: 22.5, right: 25})}>
           Back To Monthly Plan
         </Button>}
 
         </Stack>
       
-      {!isLongTermOpen && <>
-        <Grid container columnSpacing={2.5} rowSpacing={1.55} sx={{marginBottom: 1.3}} >
-          {strategyData.STRATEGY.TOPICS.map((topic, index) => (
-            <Grid item xs={12} sm={openedTopic === null ? 6 : 12} key={index} sx={{ display: openedTopic === null || openedTopic === index ? 'block' : 'none' }}>
-              <StrategyItem 
-                title={topic.title} 
-                keywords={topic.keywords} 
-                index={index} 
-                openedTopic={openedTopic} 
-                setOpenedTopic={setOpenedTopic} 
-              />
-            </Grid>
+        {!isLongTermOpen && <>
+          <Grid container columnSpacing={2.5} rowSpacing={1.55} sx={{marginBottom: 1.3}} >
+            {strategyData.STRATEGY.TOPICS.map((topic, index) => (
+              <Grid item xs={12} sm={openedTopic === null ? 6 : 12} key={index} sx={{ display: openedTopic === null || openedTopic === index ? 'block' : 'none' }}>
+                <StrategyItem 
+                  title={topic.title} 
+                  keywords={topic.keywords} 
+                  index={index} 
+                  openedTopic={openedTopic} 
+                  setOpenedTopic={setOpenedTopic} 
+                />
+              </Grid>
           ))}
         </Grid>
   
@@ -415,26 +446,44 @@ export default function BlogView() {
                 backgroundColor: theme.palette.primary.navBg, height: 35,
                 cursor: 'default', fontWeight: '600', boxShadow: 'none', marginRight: '14px',
                 borderRadius: '7px', width: 182, '&:hover': { backgroundColor: theme.palette.primary.navBg },
-                marginBottom: '15px' // Add spacing below the "Currently Ranking For" button
+                marginBottom: '15px'
               })}
             >
-              Currently Ranking For:
+              Currently Ranking For
             </Button>
+            
             {strategyData.STRATEGY.RANKING_FOR.map((item, index) => (
-              <Button variant="contained" onClick={() => {}}
+              <Button 
+                variant="contained" 
+                onClick={() => {
+                  setExpandedButtons(prev => ({
+                    ...prev, [index]: !prev[index]
+                  }));
+                }}
                 key={`${index}`}
                 sx={(theme) => ({
-                  backgroundColor: theme.palette.primary.lighter, cursor: 'default',
-                  fontWeight: '600', color: theme.palette.primary.navBg,
-                  boxShadow: 'none', borderRadius: '7px', width: 'auto', marginRight: '14px',
-                  '&:hover': { backgroundColor: theme.palette.primary.lighter, boxShadow: 'none' },
-                  marginBottom: '15px' // Add spacing between rows of ranking buttons
+                  backgroundColor: theme.palette.primary.lighter,
+                  cursor: 'pointer', fontWeight: '600',
+                  color: theme.palette.primary.navBg, boxShadow: 'none',
+                  borderRadius: '7px', marginRight: '14px',
+                  transition: 'width 0.3s ease', width: 'auto',
+                  '&:hover': { 
+                    backgroundColor: theme.palette.primary.lighter, boxShadow: 'none' 
+                  },
+                  marginBottom: '15px'
                 })}
               >
                 {item.keyword}
+                {expandedButtons[index] && <>
+                <span style={{ fontWeight: 'bold', marginLeft: '5px' }}>
+                {item.data[0]}/mo</span>
+                {/* <span style={{ fontWeight: 'bold', marginLeft: '5px' }}>
+                Low</span> */}
+                </>}
+
               </Button>
             ))}
-          </div>}
+        </div>}
 
         </Stack>
 
