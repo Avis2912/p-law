@@ -1,7 +1,7 @@
 // src/api/scrapeAds.js
 const express = require('express');
 const cors = require('cors');
-const chromium = require('chrome-aws-lambda'); // Use chrome-aws-lambda
+const puppeteer = require('puppeteer'); // Replace previous imports
 const path = require('path');
 
 const app = express();
@@ -26,12 +26,9 @@ async function scrapeGoogleAdsLibrary(keyword) {
   let browser;
   try {
     console.log('Attempting to launch browser...');
-    browser = await chromium.puppeteer.launch({
-      args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
-      defaultViewport: chromium.defaultViewport,
-      executablePath: await chromium.executablePath,
-      headless: chromium.headless,
-      ignoreHTTPSErrors: true,
+    browser = await puppeteer.launch({
+      args: ['--no-sandbox', '--disable-setuid-sandbox'], // Add necessary args
+      headless: true,
     });
 
     console.log('Browser launched successfully');
