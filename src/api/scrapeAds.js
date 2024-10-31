@@ -6,6 +6,7 @@ const path = require('path');
 
 const app = express();
 const port = process.env.PORT || 3040;
+const isDevelopment = process.env.NODE_ENV !== 'production';
 
 // Update CORS configuration
 app.use(cors({
@@ -172,11 +173,13 @@ app.post('/scrape', async (req, res) => {
   console.log('[Debug] Received request:', {
     body: req.body,
     path: req.path,
-    method: req.method
+    method: req.method,
+    env: process.env.NODE_ENV,
   });
   
   const { keyword } = req.body;
   if (!keyword) {
+    console.error('[Debug] Missing keyword in request');
     return res.status(400).json({ error: 'Keyword is required' });
   }
   
@@ -186,10 +189,11 @@ app.post('/scrape', async (req, res) => {
     return res.json(result);
   } catch (error) {
     console.error('[Debug] Scrape error:', error);
+    // Include error stack in development mode
     return res.status(500).json({ 
       error: 'Failed to scrape Google Ads Library',
       details: error.message,
-      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+      stack: isDevelopment ? error.stack : undefined,
     });
   }
 });
