@@ -1188,13 +1188,6 @@
     "picocolors" "^1.0.0"
     "tslib" "^2.6.0"
 
-"@playwright/browser-chromium@^1.41.2":
-  "integrity" "sha512-TvYJ5PFaDPYNlKpvPSftBbPTnu75VdRKjoMjmkd7/P79rFIBD+v6K4wU8XR6PlAqqFdPcfLL5XXZnRwTRixbDQ=="
-  "resolved" "https://registry.npmjs.org/@playwright/browser-chromium/-/browser-chromium-1.48.2.tgz"
-  "version" "1.48.2"
-  dependencies:
-    "playwright-core" "1.48.2"
-
 "@popperjs/core@^2.11.8", "@popperjs/core@^2.9.0":
   "integrity" "sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A=="
   "resolved" "https://registry.npmjs.org/@popperjs/core/-/core-2.11.8.tgz"
@@ -2600,7 +2593,7 @@
   "resolved" "https://registry.npmjs.org/chownr/-/chownr-2.0.0.tgz"
   "version" "2.0.0"
 
-"chrome-aws-lambda@^10.1.0":
+"chrome-aws-lambda@10.1.0":
   "integrity" "sha512-NZQVf+J4kqG4sVhRm3WNmOfzY0OtTSm+S8rg77pwePa9RCYHzhnzRs8YvNI6L9tALIW6RpmefWiPURt3vURXcw=="
   "resolved" "https://registry.npmjs.org/chrome-aws-lambda/-/chrome-aws-lambda-10.1.0.tgz"
   "version" "10.1.0"
@@ -6192,16 +6185,6 @@
   dependencies:
     "find-up" "^4.0.0"
 
-"playwright-core@^1.41.2":
-  "integrity" "sha512-3JvMfF+9LJfe16l7AbSmU555PaTl2tPyQsVInqm3id16pdDfvZ8TTZ/pyzmkbDrZTQefyzU7AIHlZqQnxpqHVQ=="
-  "resolved" "https://registry.npmjs.org/playwright-core/-/playwright-core-1.47.2.tgz"
-  "version" "1.47.2"
-
-"playwright-core@1.48.2":
-  "integrity" "sha512-sjjw+qrLFlriJo64du+EK0kJgZzoQPsabGF4lBvsid+3CNIZIYLgnMj9V6JY5VhM2Peh20DJWIVpVljLLnlawA=="
-  "resolved" "https://registry.npmjs.org/playwright-core/-/playwright-core-1.48.2.tgz"
-  "version" "1.48.2"
-
 "postcss@^8.4.27":
   "integrity" "sha512-PS08Iboia9mts/2ygV3eLpY5ghnUcfLV/EXTOW1E2qYxJKGGBUtNjN76FYHnMs36RmARn41bC0AZmn+rR0OVpQ=="
   "resolved" "https://registry.npmjs.org/postcss/-/postcss-8.4.31.tgz"
@@ -6493,7 +6476,7 @@
   "resolved" "https://registry.npmjs.org/punycode/-/punycode-2.3.0.tgz"
   "version" "2.3.0"
 
-"puppeteer-core@^10.1.0", "puppeteer-core@^10.4.0":
+"puppeteer-core@^10.1.0", "puppeteer-core@10.4.0":
   "integrity" "sha512-KU8zyb7AIOqNjLCN3wkrFXxh+EVaG+zrs2P03ATNjc3iwSxHsu5/EvZiREpQ/IJiT9xfQbDVgKcsvRuzLCxglQ=="
   "resolved" "https://registry.npmjs.org/puppeteer-core/-/puppeteer-core-10.4.0.tgz"
   "version" "10.4.0"
