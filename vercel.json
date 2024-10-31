@@ -22,9 +22,6 @@
       "maxDuration": 300
     }
   },
-  "env": {
-    "CHROME_AWS_LAMBDA_CACHE_DIR": "/tmp"
-  },
   "routes": [
     {
       "src": "/api/(.*)",
