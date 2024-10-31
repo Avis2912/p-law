@@ -15,7 +15,7 @@ import BasicTooltip from 'src/components/BasicTooltip';
 import { db, auth } from 'src/firebase-config/firebase';
 import { useState, useEffect, useCallback } from 'react';
 import { getDocs, getDoc, collection, doc, updateDoc } from 'firebase/firestore';
-import { getDownloadURL, ref, getStorage } from 'firebase/storage'; // Import necessary Firebase Storage functions
+import { getDownloadURL, ref, getStorage } from 'firebase/storage';
 
 import PageTitle from 'src/components/PageTitle';
 import Iconify from 'src/components/iconify';
@@ -24,6 +24,9 @@ import ComingSoon from 'src/components/ComingSoon';
 import PostCard from '../keyword-card';
 import StrategyItem from './strategy-item';
 import LongTermItem from './long-term-item';
+
+// eslint-disable-next-line import/no-relative-packages
+import createWeeklyStrat from '../../../../functions/src/Weekly/createWeeklyStrat';
 
 
 // ----------------------------------------------------------------------
@@ -39,8 +42,8 @@ export default function BlogView() {
   const [isNewPost, setIsNewPost] = useState(false);
   const [genPostPlatform, setGenPostPlatform] = useState(null);
 
-  const [timeToUpdate, setTimeToUpdate] = useState("");
-  const [isUpdateTime, setIsUpdateTime] = useState(false);
+  const [isKeyWordUpdateTime, setIsKeywordUpdateTime] = useState(false);
+  const [isStrategyUpdateTime, setIsStrategyUpdateTime] = useState(false);
   const [planName, setPlanName] = useState('');
   
   const [weeklyKeywords, setWeeklyKeywords] = useState([]);
@@ -170,6 +173,39 @@ export default function BlogView() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    const getWeeklyStratCreationType = () => {
+      const isBrandNew = !strategyData.LONG_TERM || strategyData.LONG_TERM.length === 0 || !strategyData.LAST_DATE;
+      if (isBrandNew) return 'Brand New';
+  
+      const isMonthlyRefreshTime = (() => {
+        const lastDate = new Date(strategyData.LAST_DATE);
+        const currentDate = new Date();
+        return lastDate.getMonth() === (currentDate.getMonth() === 0 ? 11 : currentDate.getMonth() - 1) && lastDate.getFullYear() === (currentDate.getMonth() === 0 ? currentDate.getFullYear() - 1 : currentDate.getFullYear());
+      })();
+      if (isMonthlyRefreshTime) return 'Monthly';
+  
+      const getWeekOfMonth = date => Math.ceil((date.getDate() + new Date(date.getFullYear(), date.getMonth(), 1).getDay() - 1) / 7);
+  
+      const isWeeklyRefreshTime = (() => {
+        const lastDate = new Date(strategyData.LAST_DATE);
+        return getWeekOfMonth(lastDate) !== getWeekOfMonth(new Date());
+      })();
+      if (isWeeklyRefreshTime) return 'Weekly';
+  
+      return 'No Update';
+    };
+  
+    const fetchData = async () => {
+      const updateStatus = await getWeeklyStratCreationType();
+      if (updateStatus !== 'No Update') {
+        createWeeklyStrat(firmName, updateStatus);
+      }
+    };
+  
+    fetchData();
+  }, [strategyData, firmName]);
+
   const itemIndexList = {1: 'First Week', 2: 'Second Week', 3: 'Third Week', 4: 'Fourth Week',};
 
   const getCurrentWeekOfMonth = () => {
@@ -241,8 +277,7 @@ export default function BlogView() {
 
 
   useEffect(() => {
-        
-    const getFirmData = async () => {
+    async function getFirmData() {
       try {
         const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email)); 
         if (userDoc.exists()) {
@@ -252,19 +287,29 @@ export default function BlogView() {
             const lastDate = new Date(`20${lastDateParts[2]}/${lastDateParts[0]}/${lastDateParts[1]}`);
             const diffDays = updateDays - Math.ceil((new Date() - lastDate) / (1000 * 60 * 60 * 24));
             await setPlanName(firmDoc.data().SETTINGS.PLAN);
-            await setSearchLimit(firmDoc.data().WEEKLY_KEYWORDS.LIMIT || 15)
-            await setSearchesMade(firmDoc.data().WEEKLY_KEYWORDS.SEARCH_COUNT || 0)
+            await setSearchLimit(firmDoc.data().WEEKLY_KEYWORDS.LIMIT || 15);
+            await setSearchesMade(firmDoc.data().WEEKLY_KEYWORDS.SEARCH_COUNT || 0);
             // await setStrategyData(firmDoc.data().STRATEGY || {});
-
-            if (typeof firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS === 'string') { writeWeeklyKeywords(firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS); console.log('WRITING KEYWORDS 0');}
-            else {await setWeeklyKeywords(firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS || []);} 
-            
-            if (firmDoc.data().WEEKLY_KEYWORDS.LAST_DATE === "") {return;}
-            if (diffDays >= 1) { await setTimeToUpdate(diffDays); } else { setIsUpdateTime(true); writeWeeklyKeywords(); console.log('WRITING KEYWORDS'); setWeeklyKeywords([]); 
-              await updateDoc(doc(db, 'firms', userDoc.data().FIRM), { 'WEEKLY_KEYWORDS.LAST_DATE': "" }); }
-            
-            // GET BIG BLOG DATA
-
+  
+            if (typeof firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS === 'string') {
+              writeWeeklyKeywords(firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS);
+              console.log('WRITING KEYWORDS 0');
+            } else {
+              await setWeeklyKeywords(firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS || []);
+            }
+  
+            if (firmDoc.data().WEEKLY_KEYWORDS.LAST_DATE === "") {
+              return;
+            }
+            if (diffDays >= 1) {
+            } else {
+              setIsKeywordUpdateTime(true);
+              writeWeeklyKeywords();
+              console.log('WRITING KEYWORDS');
+              setWeeklyKeywords([]);
+              await updateDoc(doc(db, 'firms', userDoc.data().FIRM), { 'WEEKLY_KEYWORDS.LAST_DATE': "" });
+            }
+  
             const bigBlog = firmDoc.data().BLOG_DATA.BIG_BLOG;
             const selectedBlogs = [];
             const numBlogsToSelect = Math.min(4, bigBlog.length);
@@ -274,20 +319,21 @@ export default function BlogView() {
               bigBlog.splice(randomIndex, 1);
             }
             const bigBlogData = selectedBlogs.map(blog => `${blog.TITLE}: ${blog.CONTENT}`).join('\n\n');
-
+  
             console.log(firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS);
-          }}
+          }
+        }
       } catch (err) {
         console.log(err);
       }
-    };
-
-  getFirmData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    }
+  
+    getFirmData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  
   useEffect(() => {
-    if (isUpdateTime) {setWeeklyKeywords([]); return;}; 
+    if (isKeyWordUpdateTime) {setWeeklyKeywords([]); return;}; 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isNewPost, genPostPlatform]);
   
@@ -367,7 +413,7 @@ export default function BlogView() {
         <Button variant="contained" onClick={() => {}}
         sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, cursor: 'default', fontWeight: '600',
         '&:hover': {backgroundColor: theme.palette.primary.navBg,}})}>
-          {!isUpdateTime ? (selectedList === 'Strategy' ? `Strategy Updated This Week` : `Updated This Week`) : 'Update In Progress'}
+          {!isKeyWordUpdateTime ? (selectedList === 'Strategy' ? `Strategy Updated This Week` : `Updated This Week`) : 'Update In Progress'}
         </Button>
         </>)}
 
@@ -414,7 +460,8 @@ export default function BlogView() {
 
       </Stack></Stack>
 
-      {isUpdateTime && <Creating text='Updating All SEO Data' imgUrl='https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/image_2024-10-23_202020994.png?alt=media&token=799383a7-7d68-4c2d-8af2-835616badb7b' />}
+      {isKeyWordUpdateTime && <Creating text='Updating All SEO Data' imgUrl='https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/image_2024-10-23_202020994.png?alt=media&token=799383a7-7d68-4c2d-8af2-835616badb7b' />}
+      {isStrategyUpdateTime && <Creating text='Updating Strategy Data' imgUrl='https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/image_2024-10-23_202020994.png?alt=media&token=799383a7-7d68-4c2d-8af2-835616badb7b' />}
 
       {isSearchMode && (<>
       <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" mt={0} mb={3}>

@@ -62,8 +62,24 @@ import { getDoc, doc, updateDoc } from '@firebase/firestore';
 import { useState, useCallback } from 'react';
 import { db, auth } from 'src/firebase-config/firebase';
 
-export const createWeeklyStrat = async (firmName) => {
+const createWeeklyStrat = async (firmName, type='New') => {
 
+    let strategyData = {};
+
+    const getStrategyData = async () => {
+        const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
+        if (userDoc.exists()) {
+            const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
+            if (firmDoc.exists()) {
+                strategyData = firmDoc.data().STRATEGY;
+            }
+        }
+    }
+
+    await getStrategyData();
+
+
+    return strategyData;
 }
 
 export default createWeeklyStrat;
