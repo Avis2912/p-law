@@ -8,7 +8,7 @@
 //         messages: [
 //             {role: "system", content: "You are a helpful assistant. Your response should be in JSON format."},
 //             { role: "user", content: prompt },
-//         ],
+//         ],s
 //         response_format: {"type": "json_object"}
 //     };
     
