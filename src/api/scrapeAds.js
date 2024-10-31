@@ -18,21 +18,18 @@ app.use(cors({
 app.use(express.json());
 
 async function scrapeGoogleAdsLibrary(keyword) {
-  console.log('Scraping Google Ads Library for:', keyword);
+  console.log('[Debug] Starting scrape for:', keyword);
   
-  // Update browser launch config for Vercel
-  const browser = await chromium.launch({
+  const browserConfig = {
     headless: true,
-    args: [
-      '--disable-gpu',
-      '--disable-dev-shm-usage',
-      '--disable-setuid-sandbox',
-      '--no-first-run',
-      '--no-sandbox',
-      '--no-zygote',
-      '--single-process',
-    ]
-  });
+    args: chromium.args,
+    executablePath: await chromium.executablePath(),
+    ignoreHTTPSErrors: true
+  };
+  
+  console.log('[Debug] Browser config:', browserConfig);
+  
+  const browser = await chromium.launch(browserConfig);
 
   const page = await browser.newPage();
   const result = {
@@ -121,6 +118,12 @@ async function scrapeGoogleAdsLibrary(keyword) {
 }
 
 app.post('/scrape', async (req, res) => {
+  console.log('[Debug] Received request:', {
+    body: req.body,
+    path: req.path,
+    method: req.method
+  });
+  
   const { keyword } = req.body;
   if (!keyword) {
     return res.status(400).json({ error: 'Keyword is required' });
@@ -128,12 +131,14 @@ app.post('/scrape', async (req, res) => {
   
   try {
     const result = await scrapeGoogleAdsLibrary(keyword);
+    console.log('[Debug] Scrape result:', result);
     return res.json(result);
   } catch (error) {
-    console.error('Server error:', error);
+    console.error('[Debug] Scrape error:', error);
     return res.status(500).json({ 
       error: 'Failed to scrape Google Ads Library',
-      details: error.message 
+      details: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
     });
   }
 });
