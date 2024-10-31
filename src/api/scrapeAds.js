@@ -1,7 +1,8 @@
 // src/api/scrapeAds.js
 const express = require('express');
 const cors = require('cors');
-const puppeteer = require('puppeteer'); // Replace previous imports
+const puppeteer = require('puppeteer-core');
+const chromium = require('@sparticuz/chromium');
 const path = require('path');
 
 const app = express();
@@ -26,9 +27,17 @@ async function scrapeGoogleAdsLibrary(keyword) {
   let browser;
   try {
     console.log('Attempting to launch browser...');
+    
+    // Configure Chromium
+    const executablePath = await chromium.executablePath;
+
+    // Launch the browser with appropriate options
     browser = await puppeteer.launch({
-      args: ['--no-sandbox', '--disable-setuid-sandbox'], // Add necessary args
-      headless: true,
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: executablePath,
+      headless: chromium.headless,
+      ignoreHTTPSErrors: true,
     });
 
     console.log('Browser launched successfully');

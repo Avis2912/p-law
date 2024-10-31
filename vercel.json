@@ -5,7 +5,7 @@
       "src": "src/api/scrapeAds.js",
       "use": "@vercel/node",
       "config": {
-        "maxDuration": 60,
+        "maxDuration": 300,
         "memory": 3008,
         "runtime": "nodejs18.x"
       }
@@ -19,7 +19,7 @@
   "functions": {
     "src/api/scrapeAds.js": {
       "memory": 3008,
-      "maxDuration": 60
+      "maxDuration": 300
     }
   },
   "routes": [
