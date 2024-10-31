@@ -61,6 +61,7 @@
 import { getDoc, doc, updateDoc } from '@firebase/firestore';
 import { useState, useCallback } from 'react';
 import { db, auth } from 'src/firebase-config/firebase';
+import axios from 'axios';
 
 const createWeeklyStrat = async (firmName, type='New') => {
 
