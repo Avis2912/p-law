@@ -1,7 +1,8 @@
 // src/api/scrapeAds.js
 const express = require('express');
 const cors = require('cors');
-const { chromium } = require('playwright-core');
+// Update the import to use 'playwright' instead of 'playwright-core'
+const { chromium } = require('playwright');
 const path = require('path');
 
 const app = express();
@@ -36,17 +37,7 @@ async function scrapeGoogleAdsLibrary(keyword) {
         '--no-sandbox',
         '--disable-setuid-sandbox',
         '--disable-dev-shm-usage',
-      ],
-      executablePath: process.env.NODE_ENV === 'production' 
-        ? '/var/task/node_modules/@playwright/browser-chromium/chromium/chrome-linux/chrome'
-        : undefined
-    }).catch(err => {
-      console.error('Browser launch failed:', {
-        message: err.message,
-        stack: err.stack,
-        name: err.name
-      });
-      throw err;
+      ]
     });
     console.log('Browser launched successfully');
 
