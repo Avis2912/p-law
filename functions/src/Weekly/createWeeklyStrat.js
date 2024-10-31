@@ -79,6 +79,16 @@ const createWeeklyStrat = async (firmName, type='New') => {
 
     strategyData = await getStrategyData();
 
+    const postData = (target) => [{
+        "target": target,
+        "location_code": 2840,
+        "language_code": "en",
+        "date_from": "2024-03-01",
+        "date_to": "2024-09-01"
+      }];
+
+    const rankedTrafficUrl = 'https://api.dataforseo.com/v3/dataforseo_labs/google/ranked_keywords/live';
+
     const rankedKeywordResponse =
         await axios({
         method: 'post',
