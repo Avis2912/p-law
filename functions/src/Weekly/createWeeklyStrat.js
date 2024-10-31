@@ -71,13 +71,33 @@ const createWeeklyStrat = async (firmName, type='New') => {
         if (userDoc.exists()) {
             const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
             if (firmDoc.exists()) {
-                strategyData = firmDoc.data().STRATEGY;
+                return firmDoc.data().STRATEGY || {};
             }
         }
     }
 
-    await getStrategyData();
+    strategyData = await getStrategyData();
 
+    const rankedKeywordResponse =
+        await axios({
+        method: 'post',
+        url: rankedTrafficUrl,
+        data: postData(domains[0]),
+        headers: {
+            'Authorization': 'Basic YXZpcm94NEBnbWFpbC5jb206NTEwNjUzYzA0ODkyNjBmYg==',
+            'Content-Type': 'application/json'
+        }
+        });
+
+    let rankedSearches = rankedKeywordResponse.data.tasks[0].result[0].items
+        .map(item => ({
+        KEYWORD: item.keyword_data.keyword,
+        EST_VOLUME: item.keyword_data.keyword_info.search_volume,
+        MONTHLY_SEARCHES: item.keyword_data.keyword_info.monthly_searches,
+        COMPETITION: item.keyword_data.keyword_info.competition_level,
+        }))
+
+    console.log('Ranked Searches:', rankedSearches);
 
     return strategyData;
 }
