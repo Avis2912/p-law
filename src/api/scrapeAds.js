@@ -19,56 +19,36 @@ app.use(cors({
 app.use(express.json());
 
 async function scrapeGoogleAdsLibrary(keyword) {
-  console.log('[Debug] Starting scrape for:', keyword);
+  console.log('=== SCRAPING START ===');
+  console.log('Environment:', process.env.NODE_ENV);
+  console.log('Keyword:', keyword);
+  console.log('Executable Path:', process.env.NODE_ENV === 'production' 
+    ? '/var/task/node_modules/@playwright/browser-chromium/chromium/chrome-linux/chrome'
+    : 'default');
+
   let browser;
-  
   try {
-    const browserConfig = {
+    // Log browser launch attempt
+    console.log('Attempting to launch browser...');
+    browser = await chromium.launch({
       headless: true,
       args: [
-        '--autoplay-policy=user-gesture-required',
-        '--disable-background-networking',
-        '--disable-background-timer-throttling',
-        '--disable-backgrounding-occluded-windows',
-        '--disable-breakpad',
-        '--disable-client-side-phishing-detection',
-        '--disable-component-update',
-        '--disable-default-apps',
-        '--disable-dev-shm-usage',
-        '--disable-domain-reliability',
-        '--disable-extensions',
-        '--disable-features=AudioServiceOutOfProcess',
-        '--disable-hang-monitor',
-        '--disable-ipc-flooding-protection',
-        '--disable-notifications',
-        '--disable-offer-store-unmasked-wallet-cards',
-        '--disable-popup-blocking',
-        '--disable-print-preview',
-        '--disable-prompt-on-repost',
-        '--disable-renderer-backgrounding',
-        '--disable-setuid-sandbox',
-        '--disable-speech-api',
-        '--disable-sync',
-        '--hide-scrollbars',
-        '--ignore-gpu-blacklist',
-        '--metrics-recording-only',
-        '--mute-audio',
-        '--no-default-browser-check',
-        '--no-first-run',
-        '--no-pings',
         '--no-sandbox',
-        '--no-zygote',
-        '--password-store=basic',
-        '--use-gl=swiftshader',
-        '--use-mock-keychain',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
       ],
       executablePath: process.env.NODE_ENV === 'production' 
         ? '/var/task/node_modules/@playwright/browser-chromium/chromium/chrome-linux/chrome'
         : undefined
-    };
-    
-    console.log('[Debug] Launching browser with config:', browserConfig);
-    browser = await chromium.launch(browserConfig);
+    }).catch(err => {
+      console.error('Browser launch failed:', {
+        message: err.message,
+        stack: err.stack,
+        name: err.name
+      });
+      throw err;
+    });
+    console.log('Browser launched successfully');
 
     const page = await browser.newPage();
     const result = {
@@ -155,46 +135,56 @@ async function scrapeGoogleAdsLibrary(keyword) {
 
     return result;
   } catch (error) {
-    console.error('[Debug] Fatal error in scraper:', {
-      message: error.message,
-      stack: error.stack,
-      keyword,
-      env: process.env.NODE_ENV
-    });
+    console.error('=== SCRAPING ERROR ===');
+    console.error('Error Type:', error.constructor.name);
+    console.error('Error Message:', error.message);
+    console.error('Error Stack:', error.stack);
+    console.error('Current Working Directory:', process.cwd());
+    console.error('Node Version:', process.version);
+    console.error('Memory Usage:', process.memoryUsage());
     throw error;
   } finally {
     if (browser) {
+      console.log('Closing browser...');
       await browser.close().catch(console.error);
+      console.log('Browser closed');
     }
+    console.log('=== SCRAPING END ===');
   }
 }
 
 app.post('/scrape', async (req, res) => {
-  console.log('[Debug] Received request:', {
-    body: req.body,
-    path: req.path,
-    method: req.method,
-    env: process.env.NODE_ENV,
-  });
-  
-  const { keyword } = req.body;
-  if (!keyword) {
-    console.error('[Debug] Missing keyword in request');
-    return res.status(400).json({ error: 'Keyword is required' });
-  }
+  const requestStart = Date.now();
+  console.log('=== REQUEST START ===');
+  console.log('Time:', new Date().toISOString());
+  console.log('Body:', req.body);
+  console.log('Headers:', req.headers);
   
   try {
-    const result = await scrapeGoogleAdsLibrary(keyword);
-    console.log('[Debug] Scrape result:', result);
+    const result = await scrapeGoogleAdsLibrary(req.body.keyword);
+    console.log('Scrape completed successfully');
+    console.log('Result:', result);
     return res.json(result);
   } catch (error) {
-    console.error('[Debug] Scrape error:', error);
-    // Include error stack in development mode
-    return res.status(500).json({ 
-      error: 'Failed to scrape Google Ads Library',
-      details: error.message,
-      stack: isDevelopment ? error.stack : undefined,
+    console.error('=== REQUEST ERROR ===');
+    console.error('Error occurred after:', Date.now() - requestStart, 'ms');
+    console.error('Full error:', {
+      name: error.name,
+      message: error.message,
+      stack: error.stack,
+      code: error.code
     });
+    
+    return res.status(500).json({
+      error: 'Scraping failed',
+      details: error.message,
+      time: new Date().toISOString(),
+      duration: Date.now() - requestStart,
+      env: process.env.NODE_ENV
+    });
+  } finally {
+    console.log('=== REQUEST END ===');
+    console.log('Duration:', Date.now() - requestStart, 'ms');
   }
 });
 
