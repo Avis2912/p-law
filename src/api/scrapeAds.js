@@ -2,7 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 const puppeteer = require('puppeteer-core');
-const chromium = require('@sparticuz/chromium');
+const chromium = require('chrome-aws-lambda');
 const path = require('path');
 
 const app = express();
@@ -28,18 +28,21 @@ async function scrapeGoogleAdsLibrary(keyword) {
   try {
     console.log('Attempting to launch browser...');
     
-    // Configure Chromium
-    const executablePath = await chromium.executablePath;
+    const options = process.env.NODE_ENV === 'production'
+      ? {
+          args: chromium.args,
+          defaultViewport: chromium.defaultViewport,
+          executablePath: await chromium.executablePath,
+          headless: chromium.headless,
+          ignoreHTTPSErrors: true,
+        }
+      : {
+          args: [],
+          executablePath: '/usr/bin/chromium-browser',
+          headless: "new",
+        };
 
-    // Launch the browser with appropriate options
-    browser = await puppeteer.launch({
-      args: chromium.args,
-      defaultViewport: chromium.defaultViewport,
-      executablePath: executablePath,
-      headless: chromium.headless,
-      ignoreHTTPSErrors: true,
-    });
-
+    browser = await puppeteer.launch(options);
     console.log('Browser launched successfully');
 
     const page = await browser.newPage();
