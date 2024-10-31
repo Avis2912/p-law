@@ -28,17 +28,31 @@ async function scrapeGoogleAdsLibrary(keyword) {
   try {
     console.log('Attempting to launch browser...');
     
-    // Configure Chromium
-    const executablePath = await chromium.executablePath;
+    // Configure Chromium with proper executable path handling
+    const executablePath = process.env.NODE_ENV === 'production'
+      ? await chromium.executablePath()
+      : process.env.CHROME_PATH || '';
 
-    // Launch the browser with appropriate options
-    browser = await puppeteer.launch({
-      args: chromium.args,
+    console.log('Executable path:', executablePath);
+
+    const launchOptions = {
+      args: [
+        ...chromium.args,
+        '--disable-gpu',
+        '--disable-dev-shm-usage',
+        '--disable-setuid-sandbox',
+        '--no-first-run',
+        '--no-sandbox',
+        '--no-zygote',
+        '--single-process',
+      ],
       defaultViewport: chromium.defaultViewport,
       executablePath: executablePath,
       headless: chromium.headless,
       ignoreHTTPSErrors: true,
-    });
+    };
+
+    browser = await puppeteer.launch(launchOptions);
 
     console.log('Browser launched successfully');
 
@@ -127,14 +141,11 @@ async function scrapeGoogleAdsLibrary(keyword) {
 
     return result;
   } catch (error) {
-    console.error('=== SCRAPING ERROR ===');
+    console.error('=== BROWSER LAUNCH ERROR ===');
     console.error('Error Type:', error.constructor.name);
     console.error('Error Message:', error.message);
     console.error('Error Stack:', error.stack);
-    console.error('Current Working Directory:', process.cwd());
-    console.error('Node Version:', process.version);
-    console.error('Memory Usage:', process.memoryUsage());
-    throw error;
+    throw new Error(`Browser launch failed: ${error.message}`);
   } finally {
     if (browser) {
       console.log('Closing browser...');
