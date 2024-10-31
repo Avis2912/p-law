@@ -1,8 +1,7 @@
 // src/api/scrapeAds.js
 const express = require('express');
 const cors = require('cors');
-// Update the import to use 'playwright' instead of 'playwright-core'
-const { chromium } = require('playwright');
+const chromium = require('chrome-aws-lambda'); // Use chrome-aws-lambda
 const path = require('path');
 
 const app = express();
@@ -23,22 +22,18 @@ async function scrapeGoogleAdsLibrary(keyword) {
   console.log('=== SCRAPING START ===');
   console.log('Environment:', process.env.NODE_ENV);
   console.log('Keyword:', keyword);
-  console.log('Executable Path:', process.env.NODE_ENV === 'production' 
-    ? '/var/task/node_modules/@playwright/browser-chromium/chromium/chrome-linux/chrome'
-    : 'default');
 
   let browser;
   try {
-    // Log browser launch attempt
     console.log('Attempting to launch browser...');
-    browser = await chromium.launch({
-      headless: true,
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-      ]
+    browser = await chromium.puppeteer.launch({
+      args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath,
+      headless: chromium.headless,
+      ignoreHTTPSErrors: true,
     });
+
     console.log('Browser launched successfully');
 
     const page = await browser.newPage();
@@ -49,7 +44,7 @@ async function scrapeGoogleAdsLibrary(keyword) {
 
     try {
       console.log('Navigating to Google Ads Library...');
-      await page.goto('https://adstransparency.google.com/?region=US&preset-date=Last+30+days');
+      await page.goto('https://adstransparency.google.com/?region=US&preset-date=Last+30+days', { waitUntil: 'networkidle2' });
 
       console.log('Waiting for search box...');
       await page.waitForTimeout(3000);
