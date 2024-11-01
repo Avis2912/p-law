@@ -43,10 +43,10 @@ export default async function getCompData(keyword, isAll = false, keywordList = 
         } else {
             // Wait for all single keyword requests to complete
             const [blogs, jobs, reviews, traffic, ads] = await Promise.all([
-                // getBlogs(keyword),
-                // getJobs(keyword),
-                // getReviews(keyword),
-                // getTraffic([keyword]),
+                getBlogs(keyword),
+                getJobs(keyword),
+                getReviews(keyword),
+                getTraffic([keyword]),
                 getAds(keyword),
                 [], [], [], [],
             ]);

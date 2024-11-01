@@ -130,6 +130,7 @@ export const writeWeeklyBlogs = async (
             - WORD RANGE: this post should be 1000+ WORDS LONG.
             - IMAGES: blog post should contain 2-3 images. Please add representations of them in this format: //Image: {Image Description}//. 
             Consider putting them right after h2 titles. Make sure these are evenly spaced out in the post and with specific descriptions.
+            - LISTS: Don't use html lists. Instead, use numbered lists (i.e. 1., 2., 3.) for ordered lists and bullet points for unordered lists.
             - SPECIFICITY: Be as specific and detailed as possible. Don't be repetitive and ramble.
             - LINK TO RELEVANT POSTS: Use <a> tags to add link(s) to relevant blog posts from the firm wherever applicable: ${internalLinksInt}.
             - PERSPECTIVE: Don't ever, EVER refer to yourself in the post, this should be written in third-person-perspective. Explain how 'we at ${firmNameInt}' can help, but ONLY at the end. 

@@ -18,7 +18,7 @@ import { useState, useEffect } from 'react';
 
 import PageTitle from 'src/components/PageTitle';
 import CompetitionDialog from 'src/components/CompDialog';
-import PostCard from '../post-card';
+import PostCard from '../comp-card';
 
 export default function ListsView() {
 
@@ -126,6 +126,8 @@ export default function ListsView() {
                 traffic={0} 
                 orgData={[]}
                 jobData={[]}
+                adData={[]}
+                spendData='$0'
                 reviewData={[]}
                 indexedBlogs={[]}
                 rankingFor={{}} 
@@ -143,6 +145,8 @@ export default function ListsView() {
                 traffic={value.TRAFFIC.TRAFFIC} 
                 orgData={[]}
                 jobData={value.JOBS}
+                adData={value.ADS.ADS}
+                spendData={value.ADS.SPEND}
                 reviewData={value.REVIEWS}
                 indexedBlogs={value.BLOGS}
                 rankingFor={value.TRAFFIC.RANKING_FOR} 

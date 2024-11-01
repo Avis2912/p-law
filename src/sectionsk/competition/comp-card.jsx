@@ -16,16 +16,19 @@ import DialogContent from '@mui/material/DialogContent';
 import Button from '@mui/material/Button';
 import { CardActionArea, CardMedia } from '@mui/material';
 import Chart from 'react-apexcharts';
-
 // import { deleteList } from './view/delete-function'
-
-import { format, subMonths } from 'date-fns';
-import Iconify from 'src/components/iconify';
 
 import { db } from 'src/firebase-config/firebase';
 import { deleteDoc, doc } from 'firebase/firestore';
 
-export default function PostCard({ competitorName, indexedBlogs, orgData, jobData, reviewData, traffic, rankingFor, siteLink, isReplacing, index2 }) {
+import { format, subMonths } from 'date-fns';
+import Iconify from 'src/components/iconify';
+
+import NoneFound from './none-found';
+
+
+export default function PostCard({ competitorName, indexedBlogs, orgData, 
+  adData, spendData, jobData, reviewData, traffic, rankingFor, siteLink, isReplacing, index2 }) {
 
   const latestPostLarge = index2 === -10;
   const latestPost = index2 === -10 || index2 === -20;
@@ -41,10 +44,10 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
 
   const currentMonth = new Date();
   const monthlyData = [
-    { month: format(subMonths(currentMonth, 3), 'MMMM'), value: traffic[0] },
-    { month: format(subMonths(currentMonth, 2), 'MMMM'), value: traffic[1] },
-    { month: format(subMonths(currentMonth, 1), 'MMMM'), value: traffic[2] },
-    { month: format(currentMonth, 'MMMM'), value: traffic[3] },
+    { month: format(subMonths(currentMonth, 3), 'MMMM'), value: traffic[0]?.VISITS || 0 },
+    { month: format(subMonths(currentMonth, 2), 'MMMM'), value: traffic[1]?.VISITS || 0 },
+    { month: format(subMonths(currentMonth, 1), 'MMMM'), value: traffic[2]?.VISITS || 0 },
+    { month: format(currentMonth, 'MMMM'), value: traffic[3]?.VISITS || 0 },
   ];
 
   const cardColor = '#0072b1';
@@ -92,14 +95,27 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
     }
   ];
 
-  const adData = [
-    { id: 1, imageUrl: 'https://tpc.googlesyndication.com/archive/simgad/16467954415080738021', title: 'Ad Title 1' },
-    { id: 2, imageUrl: 'https://tpc.googlesyndication.com/archive/simgad/16730817389731017995', title: 'Ad Title 2' },
-    { id: 3, imageUrl: 'https://via.placeholder.com/200', title: 'Ad Title 3' },
-    { id: 4, imageUrl: 'https://via.placeholder.com/200', title: 'Ad Title 4' },
-    { id: 5, imageUrl: 'https://via.placeholder.com/200', title: 'Ad Title 5' },
-    { id: 6, imageUrl: 'https://via.placeholder.com/200', title: 'Ad TItle 6' },
-  ];
+  // const adData = [
+  //   { id: 1, imageUrl: 'https://tpc.googlesyndication.com/archive/simgad/16467954415080738021', title: 'Ad Title 1' },
+  //   { id: 2, imageUrl: 'https://tpc.googlesyndication.com/archive/simgad/16730817389731017995', title: 'Ad Title 2' },
+  //   { id: 3, imageUrl: 'https://via.placeholder.com/200', title: 'Ad Title 3' },
+  //   { id: 4, imageUrl: 'https://via.placeholder.com/200', title: 'Ad Title 4' },
+  //   { id: 5, imageUrl: 'https://via.placeholder.com/200', title: 'Ad Title 5' },
+  //   { id: 6, imageUrl: 'https://via.placeholder.com/200', title: 'Ad TItle 6' },
+  // ];
+
+  function decodeHtmlEntities(text) {
+    const textArea = document.createElement('textarea');
+    textArea.innerHTML = text; return textArea.value;
+  }
+
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear().toString().slice(-2);
+    return `${day}/${month}/${year}`;
+  }
 
   return (
     <Grid xs={12} sm={latestPostLarge ? 12 : 6} md={latestPostLarge ? 1 : 12} >
@@ -198,22 +214,24 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
 
       {selectedOption === 1 && <>
       
-      <Card sx={(theme) => ({ height: '240px', width: '455px', borderRadius: '3.5px',
+      <Card sx={(theme) => ({ height: '240px', width: traffic[0]?.VISITS ? '455px' : '670px', borderRadius: '3.5px',
       top: '20px', left: '330px', p: '23px', pt: '18px', position: 'absolute', 
       backgroundColor: 'white', border: `1.0px solid ${theme.palette.primary.navBg}`,})}>
+
+      {!traffic[0]?.VISITS && <NoneFound text="No Available Search Data" />}
 
       <Chart options={options} series={series} type="area" width={445} height={270} 
       style={{backgroundColor: 'white', position: 'absolute',
       left: '-1.5px', top: '-8px'}} />  
 
-      <Card sx={(theme)=>({ height: '37.5px', width: '95px', borderRadius: '0px', 
+      <Card sx={(theme)=>({ height: '37.5px', width: 'auto', px: '15px', borderRadius: '0px', 
       borderBottomRightRadius: '2px', backgroundColor: theme.palette.primary.navBg, position: 'absolute', display: 'flex',
       left: '0px', top: '0px', justifyContent: 'center', alignItems: 'center', })}>
       <Typography sx={{ fontSize: '16px', fontWeight: '500', color: 'white', letterSpacing: '-0.5px',}}>
-      {`${traffic[traffic.length-1]}`} hits </Typography></Card>
+      {traffic[0]?.VISITS ? `${traffic[0]?.VISITS} hits` :  `No Available Search Data`}  </Typography></Card>
       </Card>
       
-      <Card sx={(theme) => ({ height: '240px', width: '195px', borderRadius: '5.5px',
+      {traffic[0]?.VISITS && <Card sx={(theme) => ({ height: '240px', width: '195px', borderRadius: '5.5px',
       top: '20px', left: '806.5px', pt: '18px', position: 'absolute', 
       backgroundColor: 'white', border: `1.0px solid ${theme.palette.primary.navBg}`,})}>
 
@@ -240,13 +258,13 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
 
       </List>
 
-      </Card>
+      </Card>}
       
       </>}
 
       {selectedOption === 3 && <>
       
-      <Card sx={(theme)=>({ height: '240px', width: '195px', borderRadius: '5.5px',
+      {/* <Card sx={(theme)=>({ height: '240px', width: '195px', borderRadius: '5.5px',
       top: '20px', left: '330px', p: '23px', pt: '18px', position: 'absolute', 
       display: 'flex', justifyContent: 'center', alignItems: 'center',
       backgroundColor: 'white', border: `1.0px solid ${theme.palette.primary.navBg}`,})}>
@@ -259,31 +277,40 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
       
       </Card>
 
-      <Typography sx={{ fontSize: '28px', fontWeight: '400', userSelect: 'none', pt: '18px',
-        letterSpacing: '-0.3px', fontFamily: 'DM Serif Display', textAlign: 'center'}}>
+      <Typography sx={{ fontSize: '28px', fontWeight: '400', userSelect: 'none', pt: '20px',
+        letterSpacing: '-0.5px', fontFamily: 'DM Serif Display', textAlign: 'center'}}>
         Coming Soon
       </Typography>
 
-      </Card>
+      </Card> */}
 
-      <List sx={(theme)=>({ width: '450px', height: '240px', 
+      <List sx={(theme)=>({ width: '670px', //450px width, 510px left for website audit
+        height: '240px', 
         bgcolor: 'white', overflow: 'auto', 
         marginLeft: '38px',borderRadius: '5.5px', position: 'absolute',
-        top: '20px', left: '510px', pt: '0px', pb: '0px',
+        top: '20px', left: '292px', pt: '0px', pb: '0px',
         border: `1.0px solid ${theme.palette.primary.navBg}`,})}>
+
+      {indexedBlogs.length === 0 && <NoneFound text="No WordPress Blogs Found"/>}
 
       {indexedBlogs.map((blog, index) => (
         <ListItem 
           key={index} 
           sx={{ borderBottom: indexedBlogs.length > 3 ? (index !== indexedBlogs.length - 1 && '0.1px solid #c2c1c0') : '0.1px solid #c2c1c0'
           , justifyContent: 'space-between'}}>          
-          <ListItemText primary={blog.TITLE} sx={{fontWeight: '900'}}/>
-          <Button variant="contained" color="primary" sx={(theme) => ({height: '27px', width: '28px', 
+          <ListItemText primary={decodeHtmlEntities(blog.TITLE)} sx={{fontWeight: '900'}}/>
+          <Button variant="contained" color="primary" sx={(theme) => ({minHeight: '20px', minWidth: '5px', 
           backgroundColor: theme.palette.primary.navBg, marginLeft: '15px',
           borderRadius: '5px', fontSize: '14px'})} onClick={() => {
             const url = blog.LINK.startsWith('http://') || blog.LINK.startsWith('https://') ? blog.LINK : `http://${blog.LINK}`;
             window.open(url, '_blank');
-          }}><Iconify icon="fluent:link-multiple-24-filled" /></Button>
+          }}><Iconify icon="fluent:link-multiple-24-filled" sx={{minHeight: '19px', minWidth: '19px'}} /></Button>
+
+          <Button variant="contained" color="primary" sx={(theme) => ({height: '32px', minWidth: '95px', cursor: 'default', boxShadow: 'none',
+          backgroundColor: theme.palette.primary.lighter, marginLeft: '10px', '&:hover': { backgroundColor: theme.palette.primary.lighter, boxShadow: 'none'},
+          borderRadius: '5px', fontSize: '14px', color: theme.palette.primary.navBg})}>
+          {formatDate(blog.DATE)}</Button>
+
         </ListItem>
       ))}
 
@@ -298,10 +325,13 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
             border: `1.0px solid ${theme.palette.primary.navBg}`,display: 'flex',
             flexDirection: 'column', overflow: 'hidden', })}
         >
+
+          {adData.length === 0 && <NoneFound text="No Active Ads Found" lower/>}
+
           <Box sx={{ flexGrow: 1, overflow: 'auto', mt: '32px' }}>
-            <Grid container spacing={2} sx={{ p: 2 }}>
+            <Grid container spacing={4} sx={{ p: 2, pt: 3 }}>
               {adData.map((ad) => (
-                <Grid item xs={6} key={ad.id}>
+                <Grid item xs={6} key={ad.preview}>
                   <Card sx={{
                     display: 'flex', flexDirection: 'column',
                     borderRadius: '4px', width: '285px',
@@ -310,7 +340,7 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
                     <Box sx={{
                       width: '100%', paddingTop: '56.25%',  position: 'relative'
                     }}>
-                      <CardMedia component="img"  image={ad.imageUrl} alt={ad.title}
+                      <CardMedia component="img" image={ad.preview} alt='Ad Preview'
                         sx={{
                           position: 'absolute', top: 0, left: 0,
                           width: '100%', height: '100%',
@@ -318,9 +348,9 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
                         }}
                       />
                     </Box>
-                    <Box sx={{ backgroundColor: 'white', p: 1, textAlign: 'center' }}>
-                      {ad.title}
-                    </Box>
+                    {/* <Box sx={{ backgroundColor: 'white', p: 1, textAlign: 'center' }}>
+                      {`${ad.title}`}
+                    </Box> */}
                   </Card>
                 </Grid>
               ))}
@@ -330,7 +360,8 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
           <Card sx={(theme) => ({
             position: 'absolute',
             height: '37.5px',
-            width: '235px',
+            width: 'auto',
+            px: '18px',
             borderRadius: '0px',
             borderBottomRightRadius: '2.5px',
             backgroundColor: theme.palette.primary.navBg,
@@ -341,9 +372,27 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
             alignItems: 'center',
           })}>
             <Typography sx={{ fontSize: '16px', fontWeight: '500', color: 'white', letterSpacing: '-0.5px' }}>
-              $14,250 - Estimated Spend
+              {spendData === '' ? '$0 Estimated Spend' 
+              : (spendData === '$0.00' ? 'No Spend Data Available' 
+              : `${spendData} Estimated Spend`)}
             </Typography>
           </Card>
+
+          {spendData !== '' && <Card sx={(theme) => ({
+            position: 'absolute',
+            height: '32.5px', width: 'auto',
+            px: '12.5px', borderRadius: '4.5px',
+            backgroundColor: theme.palette.primary.black, display: 'flex',
+            right: '8px', top: '9px',
+            justifyContent: 'center', alignItems: 'center',
+          })}>
+            <Iconify icon="material-symbols-light:ads-click" 
+            sx={{ height: '17.5px', width: '17.5px', color: 'white', mr: '5px' }} />
+            <Typography sx={{ fontSize: '13px', fontWeight: '500', color: 'white', letterSpacing: '-0.5px' }}>
+              Active Ads
+            </Typography>
+          </Card>}
+
         </Card>
       )}
 
@@ -354,6 +403,8 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
         marginLeft: '38px',borderRadius: '3.5px', position: 'absolute',
         top: '20px', left: '292px', pt: '0px', pb: '0px',
         border: `0.25px solid ${theme.palette.primary.navBg}`,})}>
+
+      {jobData.length === 0 && <NoneFound text="No Active Jobs Found"/>}
 
       {jobData.map((job, index) => (
         <ListItem 
@@ -398,6 +449,8 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
         top: '20px', left: '292px', pt: '0px', pb: '0px',
         border: `0.25px solid ${theme.palette.primary.navBg}`,})}>
 
+      {reviewData.length === 0 && <NoneFound text="No Google Reviews Found"/>}
+
       {reviewData.map((review, index) => (
         <ListItem 
           key={index} 
@@ -408,15 +461,16 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
 
           <ListItemText primary={review.REVIEW} sx={{fontWeight: '900', height: '35.2px', display: 'flex', alignItems: 'center'}}/>
 
-          <Button variant="contained" color="primary" sx={(theme) => ({height: '32px', width: 'auto', cursor: 'default', boxShadow: 'none',
+          <Button variant="contained" color="primary" sx={(theme) => ({height: '32px', minWidth: '30px', cursor: 'default', boxShadow: 'none',
           backgroundColor: theme.palette.primary.lighter, marginLeft: '10px', '&:hover': { backgroundColor: theme.palette.primary.lighter, boxShadow: 'none'},
           borderRadius: '5px', fontSize: '14px', color: theme.palette.primary.navBg})}>
-          {review.RATING}</Button>
+          {review.RATING}<Iconify icon="fe:star" sx={{
+          minHeight: '16px', minWidth: '16px', ml: '2px', mb: '1.5px'}} /></Button>
 
           <Button variant="contained" color="primary" sx={(theme) => ({height: '32px', width: 'auto', cursor: 'default', boxShadow: 'none',
           backgroundColor: theme.palette.primary.lighter, marginLeft: '10px', '&:hover': { backgroundColor: theme.palette.primary.lighter, boxShadow: 'none'},
           borderRadius: '5px', fontSize: '14px', color: theme.palette.primary.navBg})}>
-          {review.DATE}</Button>
+          {review.DATE || review.RATING}</Button>
 
         </ListItem>
       ))}
@@ -435,6 +489,8 @@ export default function PostCard({ competitorName, indexedBlogs, orgData, jobDat
 PostCard.propTypes = {
   orgData: PropTypes.any,
   jobData: PropTypes.any,
+  adData: PropTypes.any,
+  spendData: PropTypes.any,
   traffic: PropTypes.any,
   rankingFor: PropTypes.any,
   indexedBlogs: PropTypes.any,

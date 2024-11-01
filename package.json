@@ -19,7 +19,8 @@
     "dev:host": "vite --host",
     "vite:start": "vite",
     "vite:build": "vite build",
-    "proxy": "https://localhost:3050"
+    "proxy": "https://localhost:3050",
+    "deploy": "gcloud functions deploy scrapeAds --runtime nodejs18 --trigger-http --allow-unauthenticated --entry-point scrapeAds"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.19.1",

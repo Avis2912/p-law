@@ -35,14 +35,18 @@ const updateFirmsWithQueue = async () => {
                 COMP_SITE: 'bergplummer.com',
                 ADS: {
                     ADS: [
-                        {preview: 'https://tpc.googlesyndication.com/archive/simgad/16467954415080738021'},
-                        {preview: 'https://tpc.googlesyndication.com/archive/simgad/16467954415080738021'},
+                        {preview: 'https://tpc.googlesyndication.com/archive/simgad/16467954415080738021', title: 'Title 1'},
+                        {preview: 'https://tpc.googlesyndication.com/archive/simgad/16467954415080738021', title: 'Title 2'},
                     ],
                     SPEND: "$13,000"
                 },
                 TRAFFIC: {
-                    TRAFFIC: [1200, 1400, 1300, 1500],
-                    RANKING_FOR: [
+                    TRAFFIC: [
+                        {VISITS: 1200},
+                        {VISITS: 1400},
+                        {VISITS: 1300},
+                        {VISITS: 1500}
+                    ],                    RANKING_FOR: [
                         {
                             KEYWORD: 'Dallas asset protection',
                             MONTHLY_SEARCHES: [1000, 1200, 1100, 1300],
@@ -99,13 +103,18 @@ const updateFirmsWithQueue = async () => {
                 COMP_SITE: 'injuryattorneyofdallas.com',
                 ADS: {
                     ADS: [
-                        {preview: 'https://tpc.googlesyndication.com/archive/simgad/16467954415080738021'},
-                        {preview: 'https://tpc.googlesyndication.com/archive/simgad/16467954415080738021'},
+                        {preview: 'https://tpc.googlesyndication.com/archive/simgad/16467954415080738021', title: 'Title 1'},
+                        {preview: 'https://tpc.googlesyndication.com/archive/simgad/16467954415080738021', title: 'Title 2'},
                     ],
                     SPEND: "$15,000"
                 },
                 TRAFFIC: {
-                    TRAFFIC: [1500, 1600, 1700, 1800],
+                    TRAFFIC: [
+                        {VISITS: 1200},
+                        {VISITS: 1400},
+                        {VISITS: 1300},
+                        {VISITS: 1500}
+                    ],
                     RANKING_FOR: [
                         {
                             KEYWORD: 'Dallas injury attorney',

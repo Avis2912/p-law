@@ -1,7 +1,5 @@
 // src/api/getAds.js
-const BASE_URL = process.env.NODE_ENV === 'production'
-  ? 'https://app.pentra.club' 
-  : 'http://localhost:3040';
+const BASE_URL = 'https://us-central1-pentra-claude-gcp.cloudfunctions.net/scrapeAds'
 
 export default async function getAds(keyword) {
   const startTime = Date.now();
@@ -23,9 +21,22 @@ export default async function getAds(keyword) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
+      mode: 'cors', // Explicitly state CORS mode
+      credentials: 'omit', // Changed from 'include' to 'omit'
       body: JSON.stringify({ keyword }),
     });
+
+    // Add more detailed error logging
+    if (!response.ok) {
+      console.error('Response not OK:', {
+        status: response.status,
+        statusText: response.statusText,
+        headers: Object.fromEntries(response.headers),
+      });
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
 
     const text = await response.text();
     console.log('=== CLIENT RESPONSE ===');
@@ -33,10 +44,6 @@ export default async function getAds(keyword) {
     console.log('Status Text:', response.statusText);
     console.log('Headers:', Object.fromEntries(response.headers));
     console.log('Raw Response:', text);
-
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: ${text}`);
-    }
 
     const result = text ? JSON.parse(text) : null;
     console.log('Parsed Result:', result);

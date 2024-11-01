@@ -27,56 +27,68 @@ export default function CompetitionDialog ({
   const [competitorName, setCompetitorName] = React.useState('');
   const [competitorSite, setCompetitorSite] = React.useState('');
   const [competitorBlogPage, setCompetitorBlogPage] = React.useState('');
+const addCompetitor = async () => {
+  if (!competitorName || !competitorSite) { 
+    setError('Please fill out all fields.'); 
+    return;
+  }  
+  handleClose();
 
-  const addCompetitor = async () => {
-    
-    if (!competitorName || !competitorSite) { 
-      setError('Please fill out all fields.'); 
-      return;
-    }  handleClose();
+  try {
+    const firmDatabase = collection(db, 'firms');
+    const data = await getDocs(firmDatabase);
+    const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
+    const firmDoc = data.docs.find((docc) => docc.id === userDoc.data().FIRM);
 
-    // setTimeout(() => {
-    //   console.log('Adding Competitor...')
-    // }, 10000);
+    if (firmDoc) {  
+      const firmDocRef = doc(db, 'firms', firmDoc.id);
 
-    try {
-      const firmDatabase = collection(db, 'firms');
-      const data = await getDocs(firmDatabase);
-      const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
-      const firmDoc = data.docs.find((docc) => docc.id === userDoc.data().FIRM);
+      setIsAddingCompetitor(true);
 
-      if (firmDoc) {  
-        const firmDocRef = doc(db, 'firms', firmDoc.id);
+      const compData = await getCompData(competitorSite);
 
-        setIsAddingCompetitor(true);
+      const newCompetitor = {
+        NAME: competitorName,
+        COMP_SITE: competitorSite,
+        ...compData
+      };
 
-        const compData = await getCompData(competitorSite);
-
-        const newCompetitor = {
-          NAME: competitorName,
-          COMP_SITE: competitorSite,
-          ...compData
-        };
-
-        const existingIndex = competition.findIndex(item => item.COMP_SITE === competitorSite || item.COMP_SITE.includes(competitorSite));
-
-        if (existingIndex !== -1) {
-          competition[existingIndex] = newCompetitor;
-        } else {
-          competition.push(newCompetitor);
+      // Validate newCompetitor object
+      for (const key in newCompetitor) {
+        if (newCompetitor[key] === undefined) {
+          throw new Error(`Field ${key} is undefined`);
         }
-
-        // await updateDoc(firmDocRef, { "COMPETITION.COMPETITION": competition });
-        // console.log('Competitor added/updated successfully');
-        
-      } else {
-        console.error('Firm document does not exist');
       }
-    } catch (err) {
-      console.error('Error updating competitor data:', err);
+
+      const existingIndex = competition.findIndex(item => item.COMP_SITE === competitorSite || item.COMP_SITE.includes(competitorSite));
+
+      if (existingIndex !== -1) {
+        competition[existingIndex] = newCompetitor;
+      } else {
+        competition.push(newCompetitor);
+      }
+
+      // Validate competition array
+      competition.forEach(comp => {
+        for (const key in comp) {
+          if (comp[key] === undefined) {
+            throw new Error(`Field ${key} in competition is undefined`);
+          }
+        }
+      });
+
+      await updateDoc(firmDocRef, { "COMPETITION.COMPETITION": competition });
+      console.log('Competitor added/updated successfully');
+      
+    } else {
+      console.error('Firm document does not exist');
     }
-    setIsAddingCompetitor(false);
-  };
+  } catch (err) {
+    console.error('Error updating competitor data:', err);
+    setError(`Error updating competitor data: ${err.message}`);
+  }
+  setIsAddingCompetitor(false);
+};
 
   return (
     <Dialog open={isDialogOpen} onClose={handleClose} 
