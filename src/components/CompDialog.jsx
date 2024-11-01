@@ -52,19 +52,19 @@ export default function CompetitionDialog ({
 
         const compData = await getCompData(competitorSite);
 
-        // const newCompetitor = {
-        //   NAME: competitorName,
-        //   COMP_SITE: competitorSite,
-        //   ...compData
-        // };
+        const newCompetitor = {
+          NAME: competitorName,
+          COMP_SITE: competitorSite,
+          ...compData
+        };
 
-        // const existingIndex = competition.findIndex(item => item.COMP_SITE === competitorSite || item.COMP_SITE.includes(competitorSite));
+        const existingIndex = competition.findIndex(item => item.COMP_SITE === competitorSite || item.COMP_SITE.includes(competitorSite));
 
-        // if (existingIndex !== -1) {
-        //   competition[existingIndex] = newCompetitor;
-        // } else {
-        //   competition.push(newCompetitor);
-        // }
+        if (existingIndex !== -1) {
+          competition[existingIndex] = newCompetitor;
+        } else {
+          competition.push(newCompetitor);
+        }
 
         // await updateDoc(firmDocRef, { "COMPETITION.COMPETITION": competition });
         // console.log('Competitor added/updated successfully');
