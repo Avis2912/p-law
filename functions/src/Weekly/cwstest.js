@@ -110,3 +110,14 @@ const createWeeklyStrat = async (firmName, type='New') => {
 module.exports = createWeeklyStrat;
 
 createWeeklyStrat('FutureSolve.com', 'New');
+
+async function test() {
+    try {
+        const result = await openAIJSON('Generate a simple JSON with a greeting message');
+        console.log('Result:', result);
+    } catch (error) {
+        console.error('Test failed:', error.message);
+    }
+}
+
+test();
