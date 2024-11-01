@@ -76,7 +76,7 @@ async function scrapeGoogleAdsLibrary(keyword) {
 
     const page = await browser.newPage();
     await page.setDefaultNavigationTimeout(60000);
-    await page.setDefaultTimeout(30000)
+    await page.setDefaultTimeout(30000);
 
     const result = {
       SPEND: '',
