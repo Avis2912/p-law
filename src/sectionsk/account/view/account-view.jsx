@@ -43,6 +43,9 @@ export default function AccountView() {
   const [imagePfp, setImagePfp] = useState('');
   const [planName, setPlanName] = useState('');
 
+  const [firmName, setFirmName] = useState(userData.NAME || '');
+  const [firmLocation, setFirmLocation] = useState(userData.LOCATION || '');
+
   const storage = getStorage();
   const navigate = useNavigate(); 
 
@@ -59,6 +62,8 @@ export default function AccountView() {
             await setPlanName(firmDoc.data().SETTINGS.PLAN || '');
             await setImagePfp(firmDoc.data().FIRM_INFO.IMAGE || '');
             await setIndexedBlogs(firmDoc.data().BLOG_DATA.BIG_BLOG || {});
+            setFirmName(firmDoc.data().FIRM_INFO.NAME || '');
+            setFirmLocation(firmDoc.data().FIRM_INFO.LOCATION || '');
           } else {
             console.log('Error: Firm document not found.');
           }
@@ -118,29 +123,64 @@ const uploadProfilePicture = async () => {
 
 const saveChanges = async () => {
   try {
-
     const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
     const firmDocRef = doc(db, 'firms', userDoc.data().FIRM); 
     const updateData = {
       'SETTINGS.MODEL': selectedModel,
       'SETTINGS.IMAGES': imagesSettings,
       'FIRM_INFO.DESCRIPTION': firmDescription,
+      'FIRM_INFO.NAME': firmName,
+      'FIRM_INFO.LOCATION': firmLocation,
+      'FIRM_INFO.IMAGE': imagePfp, // Add image URL to update
     };
 
     await updateDoc(firmDocRef, updateData); 
     navigate('/');
-
-  } catch (err) {console.error("Error updating document:", err);}
-}
+  } catch (err) {
+    console.error("Error updating document:", err);
+    alert('Failed to save changes. Please try again.');
+  }
+};
 
   const handleClose = () => {setIsDialogOpen(false);};
   const handleClose2 = () => {setIsDialogOpen2(false);};
 
-  const handleImageChange = (event) => {
+  const handleImageChange = async (event) => {
     if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
       const reader = new FileReader();
-      reader.onload = (e) => setProfileSrc(e.target.result);
-      reader.readAsDataURL(event.target.files[0]);
+      
+      reader.onload = async (e) => {
+        try {
+          // Upload to Firebase Storage
+          const storageRef = ref(storage, `firms/${auth.currentUser.email}/profile`);
+          
+          // Delete existing image if any
+          try {
+            await deleteObject(storageRef);
+          } catch (error) {
+            if (error.code !== 'storage/object-not-found') {
+              console.error("Error deleting previous image:", error);
+            }
+          }
+          
+          // Upload new image
+          await uploadString(storageRef, e.target.result, 'data_url');
+          
+          // Get download URL
+          const imageURL = await getDownloadURL(storageRef);
+          
+          // Update state
+          setImagePfp(imageURL);
+          setProfileSrc(e.target.result);
+          
+        } catch (error) {
+          console.error("Error handling image:", error);
+          alert('Failed to upload image. Please try again.');
+        }
+      };
+      
+      reader.readAsDataURL(file);
     }
   };
 
@@ -223,9 +263,8 @@ const saveChanges = async () => {
       maxRows={1}
       size="small"
       placeholder="Firm Name"
-      defaultValue={brand ? brand.user_name : null}
-      onChange={(e) => setUserName(e.target.value)}
-      value={userData.NAME}
+      value={firmName}
+      onChange={(e) => setFirmName(e.target.value)}
       />
 
     <TextField
@@ -236,9 +275,9 @@ const saveChanges = async () => {
       maxRows={1}
       size="small"
       placeholder="HQ Location / State"
-      defaultValue={brand ? brand.brand_name : null}
-      onChange={(e) => setBrandName(e.target.value)}
-      value={userData.LOCATION} />
+      value={firmLocation}
+      onChange={(e) => setFirmLocation(e.target.value)}
+      />
 
       {/* <Button variant="contained" color="primary" onClick={() => alert("please Email us at pentra.legal@gmail.com! We'll get back to you ASAP.")}
       sx={(theme) => ({backgroundColor: theme.palette.primary.navBg})}>

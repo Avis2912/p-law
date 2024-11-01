@@ -165,12 +165,12 @@ export default function StrategyItem({ title, keywords, index, openedTopic, setO
               
               <ListItemText primary={keyword.keyword} sx={{p: '0px', '& .MuiTypography-root': {fontSize: '15px', p: '1px', px: '8px', textAlign: 'left', fontWeight: 500 }}}/>
               
-              <Button sx={(theme) => ({backgroundColor: hexToRGBA(theme.palette.primary.light, 0.75), '&:hover': {backgroundColor: theme.palette.primary.light, },
-                color: 'white', px: '10px', borderRadius: '2.75px', width: 'auto', minWidth: '10px', marginRight: '8.5px',
+              <Button sx={(theme) => ({backgroundColor: hexToRGBA(theme.palette.primary.light, 0.65), '&:hover': {backgroundColor: theme.palette.primary.light, },
+                color: 'white', px: '10px', borderRadius: '3.25px', width: 'auto', minWidth: '10px', marginRight: '8.5px',
                 letterSpacing: '-0.15px', height: '28px', fontSize: '13.75px', fontWeight: 200,
               })}>{keyword.data[0]} hits</Button>
-              <Button sx={(theme) => ({backgroundColor: hexToRGBA(theme.palette.primary.light, 0.75), '&:hover': {backgroundColor: theme.palette.primary.light, },
-                color: 'white', px: '11px', borderRadius: '2.75px', width: 'auto', minWidth: '10px',
+              <Button sx={(theme) => ({backgroundColor: hexToRGBA(theme.palette.primary.light, 0.65), '&:hover': {backgroundColor: theme.palette.primary.light, },
+                color: 'white', px: '11px', borderRadius: '3.25px', width: 'auto', minWidth: '10px',
                 letterSpacing: '-0.55px', height: '28px', fontSize: '13.25px', fontWeight: 100, marginRight: '2px'
               })}>{keyword.competition}</Button>
 

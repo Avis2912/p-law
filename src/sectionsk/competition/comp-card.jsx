@@ -18,8 +18,8 @@ import { CardActionArea, CardMedia } from '@mui/material';
 import Chart from 'react-apexcharts';
 // import { deleteList } from './view/delete-function'
 
-import { db } from 'src/firebase-config/firebase';
-import { deleteDoc, doc } from 'firebase/firestore';
+import { db, auth } from 'src/firebase-config/firebase';
+import { deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
 
 import { format, subMonths } from 'date-fns';
 import Iconify from 'src/components/iconify';
@@ -28,7 +28,7 @@ import NoneFound from './none-found';
 
 
 export default function PostCard({ competitorName, indexedBlogs, orgData, 
-  adData, spendData, jobData, reviewData, traffic, rankingFor, siteLink, isReplacing, index2 }) {
+  adData, spendData, jobData, reviewData, traffic, rankingFor, siteLink, isReplacing, index2, setCompetition }) {
 
   const latestPostLarge = index2 === -10;
   const latestPost = index2 === -10 || index2 === -20;
@@ -117,6 +117,33 @@ export default function PostCard({ competitorName, indexedBlogs, orgData,
     return `${day}/${month}/${year}`;
   }
 
+  const [isHovered, setIsHovered] = React.useState(false);
+
+  const deleteCompetitor = async () => {
+    try {
+      const isConfirmed = window.confirm(`Are you sure you want to delete ${competitorName}?`);
+      
+      if (isConfirmed) {
+        const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
+        if (userDoc.exists()) {
+          const firmDocRef = doc(db, 'firms', userDoc.data().FIRM);
+          const firmDoc = await getDoc(firmDocRef);
+          
+          if (firmDoc.exists()) {
+            const updatedCompetition = firmDoc.data().COMPETITION.COMPETITION.filter(comp => comp.NAME !== competitorName);
+            
+            await updateDoc(firmDocRef, {'COMPETITION.COMPETITION': updatedCompetition});
+            setCompetition(updatedCompetition);
+            
+          } else {console.log('Error: Firm document not found.');}
+        } else {console.log('Error: User document not found.');}
+      }
+    } catch (error) {
+      console.error('Error deleting competitor:', error);
+      alert('Failed to delete competitor. Please try again.');
+    }
+  };
+
   return (
     <Grid xs={12} sm={latestPostLarge ? 12 : 6} md={latestPostLarge ? 1 : 12} >
       <style> @import url(https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=Fredericka+the+Great&family=Raleway:ital,wght@0,100..900;1,100..900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yeseva+One&display=swap) </style>
@@ -125,9 +152,40 @@ export default function PostCard({ competitorName, indexedBlogs, orgData,
       p: '23px', pt: '18px', transition: '0.3s all', border: '0.5px solid #ebebeb'}}>
 
       <Stack spacing={1.45} direction="row" sx={{display: 'flex', alignItems: 'center',}}>
-        <img src={`https://www.google.com/s2/favicons?domain=${siteLink}&sz=256`} alt=''
-        style={{ borderRadius: '50%', width: '32px', userSelect: 'none', 
-        height: '32px', border: '1.5px solid black' }} />
+        
+          <div
+            role="button" tabIndex={0}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            onClick={deleteCompetitor}
+            onKeyDown={(e) => {if (e.key === 'Enter' || e.key === ' ') {deleteCompetitor();}}}
+            style={{ cursor: 'pointer' }}
+          >
+            
+            {isHovered ? (
+              <Iconify
+                icon="material-symbols:delete"
+                sx={{
+                  width: '32px', height: '32px',
+                  color: 'error.main',marginTop: '6px',
+                  borderRadius: '50%',padding: '4px',
+                  border: '1.5px solid #d32f2f'
+                }}
+              />
+            ) : (
+              <img
+                src={`https://www.google.com/s2/favicons?domain=${siteLink}&sz=256`}
+                alt=""
+                style={{
+                  borderRadius: '50%',
+                  width: '32px',
+                  height: '32px',
+                  userSelect: 'none',
+                  border: '1.5px solid black'
+                }}
+              />
+            )}
+          </div>
 
         <Typography sx={{ fontSize: '32px', fontWeight: '400', userSelect: 'none',
         letterSpacing: '-0.5px', fontFamily: 'DM Serif Display',}}>
@@ -499,4 +557,5 @@ PostCard.propTypes = {
   siteLink: PropTypes.any,
   isReplacing: PropTypes.bool,
   index2: PropTypes.any,
+  setCompetition: PropTypes.func.isRequired,
 };

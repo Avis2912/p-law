@@ -296,6 +296,7 @@ const modules = {
 
         IMPORTANT INSTRUCTIONS:
         - FORMATTING: Wrap titles in <${titleTag}> and sub-titles in <h3> tags. Wrap all paragraphs (and everything else that should have a line after) in <p> tags. Use b tags only in same-line text or 'title: paragraph'. Use numbers if you decide to add a list not ul tags.
+        - LISTS: Don't use html lists. Instead, use numbered lists (i.e. 1., 2., 3.) for ordered lists and bullet points for unordered lists.
         - TABLES: Always include table(s) with 2 or 3 columns. Add in this syntax:
 
         <div class="quill-better-table-wrapper">
