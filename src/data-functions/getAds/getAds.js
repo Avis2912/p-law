@@ -2,6 +2,9 @@
 const BASE_URL = 'https://us-central1-pentra-claude-gcp.cloudfunctions.net/scrapeAds'
 
 export default async function getAds(keyword) {
+
+  const formattedKeyword = keyword.replace(/(^\w+:|^)\/\//, '');
+
   const startTime = Date.now();
   console.log('=== CLIENT REQUEST START ===');
   console.log('Time:', new Date().toISOString());
@@ -25,7 +28,7 @@ export default async function getAds(keyword) {
       },
       mode: 'cors', // Explicitly state CORS mode
       credentials: 'omit', // Changed from 'include' to 'omit'
-      body: JSON.stringify({ keyword }),
+      body: JSON.stringify({ formattedKeyword }),
     });
 
     // Add more detailed error logging

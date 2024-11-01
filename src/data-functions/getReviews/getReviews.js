@@ -49,7 +49,7 @@ async function fetchResults(taskId) {
     });
 
     const reviews = response.data.tasks[0].result[0].items
-    .map(item => ({
+    ?.map(item => ({
       NAME: item.profile_name,
       PFP: item.profile_image_url,
       RATING: item.rating.value,

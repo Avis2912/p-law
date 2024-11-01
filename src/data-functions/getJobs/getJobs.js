@@ -3,11 +3,14 @@ import axios from 'axios';
 const apiUrl = 'https://api.dataforseo.com/v3/serp/google/jobs/task_post';
 
 export default async function getJobs(keyword) {
+
+  const formattedKeyword = keyword.replace(/(^\w+:|^)\/\//, '');
+
   try {
     const postData = [{
       "language_code": "en",
       "location_code": 2840,
-      "keyword": keyword
+      "keyword": formattedKeyword
     }];
 
     const response = await axios({

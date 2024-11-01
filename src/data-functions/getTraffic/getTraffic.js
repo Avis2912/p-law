@@ -6,6 +6,8 @@ export default async function getTraffic(domains) {
   const bulkTrafficUrl = 'https://api.dataforseo.com/v3/dataforseo_labs/google/historical_bulk_traffic_estimation/live';
   const rankedTrafficUrl = 'https://api.dataforseo.com/v3/dataforseo_labs/google/ranked_keywords/live';
 
+  const formattedDomains = domains.map(domain => domain.replace(/(^\w+:|^)\/\//, ''));
+
   try {
     const postData = (target) => [{
       "target": target,
@@ -16,7 +18,7 @@ export default async function getTraffic(domains) {
     }];
 
     const bulkPostData = [{
-      "targets": domains,
+      "targets": formattedDomains,
       "location_code": 2840,
       "language_code": "en",
       "date_from": "2024-03-01",
@@ -38,13 +40,13 @@ export default async function getTraffic(domains) {
       await axios({
         method: 'post',
         url: rankedTrafficUrl,
-        data: postData(domains[0]),
+        data: postData(formattedDomains[0]),
         headers: {
           'Authorization': 'Basic YXZpcm94NEBnbWFpbC5jb206NTEwNjUzYzA0ODkyNjBmYg==',
           'Content-Type': 'application/json'
         }
       }) :
-      await Promise.all(domains.map(domain =>
+      await Promise.all(formattedDomains.map(domain =>
         axios({
           method: 'post',
           url: rankedTrafficUrl,
@@ -103,6 +105,23 @@ export default async function getTraffic(domains) {
   } catch (error) {
     console.error('Error fetching traffic data:', error.response ? error.response.data : error.message);
     return { TRAFFIC: [], RANKING_FOR: [] };
+  }
+}
+
+export async function fetchPosts() {
+  const postsUrl = 'https://www.chropartners.com/wp-json/wp/v2/posts';
+  
+  try {
+    const response = await axios.get(postsUrl, {
+      headers: {
+        'Authorization': 'Basic YXZpcm94NEBnbWFpbC5jb206NTEwNjUzYzA0ODkyNjBmYg==',
+        'Content-Type': 'application/json'
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching posts:', error.response ? error.response.data : error.message);
+    return [];
   }
 }
 

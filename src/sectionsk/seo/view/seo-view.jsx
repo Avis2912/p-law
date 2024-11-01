@@ -298,52 +298,40 @@ const modules = {
         - FORMATTING: Wrap titles in <${titleTag}> and sub-titles in <h3> tags. Wrap all paragraphs (and everything else that should have a line after) in <p> tags. Use b tags only in same-line text or 'title: paragraph'. Use numbers if you decide to add a list not ul tags.
         - TABLES: Always include table(s) with 2 or 3 columns. Add in this syntax:
 
-        <div class="quill-better-table-wrapper">
-            <table class="quill-better-table" style="width: 600px;">
-                <colgroup>
-                    <col width="300">
-                    <col width="300">
-                </colgroup>
-                <tbody>
-                    <tr data-row="row-1" height="45">
-                        <td data-row="row-1" rowspan="1" colspan="1">
-                            <p class="qlbt-cell-line" data-row="row-1" data-cell="cell-xc52" data-rowspan="1" data-colspan="1">
-                                <strong>Estate Value</strong>
-                            </p>
-                        </td>
-                        <td data-row="row-1" rowspan="1" colspan="1">
-                            <p class="qlbt-cell-line" data-row="row-1" data-cell="cell-xc53" data-rowspan="1" data-colspan="1">
-                                <strong>Probate Requirement</strong>
-                            </p>
-                        </td>
-                    </tr>
-                    <tr data-row="row-2" height="45">
-                        <td data-row="row-2" rowspan="1" colspan="1">
-                            <p class="qlbt-cell-line" data-row="row-2" data-cell="cell-ywlw" data-rowspan="1" data-colspan="1">
-                                Under $100,000
-                            </p>
-                        </td>
-                        <td data-row="row-2" rowspan="1" colspan="1">
-                            <p class="qlbt-cell-line" data-row="row-2" data-cell="cell-ywlx" data-rowspan="1" data-colspan="1">
-                                Small Estate Affidavit
-                            </p>
-                        </td>
-                    </tr>
-                    <tr data-row="row-3" height="45">
-                        <td data-row="row-3" rowspan="1" colspan="1">
-                            <p class="qlbt-cell-line" data-row="row-3" data-cell="cell-zxlw" data-rowspan="1" data-colspan="1">
-                                $100,000 or more
-                            </p>
-                        </td>
-                        <td data-row="row-3" rowspan="1" colspan="1">
-                            <p class="qlbt-cell-line" data-row="row-3" data-cell="cell-zxlx" data-rowspan="1" data-colspan="1">
-                                Full Probate Process
-                            </p>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+       <div class="quill-better-table-wrapper">
+    <table class="quill-better-table" style="width: 600px;">
+        <colgroup>
+            <col width="300">
+            <col width="300">
+        </colgroup>
+        <tbody>
+            <tr data-row="row-1">
+                <td data-row="row-1" rowspan="1" colspan="1">
+                    <p class="qlbt-cell-line" data-row="row-1" data-cell="cell-0" data-rowspan="1" data-colspan="1">Estate Value</p>
+                </td>
+                <td data-row="row-1" rowspan="1" colspan="1">
+                    <p class="qlbt-cell-line" data-row="row-1" data-cell="cell-1" data-rowspan="1" data-colspan="1">Probate Requirement</p>
+                </td>
+            </tr>
+            <tr data-row="row-2">
+                <td data-row="row-2" rowspan="1" colspan="1">
+                    <p class="qlbt-cell-line" data-row="row-2" data-cell="cell-2" data-rowspan="1" data-colspan="1">Under $166,250</p>
+                </td>
+                <td data-row="row-2" rowspan="1" colspan="1">
+                    <p class="qlbt-cell-line" data-row="row-2" data-cell="cell-3" data-rowspan="1" data-colspan="1">Simplified Procedures</p>
+                </td>
+            </tr>
+            <tr data-row="row-3">
+                <td data-row="row-3" rowspan="1" colspan="1">
+                    <p class="qlbt-cell-line" data-row="row-3" data-cell="cell-4" data-rowspan="1" data-colspan="1">$166,250 or more</p>
+                </td>
+                <td data-row="row-3" rowspan="1" colspan="1">
+                    <p class="qlbt-cell-line" data-row="row-3" data-cell="cell-5" data-rowspan="1" data-colspan="1">Full Probate Process</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
         - PERSPECTIVE: Don't refer to yourself in the post. Explain how your firm ${firmName} can help, but only at the end.
         ${imageCount !== "No Images" && `- IMAGES: blog post should contain ${imageCount}. Please add representations of them in this format: //Image: {Relevant Image Description}//.
