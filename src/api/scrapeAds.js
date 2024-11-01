@@ -77,13 +77,13 @@ async function scrapeGoogleAdsLibrary(keyword) {
           waitUntil: 'domcontentloaded',
           timeout: 30000
         });
-
+    
         // Reduce wait times
         await page.waitForTimeout(1500);
-
+    
         console.log('Waiting for search box...');
         await page.waitForTimeout(1500);
-
+    
         const search = await page.$('[debugid="acx_177925851_179054344"]');
         
         if (search) {
@@ -97,9 +97,9 @@ async function scrapeGoogleAdsLibrary(keyword) {
           console.error('Search box not found');
           return result;
         }
-
+    
         await page.waitForTimeout(750);
-
+    
         try {
           await page.click('.suggestion-renderer-container');
         } catch (error) {
@@ -109,10 +109,10 @@ async function scrapeGoogleAdsLibrary(keyword) {
             ADS: []
           };
         }   
-
+    
         await page.waitForTimeout(750);
         await page.evaluate(() => {window.scrollTo(0, document.body.scrollHeight);});
-
+    
         const creativePreviews = await page.$$('creative-preview');
         
         if (creativePreviews.length > 0) {
@@ -138,15 +138,16 @@ async function scrapeGoogleAdsLibrary(keyword) {
         } else {
           console.log('No ads found');
         }
-
+    
         console.log('Checking SpyFu for spend data...');
         await page.goto(`https://www.spyfu.com/overview/domain?query=${keyword}`);
         await page.waitForTimeout(1000);
-
+    
         const estGoogleSpend = await page.$eval('div[data-test="valueC"]', div => div.textContent || '$0.00');
         console.log('Estimated Google Spend:', estGoogleSpend);
         result.SPEND = estGoogleSpend.trim() || '';
-
+    
+        return result; // Ensure the function returns the result object
       })(),
       timeoutPromise
     ]);
