@@ -1,13 +1,15 @@
 // src/api/scrapeAds.js
 const express = require('express');
 const cors = require('cors');
-const puppeteer = require('puppeteer-core');
-const chromium = require('@sparticuz/chromium');
 const path = require('path');
 
 const app = express();
 const port = process.env.PORT || 3040;
 const isDevelopment = process.env.NODE_ENV !== 'production';
+
+// Use puppeteer or puppeteer-core based on environment
+const puppeteer = isDevelopment ? require('puppeteer') : require('puppeteer-core');
+const chromium = require('@sparticuz/chromium');
 
 // Update CORS configuration
 app.use(cors({
@@ -33,29 +35,40 @@ async function scrapeGoogleAdsLibrary(keyword) {
   try {
     console.log('Attempting to launch browser...');
     
-    // Configure Chromium with proper executable path handling
-    const executablePath = process.env.NODE_ENV === 'production'
-      ? await chromium.executablePath()
-      : process.env.CHROME_PATH || '';
+    let executablePath;
+    let launchOptions;
 
-    console.log('Executable path:', executablePath);
+    if (isDevelopment) {
+      // In development, use puppeteer's bundled Chromium
+      executablePath = undefined; // Let puppeteer find Chromium automatically
+      launchOptions = {
+        headless: true,
+      };
+    } else {
+      // In production, use chromium from @sparticuz/chromium
+      executablePath = await chromium.executablePath();
+      if (typeof executablePath !== 'string') {
+        throw new Error(`Executable path must be a string, received ${typeof executablePath}`);
+      }
+      launchOptions = {
+        args: [
+          ...chromium.args,
+          '--disable-gpu',
+          '--disable-dev-shm-usage',
+          '--disable-setuid-sandbox',
+          '--no-first-run',
+          '--no-sandbox',
+          '--no-zygote',
+          '--single-process',
+        ],
+        defaultViewport: chromium.defaultViewport,
+        executablePath: executablePath,
+        headless: chromium.headless,
+        ignoreHTTPSErrors: true,
+      };
+    }
 
-    const launchOptions = {
-      args: [
-        ...chromium.args,
-        '--disable-gpu',
-        '--disable-dev-shm-usage',
-        '--disable-setuid-sandbox',
-        '--no-first-run',
-        '--no-sandbox',
-        '--no-zygote',
-        '--single-process',
-      ],
-      defaultViewport: chromium.defaultViewport,
-      executablePath: executablePath,
-      headless: chromium.headless,
-      ignoreHTTPSErrors: true,
-    };
+    console.log('Launch options:', launchOptions);
 
     browser = await puppeteer.launch(launchOptions);
 
