@@ -59,6 +59,7 @@ export default function AccountView() {
             await setUserData(firmDoc.data().FIRM_INFO || []);
             await setFirmDescription(firmDoc.data().FIRM_INFO.DESCRIPTION || '');
             await setSelectedModel(firmDoc.data().SETTINGS.MODEL || 2);
+            await setImagesSettings(firmDoc.data().SETTINGS.IMAGES || 'All');
             await setPlanName(firmDoc.data().SETTINGS.PLAN || '');
             await setImagePfp(firmDoc.data().FIRM_INFO.IMAGE || '');
             await setIndexedBlogs(firmDoc.data().BLOG_DATA.BIG_BLOG || {});
@@ -121,6 +122,7 @@ const uploadProfilePicture = async () => {
   }
 }
 
+
 const saveChanges = async () => {
   try {
     const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
@@ -131,7 +133,7 @@ const saveChanges = async () => {
       'FIRM_INFO.DESCRIPTION': firmDescription,
       'FIRM_INFO.NAME': firmName,
       'FIRM_INFO.LOCATION': firmLocation,
-      'FIRM_INFO.IMAGE': imagePfp, // Add image URL to update
+      'FIRM_INFO.IMAGE': imagePfp,
     };
 
     await updateDoc(firmDocRef, updateData); 
