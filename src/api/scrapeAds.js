@@ -20,6 +20,11 @@ app.use(cors({
 app.use(express.json());
 
 async function scrapeGoogleAdsLibrary(keyword) {
+  const TIMEOUT = 250000; // 250 seconds
+  const timeoutPromise = new Promise((_, reject) => 
+    setTimeout(() => reject(new Error('Scraping timeout')), TIMEOUT)
+  );
+
   console.log('=== SCRAPING START ===');
   console.log('Environment:', process.env.NODE_ENV);
   console.log('Keyword:', keyword);
@@ -57,90 +62,100 @@ async function scrapeGoogleAdsLibrary(keyword) {
     console.log('Browser launched successfully');
 
     const page = await browser.newPage();
+    await page.setDefaultNavigationTimeout(60000);
+    await page.setDefaultTimeout(30000);
+
     const result = {
       SPEND: '',
       ADS: []
     };
 
-    try {
-      console.log('Navigating to Google Ads Library...');
-      await page.goto('https://adstransparency.google.com/?region=US&preset-date=Last+30+days', { waitUntil: 'networkidle2' });
+    // Race between scraping and timeout
+    await Promise.race([
+      (async () => {
+        await page.goto('https://adstransparency.google.com/?region=US&preset-date=Last+30+days', {
+          waitUntil: 'domcontentloaded',
+          timeout: 30000
+        });
 
-      console.log('Waiting for search box...');
-      await page.waitForTimeout(3000);
+        // Reduce wait times
+        await page.waitForTimeout(1500);
 
-      const search = await page.$('[debugid="acx_177925851_179054344"]');
-      
-      if (search) {
-        await search.evaluate((input, keywordToo) => {
-          input.value = keywordToo;
-          input.dispatchEvent(new Event('input'));
-        }, keyword);
-        await page.waitForTimeout(500);
-        await search.click();
-      } else {
-        console.error('Search box not found');
-        return result;
-      }
+        console.log('Waiting for search box...');
+        await page.waitForTimeout(1500);
 
-      await page.waitForTimeout(1500);
-
-      try {
-        await page.click('.suggestion-renderer-container');
-      } catch (error) {
-        console.log('Could not click suggestion container:', error.message);
-        return {
-          SPEND: '',
-          ADS: []
-        };
-      }   
-
-      await page.waitForTimeout(1500);
-      await page.evaluate(() => {window.scrollTo(0, document.body.scrollHeight);});
-
-      const creativePreviews = await page.$$('creative-preview');
-      
-      if (creativePreviews.length > 0) {
-        console.log(`Found ${creativePreviews.length} ads`);
-        await page.waitForTimeout(2500);
-        for (const preview of creativePreviews) {
-          const imgSrc = await preview.evaluate(el => {
-            const img = el.querySelector('img');
-            if (img) return img.src;
-            
-            const video = el.querySelector('video');
-            if (video) return video.src;
+        const search = await page.$('[debugid="acx_177925851_179054344"]');
         
-            return null;
-          });
-          
-          if (imgSrc) {
-            result.ADS.push({ preview: imgSrc });
-          } else {
-            console.log('No image or video found in ad preview');
-          }
+        if (search) {
+          await search.evaluate((input, keywordToo) => {
+            input.value = keywordToo;
+            input.dispatchEvent(new Event('input'));
+          }, keyword);
+          await page.waitForTimeout(500);
+          await search.click();
+        } else {
+          console.error('Search box not found');
+          return result;
         }
-      } else {
-        console.log('No ads found');
-      }
 
-      console.log('Checking SpyFu for spend data...');
-      await page.goto(`https://www.spyfu.com/overview/domain?query=${keyword}`);
-      await page.waitForTimeout(2000);
+        await page.waitForTimeout(750);
 
-      const estGoogleSpend = await page.$eval('div[data-test="valueC"]', div => div.textContent || '$0.00');
-      console.log('Estimated Google Spend:', estGoogleSpend);
-      result.SPEND = estGoogleSpend.trim() || '';
+        try {
+          await page.click('.suggestion-renderer-container');
+        } catch (error) {
+          console.log('Could not click suggestion container:', error.message);
+          return {
+            SPEND: '',
+            ADS: []
+          };
+        }   
 
-    } catch (error) {
-      console.error('Detailed scraping error:', error);
-      throw error; // Propagate error for better debugging
-    } finally {
-      await browser.close();
-    }
+        await page.waitForTimeout(750);
+        await page.evaluate(() => {window.scrollTo(0, document.body.scrollHeight);});
+
+        const creativePreviews = await page.$$('creative-preview');
+        
+        if (creativePreviews.length > 0) {
+          console.log(`Found ${creativePreviews.length} ads`);
+          await page.waitForTimeout(1250);
+          for (const preview of creativePreviews) {
+            const imgSrc = await preview.evaluate(el => {
+              const img = el.querySelector('img');
+              if (img) return img.src;
+              
+              const video = el.querySelector('video');
+              if (video) return video.src;
+          
+              return null;
+            });
+            
+            if (imgSrc) {
+              result.ADS.push({ preview: imgSrc });
+            } else {
+              console.log('No image or video found in ad preview');
+            }
+          }
+        } else {
+          console.log('No ads found');
+        }
+
+        console.log('Checking SpyFu for spend data...');
+        await page.goto(`https://www.spyfu.com/overview/domain?query=${keyword}`);
+        await page.waitForTimeout(1000);
+
+        const estGoogleSpend = await page.$eval('div[data-test="valueC"]', div => div.textContent || '$0.00');
+        console.log('Estimated Google Spend:', estGoogleSpend);
+        result.SPEND = estGoogleSpend.trim() || '';
+
+      })(),
+      timeoutPromise
+    ]);
 
     return result;
   } catch (error) {
+    if (error.message === 'Scraping timeout') {
+      console.error('Scraping timed out after', TIMEOUT/1000, 'seconds');
+    }
     console.error('=== BROWSER LAUNCH ERROR ===');
     console.error('Error Type:', error.constructor.name);
     console.error('Error Message:', error.message);
