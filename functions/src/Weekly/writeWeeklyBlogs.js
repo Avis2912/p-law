@@ -89,43 +89,32 @@ export const writeWeeklyBlogs = async (
                     <tbody>
                         <tr data-row="row-1" height="45">
                             <td data-row="row-1" rowspan="1" colspan="1">
-                                <p class="qlbt-cell-line" data-row="row-1" data-cell="cell-xc52" data-rowspan="1" data-colspan="1">
-                                    <strong>Estate Value</strong>
-                                </p>
+                                <p class="qlbt-cell-line" data-row="row-1" data-cell="cell-0" data-rowspan="1" data-colspan="1"><strong>Estate Value</strong></p>
                             </td>
                             <td data-row="row-1" rowspan="1" colspan="1">
-                                <p class="qlbt-cell-line" data-row="row-1" data-cell="cell-xc53" data-rowspan="1" data-colspan="1">
-                                    <strong>Probate Requirement</strong>
-                                </p>
+                                <p class="qlbt-cell-line" data-row="row-1" data-cell="cell-1" data-rowspan="1" data-colspan="1"><strong>Probate Requirement</strong></p>
                             </td>
                         </tr>
                         <tr data-row="row-2" height="45">
                             <td data-row="row-2" rowspan="1" colspan="1">
-                                <p class="qlbt-cell-line" data-row="row-2" data-cell="cell-ywlw" data-rowspan="1" data-colspan="1">
-                                    Under $100,000
-                                </p>
+                                <p class="qlbt-cell-line" data-row="row-2" data-cell="cell-2" data-rowspan="1" data-colspan="1">Under $166,250</p>
                             </td>
                             <td data-row="row-2" rowspan="1" colspan="1">
-                                <p class="qlbt-cell-line" data-row="row-2" data-cell="cell-ywlx" data-rowspan="1" data-colspan="1">
-                                    Small Estate Affidavit
-                                </p>
+                                <p class="qlbt-cell-line" data-row="row-2" data-cell="cell-3" data-rowspan="1" data-colspan="1">Simplified Procedures</p>
                             </td>
                         </tr>
                         <tr data-row="row-3" height="45">
                             <td data-row="row-3" rowspan="1" colspan="1">
-                                <p class="qlbt-cell-line" data-row="row-3" data-cell="cell-zxlw" data-rowspan="1" data-colspan="1">
-                                    $100,000 or more
-                                </p>
+                                <p class="qlbt-cell-line" data-row="row-3" data-cell="cell-4" data-rowspan="1" data-colspan="1">$166,250 or more</p>
                             </td>
                             <td data-row="row-3" rowspan="1" colspan="1">
-                                <p class="qlbt-cell-line" data-row="row-3" data-cell="cell-zxlx" data-rowspan="1" data-colspan="1">
-                                    Full Probate Process
-                                </p>
+                                <p class="qlbt-cell-line" data-row="row-3" data-cell="cell-5" data-rowspan="1" data-colspan="1">Full Probate Process</p>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
+
 
             - WORD RANGE: this post should be 1000+ WORDS LONG.
             - IMAGES: blog post should contain 2-3 images. Please add representations of them in this format: //Image: {Image Description}//. 
