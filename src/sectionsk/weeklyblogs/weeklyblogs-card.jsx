@@ -49,17 +49,29 @@ export default function PostCard({ platform, content, index, isGen }) {
   const [blogImg, setBlogImg] = useState(null);
 
   useEffect(() => {
+    const parser = new DOMParser();
+    const doc0 = parser.parseFromString(content, 'text/html');
     
-    const h1Match = content.match(/<h1>(.*?)<\/h1>/i);
-    const pMatch = content.match(/<p>(.*?)<\/p>/i);
-    let imgMatch = content.match(/<img[^>]+src="(.*?)"[^>]*>/i);
-    console.log('imgMatch0', imgMatch);
-    if (!imgMatch) {imgMatch = content.match(/<image[^>]+src="(.*?)"[^>]*>/i);}    
-    console.log('imgMatch', imgMatch);
-    if (h1Match) setBlogTitle(h1Match[1]);
-    if (pMatch) setBlogDesc(pMatch[1]);
-    if (imgMatch) setBlogImg(imgMatch[1]);
+    const h1Element = doc0.querySelector('h1');
+    const pElements = doc0.querySelectorAll('p');
+    const imgElement = doc0.querySelector('img, image');
+  
+    if (h1Element) setBlogTitle(h1Element.textContent);
     
+    // Function to check if element is empty or only contains br tags
+    const isEmptyOrBrOnly = (element) => {
+      const textContent = element.textContent.trim();
+      const onlyBrTags = Array.from(element.childNodes).every(
+        node => node.nodeName === 'BR' || (node.nodeType === 3 && !node.textContent.trim())
+      );
+      return !textContent || onlyBrTags;
+    };
+  
+    // Find first non-empty paragraph
+    const validParagraph = Array.from(pElements).find(p => !isEmptyOrBrOnly(p));
+    if (validParagraph) setBlogDesc(validParagraph.textContent);
+  
+    if (imgElement) setBlogImg(imgElement.getAttribute('src'));
   }, [content]);
 
 

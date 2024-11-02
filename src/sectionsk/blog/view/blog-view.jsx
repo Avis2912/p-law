@@ -89,6 +89,10 @@ export default function ProductsView() {
   const boxWidth = 'calc(100%)';
 
   const [dots, setDots] = useState('');
+  const [initialText, setInitialText] = useState('');
+  const [isContentChanged, setIsContentChanged] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+
   useEffect(() => {
     const intervalId = isGenerating && setInterval(() => {
       setDots(prevDots => {
@@ -130,6 +134,58 @@ export default function ProductsView() {
     setWordCount(blogText.split(' ').length);
   
   }, [blogText, blogId]);
+
+  useEffect(() => {
+    // Set initialText when blogText is loaded
+    setInitialText(blogText);
+    setText(blogText);
+  }, [blogText]);
+
+  useEffect(() => {
+    // Detect content changes
+    if (text !== initialText) {
+      setIsContentChanged(true);
+    } else {
+      setIsContentChanged(false);
+    }
+  }, [text, initialText]);
+
+  const saveBlog = async () => {
+    setIsSaving(true);
+    try {
+      const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
+      if (userDoc.exists()) {
+        const firmDocRef = doc(db, 'firms', userDoc.data().FIRM);
+        const firmDoc = await getDoc(firmDocRef);
+        
+        if (firmDoc.exists()) {
+          // Get current blogs array
+          const currentBlogs = firmDoc.data().WEEKLY_BLOGS.BLOGS;
+          
+          // Update specific blog while preserving the array
+          currentBlogs[blogId] = {
+            ...currentBlogs[blogId],  // preserve other blog properties
+            content: text,            // update content
+          };
+
+          // Update with the modified array
+          await updateDoc(firmDocRef, {
+            'WEEKLY_BLOGS.BLOGS': currentBlogs,
+          });
+
+          // After saving, update initialText
+          setInitialText(text);
+          setIsContentChanged(false);
+        }
+      } else {
+        console.log('Error: User document not found.');
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   // BLOG GENERATION
 
@@ -503,6 +559,22 @@ export default function ProductsView() {
         onClick={() => {navigate('/weeklyblogs')}}>
         Return To Weekly Posts </Button>
 
+        {isContentChanged && (
+        <Button
+          variant="contained"
+          startIcon={<Iconify icon={isSaving ? "line-md:loading-loop" : "eva:save-fill"} />}
+          onClick={saveBlog}
+          disabled={isSaving}
+          sx={(theme) => ({
+            backgroundColor: theme.palette.primary.black,
+            '&:hover': { backgroundColor: theme.palette.primary.black },
+            // opacity: isSaving ? 0.85 : 1,
+          })}
+        >
+          {isSaving ? 'Saving' : 'Save'}
+        </Button>
+      )}
+
         </Stack></Stack>
 
         <WpDialog isDialogOpen={isWpDialogOpen} handleClose={() => {setIsWpDialogOpen(false)}} 
@@ -531,8 +603,7 @@ export default function ProductsView() {
         variant="contained" color="inherit" 
         sx={(theme) => ({height: '54px', width: '150px', backgroundColor: currentMode === "Generate" ? theme.palette.primary.navBg : theme.palette.primary.black})}>
           {currentMode} ✨
-        </Button>
-        </Stack> */}
+        </Button> */}
 
         <BlogEditor text={text} setText={setText} isGenerating={isGenerating}
         boxHeight={boxHeight} boxWidth={boxWidth} wordCount={wordCount}/>

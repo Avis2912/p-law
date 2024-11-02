@@ -296,7 +296,7 @@ const modules = {
 
         IMPORTANT INSTRUCTIONS:
         - FORMATTING: Wrap titles in <${titleTag}> and sub-titles in <h3> tags. Wrap all paragraphs (and everything else that should have a line after) in <p> tags. Use b tags only in same-line text or 'title: paragraph'. Use numbers if you decide to add a list not ul tags.
-        - LISTS: Don't use html lists. Instead, use numbered lists (i.e. 1., 2., 3.) for ordered lists and bullet points for unordered lists.
+        - LISTS: Don't EVER use html (ul or ol) lists. Instead, use numbered lists (i.e. 1., 2., 3.) for ordered lists and bullet points for unordered lists.
         - TABLES: Always include table(s) with 2 or 3 columns. Add in this syntax:
 
         <div class="quill-better-table-wrapper">
@@ -334,7 +334,7 @@ const modules = {
             </table>
         </div>
 
-        - PERSPECTIVE: Don't refer to yourself in the post. Explain how your firm ${firmName} can help, but only at the end.
+        - PERSPECTIVE: Don't ever, EVER refer to yourself in the post, this should be written in third-person-perspective. Also don't mention ${firmName} at the beginning. You should how 'we at ${firmName}' can help, but ONLY at the end. 
         ${imageCount !== "No Images" && `- IMAGES: blog post should contain ${imageCount}. Please add representations of them in this format: //Image: {Relevant Image Description}//.
         Make sure these are evenly spaced out in the post, and place them after h tags or in between paragraphs.`}
         - SPECIFICITY: Be as specific and detailed as possible. Don't be repetitive and ramble.
