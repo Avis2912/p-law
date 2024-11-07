@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import Dialog from '@mui/material/Dialog';
 import Creating from 'src/components/Creating';
+import BasicTooltip from 'src/components/BasicTooltip';
 
 import { db, auth } from 'src/firebase-config/firebase';
 import { useState, useEffect, useCallback } from 'react';
@@ -304,6 +305,15 @@ export default function BlogView() {
         </>)}
 
        {!isNewPost && (<>
+
+        <BasicTooltip title="Created With Strategy" placement="top">
+        <Button variant="contained" color="inherit" 
+         onClick={() => {}} sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, minWidth: '10px', 
+          display: 'flex', alignItems: 'center', cursor: 'default', fontWeight: '600',  px: 1.5, '&:hover' : {backgroundColor: theme.palette.primary.navBg,}})} >
+         <Iconify icon="fa-solid:chess-king" sx={{height: '15px', width: '15px', mb: '2px'}}/>
+         </Button>
+        </BasicTooltip>
+
         <Button variant="contained" onClick={() => {}}
         sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, cursor: 'default', fontWeight: '600', '&:hover': { backgroundColor: theme.palette.primary.navBg, },})}>
           {!isUpdateTime ? `${timeToUpdate} Days Left` : 'Update In Progress'}

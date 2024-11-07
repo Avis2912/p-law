@@ -209,7 +209,7 @@ export default function UserPage() {
       {reviewStage === 'Intro' && (<><Stack direction="column" spacing={1.25}>
       <Typography sx={{ fontFamily: "DM Serif Display", letterSpacing: '0.05px',
       fontWeight: 200, fontSize: '32.75px', textAlign: 'center',}}> 
-      Legal Service </Typography>
+      Our Service </Typography>
 
       <Rating name="star-rating" value={serviceStars}
       onChange={(event, newValue) => {setServiceStars(newValue);}}

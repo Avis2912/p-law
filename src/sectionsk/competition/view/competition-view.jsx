@@ -101,8 +101,9 @@ export default function ListsView() {
 
           <Button variant="contained" onClick={() => {}}
           sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, cursor: 'default', fontWeight: '600', '&:hover': { backgroundColor: theme.palette.primary.navBg, },})}>
-            {!isUpdateTime ? `Updated This Week` : 'Report Update Coming Soon'}
+            {!isUpdateTime ? `Updated This Week` : 'Report Updates Soon'}
           </Button>
+
           <Button
             variant="contained"
             startIcon={<Iconify icon={isAddingCompetitor ? "line-md:loading-loop" : "eva:plus-fill"} />}
@@ -110,6 +111,11 @@ export default function ListsView() {
             sx={{ backgroundColor: isAddingCompetitor ? '#333131' : 'black', ':hover': { backgroundColor: 'black' } }}
           >
             {isAddingCompetitor ? `Adding Competitor` : `Add New`}
+          </Button>
+
+          <Button variant="contained" onClick={() => {}}
+          sx={(theme) => ({backgroundColor: theme.palette.primary.blue, cursor: 'default', fontWeight: '600', '&:hover': { backgroundColor: theme.palette.primary.blue, },})}>
+            Beta
           </Button>
         </Stack>
       </Stack>

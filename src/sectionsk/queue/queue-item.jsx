@@ -1,13 +1,18 @@
 // QueueItem.jsx
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Box, Typography, IconButton } from '@mui/material';
+import { Button, Box, Typography, IconButton, Stack } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { db, auth } from 'src/firebase-config/firebase';
 import Iconify from 'src/components/iconify';
 import CreateSocial from 'src/components/CreateSocial';
+import CreateNewsletter from 'src/components/CreateNewsletter';
 
-const QueueItem = ({ title, content, time, tab, selectedList, posts }) => {
+const QueueItem = ({ title, content, time, tab, selectedList, posts, date, setQueueData }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [socialBtnHover, setSocialBtnHover] = useState(false);
+  const navigate = useNavigate();
 
   if (tab !== selectedList) {
     return null;
@@ -26,6 +31,42 @@ const QueueItem = ({ title, content, time, tab, selectedList, posts }) => {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
+      if (userDoc.exists()) {
+        const firmDocRef = doc(db, 'firms', userDoc.data().FIRM);
+        const firmDoc = await getDoc(firmDocRef);
+        
+        if (firmDoc.exists()) {
+          const currentQueue = firmDoc.data().QUEUE;
+          const listKey = tab.toUpperCase();
+          
+          // Filter out the item to delete
+          const updatedList = currentQueue[listKey].filter(
+            item => !(item.title === title && item.time === time && item.date === date)
+          );
+          
+          // Update the database
+          await updateDoc(firmDocRef, {
+            [`QUEUE.${listKey}`]: updatedList
+          });
+
+          // Update local state
+          setQueueData(prev => ({
+            ...prev,
+            [listKey]: updatedList
+          }));
+        }
+      }
+    } catch (err) {
+      console.error('Error deleting item:', err);
+    }
+  };
+
+  const handleEdit = () => {
+    navigate(`/blog?title=${encodeURIComponent(title)}&list=${encodeURIComponent(tab)}&time=${encodeURIComponent(time)}&date=${encodeURIComponent(date)}`);
+  };
 
   const hexToRgba = (hex, alpha = 1) => {
     const hexValue = hex.replace('#', '');
@@ -90,7 +131,16 @@ const QueueItem = ({ title, content, time, tab, selectedList, posts }) => {
             fontSize: '17px',
           }}
         >
-          {title}
+          {(() => {
+            console.log('content:', content);
+            const h1Match = content?.match(/<h1>(.*?)<\/h1>/);
+            if (h1Match) return h1Match[1];
+            
+            const h2Match = content?.match(/<h2>(.*?)<\/h2>/);
+            if (h2Match) return h2Match[1];
+            
+            return 'Untitled';
+          })()}
         </Typography>
       </Box>
 
@@ -107,7 +157,33 @@ const QueueItem = ({ title, content, time, tab, selectedList, posts }) => {
         {time}
       </Typography>
 
+      <Stack direction="row" spacing={0}>
+
+      <IconButton 
+          sx={{mr: 0.5}}
+          size="small"
+          onClick={handleEdit}
+        >
+          <Iconify icon="material-symbols:edit-outline" />
+        </IconButton>
+        
+        <IconButton 
+          size="small" 
+          sx={{mr: 0.65}}
+          onClick={handleDelete}
+        >
+          <Iconify icon="material-symbols:delete-outline" />
+        </IconButton>
+
+      <Stack direction="row" spacing={1.05}>
+
+      <CreateNewsletter content={content} isExpanding/>
+
       <CreateSocial content={content} isExpanding />
+
+      </Stack>
+
+      </Stack>
 
     </Box>
   );
@@ -120,6 +196,8 @@ QueueItem.propTypes = {
   tab: PropTypes.string.isRequired,
   selectedList: PropTypes.string.isRequired,
   posts: PropTypes.array,
+  date: PropTypes.string,
+  setQueueData: PropTypes.func.isRequired,
 };
 
 export default QueueItem;

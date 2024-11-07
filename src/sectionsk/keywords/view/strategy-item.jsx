@@ -17,7 +17,7 @@ import hexToRGBA from '../../../../functions/src/General/hexToRGBA';
 
 
 export default function StrategyItem({ title, keywords, index, openedTopic, setOpenedTopic,
-  reasons, news,
+  reasons, news, trackNewKeyword
 }) {
   const handleClick = () => {
     setOpenedTopic(openedTopic === index ? null : index);
@@ -49,7 +49,7 @@ export default function StrategyItem({ title, keywords, index, openedTopic, setO
     <Grid item xs={12} sm={6} md={openedTopic === index ? 12 : 6} sx={{ display: openedTopic === null || openedTopic === index ? 'block' : 'none' }}>
       <Card 
         sx={(theme) =>  ({ 
-          height: openedTopic === index ? 364 : 51.5, 
+          height: openedTopic === index ? 365 : 51.5, 
           width: '100%', marginBottom: '5px',
           borderRadius: isOpened ? '4.75px' : '4.75px', 
           border: isOpened ? '1px solid #ccc' : 'none', 
@@ -171,8 +171,14 @@ export default function StrategyItem({ title, keywords, index, openedTopic, setO
               })}>{keyword.data[0]} hits</Button>
               <Button sx={(theme) => ({backgroundColor: hexToRGBA(theme.palette.primary.light, 0.65), '&:hover': {backgroundColor: theme.palette.primary.light, },
                 color: 'white', px: '11px', borderRadius: '3.25px', width: 'auto', minWidth: '10px',
-                letterSpacing: '-0.55px', height: '28px', fontSize: '13.25px', fontWeight: 100, marginRight: '2px'
+                letterSpacing: '-0.55px', height: '28px', fontSize: '13.25px', fontWeight: 100, marginRight: '8.5px'
               })}>{keyword.competition}</Button>
+              <Button onClick={() => trackNewKeyword(keyword, keyword.data)} sx={(theme) => ({backgroundColor: hexToRGBA(theme.palette.primary.light, 0.65), '&:hover': {backgroundColor: theme.palette.primary.light, },
+                color: 'white', px: '8px', borderRadius: '3.25px', width: 'auto', minWidth: '10px', marginRight: '2.5px',
+                letterSpacing: '-0.15px', height: '28px', fontSize: '13.75px', fontWeight: 200,
+              })}>
+                <Icon icon="mdi:plus" />
+              </Button>
 
             </ListItem>
           ))}
@@ -194,4 +200,5 @@ StrategyItem.propTypes = {
   setOpenedTopic: PropTypes.func,
   reasons: PropTypes.array,
   news: PropTypes.array,
+  trackNewKeyword: PropTypes.func,
 };

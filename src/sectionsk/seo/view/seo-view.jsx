@@ -10,8 +10,9 @@ import { getDocs, getDoc, collection, doc, updateDoc, arrayUnion } from 'firebas
 import Iconify from 'src/components/iconify';
 import { db, auth } from 'src/firebase-config/firebase';
 import Button from '@mui/material/Button';
-import { Card, TextField, ListItem, ListItemText } from '@mui/material';
+import { Card, TextField, ListItem, ListItemText, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { css, keyframes } from '@emotion/react';
+import PropTypes from 'prop-types';
 
 import { createEditor } from 'slate';
 import { Slate, Editable, withReact } from 'slate-react';
@@ -24,6 +25,7 @@ import PageTitle from 'src/components/PageTitle';
 import BasicTooltip from 'src/components/BasicTooltip';
 import { Page } from 'openai/pagination';
 import { modelKeys } from 'src/genData/models';
+import { ScheduleDialog } from './schedule-dialog';
 
 // eslint-disable-next-line import/no-relative-packages
 import publishBlog from '../../../../functions/src/WpFunctions/publishBlog';
@@ -82,6 +84,7 @@ const modules = {
   const [selectedModel, setSelectedModel] = useState(2);
   const [wordCount, setWordCount] = useState(0);
   const [contactUsLink, setContactUsLink] = useState(null);
+  const [brandVoice, setBrandVoice] = useState(null);
   const [isSourcesOpen, setIsSourcesOpen] = useState(false);
   const [siteUrl, setSiteUrl] = useState(null);
 
@@ -111,6 +114,10 @@ const modules = {
   const [isComingSoon, setIsComingSoon] = React.useState(false);
   const titleTag = 'h2';
 
+  const [isScheduleDialogOpen, setIsScheduleDialogOpen] = useState(false);
+  const [scheduleDate, setScheduleDate] = useState('');
+  const [scheduleTime, setScheduleTime] = useState('');
+
   let boxHeight; const boxWidth = 'calc(100%)';
   if (isReferenceGiven) { boxHeight = 'calc(77.5% - 220px)';} 
   else if (wordCount < 300) { boxHeight = 'calc(77.5% - 51.5px)'; }
@@ -135,6 +142,7 @@ const modules = {
             await setFirmDescription(firmDoc.data().FIRM_INFO.DESCRIPTION);
             await setSelectedModel(firmDoc.data().SETTINGS.MODEL);
             await setImagesSettings(firmDoc.data().SETTINGS.IMAGES);
+            await setBrandVoice(firmDoc.data().SETTINGS.BRAND);
             const url = new URL(firmDoc.data().FIRM_INFO.CONTACT_US); await setSiteUrl(url.origin);
             const bigBlog = firmDoc.data().BLOG_DATA.BIG_BLOG || [];
             const smallBlogArray = firmDoc.data().BLOG_DATA.SMALL_BLOG || [];
@@ -180,7 +188,7 @@ const modules = {
           "role": "user", 
           "content":  `
           <instruction>
-          Write an accurate, specific, ${wordRange} legal blog post based on the following title: ${blogTitle}. 
+          Write an accurate, specific, ${wordRange} blog post based on the following title: ${blogTitle}. 
           ${blogInstructions && `IMPORTANT INSTRUCTIONS (THIS TRUMPS EVERYTHING): ${blogInstructions}`}. 
           ${text !== "" && `Consider using the following outline: ${text}`}. 
           Please don't start by saying anything else. Output ONLY the blog post.
@@ -340,6 +348,7 @@ const modules = {
         - SPECIFICITY: Be as specific and detailed as possible. Don't be repetitive and ramble.
         - ${style !== "Unstyled" && `STYLE: This blog post MUST be written in the ${style} style.`}
         - ${isMentionCaseLaw && `CASE LAW: Reference case law in the blog post when necessary.`}
+        - ${brandVoice && brandVoice.INSTRUCTIONS !== "" && `BRAND VOICE: Write in the following brand voice: ${JSON.stringify(brandVoice)}.`}
         - ${isReferenceGiven && `USEFUL DATA: Refer to the following text and use as applicable: ${referenceText}`}
         - ${contactUsLink && `CONTACT US LINK AT END: Use this contact us link with <a> tags toward the end if applicable: ${contactUsLink}`} 
         - ${browseTextResponse !== "" && `WEB RESULTS: Consider using the following web information I got from leading websites: ${isUseInternalLinks ? (isAdvancedBrowseWeb ? JSON.stringify(browseTextResponse)[1] : JSON.stringify(JSON.parse(browseTextResponse)[1])) : browseTextResponse}.`}
@@ -350,8 +359,9 @@ const modules = {
         </instruction>
 
         ${isMimicBlogStyle && 
-          `VERY VERY IMPORTANT: REPRODUCE THE TONE & STYLE OF THE FOLLOWING BLOGS PERFECTLY IN YOUR OUTPUT. YOUR OUTPUT ALSO MUST BE FRIENDLY & APPROACHABLE. BLOGS:
+          `VERY VERY IMPORTANT: REPRODUCE THE TONE & STYLE OF THE FOLLOWING BLOGS PERFECTLY IN YOUR OUTPUT. BLOGS:
          ${smallBlog}`} 
+
         `
         : `<role>You are Pentra AI, a legal expert and an expert SEO blog writer for ${firmName}. ${firmDescription}.</role>` 
       }`
@@ -677,9 +687,42 @@ const modules = {
   }
 }
 
-  const [editorState, setEditorState] = React.useState(() =>
-    EditorState.createWithContent(ContentState.createFromText('Hello'))
-);
+
+  const saveToQueue = async (type, content) => {
+    try {
+      const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
+      if (userDoc.exists()) {
+        const firmRef = doc(db, 'firms', userDoc.data().FIRM);
+        const firmDoc = await getDoc(firmRef);
+        
+        if (firmDoc.exists()) {
+          const h1Match = content.match(/<h1>(.*?)<\/h1>/);
+          const title = h1Match ? h1Match[1] : 'Untitled';
+          const currentDate = new Date();
+          const date = `${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear()}`;
+          const time = currentDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+          
+          const queueData = firmDoc.data().QUEUE || {};
+          const updatedQueue = {
+            ...queueData,
+            [type]: [
+              ...(queueData[type] || []),
+              {
+                content,
+                title,
+                date,
+                time,
+              }
+            ]
+          };
+          
+          await updateDoc(firmRef, { QUEUE: updatedQueue });
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <Container sx={{backgroundColor: '', height: '100%', paddingBottom: '20px'}}>
@@ -763,13 +806,17 @@ const modules = {
       {style} </Button> </BasicTooltip>
 
       {isWpDropdownOpen && <Button variant="contained" startIcon={<Iconify icon="teenyicons:text-document-solid" sx={{height: '13.25px'}}/>} 
-      onClick={() => {setIsComingSoon(true);}}
+      onClick={async () => {
+        await saveToQueue('DRAFTS', text);
+        setText('');  setIsWpDropdownOpen(false);
+        setBlogTitle(''); setBlogInstructions('');
+      }}
       sx={(theme) => ({ backgroundColor: theme.palette.primary.black,
       '&:hover': { backgroundColor: theme.palette.primary.black, }, })}>        
-      Save for Later </Button>}
+      Save Draft </Button>}
 
       {isWpDropdownOpen && <Button variant="contained" startIcon={<Iconify icon="mdi:clock" sx={{height: '16.25px'}}/>} 
-      onClick={() => {setIsComingSoon(true);}}
+      onClick={() => setIsScheduleDialogOpen(true)}
       sx={(theme) => ({ backgroundColor: theme.palette.primary.black,
       '&:hover': { backgroundColor: theme.palette.primary.black, }, })}>        
       Schedule </Button>}
@@ -779,8 +826,14 @@ const modules = {
       {isWpDropdownOpen && <Button variant="contained" startIcon={<Iconify icon="cib:telegram-plane" sx={{height: '15.75px'}}/>} 
       onClick={async () => {
           const response = await publishBlog(wpUsername, wpPassword, wpUrl, text, titleTag);
-          if (response && (response.status === 200 || response.status === 201)) {console.log('done'); setText(''); setIsWpDropdownOpen(false); setCurrentMode('Generate'); setIsPostError(false); setBlogTitle(''); setBlogInstructions('');}
-          else {console.log('error'); setIsPostError(true);}
+          if (response && (response.status === 200 || response.status === 201)) {
+            await saveToQueue('PUBLISHED', text);
+            setText(''); setIsWpDropdownOpen(false);
+            setCurrentMode('Generate');setIsPostError(false);
+            setBlogTitle(''); setBlogInstructions('');
+          } else {
+            setIsPostError(true);
+          }
         }}
       sx={(theme) => ({ backgroundColor: theme.palette.primary.black,
       '&:hover': { backgroundColor: theme.palette.primary.black, }, })}>        
@@ -884,7 +937,9 @@ const modules = {
       </Stack>)}
 
       {!isGenerating && text === '' && (
-      <Stack direction="column" spacing={loadIndicator[0] === "Welcome Back!" ? 0.5 : 1.25} sx={{top: '352.5px', right: 'calc((100% - 285px)/2 - 160px)', position: 'absolute', 
+      <Stack direction="column" spacing={loadIndicator[0] === "Welcome Back!" ? 0.5 : 1.25} sx={{
+        top: 'calc(50vh)', 
+        right: 'calc((100% - 285px)/2 - 160px)', position: 'absolute', 
       height: 'auto', width: '320px', backgroundColor: 'transparent', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 9}}>
 
       {loadIndicator[0] === "Welcome Back!" && <Typography sx={{ fontFamily: "DM Serif Display",
@@ -990,6 +1045,24 @@ const modules = {
         wpUrl={wpUrl} setWpUrl={setWpUrl} wpUsername={wpUsername} setWpUsername={setWpUsername}
         wpPassword={wpPassword} setWpPassword={setWpPassword} />
 
+        <ScheduleDialog
+          isOpen={isScheduleDialogOpen}
+          onClose={() => setIsScheduleDialogOpen(false)}
+          onSchedule={async (date, time) => {
+            const response = await publishBlog(wpUsername, wpPassword, wpUrl, text, titleTag, `${date}T${time}:00`);
+            if (response && (response.status === 200 || response.status === 201)) {
+              await saveToQueue('SCHEDULED', text);
+              setText('');
+              setIsWpDropdownOpen(false);
+              setCurrentMode('Generate');
+              setIsPostError(false);
+              setBlogTitle('');
+              setBlogInstructions('');
+            } else {
+              setIsPostError(true); 
+            }
+          }}
+        />
     
     </Container>
   );

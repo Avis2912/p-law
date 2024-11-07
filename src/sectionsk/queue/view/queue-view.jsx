@@ -48,6 +48,68 @@ const BlogView = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    const checkScheduledPosts = async () => {
+      try {
+        const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
+        if (userDoc.exists()) {
+          const firmDocRef = doc(db, 'firms', userDoc.data().FIRM);
+          const firmDoc = await getDoc(firmDocRef);
+          
+          if (firmDoc.exists()) {
+            const currentQueue = firmDoc.data().QUEUE;
+            const now = new Date();
+            
+            // Check scheduled posts
+            const { toPublish, remaining } = currentQueue.SCHEDULED.reduce((acc, post) => {
+              const [month, day, year] = post.date.split('/');
+              const [time, meridiem] = post.time.split(' ');
+              const [hours, minutes] = time.split(':');
+              
+              const postDate = new Date(
+                2000 + parseInt(year, 10),
+                parseInt(month, 10) - 1,
+                parseInt(day, 10),
+                (parseInt(hours, 10) % 12) + (meridiem === 'PM' ? 12 : 0),
+                parseInt(minutes, 10)
+              );
+              
+              if (postDate <= now) {
+                acc.toPublish.push(post);
+              } else {
+                acc.remaining.push(post);
+              }
+              return acc;
+            }, { toPublish: [], remaining: [] });
+            
+            // If there are posts to publish
+            if (toPublish.length > 0) {
+              await updateDoc(firmDocRef, {
+                'QUEUE.SCHEDULED': remaining,
+                'QUEUE.PUBLISHED': [...currentQueue.PUBLISHED, ...toPublish]
+              });
+              
+              // Update local state
+              setQueueData(prev => ({
+                ...prev,
+                SCHEDULED: remaining,
+                PUBLISHED: [...prev.PUBLISHED, ...toPublish]
+              }));
+            }
+          }
+        }
+      } catch (err) {
+        console.error('Error checking scheduled posts:', err);
+      }
+    };
+
+    // Check immediately and set up interval
+    checkScheduledPosts();
+    const interval = setInterval(checkScheduledPosts, 60000); // Check every minute
+
+    return () => clearInterval(interval);
+  }, []);
+
   const buttonLabels = ['Published', 'Scheduled', 'Drafts'];
   const icons = ['iconamoon:send-thin', 'octicon:clock-24', 'mynaui:edit-one'];
 
@@ -70,7 +132,22 @@ const BlogView = () => {
       return parseDate(a) - parseDate(b);
     });
 
-    return sortedDates.map(date => ({ date, items: grouped[date] }));
+    return sortedDates.map(date => ({
+      date,
+      items: grouped[date].sort((a, b) => {
+        // Convert times to comparable values (24hr format)
+        const parseTime = (timeStr) => {
+          const [time, meridiem] = timeStr.split(' ');
+          let [hours, minutes] = time.split(':').map(Number);
+          if (meridiem === 'PM' && hours !== 12) hours += 12;
+          if (meridiem === 'AM' && hours === 12) hours = 0;
+          return hours * 60 + minutes;
+        };
+        
+        // Sort in descending order (most recent first)
+        return parseTime(b.time) - parseTime(a.time);
+      })
+    }));
   };
 
   return (
@@ -117,10 +194,13 @@ const BlogView = () => {
                 {group.items.map((item, itemIdx) => (
                   <Grid item xs={12} key={itemIdx}>
                     <QueueItem
+                      content={item.content}
                       title={item.title}
                       time={item.time}
                       tab={selectedList}
                       selectedList={selectedList}
+                      date={group.date}
+                      setQueueData={setQueueData}
                     />
                   </Grid>
                 ))}

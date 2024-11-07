@@ -37,6 +37,10 @@ export default function ProductsView() {
 
   const queryParams = new URLSearchParams(window.location.search);
   const blogId = queryParams.get('blogID');
+  const queueTitle = queryParams.get('title');
+  const queueList = queryParams.get('list');
+  const queueTime = queryParams.get('time');
+  const queueDate = queryParams.get('date');
 
   const [text, setText] = 
   useState(`<h1>Welcome Back!</h1> Let's draft a new legal blog post. <br>This is where your content shows up.`);
@@ -83,6 +87,7 @@ export default function ProductsView() {
   const [wpUsername, setWpUsername] = React.useState(null);
   const [wpPassword, setWpPassword] = React.useState(null);
   const [isComingSoon, setIsComingSoon] = React.useState(false);
+  const [isSaving, setIsSaving] = React.useState(false);
   const titleTag = 'h2';
 
   const boxHeight = 'calc(100% - 125px)'; 
@@ -91,7 +96,6 @@ export default function ProductsView() {
   const [dots, setDots] = useState('');
   const [initialText, setInitialText] = useState('');
   const [isContentChanged, setIsContentChanged] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     const intervalId = isGenerating && setInterval(() => {
@@ -111,7 +115,14 @@ export default function ProductsView() {
         if (userDoc.exists()) {
           const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
           if (firmDoc.exists()) {
+            if (queueTitle) {
+              const currentQueue = firmDoc.data().QUEUE;
+              const listKey = queueList.toUpperCase(); console.log(listKey);
+              const queueItem = currentQueue[listKey].find(item => item.title === queueTitle && item.time === queueTime);
+              await setBlogText(queueItem.content);
+            } else {
             await setBlogText(firmDoc.data().WEEKLY_BLOGS.BLOGS[blogId].content); 
+            }
             await setFirmName(firmDoc.data().FIRM_INFO.NAME);
             await setFirmDescription(firmDoc.data().FIRM_INFO.DESCRIPTION);
             const smallBlogArray = firmDoc.data().BLOG_DATA.SMALL_BLOG || [];
@@ -132,8 +143,8 @@ export default function ProductsView() {
     getFirmData();
     setText(blogText); 
     setWordCount(blogText.split(' ').length);
-  
-  }, [blogText, blogId]);
+
+  }, [blogText, blogId, queueList, queueTitle, queueTime]);
 
   useEffect(() => {
     // Set initialText when blogText is loaded
@@ -159,29 +170,45 @@ export default function ProductsView() {
         const firmDoc = await getDoc(firmDocRef);
         
         if (firmDoc.exists()) {
-          // Get current blogs array
-          const currentBlogs = firmDoc.data().WEEKLY_BLOGS.BLOGS;
-          
-          // Update specific blog while preserving the array
-          currentBlogs[blogId] = {
-            ...currentBlogs[blogId],  // preserve other blog properties
-            content: text,            // update content
-          };
 
-          // Update with the modified array
-          await updateDoc(firmDocRef, {
-            'WEEKLY_BLOGS.BLOGS': currentBlogs,
-          });
-
-          // After saving, update initialText
+          if (queueTitle) {
+            const currentQueue = { ...firmDoc.data().QUEUE }; // Create a copy of the queue
+            const listKey = queueList.toUpperCase();
+            
+            if (currentQueue[listKey]) {
+              const updatedList = currentQueue[listKey].map(item => {
+                if (item.title === queueTitle && 
+                    item.time === queueTime) {
+                  return { ...item, content: text };
+                }
+                return item;
+              });
+              
+              // Update the specific list in the queue
+              currentQueue[listKey] = updatedList;
+              
+              // Update the entire queue object
+              await updateDoc(firmDocRef, {
+                QUEUE: currentQueue
+              });
+            }
+          } else {
+            // Regular blog save
+            const currentBlogs = firmDoc.data().WEEKLY_BLOGS.BLOGS;
+            currentBlogs[blogId] = {
+              ...currentBlogs[blogId],
+              content: text,
+            };
+            await updateDoc(firmDocRef, {
+              'WEEKLY_BLOGS.BLOGS': currentBlogs,
+            });
+          }
           setInitialText(text);
           setIsContentChanged(false);
         }
-      } else {
-        console.log('Error: User document not found.');
       }
     } catch (err) {
-      console.log(err);
+      console.error('Error saving:', err);
     } finally {
       setIsSaving(false);
     }
@@ -556,8 +583,11 @@ export default function ProductsView() {
 
         <Button variant="contained" startIcon={<Iconify icon="icon-park-solid:left-c" />} 
         sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, '&:hover': { backgroundColor: theme.palette.primary.black, },})}
-        onClick={() => {navigate('/weeklyblogs')}}>
-        Return To Weekly Posts </Button>
+        onClick={() => {
+          // If it's a queue post, return to queue, otherwise to weekly blogs
+          navigate(queueTitle ? '/queue' : '/weeklyblogs');
+        }}>
+        {queueTitle ? 'Return To Queue' : 'Return To Weekly Posts'} </Button>
 
         {isContentChanged && (
         <Button

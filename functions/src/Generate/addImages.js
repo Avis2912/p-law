@@ -24,8 +24,34 @@ export const addImages = async (posts, imagesSettings='All', selectedTemplates=[
 
     const fetchBrandImage = async (imgDescription, post='') => { // 1.5c per image
       let resultImg = null; const randomTemplate = templates[selectedTemplates[Math.floor(Math.random() * selectedTemplates.length)]];
-      const h2Title = randomTemplate.isCaps ? post.content.match(/<h2>(.*?)<\/h2>/)[1].toUpperCase() : post.content.match(/<h2>(.*?)<\/h2>/)[1]; const formattedDate = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
-      const secondSentFirstPara = (post.content.match(/<p>(.*?)<\/p>/) || [''])[0].split('. ')[1].replace(/<\/?p>|<\/?b>/g, '') || (post.content.match(/<p>(.*?)<\/p>/) || [''])[0].split('. ')[0].replace(/<\/?p>|<\/?b>/g, '') || '';      
+      
+      // Safer title extraction
+      let h2Title = 'Newsletter';
+      try {
+        const titleMatch = post.content.match(/<h2>(.*?)<\/h2>/);
+        if (titleMatch && titleMatch[1]) {
+          h2Title = randomTemplate.isCaps ? titleMatch[1].toUpperCase() : titleMatch[1];
+        }
+      } catch (e) {
+        console.error('Error extracting title:', e);
+      }
+
+      // Safer first paragraph extraction
+      let secondSentFirstPara = '';
+      try {
+        const paraMatch = post.content.match(/<p>(.*?)<\/p>/);
+        if (paraMatch && paraMatch[0]) {
+          const sentences = paraMatch[0].split('. ');
+          secondSentFirstPara = sentences[1] ? 
+            sentences[1].replace(/<\/?p>|<\/?b>/g, '') : 
+            sentences[0].replace(/<\/?p>|<\/?b>/g, '');
+        }
+      } catch (e) {
+        console.error('Error extracting paragraph:', e);
+        secondSentFirstPara = 'Legal insights from our team';
+      }
+
+      const formattedDate = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
       const timeToRead = Math.ceil(post.content.split(' ').length / 200); let firmSite = contactUsLink;
       try {firmSite = new URL(contactUsLink).hostname.replace(/^www\./, '');} catch (e) {console.error(e);}
       const aiText = randomTemplate.titleType ? h2Title : `"${secondSentFirstPara}"`; let webPic = null;

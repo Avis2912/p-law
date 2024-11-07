@@ -30,6 +30,8 @@ export const primary = {
   green: '#417a4c',
   black: '#242122',
   navBg: '#923341',
+  blue: '#15354a',
+
   // navBg: '#62538B',
   // navBg: '#57497D',
 

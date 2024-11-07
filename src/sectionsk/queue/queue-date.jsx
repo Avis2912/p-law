@@ -6,7 +6,10 @@ const QueueDate = ({ date }) => {
     const formatDate = (dateString) => {
         // Parse the date string in MM/DD/YY format
         const [month, day, year] = dateString.split('/').map(Number);
-        const inputDate = new Date(`20${year}`, month - 1, day); // Adjust year to 4 digits
+        
+        // Convert 2-digit year to 4-digit year
+        const fullYear = year < 100 ? (year < 50 ? 2000 + year : 1900 + year) : year;
+        const inputDate = new Date(fullYear, month - 1, day);
         
         // Create today, yesterday, and tomorrow dates at midnight for comparison
         const today = new Date();
@@ -31,9 +34,9 @@ const QueueDate = ({ date }) => {
         } else {
             return inputDate.toLocaleDateString('en-US', {
                 weekday: 'long',
-                year: 'numeric',
                 month: 'long',
-                day: 'numeric'
+                day: 'numeric',
+                year: 'numeric'
             });
         }
     };

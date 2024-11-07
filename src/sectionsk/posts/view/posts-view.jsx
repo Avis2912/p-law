@@ -18,6 +18,7 @@ import PageTitle from 'src/components/PageTitle';
 import Iconify from 'src/components/iconify';
 import { modelKeys } from 'src/genData/models';
 import { templates } from 'src/genData/templates';
+import BasicTooltip from 'src/components/BasicTooltip';
 
 // eslint-disable-next-line import/no-relative-packages
 import { writeWeeklyPosts } from '../../../../functions/src/Weekly/writeWeeklyPosts';
@@ -400,7 +401,7 @@ export default function BlogView() {
         'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: 'llama-3-sonar-large-32k-online',
+        model: 'llama-3.1-sonar-large-128k-online',
         messages: [
           { role: 'system', content: 'Be precise and detailed. Mention sources and dates everywhere you can. Keep the current date in mind when generating.' },
           { role: 'user', content: prompt }
@@ -489,6 +490,14 @@ export default function BlogView() {
 
 
        {!isNewPost && (<>
+       <BasicTooltip title="Created With Strategy" placement="top">
+        <Button variant="contained" color="inherit" 
+         onClick={() => {}} sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, minWidth: '10px', 
+          display: 'flex', alignItems: 'center', cursor: 'default', fontWeight: '600',  px: 1.5, '&:hover' : {backgroundColor: theme.palette.primary.navBg,}})} >
+         <Iconify icon="fa-solid:chess-king" sx={{height: '15px', width: '15px', mb: '2px'}}/>
+         </Button>
+        </BasicTooltip>
+
         <Button variant="contained" onClick={() => {}} 
         sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, cursor: 'default', fontWeight: '600',
         '&:hover' : {backgroundColor: theme.palette.primary.navBg,}})}>

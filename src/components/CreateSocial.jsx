@@ -60,19 +60,9 @@ export default function CreateSocial({ content, isMade = false, isExpanding = fa
   return (
     <>
       {isExpanding ? (
-        <Box sx={{ ml: 2, display: 'flex', gap: 1 }}>
-          <IconButton
-            size="small"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-          >
-            <Iconify icon="material-symbols:edit-outline" />
-          </IconButton>
-          <IconButton size="small">
-            <Iconify icon="material-symbols:delete-outline" />
-          </IconButton>
+        <Box sx={{ display: 'flex', gap: 1 }}>
           <Button size="small"
-              style={{borderRadius: '5px', height: socialBtnHover ? '36px' : '30px', backgroundColor: '#404040',  color: 'white', minWidth: '30px', transition: 'all 0.25s ease-out',
+              style={{borderRadius: '5px', height: socialBtnHover ? '32px' : '30px', backgroundColor: '#404040',  color: 'white', minWidth: '30px', transition: 'all 0.25s ease-out',
                 width: socialBtnHover ? 'auto' : '30px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: socialBtnHover ? 5 : 5,
                 paddingLeft: socialBtnHover ? '10px' : '0px', paddingRight: socialBtnHover ? '10px' : '0px',
               }}

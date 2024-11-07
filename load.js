@@ -61,6 +61,12 @@ const newUser = async (docName, firmInfo, keywords, smallBlog, bigBlog, chatInfo
                 IMAGES: "All",
             },
 
+            QUEUE:{
+                PUBLISHED: [],
+                SCHEDULED: [],
+                DRAFTS: [],
+            },
+
             LEADS: [{
                 ID: 10000000,
                 NAME: "Simon Paschal",
@@ -251,26 +257,27 @@ const updateLeads = async () => {
 let newUserMoment = true;
 
 if (newUserMoment) {
-newUser(docName = 'Burn Law',
+newUser(docName = 'Hexa TX',
 
 firmInfo = {
-    CONTACT_US: "https://edwardharringtonheyburn.com",
-    NAME: "Burn Law",
-    LOCATION: "Philadelphia, PA",
+    CONTACT_US: "https://hexatx.com",
+    NAME: "Hexa TX",
+    LOCATION: "Richardson, TX",
     DESCRIPTION: 
-    `Heyburn Law is a legal firm that specializes in various areas of law, including commercial litigation and personal injury.
-The firm is known for its commitment to providing personalized legal services tailored to the needs of its clients. With a team of experienced attorneys, Heyburn Law focuses on achieving favorable outcomes through strategic legal representation.
-Their reputation is built on a foundation of integrity, professionalism, and a client-centered approach.
+    `HEXA Co-Working is a modern collaborative workspace located in Richardson, Texas, spanning 42,000 square feet. 
+    It is designed to foster innovation and collaboration, providing a variety of spaces including private offices, meeting rooms, and event areas. 
+    The facility offers amenities such as high-speed Wi-Fi, 24/7 access, a lounge area, and a meditation room, creating an environment conducive to both productivity and well-being. 
+    HEXA aims to support a diverse community of startups, freelancers, and small businesses by providing essential resources and networking opportunities to enhance their entrepreneurial journeys.
     `,  
     IMAGE: `
-https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/misc_images%2Fdecentral%20(45).png?alt=media&token=c4fea7ed-fcfd-4621-a516-6d3c842afad0
+https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/misc_images%2Fdecentral%20(47).png?alt=media&token=2c36ee33-65a1-4362-89c1-1152ad2a5ab6
 `,
     MODEL: 2,
     PLAN: "Full Suite Plan",
 },
 
 keywords = {
-    KEYWORDS: "Commercial Litigation, Personal Injury, Legal Services, Experienced Attorneys, Strategic Legal Representation, Client-Centered Approach, Integrity, Professionalism, Philadelphia Law Firm, Heyburn Law, Personalized Legal Services, Favorable Outcomes, Legal Expertise, Commitment to Clients, Legal Firm Reputation",
+    KEYWORDS: "Richardson TX Coworking, Dallas Coworking Space, North Texas Shared Office, Flexible Workspace Dallas, Texas Business Hub, Private Offices Richardson, Meeting Rooms Richardson TX, Event Spaces Dallas, Innovation Workspace Texas, Startup Space Richardson, DFW Coworking Community, Tech District Richardson, 24/7 Office Space Dallas, Professional Meeting Venue Richardson, North Dallas Business Center, Texas Entrepreneur Hub, Telecom Corridor Workspace, DFW Flexible Office, Corporate Event Space Richardson, Small Business Space Dallas",
     LAST_DATE: "15/10/24",
 },
 

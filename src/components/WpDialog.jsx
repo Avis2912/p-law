@@ -119,7 +119,7 @@ export default function WpDialog ({ wpUrl, setWpUrl, wpUsername, setWpUsername, 
 </Tooltip></Stack>
 
       <Stack direction="row" spacing={3} sx={{width: '92%', marginBottom: '25px', display: 'flex', alignItems: 'center'}}>
-      <TextField label="Your Application Password" placeholder="Enter your WordPress URL" size="large" 
+      <TextField label="Your Application Password" placeholder="Enter your Application Password" size="large" 
       sx={{width: '100%', marginBottom: '25px', borderRadius: '0px', }} value={wpPassword} onChange={(e) => setWpPassword(e.target.value)}
       /> <Tooltip title="Found inside your Profile Section under Account Settings after enabling 2 Factor Authorization for your account. Click this icon to watch a quick tutorial.">
   <div>

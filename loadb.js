@@ -39,4 +39,4 @@ const fetchAndStoreBlogs = async (username, domain) => {
     }
 };
 
-fetchAndStoreBlogs('STR Law Guys', 'strlawguys.com');
+fetchAndStoreBlogs('Ridley Law Offices', 'ridleylawoffices.com');

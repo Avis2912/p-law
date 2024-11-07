@@ -19,11 +19,11 @@ export const writeWeeklyBlogs = async (
 
     console.log('ACTIVATED WRITE WEEKLY BLOGS');
     let tempPosts = []; const numberOfBlogs = 6; 
-    let isError = false; let firmNameInt; let firmDescriptionInt; let internalLinksInt; let contactUsLinkInt; let smallBlogInt; let blogTitlesInt; let imagesSettingsInt;
+    let isError = false; let firmNameInt; let firmDescriptionInt; let internalLinksInt; let contactUsLinkInt; let smallBlogInt; let blogTitlesInt; let imagesSettingsInt; let brandVoiceInt;
     const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email)); 
     if (userDoc.exists()) {const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM)); 
     if (firmDoc.exists()) {firmNameInt = firmDoc.data().FIRM_INFO.NAME; firmDescriptionInt = firmDoc.data().FIRM_INFO.DESCRIPTION; 
-        const linksArray = firmDoc.data().BLOG_DATA.BIG_BLOG.map(blog => blog.LINK); 
+        const linksArray = firmDoc.data().BLOG_DATA.BIG_BLOG.map(blog => blog.LINK); brandVoiceInt = firmDoc.data().SETTINGS.BRAND;
         const blogTitlesArray = firmDoc.data().BLOG_DATA.BIG_BLOG.map(blog => blog.TITLE); blogTitlesInt = blogTitlesArray.join(", ");
         internalLinksInt = JSON.stringify(firmDoc.data().BLOG_DATA.BIG_BLOG.map(blog => ({title: blog.TITLE, link: blog.LINK}))); imagesSettingsInt = firmDoc.data().SETTINGS.IMAGES;
         contactUsLinkInt = firmDoc.data().FIRM_INFO.CONTACT_US; console.log('contact us link: ', contactUsLinkInt); console.log('internal links: ', internalLinksInt); 
@@ -122,6 +122,7 @@ export const writeWeeklyBlogs = async (
             - LISTS: Don't EVER use html (ul or ol) lists. Instead, use numbered lists (i.e. 1., 2., 3.) for ordered lists and bullet points for unordered lists.
             - SPECIFICITY: Be as specific and detailed as possible. Don't be repetitive and ramble.
             - LINK TO RELEVANT POSTS: Use <a> tags to add link(s) to relevant blog posts from the firm wherever applicable: ${internalLinksInt}.
+            - ${brandVoiceInt && brandVoiceInt.INSTRUCTIONS !== "" && `BRAND VOICE: Write in the following brand voice: ${JSON.stringify(brandVoiceInt)}.`}
             - PERSPECTIVE: Don't ever, EVER refer to yourself in the post, this should be written in third-person-perspective. Also don't mention ${firmNameInt} at the beginning. You should how 'we at ${firmNameInt}' can help, but ONLY at the end. 
             - CONTACT US LINK AT END: Use this contact us link with <a> tags at the end: ${contactUsLinkInt}
             - NEVER OUTPUT ANYTHING other than the blog content. DONT START BY DESCRIBING WHAT YOURE OUTPUTING, JUST OUTPUT. 

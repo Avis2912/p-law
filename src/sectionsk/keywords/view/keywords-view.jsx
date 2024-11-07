@@ -289,8 +289,11 @@ export default function BlogView() {
             await setPlanName(firmDoc.data().SETTINGS.PLAN);
             await setSearchLimit(firmDoc.data().WEEKLY_KEYWORDS.LIMIT || 15);
             await setSearchesMade(firmDoc.data().WEEKLY_KEYWORDS.SEARCH_COUNT || 0);
-            // await setStrategyData(firmDoc.data().STRATEGY || {});
-  
+            
+            if (firmDoc.data().STRATEGY?.STRATEGY?.TOPICS) {
+              await setStrategyData(firmDoc.data().STRATEGY || {});
+            }
+            
             if (typeof firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS === 'string') {
               writeWeeklyKeywords(firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS);
               console.log('WRITING KEYWORDS 0');
@@ -393,7 +396,8 @@ export default function BlogView() {
   const buttonLabels = ['Strategy', 'Tracked',];
   const icons = [
     // 'material-symbols-light:chess', 
-    'streamline:artificial-intelligence-spark-solid',
+    // 'streamline:artificial-intelligence-spark-solid',
+    'fa-solid:chess-king',
     'clarity:bullseye-line'];
 
   return (
@@ -440,7 +444,7 @@ export default function BlogView() {
               <Button
                 key={label}
                 startIcon={<Iconify icon={icons[index]} 
-                sx={{ height: label === 'Strategy' ? 14.25 : 16.5, width: label === 'Strategy' ? 14.25 : 16.5, }} marginRight="-1.75px" />}
+                sx={{ height: label === 'Strategy' ? 13.25 : 16.5, width: label === 'Strategy' ? 13.25 : 16.5, }} marginRight="-1.75px" />}
                 style={{
                   width: 123, color: selectedList === label ? 'white' : '#242122',
                   backgroundColor: selectedList === label ? '#242122' : 'transparent',
@@ -488,7 +492,9 @@ export default function BlogView() {
       
         <Stack direction="row" sx={{marginBottom: openedTopic !== null ? '16.5px' : '18px'}} spacing={2} alignItems="start" justifyContent="space-between">
 
-        <Typography sx={{ fontFamily: "Times New Roman", marginBottom: '15px', 
+        {/* <Iconify icon="fa-solid:chess-king" height={21} width={21} sx={{ ml: 8.5, position: 'absolute', top: 30, color: 'black', cursor: 'pointer' }} /> */}
+
+        <Typography sx={{ fontFamily: "Times New Roman", marginBottom: '15px',
           letterSpacing: '-0.95px',  fontWeight: 500, fontSize: '24.25px', userSelect: 'none'}}>
           {isLongTermOpen ? `Long Term, I Want To Rank Highest For` 
           :
@@ -502,9 +508,17 @@ export default function BlogView() {
           </span>}
         </Typography>
 
+
+        <Button variant="contained" onClick={() => {}}
+          sx={(theme) => ({backgroundColor: theme.palette.primary.blue, cursor: 'default', 
+          fontWeight: '600', '&:hover': { backgroundColor: theme.palette.primary.blue,},
+          position: 'absolute', top: 24, right: 25, maxHeight: 35})}>
+            Beta
+        </Button>
+
         {!isStrategyOpen && <Button variant="contained" color="inherit" startIcon={<Iconify icon={isLongTermOpen ? "lets-icons:save-fill" : "fluent:settings-16-filled"}/>} 
         onClick={() => {saveLongTermGoals()}} sx={(theme) => ({backgroundColor: theme.palette.primary.black, 
-        height: 35, position: 'absolute', top: 24, right: 25})}>
+        height: 35, position: 'absolute', top: 24, right: 104})}>
           {isLongTermOpen ? `Save AI Settings` : `Long-Term Strategy`}
         </Button>}
 
@@ -551,7 +565,7 @@ export default function BlogView() {
               Currently Ranking For
             </Button>
             
-            {strategyData.STRATEGY.RANKING_FOR.map((item, index) => (
+            {strategyData.STRATEGY.RANKING_FOR.slice(0, 7).map((item, index) => (
                <Button 
                 variant="contained" 
                 key={`${index}`}
@@ -585,9 +599,9 @@ export default function BlogView() {
                   marginBottom: '15px'
                 })}
               >
-                {item.keyword}
+                {item.KEYWORD}
                 <span className="additional-content" style={{ fontWeight: 'bold' }}>
-                  {item.data[0]}/mo
+                  {item?.MONTHLY_SEARCHES ? item?.MONTHLY_SEARCHES[0]?.search_volume : 'N/A'}/mo
                 </span>
               </Button>
             ))}
@@ -657,7 +671,7 @@ export default function BlogView() {
         </List>}
 
       {isSearchMode && searchResults.length === 0 && <Card sx={{backgroundColor: 'white', height: '575px', width: '100%', 
-      borderRadius: '8px', border: '0.1px solid #c2c1c0', justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
+      borderRadius: '5.5px', border: '0.8px solid gray', justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
         <Stack direction="column" spacing={1.5} alignItems="center">
         <Typography sx={{ fontFamily: "DM Serif Display",
         letterSpacing: '-0.45px',  fontWeight: 800, fontSize: '40.75px',}}> 

@@ -8,10 +8,11 @@ export const writeWeeklyPosts = async (bigBlogString, firmName, genPostPlatform,
     console.log('WEEKLY POSTS ACTIVATED');
     let tempPosts = []; const platforms = ["LinkedIn", "Facebook", "Instagram",];
     // const platforms = ["LinkedIn", "LinkedIn", "Facebook", "Facebook", "Instagram", "Instagram",]; 
-    let firmNameInt; let firmDescriptionInt; let imagesSettingsInt;
-    const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
+    let firmNameInt; let firmDescriptionInt; let imagesSettingsInt; let brandVoiceInt;
+    const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email)); 
     if (userDoc.exists()) {const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
-    if (firmDoc.exists()) {firmNameInt = firmDoc.data().FIRM_INFO.NAME; firmDescriptionInt = firmDoc.data().FIRM_INFO.DESCRIPTION; imagesSettingsInt = firmDoc.data().SETTINGS.IMAGES;}};
+    if (firmDoc.exists()) {firmNameInt = firmDoc.data().FIRM_INFO.NAME; firmDescriptionInt = firmDoc.data().FIRM_INFO.DESCRIPTION;
+    imagesSettingsInt = firmDoc.data().SETTINGS.IMAGES; brandVoiceInt = firmDoc.data().SETTINGS.BRAND;}};
 
 
     for (let i = 0; i < platforms.length; i += 1) {
@@ -24,7 +25,7 @@ export const writeWeeklyPosts = async (bigBlogString, firmName, genPostPlatform,
           body: JSON.stringify({ model: modelKeys[selectedModel], 
           messages: [
             { role: "user", content: `<role> You are Pentra AI, an attorney at ${firmNameInt}.
-            ${firmName} Description: ${firmDescriptionInt}. </role> 
+            ${firmNameInt} Description: ${firmDescriptionInt}. </role> 
             
             <instruction>
             YOUR GOAL: Write 3 FULL EDUCATIONAL ${tempPlatform} posts from the perspective of ${firmName}. Don't be generic and corporate but be approachable and genuinely informative. Don't be lazy.
@@ -35,6 +36,8 @@ export const writeWeeklyPosts = async (bigBlogString, firmName, genPostPlatform,
             ONLY OUTPUT THE ARRAY. NOTHING ELSE.
             - POST FORMAT: Wrap titles in <h2> tags. Wrap EVERY paragraph in <p> tags. don't use list tags.
             - Be truly informative about a relevant topic, and mention the firm at the end. Add hashtags in a new paragraph at the very end.
+            - ${brandVoiceInt && brandVoiceInt.INSTRUCTIONS !== "" && `BRAND VOICE: Write in the following brand voice: ${JSON.stringify(brandVoiceInt)}.`}
+
             ${tempPlatform === 'LinkedIn' && `
             - PARAGRAPH COUNT: these posts should be 5-6 paragraphs long. 
             `}

@@ -11,11 +11,11 @@ import Card from '@mui/material/Card';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box'
 import Dialog from '@mui/material/Dialog';
+import { List, ListItem, ListItemText, Checkbox, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 
 import { db, auth } from 'src/firebase-config/firebase';
 import { getDocs, getDoc, collection, doc, updateDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, getStorage, deleteObject, uploadString } from 'firebase/storage'; // Import necessary Firebase Storage functions
-import { List, ListItem, ListItemText } from '@mui/material';
 
 import PageTitle from 'src/components/PageTitle';
 import Iconify from 'src/components/iconify';
@@ -49,6 +49,10 @@ export default function AccountView() {
   const storage = getStorage();
   const navigate = useNavigate(); 
 
+  const [isBrandVoiceDialogOpen, setIsBrandVoiceDialogOpen] = useState(false);
+  const [modelInstructions, setModelInstructions] = useState('');
+  const [contentStyles, setContentStyles] = useState([]);
+
   useEffect(() => {
     const getFirmData = async () => {
       try {
@@ -65,6 +69,9 @@ export default function AccountView() {
             await setIndexedBlogs(firmDoc.data().BLOG_DATA.BIG_BLOG || {});
             setFirmName(firmDoc.data().FIRM_INFO.NAME || '');
             setFirmLocation(firmDoc.data().FIRM_INFO.LOCATION || '');
+            const brandSettings = firmDoc.data().SETTINGS.BRAND || {};
+            setModelInstructions(brandSettings.INSTRUCTIONS || '');
+            setContentStyles(brandSettings.STYLES || []);
           } else {
             console.log('Error: Firm document not found.');
           }
@@ -144,6 +151,24 @@ const saveChanges = async () => {
   }
 };
 
+const saveBrandVoice = async () => {
+  try {
+    const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
+    const firmDocRef = doc(db, 'firms', userDoc.data().FIRM);
+    const updateData = {
+      'SETTINGS.BRAND': {
+        INSTRUCTIONS: modelInstructions,
+        STYLES: contentStyles,
+      },
+    };
+    await updateDoc(firmDocRef, updateData);
+    setIsBrandVoiceDialogOpen(false);
+  } catch (err) {
+    console.error('Error saving brand voice:', err);
+    alert('Failed to save brand voice. Please try again.');
+  }
+};
+
   const handleClose = () => {setIsDialogOpen(false);};
   const handleClose2 = () => {setIsDialogOpen2(false);};
 
@@ -203,10 +228,21 @@ const saveChanges = async () => {
 
       <PageTitle title="My Account" />
 
-      <Button onClick={() => saveChanges()}
-      sx={{ marginLeft:'40px', mb: 2, }} variant="contained" color="inherit">
-      🎉 Save Changes
-      </Button>
+      <Stack spacing={2} direction="row">
+
+        <Button onClick={() => setIsBrandVoiceDialogOpen(true)}
+        startIcon={<Iconify icon="mingcute:voice-fill" />}
+        sx={{ marginLeft:'10px', mb: 2 }} variant="contained" color="inherit">
+        Brand Voice
+        </Button>
+
+        <Button onClick={() => saveChanges()}
+        startIcon={<Iconify icon="teenyicons:tick-circle-solid" height="16px" width="16px" />}
+        sx={{ marginLeft:'40px', mb: 2 }} variant="contained" color="inherit">
+        Save Changes
+        </Button>
+
+      </Stack>
 
       </Stack>
       
@@ -292,7 +328,7 @@ const saveChanges = async () => {
 
 
       <Button variant="contained" color="primary" onClick={() => setIsDialogOpen2(true)}
-      sx={(theme) => ({backgroundColor: theme.palette.primary.navBg})}>
+      sx={(theme) => ({backgroundColor: theme.palette.primary.black, '&:hover': {backgroundColor: theme.palette.primary.black}})}>
       {planName} | Change Plan
       </Button>
 
@@ -323,7 +359,7 @@ const saveChanges = async () => {
       <Typography fontSize="24px" letterSpacing={0.25}
       fontWeight={100} mt={3} mx={5} mb={2}
       fontFamily="DM Serif Display">
-      Indexed Blogs
+      Brand Voice Content
       </Typography>
 
       <List sx={{ width: '89%', height: '170px',
@@ -476,7 +512,52 @@ const saveChanges = async () => {
         </Card>
       </Dialog>
 
+      <Dialog open={isBrandVoiceDialogOpen} onClose={() => setIsBrandVoiceDialogOpen(false)}
+    PaperProps={{ style: { minWidth: '500px', borderRadius: '8px' } }}>
 
+    <Card sx={{ p: '37px', py: '32px' }}>
+
+      <Typography gutterBottom
+      sx={{ letterSpacing: '-0.65px', fontSize: '23px', fontWeight: 700, mb: '8px' }} >
+      {firmName}&apos;s Brand Voice</Typography>
+
+      <TextField
+        label="Instructions for Pentra" multiline
+        rows={4} value={modelInstructions}
+        onChange={(e) => setModelInstructions(e.target.value)}
+        fullWidth margin="normal"
+        sx={{ borderRadius: '5px', mb: '5px' }}
+      />
+      <FormControl fullWidth margin="normal">
+        <InputLabel>Content Styles</InputLabel>
+        <Select
+          multiple
+          value={contentStyles}
+          onChange={(e) => setContentStyles(e.target.value)}
+          renderValue={(selected) => selected.join(', ')}
+        >
+          <MenuItem value="Formal">Formal</MenuItem>
+          <MenuItem value="Casual">Casual</MenuItem>
+          <MenuItem value="Persuasive">Persuasive</MenuItem>
+          <MenuItem value="Informative">Informative</MenuItem>
+          <MenuItem value="Technical">Technical</MenuItem>
+          {/* ...add more styles as needed... */}
+        </Select>
+      </FormControl>
+
+      <Button variant="contained" onClick={saveBrandVoice} sx={{ mt: 2, mr: 1.75 }} color="inherit"
+      startIcon={<Iconify icon="teenyicons:tick-circle-solid" height="16px" width="16px" />}>
+        Save Brand Voice
+      </Button>
+
+      <Button variant="contained" onClick={saveBrandVoice} sx={(theme) => ({ mt: 2, background: theme.palette.primary.navBg, 
+      '&:hover': {background: theme.palette.primary.navBg}, cursor: 'default' })} color="inherit"
+      startIcon={<Iconify icon="fluent:content-view-gallery-24-filled" height="16px" width="16px" />}>
+        Using Firm Blogs
+      </Button>
+
+    </Card>
+  </Dialog>
 
       </Stack>
     </Container>
