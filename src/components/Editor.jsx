@@ -134,6 +134,15 @@ function BlogEditor({ text, setText, isGenerating, boxWidth, boxHeight, wordCoun
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setText]);
 
+  // Add this method to the editor reference
+  useEffect(() => {
+    if (editorRef.current) {
+      editorRef.current.insertImage = (url) => {
+        const range = editorRef.current.getSelection(true);
+        editorRef.current.insertEmbed(range.index, 'image', url);
+      };
+    }
+  }, [isInitialized]);
 
   const handleImageReplacement = async (imgDesc, imgSrc) => {
     

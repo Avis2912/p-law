@@ -11,6 +11,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Creating from 'src/components/Creating';
 import BasicTooltip from 'src/components/BasicTooltip';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { db, auth } from 'src/firebase-config/firebase';
 import { useState, useEffect, useCallback } from 'react';
@@ -37,7 +38,7 @@ export default function BlogView() {
   const [isSearchMode, setIsSearchMode] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [searchesMade, setSearchesMade] = useState(0);
-  const [searchLimit, setSearchLimit] = useState(5);
+  const [searchLimit, setSearchLimit] = useState(10);
 
   const [isNewPost, setIsNewPost] = useState(false);
   const [genPostPlatform, setGenPostPlatform] = useState(null);
@@ -49,7 +50,7 @@ export default function BlogView() {
   const [weeklyKeywords, setWeeklyKeywords] = useState([]);
   const [firmName, setFirmName] = useState(null);
   const [firmDescription, setFirmDescription] = useState(null);
-  const [selectedList, setSelectedList] = useState('Strategy');
+  const [selectedList, setSelectedList] = useState('Tracked');
   const [isStrategyOpen, setIsStrategyOpen] = useState(false);
 
   const [searchResults, setSearchResults] = useState([
@@ -59,104 +60,107 @@ export default function BlogView() {
   const [isLongTermOpen, setIsLongTermOpen] = useState(false);
   const [longTermKeywords, setLongTermKeywords] = useState([]);
   const [expandedButtons, setExpandedButtons] = useState({});
+  const [isStrategyCreated, setIsStrategyCreated] = useState(false);
+  const [isStrategyCreating, setIsStrategyCreating] = useState(false);
 
   const [strategyData, setStrategyData] = useState({
     STRATEGY: {
       TOPICS: [
-        { title: 'Public Relationship Specialist', 
-          keywords: [
-          {keyword: 'PR Specialist in Texas', data: [600, 1400, 1600, 1900], competition: 'LOW'},
-          {keyword: 'PR Specialist in California', data: [1200, 1700, 1900, 2200], competition: 'MEDIUM'},
-          {keyword: 'NYC PR Specialists', data: [2000, 2200, 2400, 3500], competition: 'HIGH'},
-          {keyword: 'PR Specialist in Chicago', data: [500, 2700, 2900, 3200], competition: 'LOW'},
-          {keyword: 'PR Specialist in Houston', data: [3500, 3200, 3400, 3700], competition: 'HIGH'},
-          {keyword: 'PR Specialist in San Francisco', data: [200, 1400, 1600, 1900], competition: 'LOW'},
-        ],
-          news: [],
-          reasons: [
-            {reason: 'High demand for PR Specialists in NYC'}, 
-            {reason: 'Low competition for PR Specialists in Texas'},
-            {reason: 'Medium competition for PR Specialists in California'},
-            {reason: 'High competition for PR Specialists in Houston'},
-          ],
-      },
-        { title: 'Policy Analyst', keywords: [
-          {keyword: 'Policy Analyst in TX', data: [600, 1400, 1600, 1900], competition: 'LOW'},
-          {keyword: 'Policy Analyst in CA', data: [1200, 1700, 1900, 2200], competition: 'MEDIUM'},
-          {keyword: 'NYC Policy Analyst', data: [2000, 2200, 2400, 3500], competition: 'HIGH'},
-          {keyword: 'Policy Analyst in Chicago', data: [500, 2700, 2900, 3200], competition: 'LOW'},
-          {keyword: 'Policy Analyst in Houston', data: [3500, 3200, 3400, 3700], competition: 'HIGH'},
-          {keyword: 'Policy Analyst in San Francisco', data: [200, 1400, 1600, 1900], competition: 'LOW'},
-        ],
-        news: [],
-        reasons: [
-          {reason: 'High demand for PR Specialists in NYC'}, 
-          {reason: 'Low competition for PR Specialists in Texas'},
-          {reason: 'Medium competition for PR Specialists in California'},
-          {reason: 'High competition for PR Specialists in Houston'},
-        ],
-      },
-        { title: 'Fundraising Coordinator', keywords: [
-          {keyword: 'Fundraising Coordinator in TX', data: [600, 1400, 1600, 1900], competition: 'LOW'},
-          {keyword: 'Fundraising Coordinator in CA', data: [1200, 1700, 1900, 2200], competition: 'MEDIUM'},
-          {keyword: 'NYC Fundraising Coordinator', data: [2000, 2200, 2400, 3500], competition: 'HIGH'},
-          {keyword: 'Fundraising Coordinator in Chicago', data: [500, 2700, 2900, 3200], competition: 'LOW'},
-          {keyword: 'Fundraising Coordinator in Houston', data: [3500, 3200, 3400, 3700], competition: 'HIGH'},
-          {keyword: 'Fundraising Coordinator in San Francisco', data: [200, 1400, 1600, 1900], competition: 'LOW'},
-         ],
-         news: [],
-         reasons: [
-           {reason: 'High demand for PR Specialists in NYC'}, 
-           {reason: 'Low competition for PR Specialists in Texas'},
-           {reason: 'Medium competition for PR Specialists in California'},
-           {reason: 'High competition for PR Specialists in Houston'},
-         ],
-        },
-         { title: 'Campaign Manager', keywords: [
-          {keyword: 'Campaign Manager in TX', data: [600, 1400, 1600, 1900], competition: 'LOW'},
-          {keyword: 'Campaign Manager in CA', data: [1200, 1700, 1900, 2200], competition: 'MEDIUM'},
-          {keyword: 'NYC Campaign Manager', data: [2000, 2200, 2400, 3500], competition: 'HIGH'},
-          {keyword: 'Campaign Manager in Chicago', data: [500, 2700, 2900, 3200], competition: 'LOW'},
-          {keyword: 'Campaign Manager in Houston', data: [3500, 3200, 3400, 3700], competition: 'HIGH'},
-          {keyword: 'Campaign Manager in San Francisco', data: [200, 1400, 1600, 1900], competition: 'LOW'},
-         ],
-         news: [
-          {title: 'Baylor University Shuts Down', url: 'https://www.baylor.edu/'},
-          {title: 'Texas A&M Wins Big', url: 'https://www.tamu.edu/'},
-         ],
-         reasons: [
-           {reason: 'High demand for PR Specialists in NYC'}, 
-           {reason: 'Low competition for PR Specialists in Texas'},
-           {reason: 'Medium competition for PR Specialists in California'},
-           {reason: 'High competition for PR Specialists in Houston'},
-         ],
-        },
+      //   { title: 'Public Relationship Specialist', 
+      //     keywords: [
+      //     {keyword: 'PR Specialist in Texas', data: [600, 1400, 1600, 1900], competition: 'LOW'},
+      //     {keyword: 'PR Specialist in California', data: [1200, 1700, 1900, 2200], competition: 'MEDIUM'},
+      //     {keyword: 'NYC PR Specialists', data: [2000, 2200, 2400, 3500], competition: 'HIGH'},
+      //     {keyword: 'PR Specialist in Chicago', data: [500, 2700, 2900, 3200], competition: 'LOW'},
+      //     {keyword: 'PR Specialist in Houston', data: [3500, 3200, 3400, 3700], competition: 'HIGH'},
+      //     {keyword: 'PR Specialist in San Francisco', data: [200, 1400, 1600, 1900], competition: 'LOW'},
+      //   ],
+      //     news: [],
+      //     reasons: [
+      //       {reason: 'High demand for PR Specialists in NYC'}, 
+      //       {reason: 'Low competition for PR Specialists in Texas'},
+      //       {reason: 'Medium competition for PR Specialists in California'},
+      //       {reason: 'High competition for PR Specialists in Houston'},
+      //     ],
+      // },
+      //   { title: 'Policy Analyst', keywords: [
+      //     {keyword: 'Policy Analyst in TX', data: [600, 1400, 1600, 1900], competition: 'LOW'},
+      //     {keyword: 'Policy Analyst in CA', data: [1200, 1700, 1900, 2200], competition: 'MEDIUM'},
+      //     {keyword: 'NYC Policy Analyst', data: [2000, 2200, 2400, 3500], competition: 'HIGH'},
+      //     {keyword: 'Policy Analyst in Chicago', data: [500, 2700, 2900, 3200], competition: 'LOW'},
+      //     {keyword: 'Policy Analyst in Houston', data: [3500, 3200, 3400, 3700], competition: 'HIGH'},
+      //     {keyword: 'Policy Analyst in San Francisco', data: [200, 1400, 1600, 1900], competition: 'LOW'},
+      //   ],
+      //   news: [],
+      //   reasons: [
+      //     {reason: 'High demand for PR Specialists in NYC'}, 
+      //     {reason: 'Low competition for PR Specialists in Texas'},
+      //     {reason: 'Medium competition for PR Specialists in California'},
+      //     {reason: 'High competition for PR Specialists in Houston'},
+      //   ],
+      // },
+      //   { title: 'Fundraising Coordinator', keywords: [
+      //     {keyword: 'Fundraising Coordinator in TX', data: [600, 1400, 1600, 1900], competition: 'LOW'},
+      //     {keyword: 'Fundraising Coordinator in CA', data: [1200, 1700, 1900, 2200], competition: 'MEDIUM'},
+      //     {keyword: 'NYC Fundraising Coordinator', data: [2000, 2200, 2400, 3500], competition: 'HIGH'},
+      //     {keyword: 'Fundraising Coordinator in Chicago', data: [500, 2700, 2900, 3200], competition: 'LOW'},
+      //     {keyword: 'Fundraising Coordinator in Houston', data: [3500, 3200, 3400, 3700], competition: 'HIGH'},
+      //     {keyword: 'Fundraising Coordinator in San Francisco', data: [200, 1400, 1600, 1900], competition: 'LOW'},
+      //    ],
+      //    news: [],
+      //    reasons: [
+      //      {reason: 'High demand for PR Specialists in NYC'}, 
+      //      {reason: 'Low competition for PR Specialists in Texas'},
+      //      {reason: 'Medium competition for PR Specialists in California'},
+      //      {reason: 'High competition for PR Specialists in Houston'},
+      //    ],
+      //   },
+      //    { title: 'Campaign Manager', keywords: [
+      //     {keyword: 'Campaign Manager in TX', data: [600, 1400, 1600, 1900], competition: 'LOW'},
+      //     {keyword: 'Campaign Manager in CA', data: [1200, 1700, 1900, 2200], competition: 'MEDIUM'},
+      //     {keyword: 'NYC Campaign Manager', data: [2000, 2200, 2400, 3500], competition: 'HIGH'},
+      //     {keyword: 'Campaign Manager in Chicago', data: [500, 2700, 2900, 3200], competition: 'LOW'},
+      //     {keyword: 'Campaign Manager in Houston', data: [3500, 3200, 3400, 3700], competition: 'HIGH'},
+      //     {keyword: 'Campaign Manager in San Francisco', data: [200, 1400, 1600, 1900], competition: 'LOW'},
+      //    ],
+      //    news: [
+      //     {title: 'Baylor University Shuts Down', url: 'https://www.baylor.edu/'},
+      //     {title: 'Texas A&M Wins Big', url: 'https://www.tamu.edu/'},
+      //    ],
+      //    reasons: [
+      //      {reason: 'High demand for PR Specialists in NYC'}, 
+      //      {reason: 'Low competition for PR Specialists in Texas'},
+      //      {reason: 'Medium competition for PR Specialists in California'},
+      //      {reason: 'High competition for PR Specialists in Houston'},
+      //    ],
+      //   },
       ],
       RANKING_FOR:[
-        { keyword: 'Public Relations Specialist', data: [600, 1400, 1600, 1900] },
-        { keyword: 'Policy Analyst', data: [1200, 1700, 1900, 2200] },
-        { keyword: 'Fundraising Coordinator', data: [2000, 2200, 2400, 3500] },
-        { keyword: 'Campaign Manager', data: [500, 2700, 2900, 3200] },
-        { keyword: 'Political Consultant', data: [3500, 3200, 3400, 3700] },
-        { keyword: 'Public Relations Specialist', data: [200, 1400, 1600, 1900] },
+        // { keyword: 'Public Relations Specialist', data: [600, 1400, 1600, 1900] },
+        // { keyword: 'Policy Analyst', data: [1200, 1700, 1900, 2200] },
+        // { keyword: 'Fundraising Coordinator', data: [2000, 2200, 2400, 3500] },
+        // { keyword: 'Campaign Manager', data: [500, 2700, 2900, 3200] },
+        // { keyword: 'Political Consultant', data: [3500, 3200, 3400, 3700] },
+        // { keyword: 'Public Relations Specialist', data: [200, 1400, 1600, 1900] },
       ],
       LONG_TERM: [
-        { showup_for: 'Campaign Manager in Houston TX' },
-        { showup_for: 'Political Consultant in San Francisco CA' },
-        { showup_for: 'Fundraising Coordinator in New York NY' },
-        { showup_for: 'Public Relations Specialist in Chicago IL' },
+        // { showup_for: 'Campaign Manager in Houston TX' },
+        // { showup_for: 'Political Consultant in San Francisco CA' },
+        // { showup_for: 'Fundraising Coordinator in New York NY' },
+        // { showup_for: 'Public Relations Specialist in Chicago IL' },
       ]
     },
     TRENDING: [
-        { keyword: 'Public Relations Specialist', data: [600, 1400, 1600, 1900] },
-        { keyword: 'Policy Analyst', data: [1200, 1700, 1900, 2200] },
-        { keyword: 'Fundraising Coordinator', data: [2000, 2200, 2400, 3500] },
-        { keyword: 'Campaign Manager', data: [500, 2700, 2900, 3200] },
-        { keyword: 'Political Consultant', data: [3500, 3200, 3400, 3700] },
-        { keyword: 'Public Relations Specialist', data: [200, 1400, 1600, 1900] },
+        // { keyword: 'Public Relations Specialist', data: [600, 1400, 1600, 1900] },
+        // { keyword: 'Policy Analyst', data: [1200, 1700, 1900, 2200] },
+        // { keyword: 'Fundraising Coordinator', data: [2000, 2200, 2400, 3500] },
+        // { keyword: 'Campaign Manager', data: [500, 2700, 2900, 3200] },
+        // { keyword: 'Political Consultant', data: [3500, 3200, 3400, 3700] },
+        // { keyword: 'Public Relations Specialist', data: [200, 1400, 1600, 1900] },
     ], 
     LAST_DATE: '10/25/24',
-  });
+  }
+);
 
   const [openedTopic, setOpenedTopic] = useState(null);
 
@@ -171,7 +175,7 @@ export default function BlogView() {
   useEffect(() => {
     setLongTermKeywords(strategyData.STRATEGY.LONG_TERM);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [strategyData]);
 
   useEffect(() => {
     const getWeeklyStratCreationType = () => {
@@ -222,15 +226,68 @@ export default function BlogView() {
   const weekName = isCurrentWeek ? 'This Week' : itemIndexList[openedTopic+1];
   const currentMonthName = new Date().toLocaleString('default', { month: 'long' });
 
-  const saveLongTermGoals = async () => {
-    if (!isLongTermOpen) {setIsLongTermOpen(true); return;}
-      const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
-      const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
-      if (firmDoc.exists()) {await updateDoc(doc(db, 'firms', userDoc.data().FIRM), { 'STRATEGY.STRATEGY.LONG_TERM': longTermKeywords });}
-      else {console.log('ERR: Firm document not found.');}
-      setIsLongTermOpen(false);
-  }
+  const handleCreateStrategyClick = () => {
+    setIsLongTermOpen(true);
+  };
 
+  const saveLongTermGoals = async () => {
+    if (!isLongTermOpen) {
+      setIsLongTermOpen(true); 
+      return;
+    }
+
+    const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
+    const firmDoc = await getDoc(doc(db, 'firms', userDoc.data().FIRM));
+    
+    if (firmDoc.exists()) {
+      if (!isStrategyCreated) {
+        setIsStrategyCreating(true);
+        setIsStrategyUpdateTime(true);
+        
+        // Initialize strategy with long term goals
+        const initialStrategy = {
+          STRATEGY: {
+            TOPICS: [],
+            RANKING_FOR: [],
+            LONG_TERM: longTermKeywords.map(kw => ({ showup_for: kw.showup_for || '' }))
+          },
+          TRENDING: [],
+          LAST_DATE: new Date().toLocaleDateString()
+        };
+
+        await updateDoc(doc(db, 'firms', userDoc.data().FIRM), {
+          'STRATEGY': initialStrategy
+        });
+
+        createStrat(longTermKeywords);
+      } else {
+        // Just update long term goals if strategy exists
+        await updateDoc(doc(db, 'firms', userDoc.data().FIRM), { 
+          'STRATEGY.STRATEGY.LONG_TERM': longTermKeywords 
+        });
+      }
+    } else {
+      console.log('ERR: Firm document not found.');
+    }
+    
+    setIsLongTermOpen(false);
+  };
+
+  const createStrat = async (longTermData) => {
+    // Simulate strategy creation with 10-second delay
+    setTimeout(async () => {
+      // Update strategy data
+      const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
+      await updateDoc(doc(db, 'firms', userDoc.data().FIRM), {
+        'STRATEGY.STRATEGY.LONG_TERM': longTermData,
+      });
+
+      setIsStrategyCreating(false);
+      setIsStrategyCreated(true);
+      setIsStrategyUpdateTime(false);
+      setSelectedList('Strategy'); // Switch to strategy view after creation
+    }, 10000);
+  };
 
   const writeWeeklyKeywords = useCallback(async (key="") => {
 
@@ -292,6 +349,7 @@ export default function BlogView() {
             
             if (firmDoc.data().STRATEGY?.STRATEGY?.TOPICS) {
               await setStrategyData(firmDoc.data().STRATEGY || {});
+              await setIsStrategyCreated(true);
             }
 
             if (typeof firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS === 'string') {
@@ -393,12 +451,8 @@ export default function BlogView() {
 
   }
 
-  const buttonLabels = ['Strategy', 'Tracked',];
-  const icons = [
-    // 'material-symbols-light:chess', 
-    // 'streamline:artificial-intelligence-spark-solid',
-    'fa-solid:chess-king',
-    'clarity:bullseye-line'];
+  const buttonLabels = isStrategyCreated ? ['Strategy', 'Tracked'] : ['Tracked'];
+  const icons = isStrategyCreated ? ['fa-solid:chess-king', 'clarity:bullseye-line'] : ['clarity:bullseye-line'];
 
   return (
     <Container>
@@ -413,7 +467,7 @@ export default function BlogView() {
         <Stack direction="row" spacing={2} mb={2.25}>
 
 
-       {!isSearchMode && (<>
+       {isStrategyCreated && !isSearchMode && (<>
         <Button variant="contained" onClick={() => {}}
         sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, cursor: 'default', fontWeight: '600',
         '&:hover': {backgroundColor: theme.palette.primary.navBg,}})}>
@@ -429,6 +483,24 @@ export default function BlogView() {
         </Button>
         </>)}
 
+        {!isStrategyCreated && (
+            <Button
+              variant="contained"
+              color="inherit"
+              startIcon={isStrategyCreating ? <CircularProgress size={16} /> : <Iconify icon="fa-solid:chess-king" height={14.5} width={14.5} mb={0.275} />}
+              onClick={handleCreateStrategyClick}
+              disabled={isStrategyCreating}
+              sx={(theme) => ({
+                backgroundColor: theme.palette.primary.navBg,
+                fontWeight: 700,
+                height: 37.5,
+                '&:hover': { backgroundColor: theme.palette.primary.navBg },
+              })}
+            >
+              {isStrategyCreating ? 'Creating Strategy...' : 'Create Strategy'}
+            </Button>
+          )}
+
         {!isNewPost && selectedList==='Tracked' && <Button variant="contained" color="inherit" startIcon={<Iconify icon={isSearchMode ? "charm:cross" : "bx:search"} />} 
         onClick={() => {setIsSearchMode(!isSearchMode)}} sx={(theme) => ({backgroundColor: theme.palette.primary.black})}>
           {isSearchMode ? `Find New` : `Find New`}
@@ -437,16 +509,16 @@ export default function BlogView() {
         <Stack direction="row" spacing={2} mb={2}>
           <div style={{ 
             display: 'flex', borderRadius: 7, 
-            width: 246, height: 37.5, 
+            width: isStrategyCreated ? 246 : 123, height: 37.5, 
             borderWidth: 0.5, borderStyle: 'solid' 
           }}>
             {buttonLabels.map((label, index) => (
               <Button
                 key={label}
                 startIcon={<Iconify icon={icons[index]} 
-                sx={{ height: label === 'Strategy' ? 13.25 : 16.5, width: label === 'Strategy' ? 13.25 : 16.5, }} marginRight="-1.75px" />}
+                sx={{ height: 16.5, width: 16.5 }} marginRight="-1.75px" />}
                 style={{
-                  width: 123, color: selectedList === label ? 'white' : '#242122',
+                  width: isStrategyCreated ? 123 : 246, color: selectedList === label ? 'white' : '#242122',
                   backgroundColor: selectedList === label ? '#242122' : 'transparent',
                   fontWeight: 700, transition: 'all 0.25s ease-out', borderRadius: 0,
                   borderTopLeftRadius: index === 0 ? 6 : 0, borderBottomLeftRadius: index === 0 ? 6 : 0,
@@ -612,7 +684,7 @@ export default function BlogView() {
         </Stack> </>}
 
         {isLongTermOpen && <Grid container columnSpacing={3} rowSpacing={1.75} sx={{marginBottom: 1.3}} >
-          {strategyData.STRATEGY.TOPICS.map((topic, index) => (
+          {strategyData.STRATEGY.LONG_TERM.map((topic, index) => (
             <Grid item xs={12} sm={openedTopic === null ? 6 : 12} key={index} sx={{ display: openedTopic === null || openedTopic === index ? 'block' : 'none' }}>
               <LongTermItem 
                 index={index} 
@@ -628,9 +700,64 @@ export default function BlogView() {
         
       </Card>}
 
+      {!isStrategyCreated && isLongTermOpen && (
+        <Card sx={{
+          backgroundColor: 'white', 
+          height: '240px', 
+          width: '97.5%', 
+          p: '25px',
+          borderRadius: '5.5px', 
+          marginBottom: '25px', 
+          border: '2.25px solid #f0f0f0', 
+          transition: '0.35s ease'
+        }}>
+          <Stack direction="column" spacing={0} alignItems="left" justifyContent="center">
+            <Stack direction="row" sx={{marginBottom: '18px'}} spacing={2} alignItems="start" justifyContent="space-between">
+              <Typography sx={{ 
+                fontFamily: "Times New Roman",
+                marginBottom: '15px',
+                letterSpacing: '-0.95px',
+                fontWeight: 500,
+                fontSize: '24.25px',
+                userSelect: 'none'
+              }}>
+                Long Term, I Want To Rank Highest For
+              </Typography>
+              <Button 
+                variant="contained" 
+                color="inherit" 
+                startIcon={<Iconify icon={isStrategyCreated ? "lets-icons:save-fill" : "fluent:settings-16-filled"} />}
+                onClick={saveLongTermGoals}
+                sx={(theme) => ({
+                  backgroundColor: theme.palette.primary.black,
+                  height: 35,
+                  position: 'absolute',
+                  top: 24,
+                  right: 25
+                })}
+              >
+                {isStrategyCreated ? `Save Strategy` : `Create Strategy`}
+              </Button>
+            </Stack>
 
-      {!isSearchMode && selectedList === 'Strategy' && <Grid container spacing={3} sx={{width: '100%'}}>
-          {strategyData.TRENDING.map(({ keyword, data }, index) => {
+            <Grid container columnSpacing={3} rowSpacing={1.75} sx={{marginBottom: 1.3}}>
+              {[0,1,2,3].map((index) => (
+                <Grid item xs={12} sm={6} key={index}>
+                  <LongTermItem 
+                    index={index}
+                    isLongTermOpen={isLongTermOpen}
+                    longTermKeywords={longTermKeywords}
+                    setLongTermKeywords={setLongTermKeywords}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          </Stack>
+        </Card>
+      )}
+
+      {!isStrategyCreating && !isSearchMode && selectedList === 'Strategy' && <Grid container spacing={3} sx={{width: '100%'}}>
+          {strategyData.STRATEGY.TRENDING.map(({ keyword, data }, index) => {
             const isTrendingTracked = weeklyKeywords.some(weeklyKeyword => weeklyKeyword.keyword === keyword);
             return (
               <PostCard key={index} data={data} keyword={keyword} index={index} setWeeklyKeywords={setWeeklyKeywords} trackNewKeyword={trackNewKeyword} isTrending isTrendingTracked={isTrendingTracked} />
@@ -671,7 +798,7 @@ export default function BlogView() {
         </List>}
 
       {isSearchMode && searchResults.length === 0 && <Card sx={{backgroundColor: 'white', height: '575px', width: '100%', 
-      borderRadius: '5.5px', border: '0.8px solid gray', justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
+      borderRadius: '5.5px', border: '0.5px solid lightgray', justifyContent: 'center', alignItems: 'center', display: 'flex'}}>
         <Stack direction="column" spacing={1.5} alignItems="center">
         <Typography sx={{ fontFamily: "DM Serif Display",
         letterSpacing: '-0.45px',  fontWeight: 800, fontSize: '40.75px',}}> 

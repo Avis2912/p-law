@@ -29,8 +29,6 @@ import { ScheduleDialog } from './schedule-dialog';
 
 // eslint-disable-next-line import/no-relative-packages
 import publishBlog from '../../../../functions/src/WpFunctions/publishBlog';
-// eslint-disable-next-line import/no-relative-packages
-import darkerColor from '../../../../functions/src/General/darkerColor';
 
 import 'src/components/Editor.css';
 
@@ -390,6 +388,7 @@ const modules = {
     .replace(/<\/ol>/gi, '$&')  // Remove <br><br>
     .replace(/(<image[^>]*>)/gi, '$&')  // Remove <br>
     .replace(/<\/div><p><\p>/g, '</div>')
+    .replace(/<\/p><p><br><\/p><p><br>/g, '</p><p><br>') // Remove duplicates
     .replace(/<br\s*\/?>/gi, '');  // Remove any remaining <br> tags
     if (currentMode === "Build Outline") {setCurrentMode('Generate');};
     if (currentMode === "Build Outline") {await setIsGenerating(false); await setText(textWithBreaks0); console.log('return'); return;};
@@ -458,21 +457,18 @@ const modules = {
     const h1Title = isReplacing ? headerDesc : (imagelessText.match(new RegExp(`<${titleTag}>(.*?)</${titleTag}>`)) || [])[1];
     const formattedDate = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
     const timeToRead = isReplacing ? headerTimeToRead : Math.ceil(imagelessText.split(' ').length / 200);
-    let firmSite = ''; try {firmSite = new URL(contactUsLink).hostname.replace(/^www\./, '');} catch (e) {console.error(e);}
-    console.log('WEBPIC: ', webPic); console.log('BRANDVOICE: ', brandVoice);
+    let firmSite = ''; try {firmSite = new URL(contactUsLink).hostname.replace(/^www\./, '');} catch (e) {console.error(e);}      
   
     await fetch('https://api.templated.io/v1/render', {
       method: 'POST',
-      async: false,
       body: JSON.stringify({
         "template" : '88e62b0b-9879-4d56-af23-1b32afbf1457',
-        "async" : false,
         "layers" : {
           "primary-text" : {
             "text" : h1Title,
           },
-          "shape-0": {
-            "stroke": darkerColor(customColor, 0.35),
+          "shape-0" : {
+            "fill": customColor,
           },
           "firm-name" : {
             "text": firmName,

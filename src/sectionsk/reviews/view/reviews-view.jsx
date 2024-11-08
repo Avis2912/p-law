@@ -278,7 +278,7 @@ export default function UserPage() {
 
 
     {newReviews.length === 0 && <Card sx ={(theme) => ({ height: '100px', width: '100%', borderRadius: '7.5px', 
-      border: `1px solid ${theme.palette.primary.main}`, mt: 2.25, })}>
+      border: `1.5px solid ${theme.palette.primary.lighter}`, mt: 2.25, })}>
       <Stack direction="row" sx ={{ justifyContent: 'center', alignItems: 'center', height: '100%',
       width: '100%', }} spacing={2}>
 
