@@ -155,7 +155,11 @@ export const writeWeeklyBlogs = async (
         // eslint-disable-next-line no-await-in-loop
         let gptResponse = (await response.text()); console.log(gptResponse);
         // eslint-disable-next-line no-await-in-loop
-        gptResponse = gptResponse.replace(/<br\s*\/?>/gi, '').replace(/<\/p>|<\/h1>|<\/h2>|<\/h3>|<\/ul>|\/\/Image:.*?\/\//gi, '$&<br>').replace(/<\/ol>/gi, '$&<br><br>').replace(/(<image[^>]*>|\/\/Image:.*?\/\/)/gi, '$&<br>');
+        gptResponse = gptResponse
+        .replace(/<br\s*\/?>/gi, '').
+        replace(/<\/p>|<\/h1>|<\/h2>|<\/h3>|<\/ul>|\/\/Image:.*?\/\//gi, '$&<br>')
+        .replace(/<\/p><p><br><\/p><p><br>/g, '</p><p><br>') // Remove duplicates
+        .replace(/<\/ol>/gi, '$&<br><br>').replace(/(<image[^>]*>|\/\/Image:.*?\/\/)/gi, '$&<br>');
         const postTitle = gptResponse.match(/<h1>(.*?)<\/h1>/i)[1]; 
         // eslint-disable-next-line no-control-regex
         const sanitizedResponse = gptResponse.replace(/[\u0000-\u001F\u007F-\u009F]/g, ''); let textWithoutImages;

@@ -254,7 +254,7 @@ const getNewsArticles = async (topic, firmDescription, location, weekRangeIndex)
     const endDateStr = endDate.toLocaleDateString('en-US');
 
     const newsPrompt = `
-      Provide 2 most relevant news articles about "${space}" from ${startDateStr} to ${endDateStr}.
+      Provide 2 extremely relevant news articles about "${space}" published between ${startDateStr} to ${endDateStr}. Add a very title of 4-5 words.
       OUTPUT FORMAT: news: [
         { title: '...', url: '...' },
         ...
@@ -268,6 +268,14 @@ const getNewsArticles = async (topic, firmDescription, location, weekRangeIndex)
     console.error(error);
     return [];
   }
+};
+
+const isValidLongTermStrategy = (strategyData) => {
+  if (!strategyData?.STRATEGY?.LONG_TERM) return false;
+  return strategyData.STRATEGY.LONG_TERM.length > 0 && 
+         strategyData.STRATEGY.LONG_TERM.every(item => 
+           item.showup_for && item.showup_for.trim() !== ''
+         );
 };
 
 const createWeeklyStrat = async (firmName, type = 'New') => {
@@ -412,34 +420,37 @@ const createWeeklyStrat = async (firmName, type = 'New') => {
 
   if (type === 'New') {
 
-    // console.log('In Func')
+    console.log('In Func')
 
-    // longTermData = await createLongTermData();
-    // console.log('Long Term Data:', longTermData);
+    // Only create new long-term data if it doesn't exist or is invalid
+    if (!isValidLongTermStrategy(strategyData)) {
+      longTermData = await createLongTermData();
+    } else {
+      longTermData = strategyData.STRATEGY.LONG_TERM;
+    }
+    console.log('Long Term Data:', longTermData);
     
-    // rankedSearchData = await getRankedSearches();
-    // console.log('Ranked Search Data:', rankedSearchData);
+    rankedSearchData = await getRankedSearches();
+    console.log('Ranked Search Data:', rankedSearchData);
     
-    // topicData = await getTopicList(longTermData, firmDescription);
-    // console.log('Topic Data:', topicData);
+    topicData = await getTopicList(longTermData, firmDescription);
+    console.log('Topic Data:', topicData);
     
     let allKeywords = [];
     
-    // for (let i = 0; i < topicData.length; i++) {
-    //   const topic = topicData[i];
-    //   topic.keywords = await getKeywordsForTopic(topic);
-    //   console.log(`Keywords for Topic ${topic.title}:`, topic.keywords);
+    for (let i = 0; i < topicData.length; i++) {
+      const topic = topicData[i];
+      topic.keywords = await getKeywordsForTopic(topic);
+      console.log(`Keywords for Topic ${topic.title}:`, topic.keywords);
     
-    //   allKeywords = allKeywords.concat(topic.keywords);
+      allKeywords = allKeywords.concat(topic.keywords);
     
-    //   topic.reasons = await getReasons(topic, topic.keywords, longTermData, compData, possibleReasons);
-    //   console.log(`Reasons for Topic ${topic.title}:`, topic.reasons);
+      topic.reasons = await getReasons(topic, topic.keywords, longTermData, compData, possibleReasons);
+      console.log(`Reasons for Topic ${topic.title}:`, topic.reasons);
     
-    //   topic.news = await getNewsArticles(topic, firmDescription, location, i % 4);
-    //   console.log(`News for Topic ${topic.title}:`, topic.news);
-    // }
-
-    allKeywords = await getKeywordsForTopic({title: 'CHRO Advisory'});
+      topic.news = await getNewsArticles(topic, firmDescription, location, i % 4);
+      console.log(`News for Topic ${topic.title}:`, topic.news);
+    }
     
     const combinedKeywordsString = JSON.stringify(allKeywords);
     trendingData = await getTrendingKeywords(combinedKeywordsString);
@@ -450,8 +461,8 @@ const createWeeklyStrat = async (firmName, type = 'New') => {
           TOPICS: topicData,
           RANKING_FOR: rankedSearchData,
           LONG_TERM: longTermData,
-          TRENDING: trendingData,
         },
+        TRENDING: trendingData,
         LAST_DATE: new Date().toLocaleDateString(),
       };
 
@@ -459,7 +470,7 @@ const createWeeklyStrat = async (firmName, type = 'New') => {
       try {
           const firmRef = doc(db, 'firms', firmName);
           await updateDoc(firmRef, {
-            'STRATEGY.TRENDING': trendingData,
+            'STRATEGY': strategyData,
           });
           console.log('Strategy updated in Firestore');
       } catch (error) {
@@ -475,4 +486,4 @@ const createWeeklyStrat = async (firmName, type = 'New') => {
 
 module.exports = createWeeklyStrat;
 
-createWeeklyStrat('FutureSolve', 'New');
+createWeeklyStrat('Hexa TX', 'New');
