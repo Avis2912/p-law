@@ -175,14 +175,16 @@ const addImages = async (posts, imagesSettings='All', firmName, firmImage, firmS
 
     await fetch('https://api.templated.io/v1/render', {
       method: 'POST',
+      async: false,
       body: JSON.stringify({
         "template" : randomTemplate.id,
+        "async" : false,
         "layers" : {
           "primary-text" : {
             "text" : aiText,
           },
           "shape-0" : {
-            "fill": customColor,
+            "stroke": customColor,
           },
           "firm-name" : {
             "text": firmName,

@@ -293,7 +293,7 @@ export default function BlogView() {
             if (firmDoc.data().STRATEGY?.STRATEGY?.TOPICS) {
               await setStrategyData(firmDoc.data().STRATEGY || {});
             }
-            
+
             if (typeof firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS === 'string') {
               writeWeeklyKeywords(firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS);
               console.log('WRITING KEYWORDS 0');
@@ -509,12 +509,12 @@ export default function BlogView() {
         </Typography>
 
 
-        <Button variant="contained" onClick={() => {}}
+        {!isStrategyOpen && <Button variant="contained" onClick={() => {}}
           sx={(theme) => ({backgroundColor: theme.palette.primary.blue, cursor: 'default', 
           fontWeight: '600', '&:hover': { backgroundColor: theme.palette.primary.blue,},
           position: 'absolute', top: 24, right: 25, maxHeight: 35})}>
             Beta
-        </Button>
+        </Button>}
 
         {!isStrategyOpen && <Button variant="contained" color="inherit" startIcon={<Iconify icon={isLongTermOpen ? "lets-icons:save-fill" : "fluent:settings-16-filled"}/>} 
         onClick={() => {saveLongTermGoals()}} sx={(theme) => ({backgroundColor: theme.palette.primary.black, 

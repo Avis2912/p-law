@@ -98,8 +98,10 @@ export default function BlogView() {
 
       await fetch('https://api.templated.io/v1/render', {
         method: 'POST',
+        async: false,
         body: JSON.stringify({
           "template" : randomTemplate.id,
+          "async" : false,
           "layers" : {
             "primary-text" : {
               "text" : customText === '' ? aiText : customText,

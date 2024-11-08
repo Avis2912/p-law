@@ -62,39 +62,40 @@ export const addImages = async (posts, imagesSettings='All', selectedTemplates=[
 
       await fetch('https://api.templated.io/v1/render', {
         method: 'POST',
+        async: false,
         body: JSON.stringify({
-          "template" : randomTemplate.id,
-          "layers" : {
-            "primary-text" : {
-              "text" : customText === '' ? aiText : customText,
+          "template": randomTemplate.id,
+          "async": false,
+          "layers": {
+            "primary-text": {
+              "text": customText === '' ? aiText : customText,
             },
-            "shape-0" : {
-              "fill": customColor,
+            "shape-0": {
+              "stroke": customColor,
             },
-            "firm-name" : {
+            "firm-name": {
               "text": firmName,
             },
-            "firm-site" : {
+            "firm-site": {
               "text": firmSite,
             },
             "firm-img": {
-              "image_url" : firmImage,
+              "image_url": firmImage,
             },
-            "date-today" : {
+            "date-today": {
               "text": formattedDate,
             },
-            "read-time" : {
+            "read-time": {
               "text": `  ${timeToRead} MIN READ`,
             },
-            "primary-img" : {
-                "image_url": webPic,
+            "primary-img": {
+              "image_url": webPic,
             },
-
           }
         }),
         headers: {
-          'Content-Type' : 'application/json',
-          'Authorization' : `Bearer ${import.meta.env.VITE_TEMPLATED_API_KEY}`
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${import.meta.env.VITE_TEMPLATED_API_KEY}`
         }
       })
       .then(response => {if(!response.ok){console.log('Network response was not ok')};   return response.json(); })

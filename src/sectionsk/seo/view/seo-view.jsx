@@ -29,6 +29,8 @@ import { ScheduleDialog } from './schedule-dialog';
 
 // eslint-disable-next-line import/no-relative-packages
 import publishBlog from '../../../../functions/src/WpFunctions/publishBlog';
+// eslint-disable-next-line import/no-relative-packages
+import darkerColor from '../../../../functions/src/General/darkerColor';
 
 import 'src/components/Editor.css';
 
@@ -456,18 +458,21 @@ const modules = {
     const h1Title = isReplacing ? headerDesc : (imagelessText.match(new RegExp(`<${titleTag}>(.*?)</${titleTag}>`)) || [])[1];
     const formattedDate = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
     const timeToRead = isReplacing ? headerTimeToRead : Math.ceil(imagelessText.split(' ').length / 200);
-    let firmSite = ''; try {firmSite = new URL(contactUsLink).hostname.replace(/^www\./, '');} catch (e) {console.error(e);}      
+    let firmSite = ''; try {firmSite = new URL(contactUsLink).hostname.replace(/^www\./, '');} catch (e) {console.error(e);}
+    console.log('WEBPIC: ', webPic); console.log('BRANDVOICE: ', brandVoice);
   
     await fetch('https://api.templated.io/v1/render', {
       method: 'POST',
+      async: false,
       body: JSON.stringify({
         "template" : '88e62b0b-9879-4d56-af23-1b32afbf1457',
+        "async" : false,
         "layers" : {
           "primary-text" : {
             "text" : h1Title,
           },
-          "shape-0" : {
-            "fill": customColor,
+          "shape-0": {
+            "stroke": darkerColor(customColor, 0.35),
           },
           "firm-name" : {
             "text": firmName,
