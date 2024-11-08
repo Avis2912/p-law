@@ -461,14 +461,16 @@ const modules = {
   
     await fetch('https://api.templated.io/v1/render', {
       method: 'POST',
+      async: false,
       body: JSON.stringify({
         "template" : '88e62b0b-9879-4d56-af23-1b32afbf1457',
+        "async" : false,
         "layers" : {
           "primary-text" : {
             "text" : h1Title,
           },
           "shape-0" : {
-            "fill": customColor,
+            "stroke": customColor,
           },
           "firm-name" : {
             "text": firmName,

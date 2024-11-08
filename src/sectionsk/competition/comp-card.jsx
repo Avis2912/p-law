@@ -286,7 +286,7 @@ export default function PostCard({ competitorName, indexedBlogs, orgData,
       borderBottomRightRadius: '2px', backgroundColor: theme.palette.primary.navBg, position: 'absolute', display: 'flex',
       left: '0px', top: '0px', justifyContent: 'center', alignItems: 'center', })}>
       <Typography sx={{ fontSize: '16px', fontWeight: '500', color: 'white', letterSpacing: '-0.5px',}}>
-      {traffic[0]?.VISITS ? `${traffic[0]?.VISITS} visits` :  `No Available Search Data`}  </Typography></Card>
+      {traffic[0]?.VISITS ? `${traffic[traffic.length-4]?.VISITS} visits` :  `No Available Search Data`}  </Typography></Card>
       </Card>
       
       {traffic[0]?.VISITS && <Card sx={(theme) => ({ height: '240px', width: '195px', borderRadius: '5.5px',
