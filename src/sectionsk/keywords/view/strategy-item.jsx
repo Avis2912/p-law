@@ -115,6 +115,7 @@ export default function StrategyItem({ title, keywords, index, openedTopic, setO
             color: theme.palette.primary.navBg, px: '17px', borderRadius: '5.5px',
             fontSize: '15px', letterSpacing: '-0.25px', fontWeight: 600,
           })}
+          onClick={(e) => {e.stopPropagation(); window.open(newsItem.url, '_blank')}}
           startIcon={<Icon icon="fluent:news-20-regular" width={19} height={19} sx={{marginRight: '7px'}} />}>
             {newsItem.title}
           </Button>))
@@ -143,7 +144,7 @@ export default function StrategyItem({ title, keywords, index, openedTopic, setO
         </Stack>}
 
 
-        {isOpened && <Card sx={(theme) => ({ position: 'absolute', padding: '10px', paddingTop: '0px', width: 'calc(100% - 450px)',
+        {isOpened && <Card sx={(theme) => ({ position: 'absolute', padding: '12.5px', paddingTop: '0px', width: 'calc(100% - 450px)',
           top: '18px', right: '18px', borderRadius: '4.5px', height: '326px', paddingBottom: '0px',
           backgroundColor: 'white', border: `0.75px solid ${theme.palette.primary.navBg}`,})}>
 
@@ -155,7 +156,7 @@ export default function StrategyItem({ title, keywords, index, openedTopic, setO
           New Keywords Being Targetted</Typography> </Card>
 
           <List sx={(theme)=>({ width: '100%', maxHeight: '279px',  padding: '0px', paddingTop: '10px', paddingBottom: '-10px',
-            bgcolor: 'white', overflow: 'auto', position: 'relative',marginTop: '45px', })}>
+            bgcolor: 'white', overflow: 'auto', position: 'relative',marginTop: '46px', })}>
 
           {keywords.map((keyword, keywordIndex) => (
             <ListItem 
