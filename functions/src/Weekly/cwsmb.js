@@ -63,7 +63,7 @@ const { getDoc, doc, updateDoc } = require('@firebase/firestore');
 const axios = require('axios');
 const { create } = require('lodash');
 const fetch = require('node-fetch');
-const openAIJSON = require('./openAIJSON');
+const openAIJSON = require('./openAIJSONTest');
 
 
 const { initializeApp } = require("firebase/app");
@@ -86,18 +86,24 @@ const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 const db = getFirestore(app);
 const storage = getStorage(app);
-
 const possibleReasons = [
-  'High demand in the market',
-  'Low competition in the industry',
-  'Recent trends favoring this topic',
-  'Alignment with firm\'s long-term goals',
-  'Competitor\'s focus on this area',
-  'Emerging technologies',
-  'Market gap needing fulfillment',
-  'Customer interest based on recent feedback',
-  'Regulatory changes influencing the topic',
-  'Seasonal relevance',
+  'High search volume trend (>30% increase in 3mo)',
+  'Low difficulty (<30) with good search volume',
+  'High search volume, relatively low competition',
+  'Very high-intent topic, low competition',
+  'Competitors not ranking, high-intent topic',
+  'Aligns with firm\'s current ranking momentum',
+  'Growing search trend in target geographic area',
+  'Content gap in competitor coverage',
+  'High conversion potential based on search intent',
+  'Seasonal peak approaching for this topic',
+  'Recent regulatory changes affecting this area',
+  'Building topical authority in this subject',
+  'Related to existing high-performing content',
+  'Strategic entry point for broader topic coverage',
+  'Matches client demographic search patterns',
+  'Underserved local market opportunity',
+  'Builds on existing keyword rankings'
 ];
 
 const askPerplexity = async (prompt) => {
@@ -132,24 +138,39 @@ const getCompetitorData = async (firmName) => {
     try {
         const firmDoc = await getDoc(doc(db, 'firms', firmName));
         if (firmDoc.exists()) {
-          const firmInfo = firmDoc.data().FIRM_INFO;
-          return firmDoc.data().COMPETITION.toString() || {};
-      }
+            const competitionData = firmDoc.data().COMPETITION;
+            if (competitionData && competitionData.COMPETITION) {
+                competitionData.COMPETITION = competitionData.COMPETITION.map(comp => {
+                    if (comp.RANKING_FOR && Array.isArray(comp.RANKING_FOR)) {
+                        comp.RANKING_FOR = comp.RANKING_FOR.slice(0, 7);
+                    }
+                    return comp;
+                });
+            }
+            return JSON.stringify(competitionData) || {};
+        }
     } catch (error) {
-      console.error(error);
+        console.error(error);
     }
     return {};
 };
 
-const getReasons = async (topic, topicKeywords, longTermData, compData, possibleReasonsList) => {
+const getReasons = async (topic, topicKeywords, longTermData, compData, possibleReasonsList, currentlyRankingFor) => {
   try {
     const prompt = `
-      Given the topic: "${topic.title}",
-      Keywords: ${JSON.stringify(topicKeywords)},
-      Long-term strategy: ${JSON.stringify(longTermData)},
-      Competitor data: ${JSON.stringify(compData)},
-      Possible reasons: ${JSON.stringify(possibleReasonsList)},
-      Pick 4 reasons for choosing this topic.
+      Given this specific data:
+      - Topic: "${topic.title}"
+      - Keywords for the topic: ${JSON.stringify(topicKeywords)}
+      - Firm's long-term strategy: ${JSON.stringify(longTermData)}
+      - Firm currently ranks for: ${JSON.stringify(currentlyRankingFor)}
+      - Competitor rankings & content: ${JSON.stringify(compData)}
+      - Available reasoning options: ${JSON.stringify(possibleReasonsList)}
+
+      Select 4 highly specific, data-backed reasons that BEST explain why this topic should be targeted.
+      Focus on search metrics, competition gaps, and strategic fit. 
+
+      ONLY WRITE DOWN THE EXACT REASON STRINGS YOU PICK FROM THE REASONING OPTIONS. NO MORE TEXT NEEDED NEEDED.
+      
       OUTPUT FORMAT: reasons: [
         { reason: '...' },
         ...
@@ -278,30 +299,73 @@ const isValidLongTermStrategy = (strategyData) => {
          );
 };
 
-const createWeeklyStrat = async (firmName, type = 'New') => {
+const getCurrentWeekNumber = () => {
+  const today = new Date();
+  const day = today.getDate();
+  if (day <= 7) return 0;
+  if (day <= 14) return 1;
+  if (day <= 21) return 2;
+  return 3;
+};
+
+const getTopicList = async (longTermData, firmDescription, previousTopics = []) => {
+  try {
+    const prompt = `
+      Based on the long-term strategy, ranking keywords, firm description, and location, 
+      create a very specific list of 4 topics to write for this month to rank on Google.
+      Don't make these too broad and generic, and make sure they're 4-6 words long.
+
+      longTermData: ${JSON.stringify(longTermData)},
+      firmDescription: "${firmDescription}",
+      
+      ${previousTopics.length > 0 ? `IMPORTANT: Avoid these previously used topics: ${JSON.stringify(previousTopics)}` : ''}
+
+      Distinguish topics from keywords and provide examples.
+      OUTPUT FORMAT: topics: [
+        { title: 'Dallas Campaign Management Strategies', keywords: [] },
+        { title: 'Political Consulting Services', keywords: [] },
+        ...
+      ]
+    `;
+    const topicJson = await openAIJSON(prompt);
+    return topicJson.topics || [];
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
+
+const createWeeklyStrat = async (firmName, type = 'New', givenLongTermData = []) => {
+
+  console.log('Creating Weekly Strategy: ', type);
 
   let strategyData = {};
   let firmDescription = ''; let firmSite = ''; let location = '';
-  let longTermData = []; let rankedSearchData = []; let topicData = []; let trendingData = [];
-  let newsData = []; let reasons = [];
+  let longTermData = givenLongTermData; let rankedSearchData = []; let topicData = []; let trendingData = [];
+  let newsData = []; let reasons = []; let currentlyRankingFor = [];
 
-  const getStrategyData = async (email='avi@g.com') => {
+  const getStrategyData = async (firmNameInt) => {
     try {
-        const firmDoc = await getDoc(doc(db, 'firms', firmName));
+        const firmDoc = await getDoc(doc(db, 'firms', firmNameInt));
         if (firmDoc.exists()) {
           const firmInfo = firmDoc.data().FIRM_INFO;
           firmDescription = firmInfo.DESCRIPTION;
           firmSite = firmInfo.CONTACT_US;
           location = firmInfo.LOCATION;
-          return firmDoc.data().STRATEGY || {};
+          currentlyRankingFor = firmDoc.data().STRATEGY?.STRATEGY?.RANKING_FOR || [];
+          return {
+            currentStrategy: firmDoc.data().STRATEGY || {},
+            previousStrategies: firmDoc.data().STRATEGY_EX || []
+          };
       }
     } catch (error) {
       console.error(error);
     }
-    return {};
+    return { currentStrategy: {}, previousStrategies: [] };
   }
 
-  strategyData = await getStrategyData();
+  const { currentStrategy, previousStrategies } = await getStrategyData(firmName);
+  strategyData = currentStrategy;
 
   const getRankedSearches = async () => {
 
@@ -356,28 +420,6 @@ const createWeeklyStrat = async (firmName, type = 'New') => {
     }
   }
 
-  const getTopicList = async (longTermData, firmDescription) => {
-    try {
-      const prompt = `
-        Based on the long-term strategy, ranking keywords, firm description, and location, create a very specific list of 4 topics.
-        longTermData: ${JSON.stringify(longTermData)},
-        firmDescription: "${firmDescription}",
-
-        Distinguish topics from keywords and provide examples.
-        OUTPUT FORMAT: topics: [
-          { title: 'Campaign Management Strategies', keywords: [] },
-          { title: 'Political Consulting Services', keywords: [] },
-          ...
-        ]
-      `;
-      const topicJson = await openAIJSON(prompt);
-      return topicJson.topics || [];
-    } catch (error) {
-      console.error(error);
-      return [];
-    }
-  }
-
   const getKeywordsForTopic = async (topic) => {
     try {
       const prompt = `
@@ -418,16 +460,78 @@ const createWeeklyStrat = async (firmName, type = 'New') => {
 
   const compData = await getCompetitorData(firmName);
 
-  if (type === 'New') {
+  if (type === 'Monthly' || type === 'Weekly') {
+    // Remove givenLongTermData check since it's not needed for these types
+    longTermData = strategyData.STRATEGY?.LONG_TERM || await createLongTermData();
+  } else if (type === 'New') {
+    // Only use givenLongTermData for new strategy creation
+    longTermData = givenLongTermData.length ? givenLongTermData : await createLongTermData();
+  }
+
+  if (type === 'Monthly') {
+    // Archive current strategy if it exists
+    if (strategyData?.STRATEGY) {
+      try {
+        const currentMonth = new Date().toLocaleString('en-US', { month: 'long', year: 'numeric' });
+        const archiveEntry = {
+          STRATEGY: strategyData,
+          MONTH: currentMonth
+        };
+
+        const firmRef = doc(db, 'firms', firmName);
+        await updateDoc(firmRef, {
+          STRATEGY_EX: [...previousStrategies, archiveEntry]
+        });
+        console.log('Previous strategy archived');
+
+        // Extract previous topic titles
+        const previousTopicTitles = previousStrategies
+          .flatMap(entry => entry.STRATEGY?.STRATEGY?.TOPICS?.map(topic => topic.title) || []);
+
+        // Create new strategy with awareness of previous topics
+        rankedSearchData = await getRankedSearches();
+        topicData = await getTopicList(longTermData, firmDescription, previousTopicTitles);
+
+        // ...rest of strategy creation code...
+        let allKeywords = [];
+        
+        for (let i = 0; i < topicData.length; i++) {
+          const topic = topicData[i];
+          topic.keywords = await getKeywordsForTopic(topic);
+          console.log(`Keywords for Topic ${topic.title}:`, topic.keywords);
+        
+          allKeywords = allKeywords.concat(topic.keywords);
+        
+          topic.reasons = await getReasons(topic, topic.keywords, longTermData, compData, possibleReasons, currentlyRankingFor);
+          console.log(`Reasons for Topic ${topic.title}:`, topic.reasons);
+        
+          topic.news = await getNewsArticles(topic, firmDescription, location, i % 4);
+          console.log(`News for Topic ${topic.title}:`, topic.news);
+        }
+
+        // Create and update new strategy
+        strategyData = {
+          STRATEGY: {
+            TOPICS: topicData,
+            RANKING_FOR: rankedSearchData,
+            LONG_TERM: longTermData,
+          },
+          TRENDING: trendingData,
+          LAST_DATE: new Date().toLocaleDateString(),
+        };
+
+        await updateDoc(firmRef, {
+          'STRATEGY': strategyData,
+        });
+        console.log('New monthly strategy created and updated');
+      } catch (error) {
+        console.error('Error in monthly strategy update:', error);
+      }
+    }
+  } else if (type === 'New') {
 
     console.log('In Func')
 
-    // Only create new long-term data if it doesn't exist or is invalid
-    if (!isValidLongTermStrategy(strategyData)) {
-      longTermData = await createLongTermData();
-    } else {
-      longTermData = strategyData.STRATEGY.LONG_TERM;
-    }
     console.log('Long Term Data:', longTermData);
     
     rankedSearchData = await getRankedSearches();
@@ -445,7 +549,7 @@ const createWeeklyStrat = async (firmName, type = 'New') => {
     
       allKeywords = allKeywords.concat(topic.keywords);
     
-      topic.reasons = await getReasons(topic, topic.keywords, longTermData, compData, possibleReasons);
+      topic.reasons = await getReasons(topic, topic.keywords, longTermData, compData, possibleReasons, currentlyRankingFor);
       console.log(`Reasons for Topic ${topic.title}:`, topic.reasons);
     
       topic.news = await getNewsArticles(topic, firmDescription, location, i % 4);
@@ -477,8 +581,37 @@ const createWeeklyStrat = async (firmName, type = 'New') => {
         console.error('Error updating strategy:', error);
       }
 
-  } else if (type === 'Update') {
-    // ...existing code...
+  } else if (type === 'Weekly') {
+    // Get existing strategy data
+    strategyData = await getStrategyData();
+    if (!strategyData?.STRATEGY?.TOPICS) {
+      console.log('No existing strategy found, creating new one');
+      return createWeeklyStrat(firmName, 'New');
+    }
+
+    const currentWeek = getCurrentWeekNumber();
+    const topicsToUpdate = strategyData.STRATEGY.TOPICS.filter((_, index) => index % 4 === currentWeek);
+
+    for (const topic of topicsToUpdate) {
+      topic.news = await getNewsArticles(
+        topic,
+        firmDescription,
+        location,
+        currentWeek
+      );
+      console.log(`Updated news for Topic ${topic.title}:`, topic.news);
+    }
+
+    // Update the firm's strategy document
+    try {
+      const firmRef = doc(db, 'firms', firmName);
+      await updateDoc(firmRef, {
+        'STRATEGY': strategyData,
+      });
+      console.log('Strategy updated in Firestore');
+    } catch (error) {
+      console.error('Error updating strategy:', error);
+    }
   }
 
   return strategyData;
@@ -486,4 +619,4 @@ const createWeeklyStrat = async (firmName, type = 'New') => {
 
 module.exports = createWeeklyStrat;
 
-createWeeklyStrat('Hexa TX', 'New');
+createWeeklyStrat('XYZ Marketing', 'New');

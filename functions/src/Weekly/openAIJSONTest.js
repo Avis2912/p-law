@@ -1,5 +1,8 @@
+require('dotenv').config({ path: '../../../.env' });
+const fetch = require('node-fetch');
+
 async function openAIJSON(prompt) {
-    const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
+    const apiKey = process.env.VITE_OPENAI_API_KEY;
     
     if (!apiKey) {
         throw new Error('OpenAI API key is not defined in environment variables');
@@ -44,4 +47,6 @@ async function openAIJSON(prompt) {
     }
 }
 
-export default openAIJSON;
+module.exports = openAIJSON;
+
+
