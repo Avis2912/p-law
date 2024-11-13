@@ -118,6 +118,29 @@ const modules = {
   const [scheduleDate, setScheduleDate] = useState('');
   const [scheduleTime, setScheduleTime] = useState('');
 
+  const [isKeywordDropdownOpen, setIsKeywordDropdownOpen] = useState(false);
+  const [selectedKeywords, setSelectedKeywords] = useState([]);
+  const [weeklyKeywords, setWeeklyKeywords] = useState([]);
+
+  const [isAddingKeyword, setIsAddingKeyword] = useState(false);
+  const [newKeyword, setNewKeyword] = useState('');
+
+  const toggleKeywordSelection = (keyword) => {
+    if (selectedKeywords.includes(keyword)) {
+      setSelectedKeywords(selectedKeywords.filter(k => k !== keyword));
+    } else {
+      setSelectedKeywords([...selectedKeywords, keyword]);
+    }
+  };
+
+  const handleAddKeyword = () => {
+    if (newKeyword.trim()) {
+      setWeeklyKeywords([{ keyword: newKeyword, data: ['Added Just Now'] }, ...weeklyKeywords]);
+      setNewKeyword('');
+      setIsAddingKeyword(false);
+    }
+  };
+
   let boxHeight; const boxWidth = 'calc(100%)';
   if (isReferenceGiven) { boxHeight = 'calc(77.5% - 220px)';} 
   else if (wordCount < 300) { boxHeight = 'calc(77.5% - 51.5px)'; }
@@ -143,6 +166,7 @@ const modules = {
             await setSelectedModel(firmDoc.data().SETTINGS.MODEL);
             await setImagesSettings(firmDoc.data().SETTINGS.IMAGES);
             await setBrandVoice(firmDoc.data().SETTINGS.BRAND);
+            await setWeeklyKeywords(firmDoc.data().WEEKLY_KEYWORDS.KEYWORDS);
             const url = new URL(firmDoc.data().FIRM_INFO.CONTACT_US); await setSiteUrl(url.origin);
             const bigBlog = firmDoc.data().BLOG_DATA.BIG_BLOG || [];
             const smallBlogArray = firmDoc.data().BLOG_DATA.SMALL_BLOG || [];
@@ -347,6 +371,7 @@ const modules = {
         Make sure these are evenly spaced out in the post, and place them after h tags or in between paragraphs.`}
         - SPECIFICITY: Be as specific and detailed as possible. Don't be repetitive and ramble.
         - ${style !== "Unstyled" && `STYLE: This blog post MUST be written in the ${style} style.`}
+        - ${selectedKeywords.length > 0 && `KEYWORDS: Make sure to the following keywords in the blog post: ${selectedKeywords.join(', ')}.`}
         - ${isMentionCaseLaw && `CASE LAW: Reference case law in the blog post when necessary.`}
         - ${brandVoice && brandVoice.INSTRUCTIONS !== "" && `BRAND VOICE: Write in the following brand voice: ${JSON.stringify(brandVoice)}.`}
         - ${isReferenceGiven && `USEFUL DATA: Refer to the following text and use as applicable: ${referenceText}`}
@@ -807,6 +832,137 @@ const modules = {
       sx={(theme) => ({ backgroundColor: theme.palette.primary.green, display: isWpDropdownOpen ? 'none' : 'flex',
       '&:hover': { backgroundColor: theme.palette.primary.green, }, height: '40px' })}>        
       {style} </Button> </BasicTooltip>
+
+      <BasicTooltip title='Add Keywords'>
+      <Button variant="contained"
+      sx={(theme) => ({backgroundColor: theme.palette.primary.navBg, 
+      '&:hover': { backgroundColor: theme.palette.primary.navBg, },
+      width: '40px', height: '40px', justifyContent: 'center', 
+      alignItems: 'center', minWidth: '10px', 
+      display: isWpDropdownOpen ? 'none' : 'flex',
+      position: 'relative'})}
+      onClick={() => {setIsKeywordDropdownOpen(!isKeywordDropdownOpen)}}>
+        <Iconify icon="eva:plus-fill" sx={{minHeight: '18.25px', minWidth: '18.25px'}}/>
+      </Button>
+      </BasicTooltip>
+
+
+      <Card sx={(theme) => ({
+        position: 'absolute',
+        top: '92px',
+        right: '54px',
+        maxHeight: '362.5px',
+        width: '360px',
+        display: isKeywordDropdownOpen ? 'block' : 'none',
+        zIndex: 100,
+        backgroundColor: 'white',
+        padding: '0px',
+        border: `1.5px solid ${theme.palette.primary.navBg}`,
+        borderRadius: '4px',
+        boxShadow: 'none',
+        overflow: 'auto'
+      })}>
+        <Card sx={(theme) => ({
+          top: '0px',
+          height: '52.5px',
+          width: '100%',
+          borderRadius: '0px',
+          color: 'white',
+          backgroundColor: theme.palette.primary.navBg,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          paddingLeft: '15.5px',
+          paddingRight: '12px',
+          fontSize: '16px',
+          letterSpacing: '-0.25px',
+          fontWeight: '600'
+        })}> 
+          Target Keywords
+          <Button
+            size="small"
+            onClick={() => setIsAddingKeyword(true)}
+            sx={{
+              color: 'white',
+              minWidth: 'auto',
+              padding: '4px',
+              '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.1)' }
+            }}
+          >
+            <Iconify icon="eva:plus-fill" sx={{ width: '20px', height: '20px' }}/>
+          </Button>
+        </Card>
+
+        {isAddingKeyword && (
+          <ListItem sx={{
+            height: '62.5px',
+            borderBottom: '1px solid #c2c1c0',
+            paddingInline: '15.5px'
+          }}>
+            <TextField
+              fullWidth
+              size="small"
+              value={newKeyword}
+              onChange={(e) => setNewKeyword(e.target.value)}
+              placeholder="Enter new keyword"
+              onKeyPress={(e) => e.key === 'Enter' && handleAddKeyword()}
+              sx={{ '& .MuiOutlinedInput-root': { borderRadius: '5px' } }}
+              InputProps={{
+                endAdornment: (
+                  <Button 
+                    size="small"
+                    onClick={handleAddKeyword}
+                    sx={(theme) => ({ color: theme.palette.primary.navBg })}
+                  >
+                    Add
+                  </Button>
+                ),
+              }}
+            />
+          </ListItem>
+        )}
+
+        {weeklyKeywords.map((kw, index) => (
+          <ListItem 
+            key={index}
+            sx={{
+              height: '62.5px',
+              borderBottom: index !== weeklyKeywords.length - 1 && '1px solid #c2c1c0',
+              justifyContent: 'space-between',
+              paddingInline: '15.5px'
+            }}>
+            <Stack direction="column" spacing={0.5}>
+              <ListItemText 
+                primary={kw.keyword}
+                primaryTypographyProps={{
+                  style: {
+                    fontSize: '15.75px',
+                    fontWeight: '600',
+                    letterSpacing: '-0.15px'
+                  }
+                }}
+                secondary={`${kw.data[kw.data.length - 1] >! 0 ? `${kw.data[kw.data.length - 1]} monthly searches` : `Added just now`}`}
+                secondaryTypographyProps={{
+                  style: {
+                    fontSize: '13px',
+                    color: 'grey'
+                  }
+                }}
+              />
+            </Stack>
+            <Iconify 
+              icon={selectedKeywords.includes(kw.keyword) ? "mdi:tick" : "eva:plus-fill"}
+              sx={{
+                width: '19.5px',
+                height: '19.5px',
+                cursor: 'pointer',
+                color: theme => theme.palette.primary.navBg
+              }}
+              onClick={() => toggleKeywordSelection(kw.keyword)}
+            />
+          </ListItem>
+        ))}
+      </Card>
 
       {isWpDropdownOpen && <Button variant="contained" startIcon={<Iconify icon="teenyicons:text-document-solid" sx={{height: '13.25px'}}/>} 
       onClick={async () => {

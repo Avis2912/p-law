@@ -179,35 +179,36 @@ export default function BlogView() {
 
   useEffect(() => {
     const getWeeklyStratCreationType = () => {
-      const isBrandNew = !strategyData.LONG_TERM || strategyData.LONG_TERM.length === 0 || !strategyData.LAST_DATE;
-      if (isBrandNew) return 'Brand New';
+      // For brand new case
+      const isBrandNew = !strategyData.STRATEGY || !strategyData.STRATEGY.LONG_TERM || !strategyData.LAST_DATE;
+      if (isBrandNew) return 'New';
   
-      const isMonthlyRefreshTime = (() => {
-        const lastDate = new Date(strategyData.LAST_DATE);
-        const currentDate = new Date();
-        return lastDate.getMonth() === (currentDate.getMonth() === 0 ? 11 : currentDate.getMonth() - 1) && lastDate.getFullYear() === (currentDate.getMonth() === 0 ? currentDate.getFullYear() - 1 : currentDate.getFullYear());
-      })();
+      // Check if month has changed
+      const lastDate = new Date(strategyData.LAST_DATE);
+      const currentDate = new Date();
+      const isMonthlyRefreshTime = lastDate.getMonth() !== currentDate.getMonth();
       if (isMonthlyRefreshTime) return 'Monthly';
   
-      const getWeekOfMonth = date => Math.ceil((date.getDate() + new Date(date.getFullYear(), date.getMonth(), 1).getDay() - 1) / 7);
-  
-      const isWeeklyRefreshTime = (() => {
-        const lastDate = new Date(strategyData.LAST_DATE);
-        return getWeekOfMonth(lastDate) !== getWeekOfMonth(new Date());
-      })();
+      // Check if week has changed
+      const getWeekOfMonth = (date) => Math.ceil((date.getDate()) / 7);
+      const isWeeklyRefreshTime = getWeekOfMonth(lastDate) !== getWeekOfMonth(currentDate);
       if (isWeeklyRefreshTime) return 'Weekly';
   
-      return 'No Update';
+      return null;
     };
   
-    const fetchData = async () => {
-      const updateStatus = await getWeeklyStratCreationType();
-      if (updateStatus !== 'No Update') {
-        createWeeklyStrat(firmName, updateStatus);
+    const updateStrategy = async () => {
+      const updateType = getWeeklyStratCreationType();
+      if (updateType) {
+        setIsStrategyCreating(true);
+        await createWeeklyStrat(firmName, updateType);
+        setIsStrategyCreating(false);
       }
     };
   
-    fetchData();
+    if (firmName) {
+      updateStrategy();
+    }
   }, [strategyData, firmName]);
 
   const itemIndexList = {1: 'First Week', 2: 'Second Week', 3: 'Third Week', 4: 'Fourth Week',};
@@ -243,23 +244,9 @@ export default function BlogView() {
       if (!isStrategyCreated) {
         setIsStrategyCreating(true);
         setIsStrategyUpdateTime(true);
+
+        createStrat('New', longTermKeywords);
         
-        // Initialize strategy with long term goals
-        const initialStrategy = {
-          STRATEGY: {
-            TOPICS: [],
-            RANKING_FOR: [],
-            LONG_TERM: longTermKeywords.map(kw => ({ showup_for: kw.showup_for || '' }))
-          },
-          TRENDING: [],
-          LAST_DATE: new Date().toLocaleDateString()
-        };
-
-        await updateDoc(doc(db, 'firms', userDoc.data().FIRM), {
-          'STRATEGY': initialStrategy
-        });
-
-        createStrat(longTermKeywords);
       } else {
         // Just update long term goals if strategy exists
         await updateDoc(doc(db, 'firms', userDoc.data().FIRM), { 
@@ -273,20 +260,14 @@ export default function BlogView() {
     setIsLongTermOpen(false);
   };
 
-  const createStrat = async (longTermData) => {
-    // Simulate strategy creation with 10-second delay
-    setTimeout(async () => {
-      // Update strategy data
-      const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
-      await updateDoc(doc(db, 'firms', userDoc.data().FIRM), {
-        'STRATEGY.STRATEGY.LONG_TERM': longTermData,
-      });
+  const createStrat = async (type, longTermData) => {
+
+      createWeeklyStrat(firmName, type, longTermData);
 
       setIsStrategyCreating(false);
       setIsStrategyCreated(true);
       setIsStrategyUpdateTime(false);
-      setSelectedList('Strategy'); // Switch to strategy view after creation
-    }, 10000);
+      setSelectedList('Strategy');
   };
 
   const writeWeeklyKeywords = useCallback(async (key="") => {
@@ -536,8 +517,12 @@ export default function BlogView() {
 
       </Stack></Stack>
 
-      {isKeyWordUpdateTime && <Creating text='Updating All SEO Data' imgUrl='https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/image_2024-10-23_202020994.png?alt=media&token=799383a7-7d68-4c2d-8af2-835616badb7b' />}
-      {isStrategyUpdateTime && <Creating text='Updating Strategy Data' imgUrl='https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/image_2024-10-23_202020994.png?alt=media&token=799383a7-7d68-4c2d-8af2-835616badb7b' />}
+      {(isKeyWordUpdateTime || isStrategyCreating) && 
+        <Creating 
+          text={isKeyWordUpdateTime ? 'Updating All SEO Data' : 'Updating Strategy Data'} 
+          imgUrl='https://firebasestorage.googleapis.com/v0/b/pentra-hub.appspot.com/o/image_2024-10-23_202020994.png?alt=media&token=799383a7-7d68-4c2d-8af2-835616badb7b' 
+        />
+      }
 
       {isSearchMode && (<>
       <Stack direction="row" spacing={2} justifyContent="right" alignItems="center" mt={0} mb={3}>
@@ -756,14 +741,29 @@ export default function BlogView() {
         </Card>
       )}
 
-      {!isStrategyCreating && !isSearchMode && selectedList === 'Strategy' && <Grid container spacing={3} sx={{width: '100%'}}>
-          {strategyData.STRATEGY.TRENDING.map(({ keyword, data }, index) => {
-            const isTrendingTracked = weeklyKeywords.some(weeklyKeyword => weeklyKeyword.keyword === keyword);
-            return (
-              <PostCard key={index} data={data} keyword={keyword} index={index} setWeeklyKeywords={setWeeklyKeywords} trackNewKeyword={trackNewKeyword} isTrending isTrendingTracked={isTrendingTracked} />
-            );
-          })}
-      </Grid>}
+      {!isStrategyCreating && !isSearchMode && selectedList === 'Strategy' && (
+        <Grid container spacing={3} sx={{width: '100%'}}>
+          {strategyData.TRENDING ? 
+            strategyData.TRENDING.map(({ keyword, data }, index) => {
+              const isTrendingTracked = weeklyKeywords.some(weeklyKeyword => weeklyKeyword.keyword === keyword);
+              return (
+                <PostCard key={index} data={data}keyword={keyword} index={index} 
+                setWeeklyKeywords={setWeeklyKeywords} trackNewKeyword={trackNewKeyword} isTrending isTrendingTracked={isTrendingTracked}
+                />
+              );
+            })
+            : 
+            strategyData.STRATEGY.TRENDING.map(({ keyword, data }, index) => {
+              const isTrendingTracked = weeklyKeywords.some(weeklyKeyword => weeklyKeyword.keyword === keyword);
+              return (
+                <PostCard key={index} data={data}keyword={keyword} index={index} 
+                setWeeklyKeywords={setWeeklyKeywords} trackNewKeyword={trackNewKeyword} isTrending isTrendingTracked={isTrendingTracked}
+                />
+              );
+            })
+          }
+        </Grid>
+      )}
 
       {!isSearchMode && selectedList === 'Tracked' && <Grid container spacing={3} sx={{width: '100%'}}>
         {weeklyKeywords.map(({ keyword, data }, index) => (
