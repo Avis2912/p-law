@@ -28,7 +28,7 @@ export default async function getAds(keyword) {
       },
       mode: 'cors', // Explicitly state CORS mode
       credentials: 'omit', // Changed from 'include' to 'omit'
-      body: JSON.stringify({ formattedKeyword }),
+      body: JSON.stringify({ keyword: formattedKeyword }), // Changed from { formattedKeyword }
     });
 
     // Add more detailed error logging
