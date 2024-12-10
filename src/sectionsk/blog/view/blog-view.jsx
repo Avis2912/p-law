@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Editor, EditorState } from 'draft-js';
 import { useNavigate, useParams } from 'react-router-dom';
 
-
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // import styles
 import Anthropic from '@anthropic-ai/sdk';
@@ -13,16 +12,21 @@ import { getDocs, getDoc, collection, doc, updateDoc, arrayUnion } from 'firebas
 import Iconify from 'src/components/iconify';
 import { db, auth } from 'src/firebase-config/firebase';
 import Button from '@mui/material/Button';
-import { Card, TextField } from '@mui/material';
+import { Card, TextField, Dialog } from '@mui/material';
 import { css, keyframes } from '@emotion/react';
 
 import PageTitle from 'src/components/PageTitle';
 import BlogEditor from 'src/components/Editor';
 import WpDialog from 'src/components/WpDialog';
 import ComingSoon from 'src/components/ComingSoon';
+import CategoryDialog from 'src/components/CategoryDialog';
 
 // eslint-disable-next-line import/no-relative-packages
 import publishBlog from '../../../../functions/src/WpFunctions/publishBlog';
+// eslint-disable-next-line import/no-relative-packages
+import saveToQueue from '../../../../functions/src/General/saveToQueue';
+
+import { ScheduleDialog } from '../../seo/view/schedule-dialog';
 
 const isImagesOn = true;
 const modelKeys = {
@@ -96,6 +100,15 @@ export default function ProductsView() {
   const [dots, setDots] = useState('');
   const [initialText, setInitialText] = useState('');
   const [isContentChanged, setIsContentChanged] = useState(false);
+
+  const [isScheduleDialogOpen, setIsScheduleDialogOpen] = useState(false);
+  const [scheduleDate, setScheduleDate] = useState('');
+  const [scheduleTime, setScheduleTime] = useState('');
+
+  const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false);
+  const [availableCategories, setAvailableCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [isCategoryConfirmOpen, setIsCategoryConfirmOpen] = useState(false);
 
   useEffect(() => {
     const intervalId = isGenerating && setInterval(() => {
@@ -475,6 +488,21 @@ export default function ProductsView() {
   //   backgroundSize: '200% 100%',
   // };
 
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch(`https://${wpUrl.replace('https://', '').replace('http://', '')}/wp-json/wp/v2/categories`, {
+        headers: {
+          'Authorization': `Basic ${btoa(`${wpUsername}:${wpPassword}`)}`,
+        }
+      });
+      const categories = await response.json();
+      setAvailableCategories(categories);
+      setSelectedCategories([categories[0]?.id]); // Select first category by default
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
+
   return (
     <Container sx={{backgroundColor: '', height: '100%', paddingBottom: '20px'}}>
       <script src="http://localhost:30015/embed.min.js" defer />
@@ -552,28 +580,34 @@ export default function ProductsView() {
 
 
       {isWpDropdownOpen && <Button variant="contained" startIcon={<Iconify icon="teenyicons:text-document-solid" sx={{height: '13.25px'}}/>} 
-      onClick={() => {setIsComingSoon(true);}}
+        onClick={async () => {
+          await saveToQueue('DRAFTS', text);
+          setText('');  setIsWpDropdownOpen(false);
+          setBlogTitle(''); setBlogInstructions('');
+        }}
       sx={(theme) => ({ backgroundColor: theme.palette.primary.black,
       '&:hover': { backgroundColor: theme.palette.primary.black, }, })}>        
-      Save for Later </Button>}
+      Save Draft </Button>}
 
       {isWpDropdownOpen && <Button variant="contained" startIcon={<Iconify icon="mdi:clock" sx={{height: '16.25px'}}/>} 
-      onClick={() => {setIsComingSoon(true);}}
+      onClick={() => setIsScheduleDialogOpen(true)}
       sx={(theme) => ({ backgroundColor: theme.palette.primary.black,
       '&:hover': { backgroundColor: theme.palette.primary.black, }, })}>        
       Schedule </Button>}
 
       {isComingSoon && <ComingSoon isDialogOpen2={isComingSoon} handleClose2={() => {setIsComingSoon(false)}} />}
 
-      {isWpDropdownOpen && <Button variant="contained" startIcon={<Iconify icon="cib:telegram-plane" sx={{height: '15.75px'}}/>} 
-      onClick={async () => {
-          const response = await publishBlog(wpUsername, wpPassword, wpUrl, text, titleTag);
-          if (response && (response.status === 200 || response.status === 201)) {console.log('done'); setText(''); setIsWpDropdownOpen(false); setCurrentMode('Generate'); setIsPostError(false); setBlogTitle(''); setBlogInstructions('');}
-          else {console.log('error'); setIsPostError(true);}
-        }}
-      sx={(theme) => ({ backgroundColor: theme.palette.primary.black,
-      '&:hover': { backgroundColor: theme.palette.primary.black, }, })}>        
-      Publish Now </Button>}
+      {isWpDropdownOpen && <Button 
+        variant="contained" 
+        startIcon={<Iconify icon="cib:telegram-plane" sx={{height: '15.75px'}}/>} 
+        onClick={() => setIsCategoryConfirmOpen(true)}
+        sx={(theme) => ({ 
+          backgroundColor: theme.palette.primary.black,
+          '&:hover': { backgroundColor: theme.palette.primary.black, }, 
+        })}
+      >        
+        Publish Now 
+      </Button>}
 
       {text !== '' && <Button variant="contained" startIcon={<Iconify icon="dashicons:wordpress" sx={{height: '15.25px'}}/>} 
       onClick={() => {if (isWpIntegrated) {setIsWpDropdownOpen(!isWpDropdownOpen);} else {setIsWpDialogOpen(true);}}}
@@ -694,8 +728,92 @@ export default function ProductsView() {
         </Stack>
        </>)}
 
-        
+       <ScheduleDialog
+        isOpen={isScheduleDialogOpen}
+        onClose={() => setIsScheduleDialogOpen(false)}
+        onSchedule={async (date, time) => {
+          const response = await publishBlog(wpUsername, wpPassword, wpUrl, text, titleTag, `${date}T${time}:00`);
+          if (response && (response.status === 200 || response.status === 201)) {
+            await saveToQueue('SCHEDULED', text);
+            setText('');
+            setIsWpDropdownOpen(false);
+            setCurrentMode('Generate');
+            setIsPostError(false);
+            setBlogTitle('');
+            setBlogInstructions('');
+          } else {
+            setIsPostError(true);
+          }
+        }}
+      />
 
+      <CategoryDialog 
+        open={isCategoryDialogOpen}
+        onClose={() => setIsCategoryDialogOpen(false)}
+        categories={availableCategories}
+        selectedCategories={selectedCategories}
+        setSelectedCategories={setSelectedCategories}
+        onPublish={async () => {
+          const response = await publishBlog(wpUsername, wpPassword, wpUrl, text, titleTag, null, selectedCategories);
+          if (response && (response.status === 200 || response.status === 201)) {
+            await saveToQueue('PUBLISHED', text);
+            setText(''); setIsWpDropdownOpen(false);
+            setCurrentMode('Generate'); setIsPostError(false);
+            setBlogTitle(''); setBlogInstructions('');
+            setIsCategoryDialogOpen(false);
+          } else {
+            setIsPostError(true);
+          }
+        }}
+      />
+
+      <Dialog
+        open={isCategoryConfirmOpen}
+        onClose={() => setIsCategoryConfirmOpen(false)}
+        PaperProps={{ style: { borderRadius: '6px' } }}
+      >
+        <Card sx={{ p: 3, width: '400px' }}>
+          <Typography variant="h6" sx={{ mb: 2 }}>
+            Would you like to add categories to this post?
+          </Typography>
+          <Stack direction="row" spacing={2}>
+            <Button
+              fullWidth
+              variant="outlined"
+              onClick={async () => {
+                setIsCategoryConfirmOpen(false);
+                const response = await publishBlog(wpUsername, wpPassword, wpUrl, text, titleTag);
+                if (response?.status === 200 || response?.status === 201) {
+                  await saveToQueue('PUBLISHED', text);
+                  setText(''); setIsWpDropdownOpen(false);
+                  setCurrentMode('Generate'); setIsPostError(false);
+                  setBlogTitle(''); setBlogInstructions('');
+                } else {
+                  setIsPostError(true);
+                }
+              }}
+            >
+              Skip Categories
+            </Button>
+            <Button
+              fullWidth
+              variant="contained"
+              onClick={() => {
+                setIsCategoryConfirmOpen(false);
+                fetchCategories();
+                setIsCategoryDialogOpen(true);
+              }}
+              sx={(theme) => ({ 
+                minHeight: 38,
+                bgcolor: theme.palette.primary.navBg,
+                '&:hover': { bgcolor: theme.palette.primary.navBg }
+              })}
+            >
+              Add Categories
+            </Button>
+          </Stack>
+        </Card>
+      </Dialog>
     
     </Container>
   );

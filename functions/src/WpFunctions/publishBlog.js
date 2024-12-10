@@ -36,7 +36,7 @@ async function uploadImage(user_id, user_app_password, siteUrl, imageUrl) {
     }
 }
 
-async function publishBlog(user_id, user_app_password, siteUrl, htmlContent, titleTag, scheduledFor=null) {
+async function publishBlog(user_id, user_app_password, siteUrl, htmlContent, titleTag, scheduledFor=null, categories=[1]) {
     const article_title = htmlContent.match(new RegExp(`<${titleTag}>(.*?)</${titleTag}>`)) ? htmlContent.match(new RegExp(`<${titleTag}>(.*?)</${titleTag}>`))[1] : 'Untitled';
     const formattedContent = htmlContent.replace(new RegExp(`<${titleTag}>.*?</${titleTag}>`, 'g'), '').replace(/<p>\s*(<img[^>]*>)\s*<\/p>/g, '$1');
     const formattedContent1 = formattedContent.replace(/(<img[^>]*)(>)/g, '$1 style="max-width: 100%;"$2');
@@ -61,9 +61,9 @@ async function publishBlog(user_id, user_app_password, siteUrl, htmlContent, tit
     const post_data = {
         "title": article_title,
         "content": formattedContent2,
-        "categories": [1],
+        "categories": categories,
         "status": scheduledFor ? 'future' : 'publish',
-        ...(scheduledFor && { "date": scheduledFor }), // Use provided schedule date
+        ...(scheduledFor && { "date": scheduledFor }),
         "featured_media": mediaId,
     };
 

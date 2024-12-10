@@ -25,10 +25,15 @@ import PageTitle from 'src/components/PageTitle';
 import BasicTooltip from 'src/components/BasicTooltip';
 import { Page } from 'openai/pagination';
 import { modelKeys } from 'src/genData/models';
+import CategoryDialog from 'src/components/CategoryDialog';
 import { ScheduleDialog } from './schedule-dialog';
 
 // eslint-disable-next-line import/no-relative-packages
 import publishBlog from '../../../../functions/src/WpFunctions/publishBlog';
+// eslint-disable-next-line import/no-relative-packages
+import saveToQueue from '../../../../functions/src/General/saveToQueue';
+
+
 
 import 'src/components/Editor.css';
 
@@ -125,6 +130,12 @@ const modules = {
   const [isAddingKeyword, setIsAddingKeyword] = useState(false);
   const [newKeyword, setNewKeyword] = useState('');
 
+  const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false);
+  const [availableCategories, setAvailableCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+
+  const [isCategoryConfirmOpen, setIsCategoryConfirmOpen] = useState(false);
+
   const toggleKeywordSelection = (keyword) => {
     if (selectedKeywords.includes(keyword)) {
       setSelectedKeywords(selectedKeywords.filter(k => k !== keyword));
@@ -138,6 +149,21 @@ const modules = {
       setWeeklyKeywords([{ keyword: newKeyword, data: ['Added Just Now'] }, ...weeklyKeywords]);
       setNewKeyword('');
       setIsAddingKeyword(false);
+    }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch(`https://${wpUrl.replace('https://', '').replace('http://', '')}/wp-json/wp/v2/categories`, {
+        headers: {
+          'Authorization': `Basic ${btoa(`${wpUsername}:${wpPassword}`)}`,
+        }
+      });
+      const categories = await response.json();
+      setAvailableCategories(categories);
+      setSelectedCategories([categories[0]?.id]); // Select first category by default
+    } catch (error) {
+      console.error('Error fetching categories:', error);
     }
   };
 
@@ -376,7 +402,7 @@ const modules = {
         - ${brandVoice && brandVoice.INSTRUCTIONS !== "" && `BRAND VOICE: Write in the following brand voice: ${JSON.stringify(brandVoice)}.`}
         - ${isReferenceGiven && `USEFUL DATA: Refer to the following text and use as applicable: ${referenceText}`}
         - ${contactUsLink && `CONTACT US LINK AT END: Use this contact us link with <a> tags toward the end if applicable: ${contactUsLink}`} 
-        - ${browseTextResponse !== "" && `WEB RESULTS: Consider using the following web information I got from leading websites: ${isUseInternalLinks ? (isAdvancedBrowseWeb ? JSON.stringify(browseTextResponse)[1] : JSON.stringify(JSON.parse(browseTextResponse)[1])) : browseTextResponse}.`}
+        - ${browseTextResponse !== "" && `WEB RESULTS: Consider using the following web information I got from leading websites: ${isUseInternalLinks ? (isAdvancedBrowseWeb ? JSON.stringify(browseTextResponse)[1] : JSON.stringify(JSON.parse(browseTextResponse)[0].hits)) : browseTextResponse}.`}
         - ${isUseInternalLinks && `LINKS TO OTHER SOURCES: ALWAYS ADD THESE. Use <a> tags to to tag a few phrases and add links to relevant blog posts from non-law-firm sources from the following list wherever applicable: ${isAdvancedBrowseWeb ? JSON.stringify(browseTextResponse)[1] : JSON.stringify(JSON.parse(browseTextResponse)[0].hits)}.`}
         - LINK TO INTERNAL BLOGS: Use <a> tags to to tag phrases and add links to relevant blog posts from the urls of the following list wherever applicable: ${internalLinks}.
         - NEVER OUTPUT ANYTHING other than the blog content. DONT START BY DESCRIBING WHAT YOURE OUTPUTING, JUST OUTPUT. DONT OUTPUT INACCURATE INFORMATION.
@@ -715,43 +741,6 @@ const modules = {
   }
 }
 
-
-  const saveToQueue = async (type, content) => {
-    try {
-      const userDoc = await getDoc(doc(db, 'users', auth.currentUser.email));
-      if (userDoc.exists()) {
-        const firmRef = doc(db, 'firms', userDoc.data().FIRM);
-        const firmDoc = await getDoc(firmRef);
-        
-        if (firmDoc.exists()) {
-          const h1Match = content.match(/<h1>(.*?)<\/h1>/);
-          const title = h1Match ? h1Match[1] : 'Untitled';
-          const currentDate = new Date();
-          const date = `${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear()}`;
-          const time = currentDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
-          
-          const queueData = firmDoc.data().QUEUE || {};
-          const updatedQueue = {
-            ...queueData,
-            [type]: [
-              ...(queueData[type] || []),
-              {
-                content,
-                title,
-                date,
-                time,
-              }
-            ]
-          };
-          
-          await updateDoc(firmRef, { QUEUE: updatedQueue });
-        }
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   return (
     <Container sx={{backgroundColor: '', height: '100%', paddingBottom: '20px'}}>
       <script src="http://localhost:30015/embed.min.js" defer />
@@ -982,21 +971,17 @@ const modules = {
 
       {isComingSoon && <ComingSoon isDialogOpen2={isComingSoon} handleClose2={() => {setIsComingSoon(false)}} />}
 
-      {isWpDropdownOpen && <Button variant="contained" startIcon={<Iconify icon="cib:telegram-plane" sx={{height: '15.75px'}}/>} 
-      onClick={async () => {
-          const response = await publishBlog(wpUsername, wpPassword, wpUrl, text, titleTag);
-          if (response && (response.status === 200 || response.status === 201)) {
-            await saveToQueue('PUBLISHED', text);
-            setText(''); setIsWpDropdownOpen(false);
-            setCurrentMode('Generate');setIsPostError(false);
-            setBlogTitle(''); setBlogInstructions('');
-          } else {
-            setIsPostError(true);
-          }
-        }}
-      sx={(theme) => ({ backgroundColor: theme.palette.primary.black,
-      '&:hover': { backgroundColor: theme.palette.primary.black, }, })}>        
-      Publish Now </Button>}
+      {isWpDropdownOpen && <Button 
+        variant="contained" 
+        startIcon={<Iconify icon="cib:telegram-plane" sx={{height: '15.75px'}}/>} 
+        onClick={() => setIsCategoryConfirmOpen(true)}
+        sx={(theme) => ({ 
+          backgroundColor: theme.palette.primary.black,
+          '&:hover': { backgroundColor: theme.palette.primary.black, }, 
+        })}
+      >        
+        Publish Now 
+      </Button>}
 
       {text !== '' && <Button variant="contained" startIcon={<Iconify icon="dashicons:wordpress" sx={{height: '15.25px'}}/>} 
       onClick={() => {if (isWpIntegrated) {setIsWpDropdownOpen(!isWpDropdownOpen);} else {setIsWpDialogOpen(true);}}}
@@ -1222,6 +1207,74 @@ const modules = {
             }
           }}
         />
+
+        <CategoryDialog 
+          open={isCategoryDialogOpen}
+          onClose={() => setIsCategoryDialogOpen(false)}
+          categories={availableCategories}
+          selectedCategories={selectedCategories}
+          setSelectedCategories={setSelectedCategories}
+          onPublish={async () => {
+            const response = await publishBlog(wpUsername, wpPassword, wpUrl, text, titleTag, null, selectedCategories);
+            if (response && (response.status === 200 || response.status === 201)) {
+              await saveToQueue('PUBLISHED', text);
+              setText(''); setIsWpDropdownOpen(false);
+              setCurrentMode('Generate'); setIsPostError(false);
+              setBlogTitle(''); setBlogInstructions('');
+              setIsCategoryDialogOpen(false);
+            } else {
+              setIsPostError(true);
+            }
+          }}
+        />
+
+        <Dialog
+          open={isCategoryConfirmOpen}
+          onClose={() => setIsCategoryConfirmOpen(false)}
+          PaperProps={{ style: { borderRadius: '6px' } }}
+        >
+          <Card sx={{ p: 3, width: '400px' }}>
+            <Typography variant="h6" sx={{ mb: 2 }}>
+              Would you like to add categories to this post?
+            </Typography>
+            <Stack direction="row" spacing={2}>
+              <Button
+                fullWidth
+                variant="outlined"
+                onClick={async () => {
+                  setIsCategoryConfirmOpen(false);
+                  const response = await publishBlog(wpUsername, wpPassword, wpUrl, text, titleTag);
+                  if (response?.status === 200 || response?.status === 201) {
+                    await saveToQueue('PUBLISHED', text);
+                    setText(''); setIsWpDropdownOpen(false);
+                    setCurrentMode('Generate'); setIsPostError(false);
+                    setBlogTitle(''); setBlogInstructions('');
+                  } else {
+                    setIsPostError(true);
+                  }
+                }}
+              >
+                Skip Categories
+              </Button>
+              <Button
+                fullWidth
+                variant="contained"
+                onClick={() => {
+                  setIsCategoryConfirmOpen(false);
+                  fetchCategories();
+                  setIsCategoryDialogOpen(true);
+                }}
+                sx={(theme) => ({ 
+                  minHeight: 38,
+                  bgcolor: theme.palette.primary.navBg,
+                  '&:hover': { bgcolor: theme.palette.primary.navBg }
+                })}
+              >
+                Add Categories
+              </Button>
+            </Stack>
+          </Card>
+        </Dialog>
     
     </Container>
   );

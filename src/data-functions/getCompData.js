@@ -4,7 +4,7 @@ import getReviews from 'src/data-functions/getReviews/getReviews';
 import getTraffic from 'src/data-functions/getTraffic/getTraffic';
 import getAds from 'src/data-functions/getAds/getAds';
 
-export default async function getCompData(keyword, isAll = false, keywordList = []) {
+export default async function getCompData(keyword, name, isAll = false, keywordList = []) {
     try {
         if (isAll) {
             // Wait for all keyword-based requests to complete
@@ -13,7 +13,7 @@ export default async function getCompData(keyword, isAll = false, keywordList = 
                     const [blogs, jobs, reviews, ads] = await Promise.all([
                         getBlogs(kw),
                         getJobs(kw),
-                        getReviews(kw),
+                        getReviews(name), // Changed to use name instead of keyword
                         getAds(kw)
                     ]);
                     return { BLOGS: blogs, JOBS: jobs, REVIEWS: reviews, ADS: ads };
@@ -45,7 +45,7 @@ export default async function getCompData(keyword, isAll = false, keywordList = 
             const [blogs, jobs, reviews, traffic, ads] = await Promise.all([
                 getBlogs(keyword),
                 getJobs(keyword),
-                getReviews(keyword),
+                getReviews(name), // Changed to use name instead of keyword
                 getTraffic([keyword]),
                 getAds(keyword),
                 [], [], [], [],

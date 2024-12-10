@@ -45,7 +45,7 @@ const addCompetitor = async () => {
 
       setIsAddingCompetitor(true);
 
-      const compData = await getCompData(competitorSite);
+      const compData = await getCompData(competitorSite, competitorName);
 
       const newCompetitor = {
         NAME: competitorName,

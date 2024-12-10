@@ -11,8 +11,6 @@ import Creating from 'src/components/Creating';
 import { db, auth } from 'src/firebase-config/firebase';
 import { getDocs, getDoc, addDoc, collection, doc, updateDoc } from 'firebase/firestore';
 
-import getCompData from 'src/data-functions/getCompData';
-
 import Iconify from 'src/components/iconify';
 import { useState, useEffect } from 'react';
 
