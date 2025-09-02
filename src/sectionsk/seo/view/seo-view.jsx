@@ -670,7 +670,7 @@ const modules = {
   const browseWeb = async (prompt, isAddLinks = false) => {
 
     const youUrl = `https://us-central1-pentra-claude-gcp.cloudfunctions.net/youAPIFunction`;
-    const apiKey = '7cc375a9-d226-4d79-b55d-b1286ddb4609<__>1P4FjdETU8N2v5f458P2BaEp-Pu3rUjGEYkI4jh';
+    const apiKey = 'c5bd7e67-25db-43c4-ad62-baf3197180e6<__>1S2qc2ETU8N2v5f4TzncTEFb';
     const query = encodeURIComponent(`GIVE FACTUAL LEGAL INFORMATION SPECIFICALLY ON: ${blogTitle}.`);
     let claudeKeyPoints = "";
 
